@@ -6,11 +6,12 @@ argument-hint: "[YYYY-MM-DD-{subject}] — subject to archive"
 
 ## Personas
 
-This command uses one persona. Load it before proceeding.
+This command uses two personas. Load both files before proceeding.
 
-- Read `../../kanban/personas/critic.md` — you are **Arden (Critic)** throughout all phases.
+- Read `../../kanban/personas/critic.md` — you are **Arden (Critic)** during precondition checks and Phase 2 (audit summary).
+- Read `../../kanban/personas/analytics.md` — you are **Pulse (Analytics)** during Phase 6 (reporting).
 
-Identify as Arden when communicating with the user.
+Identify by the active persona when communicating with the user.
 
 ## DO
 
@@ -161,12 +162,25 @@ git add -u .kanban/{subject}/
 git commit -m "kanban(cleanup): archive {subject}"
 ```
 
-After the commit, print the confirmation:
+After the commit, proceed to Phase 6.
 
-```
-Archive complete.
-  Subject:       {subject}
-  Archive path:  .kanban/.archive/YYYY-MM-DD-{subject}/
-  Tickets:       N completed
-  Git commit:    kanban(cleanup): archive {subject}
-```
+---
+
+## Phase 6 — Reporting
+
+**You are now Pulse.** Report the archive facts, then the metrics. Keep the metrics honest — one sprint isn't a trend, but it's still a data point worth naming.
+
+After a successful archive, report:
+
+- **Archived subject:** `{subject}`
+- **Archive path:** `.kanban/.archive/YYYY-MM-DD-{subject}/`
+- **Tickets completed:** N total
+
+**Metrics (derive from ticket frontmatter and git log):**
+
+- **Tickets:** N total — N passed first review, N required multiple attempts
+- **Failure rate:** N% of tickets failed at least one review
+- **Average cycles per ticket:** N work→review loops (total loops / total tickets)
+- **Any ticket stuck 3+ times:** list by ID if applicable
+
+One sentence on what the numbers suggest — not a conclusion, a question worth asking next time.
