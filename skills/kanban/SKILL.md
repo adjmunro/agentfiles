@@ -52,7 +52,7 @@ Feature branches and non-trunk branch names are never subject to this check — 
 ```
 .kanban/
 ├── 01-plan/                 ← capture + plan (worktree-agnostic)
-│   └── YYMMDD-<subject>/
+│   └── YYYY-MM-DD-<subject>/
 │       ├── input-<subject>.md
 │       ├── plan-<subject>.md
 │       ├── research-<subject>.md

@@ -3,10 +3,10 @@ id: "260321-date-format/TASK-005"
 subject: "260321-date-format"
 plan: "../../01-plan/260321-date-format/plan-date-format.md"
 effort: low
-status: in-progress
+status: in-review
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T22:50:00Z"
-completed_at: ~
+completed_at: "2026-03-21T23:00:00Z"
 stale_after_hours: 4
 depends_on:
   - "TASK-001"
@@ -37,3 +37,22 @@ Traced to: Req 5.1, 5.2.
 
 ---
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log — 2026-03-21T22:50:00Z
+
+**Builder (Kira)**
+
+Scanned all non-command `.md` files in `skills/kanban/` for `YYMMDD` occurrences.
+
+**Findings:**
+- `skills/kanban/SKILL.md` line 55: `│   └── YYMMDD-<subject>/` — updated to `YYYY-MM-DD-<subject>/`
+- `skills/kanban/CHANGELOG.md` — no occurrences
+- `skills/kanban/VERSION.md` — no occurrences
+- `skills/kanban/AGENTS.md` — no occurrences
+- `skills/kanban/CLAUDE.md` — no occurrences
+
+**Post-edit verification:** `grep 'YYMMDD' skills/kanban/SKILL.md` returns no matches. `grep -r 'YYMMDD' skills/kanban/ --include='*.md' --exclude-dir=commands` returns no matches.
+
+**Version bump:** 1.2.2 → 1.2.3 (patch — doc correction in directory diagram)
+
+All acceptance criteria met.
