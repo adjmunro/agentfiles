@@ -142,3 +142,33 @@ None — all items covered at first pass.
 
 ### Fixes Applied
 None.
+
+## Audit: tickets → archive — PASS
+**Date**: 2026-03-21T00:00:00Z  **Threshold**: 95%  **Auditor**: Arden (Critic) + Pulse (Analytics)
+
+| # | Requirement | Ticket(s) | Status |
+|---|------------|-----------|--------|
+| 1 | §1.1 Capture prompt gated on clean completion | TASK-002 | Full |
+| 2 | §1.2 Three capture options (Enter planning mode, Capture something else, Freeform) | TASK-002 | Full |
+| 3 | §1.3 (Recommended) label + Enter-to-default ordering | TASK-002 | Full |
+| 4 | §1.4 Freeform not written to input file | TASK-002 | Full |
+| 5 | §2.1 Plan prompt gated on audit PASS | TASK-003 | Full |
+| 6 | §2.2 Plan options (Start, Quit, Freeform, Discard — 4-option limit applied) | TASK-003 | Full |
+| 7 | §2.3 Start carries (Recommended) label, listed first | TASK-003 | Full |
+| 8 | §2.4 Options 1–2 (Start/Quit) invoke kanban-todo as first action | TASK-003 | Full |
+| 9 | §3.1 Plan→todo is sanctioned boundary crossing | TASK-003 | Full |
+| 10 | §3.2 Explicit confirmation prompt before crossing; decline returns to options | TASK-003 | Full |
+| 11 | §3.3 todo.md whitelists from-plan-handoff; boundary check skipped | TASK-005 | Full |
+| 12 | §3.4 Session boundary rule unchanged for all other entry points | TASK-005 | Full |
+| 13 | §4.1 Discard scans .kanban/02-todo through .kanban/06-archive | TASK-004 | Full |
+| 14 | §4.2 Block if tickets found; describe dirs and count; require manual action or explicit override | TASK-004 | Full |
+| 15 | §4.3 Require user to type exact subject slug; yes/no insufficient | TASK-004 | Full |
+| 16 | §4.4 On confirmed: delete all files under .kanban/01-plan/YYMMDD-<subject>/ | TASK-004 | Full |
+| 17 | TDD red phase: baseline checks pass, review checklist created | TASK-001 | Full |
+| 18 | Version bump (1.1.4 → 1.2.0) and CHANGELOG entry ("The Smooth Handoff") | TASK-006 | Full |
+
+- Full: 18, Partial: 0, Missing: 0 — Total: 18
+- Score: (18 + 0.5×0) / 18 × 100 = **100%**
+
+### Fixes Applied
+None — all requirements covered at first pass across 6 tickets.
