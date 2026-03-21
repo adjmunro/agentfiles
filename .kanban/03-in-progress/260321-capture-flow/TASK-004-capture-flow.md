@@ -48,3 +48,22 @@ Added natural-prose preamble instruction to Phase 4 of `skills/kanban/commands/c
 The new paragraph appears between the gap-identification instruction and the guidance list. It requires the agent to write a short preamble before each clarifying question covering: (1) its interpretation of the user's input, (2) its recommendation or inclination on that point, and (3) its reasoning for why the question is needed. The instruction specifies flowing prose in the agent's own voice — first person, conversational — and explicitly prohibits labeled-section patterns ("My read:", "I'd recommend:", "Reasoning:"). The agent may draw on codebase reads, web research, or session context at its own discretion.
 
 Phases 5–9 and all other content in capture.md are unchanged. No version bump or CHANGELOG update per ticket instructions.
+
+## Review — 2026-03-21 (Echo / Arden)
+
+**Reviewers:** Echo (Examiner), Arden (Critic)
+**Outcome:** FAIL — 90% (threshold 95%)
+
+| # | Criterion | Result |
+|---|-----------|--------|
+| 1 | Phase 4 instructs agent to output a natural-prose preamble before each clarifying question | PASS |
+| 2 | Preamble instruction specifies interpretation, recommendation, and reasoning | PASS |
+| 3 | Preamble must be natural prose in agent's own voice — no labeled sections | PASS |
+| 4 | Agent may draw on codebase, web research, or session context at discretion | PASS |
+| 5 | grep returns no matches for `labeled\|My read\|I.d recommend` | PARTIAL |
+
+**AC5 detail:** The grep test matches line 109 because the prohibited patterns ("My read:", "I'd recommend:", "labeled sections") are quoted inline as negative examples within the prohibition sentence itself. The semantic intent — no instruction to use labeled sections — is satisfied. The literal grep test is not. Scored as partial (0.5).
+
+**Score:** (4 + 0.5) / 5 × 100 = 90%
+
+**Required fix:** Either (a) remove the quoted examples from the prohibition sentence so the grep produces no matches, or (b) revise the acceptance criterion to reflect that the grep will match quoted negative examples. The implementation intent is correct; the criterion and implementation are in tension.
