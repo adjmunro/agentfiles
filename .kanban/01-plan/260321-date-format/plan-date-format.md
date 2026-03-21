@@ -55,3 +55,26 @@
 - `TASK-NNN` ticket naming convention — not date-prefixed, unchanged.
 - Historical git commit messages.
 - Changes to any non-kanban files.
+
+## Audit: input → plan — PASS
+**Date**: 2026-03-21T00:00:00Z  **Threshold**: 95%
+
+| # | Item | Status | Notes |
+|---|------|--------|-------|
+| 1 | YYMMDD → YYYY-MM-DD everywhere | Full | §1–6 |
+| 2 | Rename existing .kanban/ dirs | Full | §1.1 |
+| 3 | Include date-format itself | Full | §1.2 |
+| 4 | Ticket frontmatter (id, subject, plan) | Full | §2.1–2.3 |
+| 5 | Internal file content (titles, headers, cross-refs) | Full | §3.1–3.3 |
+| 6 | All 9 command files | Full | §4.1, §4.3 |
+| 7 | date +%y%m%d → date +%Y-%m-%d | Full | §4.2 |
+| 8 | SKILL.md and docs | Full | §5.1–5.2 |
+| 9 | Commit message templates | Full | §6.1 |
+| 10 | Use mv not delete/recreate | Full | Constraints |
+| 11 | Historical commits immutable | Full | Out of Scope |
+
+- Full: 11, Partial: 0, Missing: 0 — Total: 11
+- Score: (11 + 0.5×0) / 11 × 100 = **100%**
+
+### Fixes Applied
+- None.
