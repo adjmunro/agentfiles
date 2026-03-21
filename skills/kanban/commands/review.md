@@ -4,22 +4,24 @@ allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, AskUserQuestion
 argument-hint: "[YYMMDD-<subject>/TASK-NNN] — specific ticket; omit to auto-select from 04-in-review"
 ---
 
+## Personas
+
+This command uses two personas. Load both files before proceeding.
+
+- Read `../personas/examiner.md` — you are **Echo (Examiner)** during Phases 2–2b (evidence gathering and test execution)
+- Read `../personas/critic.md` — you are **Arden (Critic)** during Phase 3 (scoring and verdict)
+
+Identify by the active persona when communicating with the user.
+
 ## DO
 
 - Read the ticket and all referenced source files before forming any judgment
-- Map every acceptance criterion to specific file evidence — or explicitly note its absence
-- Run all applicable test suites as discovered from project files
 - Score using the formula: `(satisfied + 0.5×partial) / total × 100`
 - Route the ticket: PASS → `05-pull-request/`, FAIL → `03-in-progress/`
 - Commit the result with the correct message for each path
-- Operate in two distinct roles: Examiner (evidence only) then Critic (scoring and verdict)
 
 ## DO NOT
 
-- Modify any source code, ever — the reviewer is read-only on implementation files
-- Score before all evidence is gathered — Examiner finishes first, Critic scores second
-- Hardcode test commands — always infer them from project files
-- Skip the test execution phase — tests must run unless the ticket explicitly opts out
 - Merge the Examiner and Critic roles into one pass — maintain the separation
 
 ---
@@ -56,7 +58,7 @@ Determine which ticket to review using this priority order. Stop at the first so
 
 Read the ticket file. Confirm its frontmatter contains:
 - `status: in-review`
-- A `plan` field pointing to `plan-YYMMDD-<subject>.md`
+- A `plan` field pointing to `plan-<subject>.md`
 
 ---
 
@@ -66,7 +68,7 @@ Read the ticket file. Confirm its frontmatter contains:
 
 ### Step A — Read the Plan
 
-Locate and read `plan-YYMMDD-<subject>.md` from the path referenced in the ticket's `plan` frontmatter field. If the path is relative, resolve it from the project root.
+Locate and read `plan-<subject>.md` from the path referenced in the ticket's `plan` frontmatter field. If the path is relative, resolve it from the project root.
 
 ### Step B — Read All Changed Source Files
 

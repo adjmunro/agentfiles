@@ -4,12 +4,17 @@ allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
 argument-hint: "[YYMMDD-<subject>] — subject to plan; omit to auto-derive"
 ---
 
+## Persona
+
+Read `../personas/critic.md` before proceeding. You are **Arden (Critic)** for this command.
+
+When communicating with the user in this session, identify as **Arden (Critic)**.
+
 ## DO
 
 - Read the captured input file from `.kanban/01-plan/YYMMDD-<subject>/`
 - Interview the user to surface tradeoffs, ambiguities, and success criteria
 - Draft a structured plan covering 100% of captured input
-- Run an audit gate and auto-fix all gaps — do not ask for permission to fix
 - Commit twice: once after drafting, once after audit
 - Operate only inside `.kanban/01-plan/YYMMDD-<subject>/`
 
@@ -18,7 +23,6 @@ argument-hint: "[YYMMDD-<subject>] — subject to plan; omit to auto-derive"
 - Touch any files in `.kanban/02-todo/` through `.kanban/05-pull-request/`
 - Write a plan without first reading and validating the input file
 - Skip the interview phase — always surface ambiguities before drafting
-- Ask the user whether to fix audit gaps — auto-fix all of them
 - Proceed if a work session is active for this subject
 
 ---
@@ -47,7 +51,7 @@ Determine the `YYMMDD-subject` slug using the following priority order. Stop at 
 Locate the input file at:
 
 ```
-.kanban/01-plan/YYMMDD-<subject>/input-YYMMDD-<subject>.md
+.kanban/01-plan/YYMMDD-<subject>/input-<subject>.md
 ```
 
 **STOP:** If the file does not exist, print: "No captured input found. Run `/kanban-capture` first." Exit immediately.
@@ -75,7 +79,7 @@ Ask non-obvious questions. Do not restate things already in the input — probe 
 
 ## Phase 4 — Draft Plan
 
-Using the input file and interview answers, draft `plan-YYMMDD-<subject>.md` with exactly this structure:
+Using the input file and interview answers, draft `plan-<subject>.md` with exactly this structure:
 
 ```markdown
 ## Intent
@@ -108,7 +112,7 @@ Show the plan outline (section headings and requirement numbers with one-line su
 Write the approved plan to:
 
 ```
-.kanban/01-plan/YYMMDD-<subject>/plan-YYMMDD-<subject>.md
+.kanban/01-plan/YYMMDD-<subject>/plan-<subject>.md
 ```
 
 ---
@@ -131,7 +135,7 @@ If not inside a git repo: skip silently.
 
 ### Step A — Enumerate Input
 
-Read `input-YYMMDD-<subject>.md` in full. Break it into a numbered list of discrete, verifiable items. Every stated requirement, constraint, asset, goal, and contextual detail is a separate item. Be granular — split compound items.
+Read `input-<subject>.md` in full. Break it into a numbered list of discrete, verifiable items. Every stated requirement, constraint, asset, goal, and contextual detail is a separate item. Be granular — split compound items.
 
 ### Step B — Classify Coverage
 
@@ -149,7 +153,7 @@ score = (full + 0.5 × partial) / total × 100
 
 ### Step D — Auto-Fix All Gaps
 
-For every Partial and Missing item: update `plan-YYMMDD-<subject>.md` to cover it. Do NOT ask for permission. Do NOT skip. Add new requirement entries, expand vague constraints, or extend the Out of Scope section as needed.
+For every Partial and Missing item: update `plan-<subject>.md` to cover it. Do NOT ask for permission. Do NOT skip. Add new requirement entries, expand vague constraints, or extend the Out of Scope section as needed.
 
 ### Step E — Rescore
 
@@ -157,7 +161,7 @@ Recalculate the score after all fixes are applied.
 
 ### Step F — Append Audit Section
 
-Append the following section to `plan-YYMMDD-<subject>.md`:
+Append the following section to `plan-<subject>.md`:
 
 ```markdown
 ## Audit: input → plan — PASS|FAIL

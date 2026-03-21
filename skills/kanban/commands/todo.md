@@ -4,18 +4,25 @@ allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, AskUserQuestion
 argument-hint: "[YYMMDD-<subject>] — subject to break down; omit to auto-derive"
 ---
 
+## Personas
+
+This command uses two personas. Load both files before proceeding.
+
+- Read `../personas/scout.md` — you are **Finn (Scout)** during Phase 1 (codebase research)
+- Read `../personas/critic.md` — you are **Arden (Critic)** during Phase 4 (coverage audit)
+
+Identify by the active persona when communicating with the user.
+
 ## DO
 
 - Scout the codebase and write a research snapshot before creating any tickets
 - Create one TASK-001 ticket for the TDD red phase — always, no exceptions
 - Create one ticket per logical unit of work, ordered by dependency
 - Confirm the full ticket list with the user before writing any files
-- Run a Critic audit after writing tickets and auto-fix any gaps
 - Commit after each phase
 
 ## DO NOT
 
-- Modify source code — Scout is read-only
 - Create tickets before the user confirms the plan
 - Skip TASK-001 or merge the TDD red phase into another ticket
 - Write vague acceptance criteria — every AC must be an empirically verifiable command or observable state
@@ -39,7 +46,7 @@ Derive `YYMMDD-subject` using the following priority order. Stop at the first ma
 Once the subject is derived, locate the plan file:
 
 ```
-.kanban/01-plan/YYMMDD-<subject>/plan-YYMMDD-<subject>.md
+.kanban/01-plan/YYMMDD-<subject>/plan-<subject>.md
 ```
 
 **STOP:** If the plan file does not exist, report: "No verified plan found. Run `/kanban-plan` first." Do not proceed.
@@ -58,7 +65,7 @@ Scout's mission is to read and map, then write a single research snapshot.
 
 ### Scout Tasks
 
-1. Read the plan file in full: `.kanban/01-plan/YYMMDD-<subject>/plan-YYMMDD-<subject>.md`
+1. Read the plan file in full: `.kanban/01-plan/YYMMDD-<subject>/plan-<subject>.md`
 2. Read the project's directory structure (top two levels).
 3. Read relevant source files, configs, and entry points identified in the plan.
 4. Grep for existing implementations, test patterns, and related conventions.
@@ -71,7 +78,7 @@ Scout's mission is to read and map, then write a single research snapshot.
 Write findings to:
 
 ```
-.kanban/01-plan/YYMMDD-<subject>/research-YYMMDD-<subject>.md
+.kanban/01-plan/YYMMDD-<subject>/research-<subject>.md
 ```
 
 Use exactly this structure:
@@ -164,7 +171,7 @@ Where:
 ---
 id: "YYMMDD-<subject>/TASK-NNN"
 subject: "YYMMDD-<subject>"
-plan: "../../01-plan/YYMMDD-<subject>/plan-YYMMDD-<subject>.md"
+plan: "../../01-plan/YYMMDD-<subject>/plan-<subject>.md"
 effort: low | medium | high
 status: todo
 created_at: "ISO8601"
@@ -233,7 +240,7 @@ Score: `(full + 0.5 × partial) / total × 100`
 
 ### Audit Format
 
-Append this block to the plan file (`plan-YYMMDD-<subject>.md`):
+Append this block to the plan file (`plan-<subject>.md`):
 
 ```markdown
 ## Audit: plan → todo — PASS|FAIL

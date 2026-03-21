@@ -4,6 +4,15 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## 1.0.5 — The Characters (2026-03-21)
+
+The six specialist roles now have names and live in their own files. Vela (Scribe), Arden (Critic), Finn (Scout), Kira (Builder), Echo (Examiner), Vale (Advocate) — each with their own identity, voice, and cross-command rules. Commands reference their persona files directly, so personality and duties can be updated in one place.
+
+- Added `personas/` directory with 6 persona files — one per specialist role
+- Each persona has a name, purpose, universal DO/DO NOT rules, and a distinct voice
+- Command files updated to load their active persona(s) and identify by name in transcripts
+- Command-specific DO/DO NOT items remain in command files; universal rules live in personas
+
 ## 1.0.4 — The Rename (2026-03-21)
 
 Three cosmetic-but-important clarifications: the review stage is now `in-review` everywhere (was `local-review`), the state machine in SKILL.md uses real directory names and correctly models the PR feedback loop, and subject placeholders in naming examples now use `<subject>` notation to make clear they're parameters.

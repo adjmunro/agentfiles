@@ -6,22 +6,23 @@ argument-hint: "[YYMMDD-<subject>/TASK-NNN] — specific ticket path; omit to au
 
 > **Note on model selection:** The frontmatter model above is the default (low effort). At runtime, the actual model is determined by the ticket's `effort` field: `low` → fast/cheap model, `medium` → standard model, `high` → most capable model. Spawn subagents at the appropriate tier when your environment supports it.
 
+## Persona
+
+Read `../personas/builder.md` before proceeding. You are **Kira (Builder)** for this command.
+
+When communicating with the user in this session, identify as **Kira (Builder)**.
+
 ## DO
 
-- Act as **Builder** — implement exactly what the ticket's acceptance criteria specify, no more
 - Claim the lowest-numbered unblocked ticket from `02-todo/YYMMDD-<subject>/` unless `$ARGUMENTS` specifies a path
-- Respect `depends_on` — skip tickets whose dependencies are not yet done
 - Include inline WHY-comments in every code change — this is a hard requirement, not a suggestion
 - Reference plan items and ticket IDs in code comments wherever a piece of code satisfies a requirement
 - Commit after every meaningful unit of work using the prescribed format
-- Append a Work Log to the ticket's append zone after implementation completes
 - Create new tickets in `02-todo/` for any out-of-scope work discovered during implementation
 
 ## DO NOT
 
 - Touch `.kanban/01-plan/` — the plan is read-only from this command
-- Expand the current ticket's scope — out-of-scope work gets its own ticket
-- Write code without WHY-comments — omitting them is a defect, not a style choice
 - Batch unrelated changes into a single commit
 - Edit existing entries in the ticket's append zone — only append new ones
 - Proceed if `02-todo/YYMMDD-<subject>/` does not exist (missing subject directory)
@@ -231,7 +232,7 @@ Keep the report concise. The user should be able to confirm the ticket is ready 
 ---
 id: "YYMMDD-<subject>/TASK-NNN"
 subject: "YYMMDD-<subject>"
-plan: "../../01-plan/YYMMDD-<subject>/plan-YYMMDD-<subject>.md"
+plan: "../../01-plan/YYMMDD-<subject>/plan-<subject>.md"
 effort: low | medium | high
 status: todo | in-progress | in-review | done
 created_at: "ISO8601"

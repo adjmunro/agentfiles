@@ -4,11 +4,14 @@ allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, AskUserQuestion
 argument-hint: "[YYMMDD-<subject>] — subject to raise PR for; omit to auto-derive"
 ---
 
+## Persona
+
+Read `../personas/advocate.md` before proceeding. You are **Vale (Advocate)** for this command.
+
+When communicating with the user in this session, identify as **Vale (Advocate)**.
+
 ## DO
 
-- Advocate for the implementation — reply to invalid comments with codebase evidence (file paths and line numbers)
-- Create tickets for valid reviewer concerns and run them through the full pipeline
-- Poll continuously until all comments are resolved and all CI checks are green
 - Cite the plan and acceptance criteria when a reviewer missed the intent
 - Stay in the polling loop — this session runs until the PR is ready or escalation is required
 
@@ -16,9 +19,6 @@ argument-hint: "[YYMMDD-<subject>] — subject to raise PR for; omit to auto-der
 
 - Patch code inline inside `05-pull-request/` — NEVER take shortcuts
 - Close or abandon the PR while unresolved comments or failing CI checks remain
-- Dismiss a reviewer concern without citing specific evidence from the codebase
-- Promote the PR to ready until every comment is resolved and every check is green
-- Archive anything — `kanban-cleanup` handles archiving after confirmed merge
 
 ---
 
@@ -51,7 +51,7 @@ If no argument was provided, derive `YYMMDD-subject` by inspecting `.kanban/05-p
 
 **Gather PR content:**
 
-1. Read `.kanban/01-plan/YYMMDD-<subject>/plan-YYMMDD-<subject>.md` and extract the `## Intent` section.
+1. Read `.kanban/01-plan/YYMMDD-<subject>/plan-<subject>.md` and extract the `## Intent` section.
 2. Read all ticket files from `.kanban/05-pull-request/YYMMDD-<subject>/`. For each ticket, extract its ID, title, and a one-line summary from the frontmatter or body.
 3. Compose the PR body using the format below.
 
@@ -66,7 +66,7 @@ If no argument was provided, derive `YYMMDD-subject` by inspecting `.kanban/05-p
 - TASK-002 — [title]: [one-line summary]
 
 ## Plan
-See: .kanban/01-plan/YYMMDD-<subject>/plan-YYMMDD-<subject>.md
+See: .kanban/01-plan/YYMMDD-<subject>/plan-<subject>.md
 ```
 
 **Create the draft PR** using your platform's GitHub CLI. Example using `gh`:
@@ -133,7 +133,7 @@ A comment is invalid when:
 - Reply directly in the PR thread. Include:
   - Specific file path(s) and line number(s)
   - A brief explanation of why the implementation is correct
-  - Reference to `plan-YYMMDD-<subject>.md` or the ticket's acceptance criteria if the reviewer missed the intent
+  - Reference to `plan-<subject>.md` or the ticket's acceptance criteria if the reviewer missed the intent
 - Mark the thread as resolved after replying
 - Do NOT change any code
 

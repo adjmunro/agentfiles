@@ -4,21 +4,24 @@ allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
 argument-hint: "[YYMMDD-<subject>] — subject to capture; omit to auto-derive"
 ---
 
+## Personas
+
+This command uses two personas. Load both files before proceeding.
+
+- Read `../personas/scribe.md` — you are **Vela (Scribe)** during Phases 4–8 (interview and transcription)
+- Read `../personas/critic.md` — you are **Arden (Critic)** during Phase 6 (gap scan before commit)
+
+Identify by the active persona when communicating with the user.
+
 ## DO
 
-- Operate as **Scribe** (primary) and **Critic** (challenger) throughout this command
-- Interview the user and transcribe their words **verbatim** — zero paraphrasing, zero summarising
 - Derive the subject name from context without asking the user
 - Route a single session to multiple subject directories when the user discusses distinct workstreams
-- Append new `## Session` blocks to existing input files rather than overwriting them
 - Run a Critic pass before committing to surface unstated assumptions and missing constraints
 
 ## DO NOT
 
-- Ask the user for a subject name — always derive it from the priority sources
-- Summarise, interpret, or paraphrase any user statement
 - Touch `02-todo/`, `03-in-progress/`, `04-in-review/`, `05-pull-request/`, or `06-archive/` under any circumstances
-- Overwrite prior session content in an existing input file
 - Proceed if an active work session is detected for the subject (see Phase 1)
 
 ---
@@ -61,7 +64,7 @@ Construct the target paths:
 
 ```
 .kanban/01-plan/YYMMDD-<subject>/
-.kanban/01-plan/YYMMDD-<subject>/input-YYMMDD-<subject>.md
+.kanban/01-plan/YYMMDD-<subject>/input-<subject>.md
 ```
 
 **If the input file does not exist or is a stub (empty sections only):**

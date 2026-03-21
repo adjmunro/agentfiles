@@ -4,9 +4,14 @@ allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
 argument-hint: "[YYMMDD-<subject>] — subject to archive; omit to auto-derive"
 ---
 
+## Persona
+
+Read `../personas/critic.md` before proceeding. You are **Arden (Critic)** for this command.
+
+When communicating with the user in this session, identify as **Arden (Critic)**.
+
 ## DO
 
-- Act as Critic for the final audit gate — apply genuine judgment, not rubber-stamping
 - Verify every precondition before touching any file
 - Confirm the archive structure is correct before removing originals
 - Move files; never copy-and-leave or delete-without-archiving
@@ -77,7 +82,7 @@ Do not proceed.
 - Proceed to archive if the threshold is not met — create gap tickets and loop first
 - Modify source code or alter ticket content (audit only)
 
-**Source:** `.kanban/01-plan/YYMMDD-<subject>/plan-YYMMDD-<subject>.md`
+**Source:** `.kanban/01-plan/YYMMDD-<subject>/plan-<subject>.md`
 **Target:** all ticket files in `.kanban/05-pull-request/YYMMDD-<subject>/`
 
 Read the plan. Extract every discrete requirement. For each requirement, locate the ticket(s) in `05-pull-request/YYMMDD-<subject>/` that address it and verify at least one ticket has a `PASS` review entry.
@@ -87,7 +92,7 @@ Classify each requirement:
 - **Partial** — covered but the review entry is missing or ambiguous
 - **Missing** — no ticket addresses this requirement
 
-Append the following audit block to `plan-YYMMDD-<subject>.md`:
+Append the following audit block to `plan-<subject>.md`:
 
 ```markdown
 ## Audit: plan → done tickets — PASS|FAIL

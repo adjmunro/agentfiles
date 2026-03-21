@@ -77,7 +77,7 @@ Create the subject directory under `01-plan/`, including an `assets/` subdirecto
 Create the stub input file at:
 
 ```
-.kanban/01-plan/YYMMDD-<subject>/input-YYMMDD-<subject>.md
+.kanban/01-plan/YYMMDD-<subject>/input-<subject>.md
 ```
 
 The stub file MUST contain exactly the following structure (replace `YYMMDD-<subject>` with the derived name):
