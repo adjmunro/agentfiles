@@ -3,10 +3,10 @@ id: "260321-unified-pipeline/TASK-010"
 subject: "260321-unified-pipeline"
 plan: "../../01-plan/260321-unified-pipeline/plan-unified-pipeline.md"
 effort: low
-status: in_review
+status: done
 created_at: "2026-03-22T00:00:00Z"
 claimed_at: "2026-03-22T00:00:00Z"
-completed_at: ~
+completed_at: "2026-03-22T00:00:00Z"
 stale_after_hours: 4
 depends_on:
   - "TASK-009"
@@ -82,3 +82,22 @@ All 10 acceptance criteria verified passing:
 10. ✓ V1 coexistence noted (mentions v1, 01-plan, 02-todo, coexistence)
 
 **Status: Ready for merge**
+
+### Review — 2026-03-22
+
+**Result: PASS (10/10 — 100%)**
+
+All 10 acceptance criteria verified against `skills/kanban2/commands/init.md`:
+
+1. PASS — File exists
+2. PASS — `model: claude-haiku-4-5-20251001` present in frontmatter
+3. PASS — `allowed-tools:` present in frontmatter
+4. PASS — `YYYY-MM-DD` naming convention documented throughout
+5. PASS — `03-refinement/` referenced (lines 14, 68, 73, 84, 116)
+6. PASS — `04-todo/` referenced (lines 14, 69, 74, 116)
+7. PASS — `08-done/` referenced (lines 14, 75)
+8. PASS — `00-assets/` referenced (lines 15, 69, 78, etc.)
+9. PASS — `.kanban/.archive/` path referenced (lines 16, 86, 97, 114, 116)
+10. PASS — V1 coexistence noted (v1, 01-plan, 02-todo, coexists all present)
+
+Ticket moved to `05-pull-request/`. Status set to `done`.
