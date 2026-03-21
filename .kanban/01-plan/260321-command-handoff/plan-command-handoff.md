@@ -113,3 +113,32 @@ Both `kanban-capture` and `kanban-plan` currently end silently, requiring the us
 
 ### Fixes Applied
 None — all items covered at first pass.
+
+## Audit: plan → todo — PASS
+**Date**: 2026-03-21T00:00:00Z  **Threshold**: 95%
+
+| # | Requirement | Ticket(s) | Status | Notes |
+|---|------------|-----------|--------|-------|
+| 1 | §1.1 Capture prompt gated on clean completion | TASK-002 | Full | |
+| 2 | §1.2 Three capture options with (Recommended) | TASK-002 | Full | |
+| 3 | §1.3 (Recommended) label + Enter-to-default | TASK-002 | Full | |
+| 4 | §1.4 Freeform not written to input file | TASK-002 | Full | |
+| 5 | §2.1 Plan prompt gated on audit PASS | TASK-003 | Full | |
+| 6 | §2.2 Plan options: Start, New/freeform, Quit, Discard | TASK-003 | Full | New folded into freeform per 4-option limit |
+| 7 | §2.3 Start is (Recommended) | TASK-003 | Full | |
+| 8 | §2.4 Options 1–3 invoke kanban-todo | TASK-003 | Full | |
+| 9 | §3.1 Plan→todo is sanctioned crossing | TASK-003 | Full | |
+| 10 | §3.2 Explicit confirmation before crossing | TASK-003 | Full | |
+| 11 | §3.3 todo.md whitelist for from-plan-handoff | TASK-005 | Full | |
+| 12 | §3.4 Session boundary rule unchanged elsewhere | TASK-005 | Full | |
+| 13 | §4.1 Discard scans 02–06 for matching tickets | TASK-004 | Full | |
+| 14 | §4.2 Block if tickets found; describe; require manual action | TASK-004 | Full | |
+| 15 | §4.3 Require exact subject slug to confirm | TASK-004 | Full | |
+| 16 | §4.4 Delete 01-plan subject dir on confirmed | TASK-004 | Full | |
+| 17 | Version bump and CHANGELOG (CLAUDE.md requirement) | TASK-006 | Full | |
+
+- Full: 17, Partial: 0, Missing: 0 — Total: 17
+- Score: (17 + 0.5×0) / 17 × 100 = **100%**
+
+### Fixes Applied
+None.
