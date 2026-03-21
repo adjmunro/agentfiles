@@ -4,7 +4,17 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
-## 1.2.0 — The Smooth Handoff (2026-03-21)
+## 1.2.0 — Speak First (2026-03-21)
+
+Capture starts with your thoughts, not a form. Phase 4 opens with a single framing line and waits for you to write freely before asking any questions. The agent reads what you wrote, then asks targeted clarifying questions informed by what you actually said — no templates, no front-loaded structure.
+
+- Phase 4 now opens with just "What are you working on?" and waits for free-form input
+- Agent reads and processes your response before forming any questions
+- Clarifying questions are derived from gaps in what you wrote, not from a fixed checklist
+- Each question is preceded by the agent's interpretation, recommendation, and reasoning in natural prose
+- Question topics (implementation choices, edge cases, constraints, acceptance signals) remain unchanged
+
+## 1.1.4 — The Handoff Shortcut (2026-03-21)
 
 Capture, plan, and todo now guide you to your next step instead of stopping abruptly. Handoff prompts let you stay in flow — move straight to planning, capture something else, or jump to work. You're always steering, never stuck waiting for the next command.
 
@@ -12,14 +22,6 @@ Capture, plan, and todo now guide you to your next step instead of stopping abru
 - Added handoff prompt to `plan.md` Phase 6: start breaking into tickets, capture something else, or move on (Recommended toward todo-breakdown)
 - Added whitelist to `todo.md` to filter captured subjects before breaking them into tickets (skip unrelated or completed items)
 - Handoff prompts only show on clean completion: no unresolved gaps, successful commit, ready to move forward
-
-## 1.1.4 — The Open Door (2026-03-21)
-
-Capture no longer front-loads the conversation with a structured question. Phase 4 now opens with a single short line — "What are you working on?" — and waits for the user to write freely before asking anything. The old `AskUserQuestion` opening is gone; clarifying questions come after the user has had a chance to say something on their own terms.
-
-- Removed the opening `AskUserQuestion` call from Phase 4 of `capture.md`
-- Replaced with a single framing line and an explicit wait-for-free-write instruction
-- Clarifying question guidance (topic areas, sequential flow) is unchanged and still runs after the free-write
 
 ## 1.1.3 — The Right Question (2026-03-21)
 
