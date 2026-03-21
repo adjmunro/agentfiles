@@ -3,9 +3,9 @@ id: "260321-unified-pipeline/TASK-015"
 subject: "260321-unified-pipeline"
 plan: "../../01-plan/260321-unified-pipeline/plan-unified-pipeline.md"
 effort: high
-status: todo
+status: in_review
 created_at: "2026-03-22T00:00:00Z"
-claimed_at: ~
+claimed_at: "2026-03-22T00:00:00Z"
 completed_at: ~
 stale_after_hours: 4
 depends_on:
@@ -56,3 +56,25 @@ Command model: `claude-haiku-4-5-20251001` (low-tier orchestrator, same as v1 ne
 
 ---
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log — 2026-03-22T00:00:00Z
+
+**Agent**: kanban-work
+**Status**: PASS — all 13 ACs verified
+
+### Actions
+
+- Moved ticket: `02-todo/` → `03-in-progress/` (status: in_progress, claimed_at: 2026-03-22T00:00:00Z)
+- Read reference files: `skills/kanban/commands/next.md` and `skills/kanban2/SKILL.md`
+- Wrote `skills/kanban2/commands/next.md` with:
+  - Valid frontmatter: `model`, `allowed-tools`, `argument-hint`
+  - Phase 1: Subject selection with `auto` mode, claimed check, and `AskUserQuestion` fallback
+  - Phase 2: Ticket selection with dependency resolution against `06-in-review/`/`07-pull-request/`
+  - Stale detection scanning `05-in-progress/` against `stale_after_hours`
+  - Phase 3: Work→Review loop dispatching `work.md` and `review.md` as subagents
+  - Consecutive failure escalation with desktop notification and escalation block
+  - Phase 4: PR-ready and done announcements for `07-pull-request/` and `08-done/`
+  - Dispatch reference table including `pr.md` and `cleanup.md`
+  - Explicit DO NOT block preventing touches to plan-layer files
+- Ran all 13 acceptance criteria — all PASS
+- Moved ticket: `03-in-progress/` → `04-in-review/` (status: in_review)
