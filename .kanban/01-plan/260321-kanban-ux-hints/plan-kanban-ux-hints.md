@@ -48,6 +48,30 @@ capture | plan | todo | work | review | pr | cleanup | next | init
 - Changes to persona files, version files, changelog, or any non-command files
 - Creating standalone slash commands (e.g. `/kanban-capture`) as wrappers
 
+## Audit: input → plan — PASS
+**Date**: 2026-03-21T00:00:00Z  **Threshold**: 95%
+
+| # | Item | Status | Notes |
+|---|------|--------|-------|
+| 1 | Add argument-hint to SKILL.md | Full | §1.1, §1.2 |
+| 2 | Improve hints on all subcommand files | Full | §2.1, §2.2 |
+| 3 | Discoverability motivation | Full | Intent |
+| 4 | No wrapper commands | Full | Constraints + Out of Scope |
+| 5 | No splitting skill | Full | Constraints |
+| 6 | Metadata only | Full | Constraints |
+| 7 | Review existing hints, not just add | Full | §2.2 explicitly covers revision |
+| 8 | SKILL.md asset | Full | §1.1 |
+| 9 | capture.md existing hint review | Full | §2.1 |
+| 10 | All 9 command files listed | Full | §2.1 enumerates all nine |
+
+- Full: 10, Partial: 0, Missing: 0 — Total: 10
+- Score: (10 + 0.5×0) / 10 × 100 = **100%**
+
+### Fixes Applied
+None — all input items fully covered on first pass.
+
+---
+
 ## Acceptance Signals
 
 - `/kanban` typed in Claude Code shows a visible hint listing available subcommands
