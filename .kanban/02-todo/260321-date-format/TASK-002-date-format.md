@@ -3,9 +3,9 @@ id: "260321-date-format/TASK-002"
 subject: "260321-date-format"
 plan: "../../01-plan/260321-date-format/plan-date-format.md"
 effort: medium
-status: todo
+status: in-progress
 created_at: "2026-03-21T00:00:00Z"
-claimed_at: ~
+claimed_at: "2026-03-21T22:50:00Z"
 completed_at: ~
 stale_after_hours: 4
 depends_on:
