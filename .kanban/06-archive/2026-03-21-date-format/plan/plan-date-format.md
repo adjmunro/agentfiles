@@ -104,3 +104,29 @@
 
 ### Fixes Applied
 - None.
+
+## Audit: tickets → archive — PASS
+**Date**: 2026-03-22T00:00:00Z  **Threshold**: 95%  **Auditors**: Arden (Critic) + Pulse (Analytics)
+
+| # | Requirement | Ticket(s) | Review Score | Status |
+|---|-------------|-----------|-------------|--------|
+| 1 | 1.1 Rename all .kanban/ YYYY-MM-DD- dirs | TASK-002 | 100% | Full |
+| 2 | 1.2 Include date-format itself | TASK-002 | 100% | Full |
+| 3 | 2.1 Update id: frontmatter | TASK-003 | 100% | Full |
+| 4 | 2.2 Update subject: frontmatter | TASK-003 | 100% | Full |
+| 5 | 2.3 Update plan: relative paths | TASK-003 | 100% | Full |
+| 6 | 3.1 Update # title lines | TASK-003 | 100% | Full |
+| 7 | 3.2 Update ## Research: headers | TASK-003 | 100% | Full |
+| 8 | 3.3 Update all cross-references | TASK-003 | 100% | Full |
+| 9 | 4.1 Replace YYYY-MM-DD in 9 command files | TASK-004 | 100% | Full |
+| 10 | 4.2 Fix date +%y%m%d → date +%Y-%m-%d | TASK-004 | 100% | Full |
+| 11 | 4.3 Update example slugs in command files | TASK-004 | 100% | Full |
+| 12 | 5.1 Update SKILL.md directory diagram | TASK-005 | 100% | Full |
+| 13 | 5.2 Update other docs | TASK-005 | 100% | Full |
+| 14 | 6.1 Update commit message templates | TASK-004 | 100% | Full |
+
+- Full: 14, Partial: 0, Missing: 0 — Total: 14
+- Score: (14 + 0.5×0) / 14 × 100 = **100%**
+
+### Fixes Applied
+- None. All requirements delivered at 100% by their respective tickets.
