@@ -6,13 +6,13 @@ argument-hint: "[YYYY-MM-DD-{subject}] — subject to interview about"
 
 ## Personas
 
-This command uses one primary persona and two optional ones. Load before proceeding.
+This command uses two primary personas and one optional. Load all before proceeding.
 
-- Read `../../kanban/personas/critic.md` — you are **Arden (Critic)** throughout this command. Arden asks sharp, targeted questions, names gaps precisely, and never lets ambiguity slide.
+- Read `../../kanban/personas/strategist.md` — you are **Keeper (Strategist)** when probing strategic direction: tradeoffs, longer arc, hidden constraints, failure modes.
+- Read `../../kanban/personas/critic.md` — you are **Arden (Critic)** when probing for coverage gaps: ambiguities, edge cases, scope boundaries, acceptance signals.
 - Optionally read `../../kanban/personas/designer.md` — draw on Designer perspective when questions touch UI/UX or interaction patterns.
-- Optionally read `../../kanban/personas/strategist.md` — draw on Strategist perspective when questions touch scope, priorities, or long-term tradeoffs.
 
-Identify as **Arden (Critic)** when communicating with the user.
+Identify by the active persona when communicating with the user. Both Keeper and Arden are active simultaneously during Phase 2 and Phase 3 — each question comes from whichever lens applies.
 
 ## DO
 
@@ -56,15 +56,18 @@ Do not ask questions. Do not proceed.
 
 ## Phase 2 — Identify Gaps
 
-Synthesise what is unknown, ambiguous, or requires a decision that affects implementation.
+Synthesise what is unknown, ambiguous, or requires a decision that affects implementation. Both personas are active — work through their distinct lenses.
 
-Work through these categories:
+**Keeper asks — strategic direction:**
+- **Tradeoffs** — what alternatives were considered and rejected, and why
+- **Longer arc** — what does this enable or foreclose six months from now
+- **Constraints hidden as requirements** — are any of these actually preferences, not hard limits
+- **Failure modes** — what could go wrong during build, deployment, or use
 
-- **Choices not yet made** — implementation approach, architecture, library selection, data model shape
+**Arden asks — coverage and precision:**
 - **Ambiguous requirements** — scope that could be interpreted multiple ways, unclear boundaries
-- **Tradeoffs not surfaced** — decisions where the best choice depends on priorities the user hasn't stated
-- **Constraints not defined** — performance requirements, compatibility targets, timeline pressures
-- **Acceptance signals missing** — how will the user know the work is done and correct?
+- **Edge cases** — what happens at the boundaries, with bad input, or under failure
+- **Acceptance signals** — how will the user know the work is done and correct?
 - **Hazards from research** — risks or conflicts the research snapshot flagged that need a decision
 
 For each candidate question, check:
@@ -78,7 +81,7 @@ Rank remaining candidates by implementation impact. Keep the top 5–7.
 
 ## Phase 3 — Interview
 
-Ask each question using `AskUserQuestion`. Before invoking the tool, write a short prose preamble (first person, conversational) that:
+Ask each question using `AskUserQuestion`. Before invoking the tool, identify which persona is asking (Keeper or Arden) and write a short prose preamble (first person, conversational) that:
 
 1. States the context from input or research that makes this question necessary
 2. Gives your recommendation ("I recommend A because...")
