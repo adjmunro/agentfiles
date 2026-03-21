@@ -3,7 +3,7 @@ id: "260321-kanban-ux-hints/TASK-002"
 subject: "260321-kanban-ux-hints"
 plan: "../../01-plan/260321-kanban-ux-hints/plan-kanban-ux-hints.md"
 effort: low
-status: in-review
+status: done
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T00:00:00Z"
 completed_at: "2026-03-21T00:00:00Z"
@@ -65,3 +65,25 @@ Hint format rationale: pipe-separated list in pipeline order ensures users see t
 **Commits**:
 - `kanban(work): claim 002-kanban-ux-hints for 260321-kanban-ux-hints`
 - `feat(002): add argument-hint to SKILL.md`
+
+---
+
+## Review Log
+
+**2026-03-21 — Echo (Examiner) + Arden (Critic) — PASS**
+
+Score: 5/5 (100%) — threshold 95%
+
+| # | Criterion | Result |
+|---|-----------|--------|
+| 1 | `argument-hint` line present in `skills/kanban/SKILL.md` | SATISFIED |
+| 2 | All 9 subcommands in pipeline order | SATISFIED |
+| 3 | VERSION.md bumped 1.1.0 → 1.1.1 | SATISFIED |
+| 4 | CHANGELOG.md entry for 1.1.1 present | SATISFIED |
+| 5 | Work log documents pending UI verification with proposed fallback | SATISFIED |
+
+**Examiner notes**: All 9 subcommands confirmed present in exact pipeline order. Version bump and changelog entry are coherent and well-formed. UI verification documented as pending per the criterion's own conditional wording ("if not confirmed, document it") — the note names the unconfirmed behaviour and proposes a fallback.
+
+**Critic notes**: The acceptance criteria reference `.claude/skills/kanban/SKILL.md` but the file lives at `skills/kanban/SKILL.md` — authoring error in the ticket, not an implementation defect. The builder targeted the correct path. No blocking issues.
+
+Ticket promoted to `05-pull-request`.
