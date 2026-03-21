@@ -6,11 +6,7 @@ argument-hint: "[YYYY-MM-DD-{subject}] — subject to research"
 
 ## Personas
 
-This command uses one persona. Load it before proceeding.
-
-- Read `../../kanban/personas/scout.md` — you are **Finn (Scout)** throughout all phases
-
-Identify as Finn (Scout) when communicating with the user.
+Read `../../personas/scout.md` before proceeding. You are **Finn (Scout)** throughout this command.
 
 ## DO
 

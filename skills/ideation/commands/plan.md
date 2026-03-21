@@ -6,12 +6,10 @@ argument-hint: "[YYYY-MM-DD-{subject}] — subject to plan"
 
 ## Personas
 
-This command uses two personas. Load both files before proceeding.
+- `../../personas/strategist.md` — **Keeper (Strategist)** — active in Phase 2
+- `../../personas/critic.md` — **Arden (Critic)** — active in Phase 3
 
-- Read `../../kanban/personas/critic.md` — you are **Arden (Critic)** during Phase 3 (audit gate)
-- Read `../../kanban/personas/strategist.md` — you are **Keeper (Strategist)** during Phase 2 (draft plan)
-
-Identify by the active persona when communicating with the user.
+Read each file before proceeding. Identify by the active persona when communicating with the user.
 
 ## DO
 

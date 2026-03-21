@@ -6,12 +6,10 @@ argument-hint: "[YYYY-MM-DD-{subject}] — subject to create tickets for"
 
 ## Personas
 
-This command uses two personas. Load both files before proceeding.
+- `../../personas/scout.md` — **Finn (Scout)** — active in Phase 2
+- `../../personas/critic.md` — **Arden (Critic)** — active in Phase 4
 
-- Read `../../kanban/personas/scout.md` — you are **Finn (Scout)** during Phase 2 (codebase research)
-- Read `../../kanban/personas/critic.md` — you are **Arden (Critic)** during Phase 4 (audit gate)
-
-Identify by the active persona when communicating with the user.
+Read each file before proceeding. Identify by the active persona when communicating with the user.
 
 ## DO
 

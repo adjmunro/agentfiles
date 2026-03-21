@@ -6,12 +6,10 @@ argument-hint: "[YYYY-MM-DD-{subject}] — subject to capture for"
 
 ## Personas
 
-This command uses two personas. Load both files before proceeding.
+- `../../personas/scribe.md` — **Vela (Scribe)** — active in Phases 1–4
+- `../../personas/critic.md` — **Arden (Critic)** — active in Phase 5
 
-- Read `../../kanban/personas/scribe.md` — you are **Vela (Scribe)** during Phases 1–4 (session check, capture, and transcription)
-- Read `../../kanban/personas/critic.md` — you are **Arden (Critic)** during Phase 5 (gap scan before commit)
-
-Identify by the active persona when communicating with the user.
+Read each file before proceeding. Identify by the active persona when communicating with the user.
 
 ## DO
 
