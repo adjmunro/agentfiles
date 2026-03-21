@@ -4,6 +4,13 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## 1.1.1 — The Hint (2026-03-21)
+
+Added `argument-hint` to the kanban skill's top-level SKILL.md, making all nine subcommands discoverable from the `/kanban` entry point. The hint lists each command in pipeline order so users can see what's available without running the command blind.
+
+- `SKILL.md` now includes `argument-hint: "capture | plan | todo | work | review | pr | cleanup | next | init"` in frontmatter
+- Hint format is pipe-separated and ordered by stage in the pipeline for easy visual scanning
+
 ## 1.1.0 — The Full Roster (2026-03-21)
 
 The 5 extended personas are now wired into the commands that need them. Keeper challenges strategy during planning, Artisan reviews design evidence in review, Helm runs the pre-flight checklist before PR promotion, Ward guides Work Log quality during implementation, and Pulse generates metrics on archive.

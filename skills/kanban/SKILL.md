@@ -1,6 +1,7 @@
 ---
 name: kanban
 description: Use when managing a software development project with a structured pipeline from capture through implementation, review, PR, and archive — especially when intent and reasoning must be traceable across agent sessions
+argument-hint: "capture | plan | todo | work | review | pr | cleanup | next | init"
 ---
 
 # Kanban
