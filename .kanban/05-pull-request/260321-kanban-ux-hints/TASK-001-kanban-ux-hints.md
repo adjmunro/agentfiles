@@ -3,7 +3,7 @@ id: "260321-kanban-ux-hints/TASK-001"
 subject: "260321-kanban-ux-hints"
 plan: "../../01-plan/260321-kanban-ux-hints/plan-kanban-ux-hints.md"
 effort: low
-status: in-review
+status: done
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T00:00:00Z"
 completed_at: "2026-03-21T12:00:00Z"
@@ -81,3 +81,20 @@ Updated acceptance criteria to canonically accept `scripts/verify-hints.sh` inst
 
 **Why this approach:**
 The builder chose the correct conventional location (`scripts/`) for utility scripts. Placing verification scripts at the repo root creates clutter and violates repository structure conventions. The AC was written with an assumed path before the builder made an architectural decision. Rather than requiring the builder to move a well-placed script, the AC is updated to reflect the actual delivered path, which is more sensible.
+
+## Review — 2026-03-21T12:00Z — PASS 100%
+
+Reviewers: Echo (Examiner), Arden (Critic)
+
+| AC | Evidence | Status |
+|----|----------|--------|
+| `scripts/verify-hints.sh` exists and is executable | File at `scripts/verify-hints.sh`; permissions `-rwxr-xr-x` confirmed via `stat`. | Full |
+| Running the script exits non-zero (red) — SKILL.md has no `argument-hint` | Exit code `1` confirmed. `FAIL: SKILL.md — missing or empty argument-hint` printed. | Full |
+| Script checks `grep -q 'argument-hint'` on SKILL.md — fails on current state | `grep '^argument-hint: *[^ ~]'` logic correctly detects absence; SKILL.md check returns FAIL. | Full |
+| Script checks each of the 9 command files has a non-empty `argument-hint` field | All 9 (init, capture, plan, todo, work, review, pr, cleanup, next) return PASS. | Full |
+| Script output clearly identifies which checks pass and which fail | Per-file `PASS`/`FAIL` lines with filename; summary line `Passed: 9 / 10 / Failed: 1`. | Full |
+| WHY-comments present in the script | Header block explains TDD red-phase purpose; inline WHY comments above helper function, SKILL.md check, commands loop, and summary. | Full |
+
+Score: 6 / 6 = 100%
+
+**Outcome: PASS.** Script exists at the updated canonical path, is executable, exits non-zero as required by the TDD red-phase spec, checks all 10 files with clear per-file output, and is well-documented with WHY-comments. Ticket advanced to `05-pull-request`.
