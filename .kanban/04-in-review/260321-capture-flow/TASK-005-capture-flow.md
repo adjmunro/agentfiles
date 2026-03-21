@@ -3,7 +3,7 @@ id: "260321-capture-flow/TASK-005"
 subject: "260321-capture-flow"
 plan: "../../01-plan/260321-capture-flow/plan-capture-flow.md"
 effort: low
-status: in-review
+status: done
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T20:15:00Z"
 completed_at: "2026-03-21T20:25:00Z"
@@ -53,3 +53,18 @@ Traced to: Req 4.2, 4.3.
 4. **Phase 6 Critic not made redundant** — Phase 4 asks clarifying questions during interview to fill gaps discovered in user's free-form input (technical choices, edge cases, constraints, acceptance signals, dependencies, prior art). Phase 6 scans captured material *after* Phase 5 transcription to verify completeness before commit (unstated assumptions, missing constraints, undefined acceptance signals, contradictions, ambiguous terms). Different jobs, different timing, no duplication.
 
 Mark as complete for in-review.
+
+## Review — 2026-03-21T20:40:00Z — PASS 100%
+
+Reviewers: Echo (Examiner) + Arden (Critic)
+
+| # | AC | Status | Evidence |
+|---|---|---|---|
+| 1 | Phases 1–3 and 5–9 of capture.md unchanged | Full | Manual read confirms clean phase demarcation (Phase 4 = lines 99–124); Phases 1–3 and 5–9 intact with no structural anomalies; work log cites 4 Phase 4-scoped commits |
+| 2 | plan.md Phase 3 unchanged (planning topics, not capture interview) | Full | plan.md Phase 3 (lines 66–86) contains exclusively strategic planning interview content (tradeoffs, arc, constraints, acceptance signals) — no capture flow material present |
+| 3 | Phase 4 → Phase 5 handoff is clean | Full | Phase 4 ends at line 124; Phase 5 opens at line 127 with direct consumption of Phase 4 output; sequential flow, no intermediary step that could drop answers |
+| 4 | Phase 6 not redundant with Phase 4 | Full | Phase 4 = live pre-transcription gap-filling; Phase 6 = post-transcription written-record audit; distinct timing and scope, no duplication |
+| 5 | Written confirmation appended to ticket | Full | Work log (2026-03-21T20:15:00Z) contains four numbered points mapping to ACs 1–4 with supporting rationale |
+
+- Full: 5, Partial: 0, Missing: 0 — Total: 5
+- Score: (5 + 0.5×0) / 5 × 100 = **100%**

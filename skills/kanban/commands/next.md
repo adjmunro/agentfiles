@@ -1,7 +1,7 @@
 ---
 model: claude-haiku-4-5-20251001
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, AskUserQuestion
-argument-hint: "[YYMMDD-<subject>] — subject to work on; omit to list available subjects"
+argument-hint: "[YYMMDD-<subject> | auto] — subject to work on; 'auto' picks the next ready subject and loops"
 ---
 
 ## DO
@@ -9,6 +9,7 @@ argument-hint: "[YYMMDD-<subject>] — subject to work on; omit to list availabl
 - Act as a low-tier orchestrator only — dispatch work and review as subagents
 - Drive the full work→review loop until PASS, escalation, or user halt
 - Select the lowest-numbered unblocked ticket from `02-todo/`
+- When `auto` is passed, pick subjects automatically by lowest date prefix and loop across all of them without prompting
 - Detect stale in-progress tickets before starting any loop
 - Track consecutive identical errors and escalate before looping again
 - Announce when all tickets are in `05-pull-request/` and the subject is ready for `/kanban-pr`
@@ -82,15 +83,37 @@ argument-hint: "[YYMMDD-<subject>] — subject to work on; omit to list availabl
 
 1. If `$ARGUMENTS` contains a subject in `YYMMDD-subject` format, use it directly. Skip to Phase 2.
 
-2. If no argument is given:
+2. If `$ARGUMENTS` is `auto` (or omitted and only one subject exists in `02-todo/`):
+   - Glob `.kanban/02-todo/*/` and sort subject directories by name (ascending — oldest date first).
+   - For each candidate subject, apply the **claimed check** (see below) and skip any that are claimed.
+   - Select the first unclaimed subject that contains at least one unblocked ticket file.
+   - Do not ask the user. Proceed directly to Phase 2.
+   - After all tickets for that subject are complete (moved to `05-pull-request/`), repeat: select the next subject from `02-todo/` automatically and continue the loop.
+   - Stop only when `02-todo/` is empty or all remaining subjects are fully blocked or claimed.
+
+3. If no argument is given and multiple subjects exist:
    - Glob `.kanban/02-todo/*/` to list all subjects that contain at least one ticket file.
    - Use your environment's ask-user tool (e.g., `AskUserQuestion` in Claude Code) to confirm which subject to work on.
 
-3. **STOP** if no subjects with `02-todo/` tickets exist:
+4. **STOP** if no subjects with `02-todo/` tickets exist:
    - Scan `.kanban/03-in-progress/` for any subjects with ticket files.
    - If found, surface them: "No todo tickets found. Found tickets in 03-in-progress — these may be from a crashed session. Resume them or move them back to 02-todo?"
    - Use the ask-user tool to get a decision before proceeding.
    - If nothing found anywhere, report that the board is empty and stop.
+
+---
+
+## Claimed Check
+
+A subject is **claimed** if it has any ticket files in `03-in-progress/`, `04-in-review/`, or `05-pull-request/` for that subject, AND at least one of those tickets has a `claimed_at` timestamp within the last `stale_after_hours` (default: 4 hours if unset).
+
+A subject is **not claimed** (available to pick) if:
+- All its tickets are in `02-todo/`, OR
+- It has tickets in later stages but every one of them has a `claimed_at` older than `stale_after_hours` — these are stale and treated as from a crashed or abandoned session
+
+When a subject is skipped as claimed in auto mode, note it in output: `"Skipping YYMMDD-<subject> — claimed (active tickets in-flight)"`.
+
+When all remaining subjects with todo tickets are claimed, stop and list them so the user can decide whether to intervene.
 
 ---
 

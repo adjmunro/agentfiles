@@ -177,9 +177,8 @@ plan: "../../01-plan/YYMMDD-<subject>/plan-<subject>.md"
 effort: low | medium | high
 status: todo
 created_at: "ISO8601"
-claimed_at: ~
+expires_at: ~
 completed_at: ~
-stale_after_hours: 4
 depends_on:
   - "TASK-001"
 spawned_tickets: []

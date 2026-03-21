@@ -3,7 +3,7 @@ id: "260321-capture-flow/TASK-006"
 subject: "260321-capture-flow"
 plan: "../../01-plan/260321-capture-flow/plan-capture-flow.md"
 effort: low
-status: in-review
+status: done
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T20:25:00Z"
 completed_at: "2026-03-21T20:35:00Z"
@@ -50,3 +50,15 @@ Traced to: kanban skill versioning rules (CLAUDE.md: bump only when skills/kanba
 Committed with: `feat(kanban): free-write-first capture flow (v1.2.0)`
 
 Note: CHANGELOG restructured to move free-write-first description to 1.2.0 entry (where it belongs) and handoff prompts to 1.1.4 entry (correcting prior mislabeling). Version 1.2.0 is the appropriate minor bump for new capture behaviour.
+
+## Review — 2026-03-21T20:45:00Z — PASS 100%
+
+| # | Criterion | Evidence | Result |
+|---|---|---|---|
+| 1 | `VERSION.md` contains exactly `**Current version**: 1.2.0` | Line 5: exact string match | PASS |
+| 2 | `CHANGELOG.md` top entry is `1.2.0` dated `2026-03-21` | Line 7: `## 1.2.0 — Speak First (2026-03-21)` — first entry below header | PASS |
+| 3 | Entry has two-word name, describes free-write-first flow, includes bullets | Name: "Speak First". Body describes Phase 4 wait-for-free-form flow. 5 bullets covering all key behaviour changes. | PASS |
+| 4 | `grep -n '1.2.0' skills/kanban/VERSION.md` returns a match | Match on line 5 confirmed | PASS |
+| 5 | `grep -n '1.2.0' skills/kanban/CHANGELOG.md` returns a match | Match on line 7 confirmed | PASS |
+
+Score: 5/5 = **100%** (threshold: 95%)
