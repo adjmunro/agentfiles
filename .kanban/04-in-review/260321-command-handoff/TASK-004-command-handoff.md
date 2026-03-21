@@ -3,10 +3,10 @@ id: "260321-command-handoff/TASK-004"
 subject: "260321-command-handoff"
 plan: "../../01-plan/260321-command-handoff/plan-command-handoff.md"
 effort: medium
-status: in_progress
+status: done
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T00:00:00Z"
-completed_at: ~
+completed_at: "2026-03-21T00:00:00Z"
 stale_after_hours: 4
 depends_on:
   - "TASK-003"
@@ -49,3 +49,20 @@ Traced to plan §4 (all sub-requirements).
 
 ---
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log — 2026-03-21T00:00:00Z
+
+Implemented the full four-step Discard guard in `skills/kanban/commands/plan.md` Phase 10 (Handoff), replacing the TASK-004 placeholder stub.
+
+**Changes made:**
+- Replaced stub comment and temporary fallback message with complete guard instructions
+- Step 1: Scan `.kanban/02-todo/` through `.kanban/06-archive/` for files matching the subject slug (by filename or `subject:` frontmatter)
+- Step 2: Block with descriptive error if matching tickets found — lists which directories and how many; requires manual removal or explicit user override before proceeding
+- Step 3: If clear, requires user to type the exact subject slug to confirm (yes/no is explicitly stated as insufficient)
+- Step 4: On confirmed slug match, remove all files under `.kanban/01-plan/YYMMDD-<subject>/`
+
+**Acceptance criteria verified:**
+- `02-todo`: 2 matches (>= 1) ✓
+- `subject slug`: 6 matches (>= 1) ✓
+- `manually`: 2 matches (>= 1) ✓
+- `Discard`: 3 matches (>= 2) ✓
