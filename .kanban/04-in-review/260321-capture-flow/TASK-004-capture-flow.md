@@ -3,7 +3,7 @@ id: "260321-capture-flow/TASK-004"
 subject: "260321-capture-flow"
 plan: "../../01-plan/260321-capture-flow/plan-capture-flow.md"
 effort: medium
-status: in-review
+status: in-progress
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T09:00:00Z"
 completed_at: "2026-03-21T09:15:00Z"
@@ -21,7 +21,7 @@ acceptance_criteria:
   - "Phase 4 explicitly states the preamble must be natural prose in the agent's own voice — not labeled sections (no 'My read:', 'I'd recommend:', etc.)"
   - "Phase 4 states the agent may draw on codebase reads, web research, or session context to inform the preamble — at its own discretion"
   - "grep -n 'labeled\\|My read\\|I.d recommend' skills/kanban/commands/capture.md returns no matches (confirming no labeled-section instruction was added)"
-consecutive_failures: 0
+consecutive_failures: 1
 ---
 
 ## Context
