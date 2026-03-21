@@ -23,6 +23,18 @@ Examples:
 
 ---
 
+## Moving Tickets
+
+Always use `mv` to move ticket files between stage directories. Never `rm` + recreate.
+
+```bash
+mv .kanban/02-todo/<subject>/TASK-NNN-<subject>.md .kanban/03-in-progress/<subject>/
+```
+
+The ticket file is the audit trail — deleting and recreating it loses history.
+
+---
+
 ## Versioning
 
 **Only bump the version when changes are scoped to `skills/kanban/`.** If a commit touches other parts of the repo but not this skill, do not bump the kanban version.

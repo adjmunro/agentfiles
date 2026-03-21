@@ -2,3 +2,13 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+
+# Local settings
+.claude/settings.local.json
+
+# Editor artifacts
+*.swp
+*.swo
+*~
+*.bak
+*.orig
