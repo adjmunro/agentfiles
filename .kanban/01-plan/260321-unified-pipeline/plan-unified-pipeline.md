@@ -131,3 +131,43 @@ Replace kanban v1's friction-heavy multi-command workflow with two new skills bu
 - Changes to any existing kanban v1 source files during build
 - Implementation details of individual phase files beyond their stated interfaces (each phase file gets its own ticket)
 - A combined UI or wrapper that runs ideation and kanban2 from a single entry point
+
+## Audit: input → plan — PASS
+**Date**: 2026-03-22T00:00:00Z  **Threshold**: 95%
+
+| # | Item | Status | Notes |
+|---|------|--------|-------|
+| 1 | Two new skills: ideation + kanban2 | Full | §2, §3 |
+| 2 | Ideation = seamless 9-step loop | Full | §2.3 |
+| 3 | Step 1: capture verbatim + assets | Full | §2.3 |
+| 4 | Step 2: research before interview | Full | §2.3 |
+| 5 | Step 3: interview informed by research, with recommendations + tradeoffs | Full | §2.3 |
+| 6 | Steps 4–5: write + audit plan | Full | §2.3 |
+| 7 | Step 6: validate loop — append only, never overwrite | Full | §2.3, §2.6 |
+| 8 | Steps 7–8: write + audit tickets | Full | §2.3 |
+| 9 | Step 9: abandon or backlog only | Full | §2.3 |
+| 10 | Tickets in 03-refinement/ until step 9 | Full | §2.4 |
+| 11 | Abandon: subject slug confirmation | Full | §2.5 |
+| 12 | Thin orchestrator + phase files (not monolith) | Full | §2.2 |
+| 13 | /ideate + /kanban as user-facing commands | Full | §2.1, §3.1 |
+| 14 | Subject dir: YYYY-MM-DD-{subject}/ | Full | §1.1 |
+| 15 | Numbered loose docs: 00-input, 01-research, 02-plan | Full | §1.2 |
+| 16 | 00-assets/ | Full | §1.3 |
+| 17 | Stage dirs: 03-refinement through 08-done | Full | §1.4 |
+| 18 | 08-done as completion signal | Full | §1.5 |
+| 19 | Archive: delete empty dirs, keep 08-done + 00-assets | Full | §1.6 |
+| 20 | Archive path: .kanban/.archive/YYYY-MM-DD-{subject}/ | Full | §1.7 |
+| 21 | V1 coexists unchanged | Full | §1.8, §5.1 |
+| 22 | Carry-forward: all v1 patterns | Full | §4 |
+| 23 | Personas shared from skills/kanban/personas/ | Full | §4.2 |
+| 24 | Kanban2 = next.md pattern work loop | Full | §3.3 |
+| 25 | Kanban2 never touches plan-layer files | Full | §3.4 |
+| 26 | Migration: build alongside, retire after verify, rename | Full | §5 |
+| 27 | Why: research too late in v1 (todo phase) | Full | Intent |
+| 28 | Why: separate skills to avoid self-editing during build | Full | Intent |
+
+- Full: 28, Partial: 0, Missing: 0 — Total: 28
+- Score: (28 + 0.5×0) / 28 × 100 = **100%**
+
+### Fixes Applied
+None — all items covered at first pass.
