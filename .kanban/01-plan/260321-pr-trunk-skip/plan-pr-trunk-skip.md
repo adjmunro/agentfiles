@@ -63,3 +63,24 @@ The kanban PR stage should be skipped when the current branch is a known trunk b
 
 ### Fixes Applied
 - None.
+
+## Audit: plan → todo — PASS
+**Date**: 2026-03-21T00:00:00Z  **Threshold**: 95%
+
+| # | Requirement | Ticket(s) | Status | Notes |
+|---|------------|-----------|--------|-------|
+| 1 | 1.1 Detect trunk branch at start of kanban-pr | TASK-001, TASK-002 | Full | |
+| 2 | 1.2 Fixed list: main/master/develop/trunk | TASK-001, TASK-002 | Full | |
+| 3 | 2.1 gh api protection check | TASK-001, TASK-002 | Full | |
+| 4 | 2.2 Unprotected/non-GitHub → skip | TASK-001, TASK-002 | Full | |
+| 5 | 2.3 Protected → normal PR flow | TASK-001, TASK-002 | Full | |
+| 6 | 2.4 Check fails → stop and ask | TASK-001, TASK-002 | Full | |
+| 7 | 3.1 Skip mirrors non-GitHub path → cleanup | TASK-001, TASK-002 | Full | |
+| 8 | 3.2 Logic in kanban-pr only | TASK-001, TASK-002 | Full | |
+| 9 | 4.1 SKILL.md two bypass conditions | TASK-003 | Full | |
+
+- Full: 9, Partial: 0, Missing: 0 — Total: 9
+- Score: (9 + 0.5×0) / 9 × 100 = **100%**
+
+### Fixes Applied
+- None.
