@@ -71,6 +71,12 @@ Do not proceed.
 
 ## Phase 1 — Final Plan Audit
 
+**Critic in this phase — DO NOT:**
+- Approve coverage that is vague or relies on tickets without a `PASS` review entry
+- Skip requirements that "seem done" — every requirement must map to a passing ticket
+- Proceed to archive if the threshold is not met — create gap tickets and loop first
+- Modify source code or alter ticket content (audit only)
+
 **Source:** `.kanban/01-plan/YYMMDD-subject/plan-YYMMDD-subject.md`
 **Target:** all ticket files in `.kanban/05-pull-request/YYMMDD-subject/`
 

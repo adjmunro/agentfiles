@@ -67,10 +67,11 @@ The final subject name MUST follow the pattern `YYMMDD-subject-slug`.
 
 ## Phase 4 — Create Subject Directory and Stub Input File
 
-Create the subject directory under `01-plan/`:
+Create the subject directory under `01-plan/`, including an `assets/` subdirectory for any binary files or referenced assets:
 
 ```
 .kanban/01-plan/YYMMDD-subject/
+.kanban/01-plan/YYMMDD-subject/assets/
 ```
 
 Create the stub input file at:

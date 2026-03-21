@@ -4,6 +4,25 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## 1.0.3 — The Audit Gap (2026-03-21)
+
+Four coverage gaps found by auditing the implementation against the original plan. All fixed — the audit now passes at ≥95%.
+
+- Added `assets/` directory to `SKILL.md` diagram, `init.md` Phase 4 creation steps, keeping the spec faithful
+- Replaced `review.md`'s two-line routing note with a proper ASCII branching diagram showing PASS/FAIL destinations and side effects
+- Made Scout's low-tier model mapping explicit in `todo.md` Phase 1 (was implicit, now states haiku/fast)
+- Added `Critic in this phase — DO NOT` constraint blocks to `todo.md` Phase 4 and `cleanup.md` Phase 1
+
+## 1.0.2 — The House Rules (2026-03-21)
+
+Conventional commits, no force push, and scoped versioning are now codified. The kanban skill won't bump its own version for commits that only touch other parts of the repo. Root-level AGENTS.md added so every agent working in this repo knows the rules from the start.
+
+- Added `AGENTS.md` at repo root with conventional commits format and force-push prohibition
+- Added `CLAUDE.md` and `GEMINI.md` symlinks at repo root pointing to `AGENTS.md`
+- Rewrote `skills/kanban/AGENTS.md`: kanban-specific, conventional commits, scoped versioning rule
+- Fixed `VERSION.md` upstream URL (was pointing to non-existent `actions/version.md` path)
+- Version bumps now only required when `skills/kanban/` files are part of the commit
+
 ## 1.0.1 — The Corrections (2026-03-21)
 
 Three correctness fixes caught by post-implementation review. Nothing structural — just three wrong values that would have caused real bugs.

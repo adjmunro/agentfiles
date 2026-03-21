@@ -35,7 +35,8 @@ Non-GitHub repos skip `pr-review` entirely. Archive only triggers on confirmed m
 │   └── YYMMDD-subject/
 │       ├── input-subject.md
 │       ├── plan-subject.md
-│       └── research-subject.md
+│       ├── research-subject.md
+│       └── assets/
 ├── 02-todo/
 ├── 03-in-progress/
 ├── 04-local-review/

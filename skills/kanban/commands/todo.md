@@ -52,6 +52,8 @@ Once the subject is derived, locate the plan file:
 
 Spawn a Scout subagent if your environment supports subagents. If not, run Scout behavior in the current session. Either way: **Scout MUST NOT modify any source file or create any ticket.**
 
+**Tier: low** — Scout tasks are mechanical (read, search, map). Use a fast/cheap model (e.g. haiku). The overall `kanban-todo` command is medium-tier; only the Scout phase is low.
+
 Scout's mission is to read and map, then write a single research snapshot.
 
 ### Scout Tasks
@@ -212,6 +214,12 @@ Git commit after writing: `kanban(todo): create N tickets for YYMMDD-subject`
 ---
 
 ## Phase 4 — Critic Audit Gate
+
+**Critic in this phase — DO NOT:**
+- Create tickets beyond what is needed to fill genuine gaps
+- Approve coverage that is vague or unverifiable — map each requirement explicitly
+- Skip requirements that "seem covered" — every requirement needs a ticket AC that verifies it
+- Modify source code or alter existing ticket content (audit only)
 
 Run a plan → todo coverage audit. The Critic role checks that every plan requirement maps to at least one ticket's `plan_items` or acceptance criteria. Threshold: **95%**.
 

@@ -25,8 +25,20 @@ argument-hint: "[YYMMDD-subject/TASK-NNN] — specific ticket; omit to auto-sele
 ---
 
 ```
-PASS (≥95%, all tests green) → 05-pull-request/
-FAIL (<95% or any test failing) → 03-in-progress/
+[04-local-review] ──► Phase 2: Examiner maps evidence
+                  ──► Phase 2b: run test suites
+                  ──► Phase 3: Critic scores
+                                    │
+                  ┌─────────────────┴─────────────────┐
+                  │                                   │
+           score ≥95%                          score <95%
+         all tests green                    or any test failing
+                  │                                   │
+                  ▼                                   ▼
+        [05-pull-request/]                  [03-in-progress/]
+    announce if all subject              clear claimed_at/completed_at
+    tickets now in 05-pull-request       increment consecutive_failures
+                                         escalate if same error 2–3×
 ```
 
 ---
