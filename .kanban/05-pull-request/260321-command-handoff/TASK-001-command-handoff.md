@@ -58,3 +58,15 @@ Confirmed all planned changes absent:
 - `grep -c 'Discard' skills/kanban/commands/plan.md`: 0 ✓
 
 Created review checklist at `.kanban/01-plan/260321-command-handoff/review-command-handoff.md` with 10 grep-verifiable acceptance criteria covering capture handoff (Phase 9–10, Recommended label), plan handoff (Phase 10–11, Recommended label, from-plan-handoff boundary), plan Discard option, and supporting features.
+
+## Review — 2026-03-21T00:00Z — PASS 100%
+
+| AC | Evidence | Status |
+|----|----------|--------|
+| `grep -c 'Phase 9' skills/kanban/commands/capture.md` returns `0` | Grep: 0 matches in capture.md | Satisfied |
+| `grep -c 'Phase 10' skills/kanban/commands/plan.md` returns `0` | Grep: 0 matches in plan.md | Satisfied |
+| `grep -c 'from-plan-handoff' skills/kanban/commands/todo.md` returns `0` | Grep: 0 matches in todo.md | Satisfied |
+| `grep -c 'Discard' skills/kanban/commands/plan.md` returns `0` | Grep: 0 matches in plan.md | Satisfied |
+| `review-command-handoff.md` exists with ≥8 grep-verifiable ACs covering all four areas | File confirmed at `.kanban/01-plan/260321-command-handoff/review-command-handoff.md`; 10 items covering capture handoff, plan handoff, todo whitelist, discard guard | Satisfied |
+
+Test results: No test framework detected — skipping test execution.

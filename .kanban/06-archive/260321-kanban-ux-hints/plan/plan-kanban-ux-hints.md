@@ -98,3 +98,22 @@ None — all requirements fully covered on first pass.
 - `/kanban` typed in Claude Code shows a visible hint listing available subcommands
 - All nine command files have accurate, reviewed `argument-hint` values
 - Both criteria verified: visually in the Claude Code UI and by code inspection of frontmatter
+
+---
+
+## Audit: plan → done tickets — PASS
+**Date**: 2026-03-21T07:40Z  **Threshold**: 95%
+
+| # | Requirement | Ticket(s) | Review Status | Coverage |
+|---|------------|-----------|---------------|----------|
+| 1 | §1.1 Add argument-hint to SKILL.md | TASK-002 | PASS 100% | Full |
+| 2 | §1.2 Pipe-separated concise format | TASK-002 | PASS 100% | Full |
+| 3 | §2.1 Audit all 9 command files | TASK-003 | PASS 100% | Full |
+| 4 | §2.2 Revise inaccurate/improvable hints | TASK-003 | PASS 100% | Full |
+| 5 | §3.1 Verify UI support; document fallback if not | TASK-002 | PASS 100% | Full |
+
+- Full: 5, Partial: 0, Missing: 0 — Total: 5
+- Score: (5 + 0.5×0) / 5 × 100 = **100%**
+
+### Fixes Applied
+None — all requirements fully covered by passing tickets.
