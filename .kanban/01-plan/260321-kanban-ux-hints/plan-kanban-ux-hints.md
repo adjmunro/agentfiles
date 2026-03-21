@@ -72,6 +72,27 @@ None — all input items fully covered on first pass.
 
 ---
 
+## Audit: plan → todo — PASS
+**Date**: 2026-03-21T00:00:00Z  **Threshold**: 95%
+
+| # | Requirement | Ticket(s) | Status | Notes |
+|---|------------|-----------|--------|-------|
+| 1 | §1.1 Add argument-hint to SKILL.md | TASK-002 | Full | AC: grep check + value format |
+| 2 | §1.2 Pipe-separated concise format | TASK-002 | Full | AC specifies exact format |
+| 3 | §2.1 Audit all 9 command files | TASK-003 | Full | AC: all 9 read and compared |
+| 4 | §2.2 Revise inaccurate/improvable hints | TASK-003 | Full | AC: updates committed where needed |
+| 5 | §3.1 Verify SKILL.md supports hint; fallback if not | TASK-002 | Full | AC: post-commit UI test + fallback |
+| 6 | Acceptance: hint visible in UI | TASK-002 | Full | AC: UI test documented |
+| 7 | Acceptance: all frontmatter correct by inspection | TASK-003 | Full | verify.sh exits 0 |
+
+- Full: 7, Partial: 0, Missing: 0 — Total: 7
+- Score: (7 + 0.5×0) / 7 × 100 = **100%**
+
+### Fixes Applied
+None — all requirements fully covered on first pass.
+
+---
+
 ## Acceptance Signals
 
 - `/kanban` typed in Claude Code shows a visible hint listing available subcommands
