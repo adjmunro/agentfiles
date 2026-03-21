@@ -3,7 +3,7 @@ id: "2026-03-21-date-format/TASK-005"
 subject: "2026-03-21-date-format"
 plan: "../../01-plan/2026-03-21-date-format/plan-date-format.md"
 effort: low
-status: in-review
+status: done
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T22:50:00Z"
 completed_at: "2026-03-21T23:20:00Z"
@@ -80,3 +80,19 @@ All acceptance criteria met.
 Fix: rewrote CHANGELOG.md v1.2.3 entry to avoid literal YYYY-MM-DD string.
 
 Replaced the two sentences in the v1.2.3 changelog entry that contained the old short-form date prefix with equivalent phrasing that describes the change without using the literal string.
+
+---
+
+## Review — 2026-03-21T23:25:00Z — PASS 100%
+
+**Reviewers:** Echo (Examiner) + Arden (Critic)
+
+| # | Criterion | Result | Evidence |
+|---|-----------|--------|----------|
+| AC1 | `grep 'YYMMDD' skills/kanban/SKILL.md` returns no matches | PASS | Grep returned 0 matches |
+| AC2 | Directory diagram in SKILL.md shows `YYYY-MM-DD-<subject>/` | PASS | Line 55: `│   └── YYYY-MM-DD-<subject>/` confirmed |
+| AC3 | `grep -r 'YYMMDD' skills/kanban/ --include='*.md' --exclude-dir=commands` returns no matches | PASS | No matches across all non-command `.md` files |
+
+**Score:** (3 + 0.5×0) / 3 × 100 = **100%** — above 95% threshold.
+
+**Verdict:** The builder's fix successfully rewrote the CHANGELOG.md v1.2.3 entry to eliminate all literal `YYMMDD` strings. All acceptance criteria satisfied.
