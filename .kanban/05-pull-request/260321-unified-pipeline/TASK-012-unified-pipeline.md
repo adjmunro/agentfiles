@@ -3,7 +3,7 @@ id: "260321-unified-pipeline/TASK-012"
 subject: "260321-unified-pipeline"
 plan: "../../01-plan/260321-unified-pipeline/plan-unified-pipeline.md"
 effort: medium
-status: in_review
+status: done
 created_at: "2026-03-22T00:00:00Z"
 claimed_at: "2026-03-22T00:00:00Z"
 completed_at: ~
@@ -70,3 +70,21 @@ Created `skills/kanban2/commands/review.md` — the review command for kanban2.
 - Designer persona phase omitted per task spec (Examiner + Critic only)
 
 **ACs verified:** 9/9 PASS
+
+---
+
+## Review — 2026-03-22T00:00Z — PASS 100.0%
+
+| AC | Evidence | Status |
+|----|----------|--------|
+| File exists | `skills/kanban2/commands/review.md` present and readable | Satisfied |
+| `model:` in frontmatter | Line 2: `model: claude-sonnet-4-6` | Satisfied |
+| `allowed-tools:` in frontmatter | Line 3: `allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion` | Satisfied |
+| Picks up from `06-in-review/` | Lines 31, 52–57, 175, 178, 198, 240, 244 | Satisfied |
+| Moves PASS ticket to `07-pull-request/` | Lines 40, 175, 178, 198, 202 | Satisfied |
+| Moves FAIL ticket to `05-in-progress/` | Lines 40, 198, 240, 244 | Satisfied |
+| 95% audit threshold documented | Lines 37, 140: `score ≥ 95%` | Satisfied |
+| AC verification present | Phase 2 Step C header + evidence table columns throughout | Satisfied |
+| Git commit step present | Phase 4 Step D and Phase 5 Step D | Satisfied |
+
+Test results: No test framework detected — skipping test execution.
