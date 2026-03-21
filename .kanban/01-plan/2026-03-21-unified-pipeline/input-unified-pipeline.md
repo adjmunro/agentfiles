@@ -101,3 +101,7 @@ tickets are drafted and audited inside the subject folder during ideation (not y
 - next.md — the thin orchestrator pattern to replicate for both ideation and kanban2 work loops
 - AskUserQuestion tool — supports (Recommended) label, max 4 options, option ordering
 - command-handoff implementation (2026-03-21-command-handoff) — proven pattern for post-phase prompts and session boundary passthrough
+
+## Session 260322-00:00
+
+ideation needs its own separate VERSION.md and CHANGELOG.md. kanban2 can probably inherit its changelog (i.e. kanban2's changelog starts as a continuation of kanban v1's, not a fresh file).

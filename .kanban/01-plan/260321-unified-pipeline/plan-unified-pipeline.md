@@ -115,6 +115,14 @@ Replace kanban v1's friction-heavy multi-command workflow with two new skills bu
 
 5.3 — Retire v1: once kanban2 is verified, rename `skills/kanban2/` to `skills/kanban/`, archive or delete the old v1 files, and update any symlinks or references.
 
+### 6. Versioning and changelogs
+
+6.1 — Ideation has its own independent `VERSION.md` and `CHANGELOG.md` at `skills/ideation/`. It starts at v1.0.0 and is versioned independently from kanban v1 and kanban2.
+
+6.2 — Kanban2's `CHANGELOG.md` inherits from kanban v1 — it is a continuation of the existing `skills/kanban/CHANGELOG.md`, not a fresh file. The version sequence continues from wherever kanban v1 left off at the time kanban2 is initialised.
+
+6.3 — Kanban2 has its own `VERSION.md` at `skills/kanban2/`. Version bumping follows the same rules as kanban v1 (patch for fixes, minor for features, major for breaking changes).
+
 ## Constraints
 
 - Ideation is a thin orchestrator + phase files, not a monolith
@@ -165,9 +173,12 @@ Replace kanban v1's friction-heavy multi-command workflow with two new skills bu
 | 26 | Migration: build alongside, retire after verify, rename | Full | §5 |
 | 27 | Why: research too late in v1 (todo phase) | Full | Intent |
 | 28 | Why: separate skills to avoid self-editing during build | Full | Intent |
+| 29 | Ideation has its own VERSION.md and CHANGELOG.md | Full | §6.1 |
+| 30 | Kanban2 CHANGELOG inherits from v1 (continuation, not fresh) | Full | §6.2 |
+| 31 | Kanban2 has its own VERSION.md | Full | §6.3 |
 
-- Full: 28, Partial: 0, Missing: 0 — Total: 28
-- Score: (28 + 0.5×0) / 28 × 100 = **100%**
+- Full: 31, Partial: 0, Missing: 0 — Total: 31
+- Score: (31 + 0.5×0) / 31 × 100 = **100%**
 
 ### Fixes Applied
-None — all items covered at first pass.
+Session 260322: added §6 (versioning and changelogs) to cover ideation's independent VERSION.md/CHANGELOG.md and kanban2's inherited changelog.
