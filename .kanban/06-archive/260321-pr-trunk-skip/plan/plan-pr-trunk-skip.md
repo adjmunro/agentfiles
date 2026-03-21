@@ -84,3 +84,25 @@ The kanban PR stage should be skipped when the current branch is a known trunk b
 
 ### Fixes Applied
 - None.
+
+## Audit: tickets → archive — PASS
+**Date**: 2026-03-21T22:30:00Z  **Auditors**: Arden (Critic) + Pulse (Analytics)  **Threshold**: 95%
+
+| # | Requirement | Ticket(s) | AC Pass Rate | Notes |
+|---|-------------|-----------|-------------|-------|
+| 1.1 | Trunk detection at kanban-pr start | TASK-001, TASK-002 | 100% | Checklist + impl both reviewed and passed |
+| 1.2 | Fixed list: main/master/develop/trunk | TASK-001, TASK-002 | 100% | Exact list verified in pr.md |
+| 2.1 | gh api protection check | TASK-001, TASK-002 | 100% | Exact command verified in pr.md lines 54–58 |
+| 2.2 | Unprotected/non-GitHub → skip | TASK-001, TASK-002 | 100% | Skip path with audit commit confirmed |
+| 2.3 | Protected → normal PR flow | TASK-001, TASK-002 | 100% | Protected branch continues to Phase 1 |
+| 2.4 | Check fails → stop and ask | TASK-001, TASK-002 | 100% | Hard stop on unknown outcome confirmed |
+| 3.1 | Skip mirrors non-GitHub path → cleanup | TASK-001, TASK-002 | 100% | Handoff to kanban-cleanup confirmed |
+| 3.2 | Logic in kanban-pr only | TASK-001, TASK-002 | 100% | kanban-next unmodified, scope respected |
+| 4.1 | SKILL.md two bypass conditions | TASK-003 | 100% | Both bypass paths documented with outcomes |
+| —  | Version/changelog hygiene | TASK-004 | 100% | VERSION.md=1.2.2, CHANGELOG 1.2.0–1.2.2 all present |
+
+- Full: 10, Partial: 0, Missing: 0 — Total: 10
+- Score: **100%** — above 95% threshold
+
+### Fixes Applied
+- None. All tickets passed review at 100% on first attempt.
