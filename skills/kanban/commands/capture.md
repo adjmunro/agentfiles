@@ -104,9 +104,9 @@ Ask the user: **What are you working on?**
 
 Wait for the user to write before doing anything else. Collect their free-form response in full before proceeding to any clarifying questions.
 
-**Do not ask everything at once.** Questions should be sequential and responsive — each answer may inform the next question.
+Once the user has submitted their free-form input, **read and process what they wrote** before forming any questions. Identify gaps, ambiguities, and non-obvious territory in their specific input. Questions must be derived from what is missing or unclear in what the user actually wrote — not drawn from a fixed template of required topics.
 
-Questions MUST target non-obvious territory:
+The following areas are **guidance** for what kinds of gaps are worth surfacing — not a mandatory sequence to work through:
 
 - Technical implementation choices and tradeoffs
 - UI/UX specifics where applicable
@@ -115,6 +115,8 @@ Questions MUST target non-obvious territory:
 - Acceptance signals — what does "done" look like exactly?
 - Dependencies on existing code, designs, or external systems
 - What has already been tried or ruled out
+
+**Do not ask everything at once.** Ask one question at a time, sequentially — each answer may inform the next question.
 
 Continue asking until the picture is complete. "Complete" means: someone could hand this document to a developer who has never seen this project and they would know exactly what to build, why, and when to stop.
 
