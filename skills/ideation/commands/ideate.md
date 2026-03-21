@@ -100,7 +100,7 @@ Dispatch as subagent with:
 - Input file: `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md`
 - Research file: `.kanban/YYYY-MM-DD-{subject}/01-research-{subject}.md`
 
-Wait for the interview to complete (user has answered all questions and answers are recorded).
+Wait for the interview to complete (user has reviewed and approved/amended the recommendation brief, and decisions are recorded).
 
 ---
 
