@@ -27,7 +27,25 @@ A folder-based kanban workflow that moves work through a defined pipeline: captu
                                     [06-archive]
 ```
 
-Non-GitHub repos skip the PR step — once all tickets are in `05-pull-request/`, run `/kanban-cleanup` directly.
+### PR Step Bypass Conditions
+
+Two conditions allow the PR step to be skipped automatically:
+
+**1. Non-GitHub repository**
+If the project is not hosted on GitHub (no `gh` CLI, non-GitHub remote), the PR step is bypassed entirely. Once all subject tickets reach `05-pull-request/`, run `/kanban-cleanup` directly. This is always a safe skip — no check is needed.
+
+**2. Trunk branch without remote branch protection**
+If the current branch is one of the fixed trunk names (`main`, `master`, `develop`, `trunk`), `/kanban-pr` runs a protection check before opening a PR:
+
+```
+gh api repos/{owner}/{repo}/branches/{branch}/protection
+```
+
+- **Protected trunk** → normal PR flow proceeds.
+- **Unprotected trunk** → PR step is skipped; an audit-trail commit is created and the subject routes directly to cleanup.
+- **Check fails** (no `gh` auth, network error, API error) → the command stops and asks the user whether to skip or proceed. It does **not** skip automatically. This is a best-effort check: when the answer is unknowable, the agent defers to the human.
+
+Feature branches and non-trunk branch names are never subject to this check — they always follow the full PR flow.
 
 ## Directory Structure
 

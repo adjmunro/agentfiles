@@ -3,10 +3,10 @@ id: "260321-pr-trunk-skip/TASK-003"
 subject: "260321-pr-trunk-skip"
 plan: "../../01-plan/260321-pr-trunk-skip/plan-pr-trunk-skip.md"
 effort: low
-status: in-progress
+status: in-review
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T21:40:00Z"
-completed_at: ~
+completed_at: "2026-03-21T21:50:00Z"
 stale_after_hours: 4
 depends_on:
   - "TASK-002"
@@ -37,3 +37,18 @@ Traced to: Req 4.1.
 
 ---
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log — 2026-03-21T21:50:00Z
+
+**Builder (Kira)**
+
+Read `skills/kanban/SKILL.md` in full. The only existing bypass documentation was a single prose line after the state machine diagram: "Non-GitHub repos skip the PR step — once all tickets are in `05-pull-request/`, run `/kanban-cleanup` directly."
+
+Replaced that line with a dedicated "PR Step Bypass Conditions" section enumerating both bypass paths:
+
+1. **Non-GitHub repository** — always-safe skip, preserved and clarified. No check needed.
+2. **Trunk branch without remote branch protection** — documents the fixed trunk list (`main`, `master`, `develop`, `trunk`), the `gh api repos/{owner}/{repo}/branches/{branch}/protection` check, and the three-way outcome (protected → normal flow, unprotected → skip with audit commit, check fails → stop and ask user). The best-effort caveat is explicit: the command never skips automatically when the check is unknowable.
+
+Feature branches are explicitly called out as never subject to the trunk check.
+
+Also bumped VERSION.md from 1.2.1 → 1.2.2 and added CHANGELOG entry "1.2.2 — Both Doors".

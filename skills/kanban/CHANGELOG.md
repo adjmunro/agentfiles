@@ -4,6 +4,15 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## 1.2.2 — Both Doors (2026-03-21)
+
+SKILL.md now documents both PR bypass conditions side by side. A first-time reader can understand when the PR step is skipped, how the trunk-branch protection check works, and what happens when that check fails.
+
+- Added "PR Step Bypass Conditions" section with numbered explanations for both paths
+- Non-GitHub bypass preserved and clarified as always-safe
+- Trunk bypass documents the fixed branch list, `gh api` protection query, and best-effort caveat
+- Feature branches explicitly called out as never subject to the trunk check
+
 ## 1.2.1 — Branch Aware (2026-03-21)
 
 The PR command now checks whether you're on a trunk branch before opening a draft PR. Protected trunks proceed normally; unprotected trunks skip the PR step and route directly to cleanup with an audit-trail commit. If the protection check fails entirely, the command stops and asks rather than assuming.
