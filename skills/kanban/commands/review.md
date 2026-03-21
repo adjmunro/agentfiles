@@ -253,7 +253,7 @@ Prioritise issues by impact. Each issue must name the specific thing missing, th
 In the ticket frontmatter, set:
 
 ```yaml
-claimed_at: ~
+expires_at: ~
 completed_at: ~
 ```
 

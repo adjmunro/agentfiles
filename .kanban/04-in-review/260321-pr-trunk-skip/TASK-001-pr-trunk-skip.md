@@ -3,10 +3,10 @@ id: "260321-pr-trunk-skip/TASK-001"
 subject: "260321-pr-trunk-skip"
 plan: "../../01-plan/260321-pr-trunk-skip/plan-pr-trunk-skip.md"
 effort: low
-status: in-progress
+status: in-review
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T21:00:00Z"
-completed_at: ~
+completed_at: "2026-03-21T21:10:00Z"
 stale_after_hours: 4
 spawned_tickets: []
 plan_items:
@@ -42,3 +42,11 @@ Traced to: all plan requirements (1.1–4.1).
 
 ---
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log — 2026-03-21T21:00:00Z
+
+Checklist written to `.kanban/01-plan/260321-pr-trunk-skip/verify-pr-trunk-skip.md`.
+
+The checklist covers all nine plan requirements across six sections: trunk detection (the four fixed branch names and placement before Phase 1), the exact `gh api repos/{owner}/{repo}/branches/{branch}/protection` command used for the protection check, the three-way outcome (protected → continue, unprotected/non-GitHub → skip, check failure → stop and ask), the skip path (commit message shape, handoff to kanban-cleanup, what is NOT done), SKILL.md documentation of both bypass conditions with the protection-check caveat, and scope constraints confirming kanban-next and all other commands remain untouched. Every item maps back to a plan requirement and can be verified by reading the final `pr.md` or `SKILL.md`.
+
+pr.md and SKILL.md unmodified.

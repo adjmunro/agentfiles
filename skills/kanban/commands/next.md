@@ -105,11 +105,17 @@ argument-hint: "[YYMMDD-<subject> | auto] — subject to work on; 'auto' picks t
 
 ## Claimed Check
 
-A subject is **claimed** if it has any ticket files in `03-in-progress/`, `04-in-review/`, or `05-pull-request/` for that subject, AND at least one of those tickets has a `claimed_at` timestamp within the last `stale_after_hours` (default: 4 hours if unset).
+A subject is **claimed** if it has any ticket files in `03-in-progress/`, `04-in-review/`, or `05-pull-request/` for that subject, AND at least one of those tickets has an `expires_at` timestamp that is **in the future** (`now < expires_at`).
+
+**Staleness check:** compare `expires_at` directly to now — no arithmetic needed.
+
+- `expires_at` in the future → ticket is live → subject is claimed → skip it
+- `expires_at` in the past → ticket is stale (crashed or abandoned session)
+- `expires_at` null/unset → treat as claimed (unknown state, err on the side of caution)
 
 A subject is **not claimed** (available to pick) if:
 - All its tickets are in `02-todo/`, OR
-- It has tickets in later stages but every one of them has a `claimed_at` older than `stale_after_hours` — these are stale and treated as from a crashed or abandoned session
+- It has tickets in later stages but every one has an `expires_at` in the past
 
 When a subject is skipped as claimed in auto mode, note it in output: `"Skipping YYMMDD-<subject> — claimed (active tickets in-flight)"`.
 
@@ -137,8 +143,7 @@ When all remaining subjects with todo tickets are claimed, stop and list them so
 ## Stale Ticket Detection
 
 Before starting the loop, scan `.kanban/03-in-progress/YYMMDD-<subject>/` for ticket files where:
-- `claimed_at` is set in frontmatter
-- The elapsed time since `claimed_at` exceeds `stale_after_hours` (default: 4 hours if unset)
+- `expires_at` is set in frontmatter and is in the past (`now > expires_at`)
 - The ticket has not moved to a later stage
 
 If any stale tickets are found, surface them via the ask-user tool:
