@@ -1,0 +1,49 @@
+## Intent
+
+The current capture command opens Phase 4 with a multi-choice question before the user has written anything. This forces the user into a structured response before establishing context, making questions poorly targeted and the interaction feel like a form rather than a conversation. The goal is to invert the flow: collect free-form input first, then ask pointed clarifying questions informed by what the user actually wrote. Each question should be preceded by the agent's interpretation, recommendation, and reasoning — in natural prose, drawn from context or research at its discretion.
+
+## Requirements
+
+### 1. Free-write first
+
+1.1 Phase 4 opens with a single short framing line (e.g. "What are you working on?") — no structured prompts, no multi-choice questions, before the user has written anything.
+
+1.2 The agent waits for free-form text input from the user before proceeding to any structured questioning.
+
+1.3 The current opening multi-choice question is removed entirely from Phase 4.
+
+### 2. Read-then-ask flow
+
+2.1 After the user submits free-form input, the agent reads and processes it before forming any questions.
+
+2.2 Questions are derived from gaps and ambiguities in what the user wrote — not from a fixed template.
+
+### 3. Question preamble
+
+3.1 Each clarifying question is preceded by a short natural-prose preamble: the agent's interpretation of the input, its recommendation, and the reasoning behind it.
+
+3.2 The preamble is written in the agent's own voice — not as labeled sections (no "My read:" / "I'd recommend:" headers).
+
+3.3 The agent may draw on codebase reads, web research, or session context to inform the preamble — at its own discretion based on what the question warrants.
+
+### 4. Unchanged behaviours
+
+4.1 Question count: run until the picture is complete — no hard cap.
+
+4.2 Scope: changes apply to `capture.md` Phase 4 only. `plan.md` Phase 3 is unaffected.
+
+4.3 All other phases in `capture.md` (1–3, 5–9) remain unchanged.
+
+## Constraints
+
+- Change is scoped to `skills/kanban/commands/capture.md`, Phase 4 only.
+- Preamble format is natural prose in the agent's own voice — not labeled sections.
+- Research for preamble: agent decides (may include codebase reads or web research).
+- Framing before free-write: a single short orienting line, not a form or structured prompt.
+
+## Out of Scope
+
+- Changes to `plan.md` Phase 3 interview behaviour.
+- Changes to any other kanban command file.
+- Changes to persona files.
+- Adding or removing question topic areas (implementation choices, tradeoffs, edge cases, constraints, acceptance signals — these remain as-is).
