@@ -3,10 +3,10 @@ id: "260321-date-format/TASK-001"
 subject: "260321-date-format"
 plan: "../../01-plan/260321-date-format/plan-date-format.md"
 effort: low
-status: in-progress
+status: in-review
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T22:30:00Z"
-completed_at: ~
+completed_at: "2026-03-21T22:40:00Z"
 stale_after_hours: 4
 spawned_tickets: []
 plan_items:
@@ -47,3 +47,30 @@ Traced to: all plan requirements (1.1–6.1).
 
 ---
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log
+
+**2026-03-21T22:30:00Z — Claimed**
+Ticket moved to in-progress.
+
+**2026-03-21T22:30:00Z–22:40:00Z — Research**
+- Read plan-date-format.md and research-date-format.md to understand requirements (Req 1.1–6.1).
+- Read skills/kanban/SKILL.md to locate YYMMDD occurrence (line 55, directory diagram).
+- Ran grep scans across skills/kanban/ and .kanban/ to establish live baseline.
+- Listed all .kanban/ subject directories from filesystem (authoritative — not from research doc).
+
+**Findings (baseline counts):**
+- 11 subject directories to rename under .kanban/ stages
+- 40 .kanban/ files with YYMMDD|260321 matches — 202 total occurrences
+- 9 command files with YYMMDD — 116 total occurrences
+- 1 SKILL.md occurrence (line 55)
+- 3 command files with `date +%y%m%d` to fix: capture.md, plan.md, init.md
+- Grand total: 319 occurrences across 50 files
+
+**Note**: Live filesystem shows 11 dirs (matches research doc count). `01-plan/260321-unified-pipeline/` is included — the research doc did not list it but it follows the YYMMDD- prefix pattern and has YYMMDD/260321 content in its input file.
+
+**2026-03-21T22:40:00Z — Checklist written**
+Output: `.kanban/01-plan/260321-date-format/verify-date-format.md`
+Covers: §1 directory renames, §2a active ticket frontmatter, §2b archive ticket frontmatter, §2c plan/input/research headers and prose, §3 command files with type breakdown and date-command table, §4 SKILL.md, §5 summary counts, §6 final verification suite.
+
+No implementation files were modified during this ticket.
