@@ -3,9 +3,9 @@ id: "260321-unified-pipeline/TASK-013"
 subject: "260321-unified-pipeline"
 plan: "../../01-plan/260321-unified-pipeline/plan-unified-pipeline.md"
 effort: medium
-status: todo
+status: in_review
 created_at: "2026-03-22T00:00:00Z"
-claimed_at: ~
+claimed_at: "2026-03-22T00:00:00Z"
 completed_at: ~
 stale_after_hours: 4
 depends_on:
@@ -52,3 +52,19 @@ Command model: `claude-sonnet-4-6`.
 
 ---
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log — 2026-03-22T00:00:00Z
+
+**Agent**: kanban-work
+**Status transition**: todo → in_progress → in_review
+
+**Implementation**:
+- Created `skills/kanban2/commands/pr.md` with valid frontmatter (`model: claude-sonnet-4-6`, `allowed-tools`)
+- Adapted v1 `skills/kanban/commands/pr.md` (Advocate/Vale persona) for kanban2's subject-centric layout
+- Phase 1: checks all tickets are in `07-pull-request/` before proceeding (reports blockers if not)
+- Phase 2: three-step PR bypass — non-GitHub remote skips PR; unprotected trunk creates audit commit and routes to cleanup; check failure defers explicitly to user (no auto-skip)
+- Phase 3: opens draft PR via `gh pr create`, polls CI, handles reviewer comments via classification loop
+- Phase 4: post-merge moves all tickets from `07-pull-request/` to `08-done/`, sets `status: done`
+- Phase 5: final git audit commit `kanban(pr): mark {subject} done → 08-done/`
+
+**All ACs verified**: 9/9 passed via grep/bash checks.
