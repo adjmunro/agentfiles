@@ -3,7 +3,7 @@ id: "260321-pr-trunk-skip/TASK-004"
 subject: "260321-pr-trunk-skip"
 plan: "../../01-plan/260321-pr-trunk-skip/plan-pr-trunk-skip.md"
 effort: low
-status: in-review
+status: done
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T22:00:00Z"
 completed_at: "2026-03-21T22:10:00Z"
@@ -56,3 +56,19 @@ What actually happened:
 - `skills/kanban/CHANGELOG.md` — entries for 1.2.2, 1.2.1, and 1.2.0 all present and correctly scoped — confirmed
 
 **Outcome:** The original ACs (targeting 1.2.0) were stale. They have been updated in frontmatter to reflect the actual version state. No further version changes are needed — the history is correct as committed.
+
+## Review — 2026-03-21T22:15:00Z — PASS 100%
+
+**Reviewers:** Echo (Examiner) + Arden (Critic)
+
+| AC | Criterion | Result |
+|----|-----------|--------|
+| 1 | `VERSION.md` contains exactly `**Current version**: 1.2.2` | SATISFIED |
+| 2 | `CHANGELOG.md` has a 1.2.1 "Branch Aware" entry covering pr.md trunk-branch check | SATISFIED |
+| 3 | `CHANGELOG.md` has a 1.2.2 "Both Doors" entry covering SKILL.md docs addition | SATISFIED |
+| 4 | `CHANGELOG.md` has a 1.2.0 "Speak First" entry for capture-flow work | SATISFIED |
+| 5 | `grep '1.2.2' skills/kanban/VERSION.md` returns a match | SATISFIED |
+
+**Score:** (5 + 0) / 5 × 100 = **100%** — threshold 95% — PASS
+
+**Notes:** All five updated ACs are fully satisfied. VERSION.md line 5 matches the required string exactly. CHANGELOG.md contains all three expected entries (1.2.0, 1.2.1, 1.2.2) with the correct names and correct scope coverage. The work log provides a clear, coherent explanation of why the original 1.2.0 ACs were stale — the two subjects ran independently rather than co-shipping — and confirms the builder verified the actual state before updating the ACs. No gaps found.
