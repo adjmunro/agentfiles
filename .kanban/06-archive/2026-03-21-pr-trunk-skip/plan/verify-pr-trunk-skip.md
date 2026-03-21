@@ -38,7 +38,7 @@ Written before any edits to `pr.md` or `SKILL.md`. Each item is falsifiable by r
 
 - [ ] **4.1** When the skip path is taken, `pr.md` instructs making a git commit with this message (or equivalent documented form):
   ```
-  kanban(pr): skip PR — trunk branch unprotected for YYMMDD-<subject>
+  kanban(pr): skip PR — trunk branch unprotected for YYYY-MM-DD-<subject>
   ```
   The message must include a clear indication that the PR was skipped and the reason.
 - [ ] **4.2** After the skip commit, `pr.md` instructs the agent to proceed directly to `/kanban-cleanup` — the same handoff used on the non-GitHub path.

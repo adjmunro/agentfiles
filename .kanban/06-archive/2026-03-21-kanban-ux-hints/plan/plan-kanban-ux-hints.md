@@ -1,4 +1,4 @@
-# Plan: 260321-kanban-ux-hints
+# Plan: 2026-03-21-kanban-ux-hints
 
 ## Intent
 

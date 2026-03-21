@@ -1,7 +1,7 @@
 ---
-id: "260321-kanban-ux-hints/TASK-001"
-subject: "260321-kanban-ux-hints"
-plan: "../../01-plan/260321-kanban-ux-hints/plan-kanban-ux-hints.md"
+id: "2026-03-21-kanban-ux-hints/TASK-001"
+subject: "2026-03-21-kanban-ux-hints"
+plan: "../../01-plan/2026-03-21-kanban-ux-hints/plan-kanban-ux-hints.md"
 effort: low
 status: done
 created_at: "2026-03-21T00:00:00Z"

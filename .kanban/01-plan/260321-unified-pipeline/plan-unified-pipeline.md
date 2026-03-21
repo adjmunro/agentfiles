@@ -6,7 +6,7 @@ Replace kanban v1's friction-heavy multi-command workflow with two new skills bu
 
 ### 1. New directory structure
 
-1.1 — Subject directory name: `YYYY-MM-DD-{subject}/` — ISO date prefix, not the YYMMDD shortform used in v1.
+1.1 — Subject directory name: `YYYY-MM-DD-{subject}/` — ISO date prefix, not the YYYY-MM-DD shortform used in v1.
 
 1.2 — Loose planning docs, numbered for natural sort order:
 - `00-input-{subject}.md` — verbatim capture
@@ -70,7 +70,7 @@ Replace kanban v1's friction-heavy multi-command workflow with two new skills bu
 
 2.4 — Tickets during ideation live in `03-refinement/` only. `ideate.md` does not touch `04-todo/` through `08-done/` until the step 9 promotion.
 
-2.5 — Abandon confirmation: user must type the exact subject slug (e.g. `2026-03-22-my-feature`) to confirm deletion. A yes/no is insufficient. Same pattern as the discard guard built in `260321-command-handoff`.
+2.5 — Abandon confirmation: user must type the exact subject slug (e.g. `2026-03-22-my-feature`) to confirm deletion. A yes/no is insufficient. Same pattern as the discard guard built in `2026-03-21-command-handoff`.
 
 2.6 — Loop-back rule: all content additions are appends. `00-input-{subject}.md` grows with each loop iteration via a new session block. `02-plan-{subject}.md` is updated and re-audited in place. Prior session content is immutable.
 
@@ -119,7 +119,7 @@ Replace kanban v1's friction-heavy multi-command workflow with two new skills bu
 
 - Ideation is a thin orchestrator + phase files, not a monolith
 - User-facing commands: `/ideate` and `/kanban` only; all phase files are internal
-- Subject dir name format: `YYYY-MM-DD-{subject}/` — full ISO date, not YYMMDD shortform
+- Subject dir name format: `YYYY-MM-DD-{subject}/` — full ISO date, not YYYY-MM-DD shortform
 - Tickets never leave `03-refinement/` during ideation until step 9 explicit promotion
 - Abandon requires typing the exact subject slug; no shortcuts
 - Kanban2 never reads or writes plan-layer files

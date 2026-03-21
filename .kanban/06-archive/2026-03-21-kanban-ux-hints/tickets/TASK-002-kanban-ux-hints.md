@@ -1,7 +1,7 @@
 ---
-id: "260321-kanban-ux-hints/TASK-002"
-subject: "260321-kanban-ux-hints"
-plan: "../../01-plan/260321-kanban-ux-hints/plan-kanban-ux-hints.md"
+id: "2026-03-21-kanban-ux-hints/TASK-002"
+subject: "2026-03-21-kanban-ux-hints"
+plan: "../../01-plan/2026-03-21-kanban-ux-hints/plan-kanban-ux-hints.md"
 effort: low
 status: done
 created_at: "2026-03-21T00:00:00Z"
@@ -63,7 +63,7 @@ Hint format rationale: pipe-separated list in pipeline order ensures users see t
 **UI Verification Pending**: Acceptance criterion 5 requires manual testing in Claude Code UI to confirm the hint surfaces when `/kanban` is typed. This is flagged as pending — SKILL.md hint support is unconfirmed at the platform level (though all 9 command files already have hints). If SKILL.md does not expose the hint, a fallback approach will be documented (e.g., updating the description field to include subcommand names).
 
 **Commits**:
-- `kanban(work): claim 002-kanban-ux-hints for 260321-kanban-ux-hints`
+- `kanban(work): claim 002-kanban-ux-hints for 2026-03-21-kanban-ux-hints`
 - `feat(002): add argument-hint to SKILL.md`
 
 ---

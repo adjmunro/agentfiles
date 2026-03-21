@@ -1,7 +1,7 @@
 ---
-id: "260321-pr-trunk-skip/TASK-002"
-subject: "260321-pr-trunk-skip"
-plan: "../../01-plan/260321-pr-trunk-skip/plan-pr-trunk-skip.md"
+id: "2026-03-21-pr-trunk-skip/TASK-002"
+subject: "2026-03-21-pr-trunk-skip"
+plan: "../../01-plan/2026-03-21-pr-trunk-skip/plan-pr-trunk-skip.md"
 effort: medium
 status: done
 created_at: "2026-03-21T00:00:00Z"
@@ -25,7 +25,7 @@ acceptance_criteria:
   - "Check 3 runs `git branch --show-current` and tests against the fixed list: main, master, develop, trunk"
   - "If trunk branch detected: `gh api repos/{owner}/{repo}/branches/{branch}/protection` is called"
   - "If protection confirmed: pr.md prints a clear message and continues to Phase 1 (normal flow)"
-  - "If unprotected: pr.md prints a clear skip message, makes an empty git commit with message `kanban(pr): skip draft PR for YYMMDD-<subject> — trunk branch unprotected`, and instructs proceeding to kanban-cleanup"
+  - "If unprotected: pr.md prints a clear skip message, makes an empty git commit with message `kanban(pr): skip draft PR for YYYY-MM-DD-<subject> — trunk branch unprotected`, and instructs proceeding to kanban-cleanup"
   - "If gh check fails for any reason (no auth, no network, error): pr.md stops with a clear message and asks the user whether to skip or raise a PR"
   - "If current branch is NOT a trunk branch: Check 3 passes silently, normal flow continues"
   - "grep 'main\\|master\\|develop\\|trunk' skills/kanban/commands/pr.md returns a match in the new check block"
@@ -46,7 +46,7 @@ Traced to: Req 1.1, 1.2, 2.1, 2.2, 2.3, 2.4, 3.1, 3.2.
 - New Precondition Check 3 exists in pr.md, in the correct position
 - Trunk list: main, master, develop, trunk — exact match
 - Three-way outcome: protected → normal flow; unprotected → skip with commit; failed → stop and ask
-- Skip commit message format: `kanban(pr): skip draft PR for YYMMDD-<subject> — trunk branch unprotected`
+- Skip commit message format: `kanban(pr): skip draft PR for YYYY-MM-DD-<subject> — trunk branch unprotected`
 - Non-trunk branches: check passes silently
 - Phases 1–4 unchanged
 
@@ -57,7 +57,7 @@ Traced to: Req 1.1, 1.2, 2.1, 2.2, 2.3, 2.4, 3.1, 3.2.
 
 Added Precondition Check 3 — Trunk Branch to `skills/kanban/commands/pr.md`.
 
-The new block was inserted immediately after the existing Precondition Check 2 (all tickets must have reached `05-pull-request/`) and immediately before the `## Derive Subject` section. It instructs the agent to run `git branch --show-current` and test the result against the hardcoded list `main`, `master`, `develop`, `trunk`. If the branch is not on the list the check passes silently and execution falls through to Derive Subject. If the branch is on the list, the agent derives `{owner}/{repo}` from `git remote get-url origin` and calls `gh api repos/{owner}/{repo}/branches/{branch}/protection`. A protected result prints a confirmation message and continues to Phase 1; a 404/unprotected result prints a skip message, emits an empty commit with the message `kanban(pr): skip draft PR for YYMMDD-<subject> — trunk branch unprotected`, and routes to `/kanban-cleanup`; any other error causes a hard stop and asks the user whether to skip or raise a PR. Phases 1–4 are unchanged.
+The new block was inserted immediately after the existing Precondition Check 2 (all tickets must have reached `05-pull-request/`) and immediately before the `## Derive Subject` section. It instructs the agent to run `git branch --show-current` and test the result against the hardcoded list `main`, `master`, `develop`, `trunk`. If the branch is not on the list the check passes silently and execution falls through to Derive Subject. If the branch is on the list, the agent derives `{owner}/{repo}` from `git remote get-url origin` and calls `gh api repos/{owner}/{repo}/branches/{branch}/protection`. A protected result prints a confirmation message and continues to Phase 1; a 404/unprotected result prints a skip message, emits an empty commit with the message `kanban(pr): skip draft PR for YYYY-MM-DD-<subject> — trunk branch unprotected`, and routes to `/kanban-cleanup`; any other error causes a hard stop and asks the user whether to skip or raise a PR. Phases 1–4 are unchanged.
 
 ## Review — 2026-03-21T21:35:00Z — PASS 100%
 

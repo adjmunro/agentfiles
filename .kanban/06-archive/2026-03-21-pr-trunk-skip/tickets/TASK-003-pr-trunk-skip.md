@@ -1,7 +1,7 @@
 ---
-id: "260321-pr-trunk-skip/TASK-003"
-subject: "260321-pr-trunk-skip"
-plan: "../../01-plan/260321-pr-trunk-skip/plan-pr-trunk-skip.md"
+id: "2026-03-21-pr-trunk-skip/TASK-003"
+subject: "2026-03-21-pr-trunk-skip"
+plan: "../../01-plan/2026-03-21-pr-trunk-skip/plan-pr-trunk-skip.md"
 effort: low
 status: done
 created_at: "2026-03-21T00:00:00Z"

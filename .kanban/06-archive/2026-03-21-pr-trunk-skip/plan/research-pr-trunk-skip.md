@@ -1,4 +1,4 @@
-## Research: 260321-pr-trunk-skip
+## Research: 2026-03-21-pr-trunk-skip
 **Date**: 2026-03-21T00:00:00Z
 **Status**: Snapshot — may go stale. Verify before acting.
 
@@ -24,8 +24,8 @@
 - New Check 3 will insert here: trunk branch? → protection check
 
 **Commit convention when skipping:**
-- pr.md currently creates: `kanban(pr): open draft PR for YYMMDD-<subject>`
-- On trunk skip, still commit to maintain audit trail: `kanban(pr): skip draft PR for YYMMDD-<subject> — trunk branch unprotected`
+- pr.md currently creates: `kanban(pr): open draft PR for YYYY-MM-DD-<subject>`
+- On trunk skip, still commit to maintain audit trail: `kanban(pr): skip draft PR for YYYY-MM-DD-<subject> — trunk branch unprotected`
 
 ## Dependencies
 

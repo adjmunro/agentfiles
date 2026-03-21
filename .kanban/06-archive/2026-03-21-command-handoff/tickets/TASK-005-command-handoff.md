@@ -1,7 +1,7 @@
 ---
-id: "260321-command-handoff/TASK-005"
-subject: "260321-command-handoff"
-plan: "../../01-plan/260321-command-handoff/plan-command-handoff.md"
+id: "2026-03-21-command-handoff/TASK-005"
+subject: "2026-03-21-command-handoff"
+plan: "../../01-plan/2026-03-21-command-handoff/plan-command-handoff.md"
 effort: low
 status: done
 created_at: "2026-03-21T00:00:00Z"
@@ -27,7 +27,7 @@ Adds the `from-plan-handoff` whitelist to the Session Boundary section of `skill
 
 This is the minimal change required by plan §3.3. No other logic in todo.md is modified.
 
-Note: the current Session Boundary section (lines 33–54) does not perform an active work session check — it only validates that a verified plan file exists. The whitelist is therefore a guard bypass instruction, not a change to ticket-creation logic. The `from-plan-handoff` token does not match the `YYMMDD-*` pattern and will fall through to subsequent resolution methods; the whitelist check just makes the bypass explicit rather than implicit.
+Note: the current Session Boundary section (lines 33–54) does not perform an active work session check — it only validates that a verified plan file exists. The whitelist is therefore a guard bypass instruction, not a change to ticket-creation logic. The `from-plan-handoff` token does not match the `YYYY-MM-DD-*` pattern and will fall through to subsequent resolution methods; the whitelist check just makes the bypass explicit rather than implicit.
 
 Traced to plan §3.3 and §3.4.
 
@@ -36,7 +36,7 @@ Traced to plan §3.3 and §3.4.
 - `grep -c 'from-plan-handoff' skills/kanban/commands/todo.md` returns `1`
 - The Session Boundary section in `todo.md` contains a condition: if `$ARGUMENTS` contains `from-plan-handoff`, skip any boundary check and proceed to subject/plan resolution
 - The change is confined to the Session Boundary section; no other section of `todo.md` is modified
-- The `YYMMDD-*` argument extraction logic is unchanged
+- The `YYYY-MM-DD-*` argument extraction logic is unchanged
 
 ---
 <!-- Everything below this line is append-only and chronological -->
@@ -46,7 +46,7 @@ Traced to plan §3.3 and §3.4.
 **2026-03-21T00:00:00Z** — Implementation complete.
 
 - Added `from-plan-handoff` whitelist to Session Boundary section of `skills/kanban/commands/todo.md` (line 35)
-- Whitelist check placed before the `YYMMDD-*` pattern extraction step
+- Whitelist check placed before the `YYYY-MM-DD-*` pattern extraction step
 - Verification: `grep -c 'from-plan-handoff' skills/kanban/commands/todo.md` returns 1
 - No other changes made to todo.md or any other file
 - All acceptance criteria met
@@ -57,7 +57,7 @@ Traced to plan §3.3 and §3.4.
 |----|----------|--------|
 | `grep -c 'from-plan-handoff' skills/kanban/commands/todo.md` returns 1 | todo.md:35 — grep count = 1 | Satisfied |
 | Session Boundary section states: if `from-plan-handoff` present, skip check and proceed to subject resolution | todo.md:35, under `## Session Boundary` heading | Satisfied |
-| No other changes beyond the from-plan-handoff whitelist | Full file reviewed — only line 35 modified; all phases and YYMMDD-* logic intact | Satisfied |
-| YYMMDD-* argument extraction logic unchanged | todo.md:39 — priority 1 extraction rule unmodified | Satisfied |
+| No other changes beyond the from-plan-handoff whitelist | Full file reviewed — only line 35 modified; all phases and YYYY-MM-DD-* logic intact | Satisfied |
+| YYYY-MM-DD-* argument extraction logic unchanged | todo.md:39 — priority 1 extraction rule unmodified | Satisfied |
 
 Test results: No test framework detected — skipping test execution.

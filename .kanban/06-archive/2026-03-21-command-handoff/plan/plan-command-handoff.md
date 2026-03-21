@@ -48,9 +48,9 @@ Both `kanban-capture` and `kanban-plan` currently end silently, requiring the us
 
 4.2 — If any matching tickets are found: describe the problem clearly to the user (which directories contain tickets, how many), then stop. Do not delete any files. The user must either manually remove the tickets or explicitly instruct the agent to proceed despite the guard.
 
-4.3 — If no matching tickets are found: present a confirmation dialogue requiring the user to type the exact subject slug (e.g. `260321-command-handoff`) to confirm deletion. A yes/no is not sufficient.
+4.3 — If no matching tickets are found: present a confirmation dialogue requiring the user to type the exact subject slug (e.g. `2026-03-21-command-handoff`) to confirm deletion. A yes/no is not sufficient.
 
-4.4 — On confirmed discard: remove all files and the directory under `.kanban/01-plan/YYMMDD-<subject>/`.
+4.4 — On confirmed discard: remove all files and the directory under `.kanban/01-plan/YYYY-MM-DD-<subject>/`.
 
 ## Constraints
 
@@ -163,7 +163,7 @@ None.
 | 13 | §4.1 Discard scans .kanban/02-todo through .kanban/06-archive | TASK-004 | Full |
 | 14 | §4.2 Block if tickets found; describe dirs and count; require manual action or explicit override | TASK-004 | Full |
 | 15 | §4.3 Require user to type exact subject slug; yes/no insufficient | TASK-004 | Full |
-| 16 | §4.4 On confirmed: delete all files under .kanban/01-plan/YYMMDD-<subject>/ | TASK-004 | Full |
+| 16 | §4.4 On confirmed: delete all files under .kanban/01-plan/YYYY-MM-DD-<subject>/ | TASK-004 | Full |
 | 17 | TDD red phase: baseline checks pass, review checklist created | TASK-001 | Full |
 | 18 | Version bump (1.1.4 → 1.2.0) and CHANGELOG entry ("The Smooth Handoff") | TASK-006 | Full |
 

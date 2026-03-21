@@ -1,7 +1,7 @@
 ---
-id: "260321-capture-flow/TASK-002"
-subject: "260321-capture-flow"
-plan: "../../01-plan/260321-capture-flow/plan-capture-flow.md"
+id: "2026-03-21-capture-flow/TASK-002"
+subject: "2026-03-21-capture-flow"
+plan: "../../01-plan/2026-03-21-capture-flow/plan-capture-flow.md"
 effort: medium
 status: done
 created_at: "2026-03-21T00:00:00Z"

@@ -1,4 +1,4 @@
-# 260321-kanban-ux-hints
+# 2026-03-21-kanban-ux-hints
 
 ## What
 

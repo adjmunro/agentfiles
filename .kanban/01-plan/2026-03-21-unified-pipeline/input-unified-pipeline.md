@@ -1,4 +1,4 @@
-# 260321-unified-pipeline
+# 2026-03-21-unified-pipeline
 
 ## What
 
@@ -100,4 +100,4 @@ tickets are drafted and audited inside the subject folder during ideation (not y
 - personas already written: scribe (Vela), critic (Arden), scout (Finn), strategist (Keeper), designer, release, docs, analytics, advocate, examiner
 - next.md — the thin orchestrator pattern to replicate for both ideation and kanban2 work loops
 - AskUserQuestion tool — supports (Recommended) label, max 4 options, option ordering
-- command-handoff implementation (260321-command-handoff) — proven pattern for post-phase prompts and session boundary passthrough
+- command-handoff implementation (2026-03-21-command-handoff) — proven pattern for post-phase prompts and session boundary passthrough

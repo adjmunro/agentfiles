@@ -1,4 +1,4 @@
-## Research: 260321-date-format
+## Research: 2026-03-21-date-format
 **Date**: 2026-03-21T00:00:00Z
 **Status**: Snapshot — may go stale. Verify before acting.
 
@@ -8,21 +8,21 @@
 
 | Stage | Current | Target |
 |-------|---------|--------|
-| 01-plan | 260321-date-format | 2026-03-21-date-format |
-| 01-plan | 260321-command-handoff | 2026-03-21-command-handoff |
-| 02-todo | 260321-command-handoff | 2026-03-21-command-handoff |
-| 02-todo | 260321-kanban-ux-hints | 2026-03-21-kanban-ux-hints |
-| 03-in-progress | 260321-command-handoff | 2026-03-21-command-handoff |
-| 03-in-progress | 260321-kanban-ux-hints | 2026-03-21-kanban-ux-hints |
-| 04-in-review | 260321-kanban-ux-hints | 2026-03-21-kanban-ux-hints |
-| 05-pull-request | 260321-command-handoff | 2026-03-21-command-handoff |
-| 06-archive | 260321-capture-flow | 2026-03-21-capture-flow |
-| 06-archive | 260321-kanban-ux-hints | 2026-03-21-kanban-ux-hints |
-| 06-archive | 260321-pr-trunk-skip | 2026-03-21-pr-trunk-skip |
+| 01-plan | 2026-03-21-date-format | 2026-03-21-date-format |
+| 01-plan | 2026-03-21-command-handoff | 2026-03-21-command-handoff |
+| 02-todo | 2026-03-21-command-handoff | 2026-03-21-command-handoff |
+| 02-todo | 2026-03-21-kanban-ux-hints | 2026-03-21-kanban-ux-hints |
+| 03-in-progress | 2026-03-21-command-handoff | 2026-03-21-command-handoff |
+| 03-in-progress | 2026-03-21-kanban-ux-hints | 2026-03-21-kanban-ux-hints |
+| 04-in-review | 2026-03-21-kanban-ux-hints | 2026-03-21-kanban-ux-hints |
+| 05-pull-request | 2026-03-21-command-handoff | 2026-03-21-command-handoff |
+| 06-archive | 2026-03-21-capture-flow | 2026-03-21-capture-flow |
+| 06-archive | 2026-03-21-kanban-ux-hints | 2026-03-21-kanban-ux-hints |
+| 06-archive | 2026-03-21-pr-trunk-skip | 2026-03-21-pr-trunk-skip |
 
-Note: 260321-capture-flow and 260321-pr-trunk-skip also have active tickets in 02-todo (separate from archived versions).
+Note: 2026-03-21-capture-flow and 2026-03-21-pr-trunk-skip also have active tickets in 02-todo (separate from archived versions).
 
-**21 files with YYMMDD content** (167 total occurrences):
+**21 files with YYYY-MM-DD content** (167 total occurrences):
 - 9 command files: 117 occurrences (capture, plan, todo, work, review, pr, cleanup, next, init)
 - SKILL.md: 1 occurrence (directory structure diagram, line ~55)
 - 11 ticket/plan/research files under .kanban/: 50 occurrences
@@ -33,11 +33,11 @@ Note: 260321-capture-flow and 260321-pr-trunk-skip also have active tickets in 0
 ## Relevant Patterns
 
 - Directories renamed with `mv` — never delete/recreate (audit trail)
-- All 11 subject dirs follow identical `YYMMDD-<subject>` → `YYYY-MM-DD-<subject>` pattern
-- Command files use YYMMDD in: phase instructions, bash examples, commit message templates, subject slug derivation steps
+- All 11 subject dirs follow identical `YYYY-MM-DD-<subject>` → `YYYY-MM-DD-<subject>` pattern
+- Command files use YYYY-MM-DD in: phase instructions, bash examples, commit message templates, subject slug derivation steps
 - Ticket frontmatter fields affected: `id`, `subject`, `plan` (relative path)
-- File title/header patterns: `# YYMMDD-<subject>`, `## Research: YYMMDD-<subject>`
-- No YYMMDD references exist outside `skills/kanban/` and `.kanban/`
+- File title/header patterns: `# YYYY-MM-DD-<subject>`, `## Research: YYYY-MM-DD-<subject>`
+- No YYYY-MM-DD references exist outside `skills/kanban/` and `.kanban/`
 
 ## Dependencies
 
@@ -48,9 +48,9 @@ Note: 260321-capture-flow and 260321-pr-trunk-skip also have active tickets in 0
 
 ## Hazards
 
-- **Self-referential rename**: `260321-date-format` is in the rename list. After TASK-002 runs, the working subject directory is `2026-03-21-date-format`. Subsequent tasks must reference the new path.
-- **02-todo subjects**: `260321-capture-flow` and `260321-pr-trunk-skip` have active tickets in `02-todo` (not just in archive). These dirs also need renaming — don't miss them.
-- **Relative paths in frontmatter**: `plan:` fields like `../../01-plan/260321-capture-flow/plan-capture-flow.md` must be updated after directory rename.
+- **Self-referential rename**: `2026-03-21-date-format` is in the rename list. After TASK-002 runs, the working subject directory is `2026-03-21-date-format`. Subsequent tasks must reference the new path.
+- **02-todo subjects**: `2026-03-21-capture-flow` and `2026-03-21-pr-trunk-skip` have active tickets in `02-todo` (not just in archive). These dirs also need renaming — don't miss them.
+- **Relative paths in frontmatter**: `plan:` fields like `../../01-plan/2026-03-21-capture-flow/plan-capture-flow.md` must be updated after directory rename.
 - **43 total markdown files touched** — methodical file-by-file edits required; no bulk sed (use Edit tool per file).
 
 ## Recommended Ticket Sequence
@@ -58,6 +58,6 @@ Note: 260321-capture-flow and 260321-pr-trunk-skip also have active tickets in 0
 1. **TASK-001** — TDD Red Phase: enumerate falsifiable criteria before any changes
 2. **TASK-002** — Rename all 11 .kanban/ subject directories via `mv`
 3. **TASK-003** — Update file content under .kanban/ (frontmatter, titles, cross-refs)
-4. **TASK-004** — Update all 9 command files (YYMMDD→YYYY-MM-DD, date command templates)
+4. **TASK-004** — Update all 9 command files (YYYY-MM-DD→YYYY-MM-DD, date command templates)
 5. **TASK-005** — Update SKILL.md directory structure diagram
 6. **TASK-006** — Version bump & changelog

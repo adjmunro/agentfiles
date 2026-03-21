@@ -1,7 +1,7 @@
 ---
-id: "260321-kanban-ux-hints/TASK-003"
-subject: "260321-kanban-ux-hints"
-plan: "../../01-plan/260321-kanban-ux-hints/plan-kanban-ux-hints.md"
+id: "2026-03-21-kanban-ux-hints/TASK-003"
+subject: "2026-03-21-kanban-ux-hints"
+plan: "../../01-plan/2026-03-21-kanban-ux-hints/plan-kanban-ux-hints.md"
 effort: low
 status: done
 created_at: "2026-03-21T00:00:00Z"
@@ -45,9 +45,9 @@ Once hints are reviewed and any updates committed, run the verification script f
 Read all 9 command files and evaluated each `argument-hint` against the command's actual argument behavior:
 
 1. **init.md** — IMPROVABLE
-   - Current: `[YYMMDD-<subject>] — optional subject name override; omit to auto-derive`
+   - Current: `[YYYY-MM-DD-<subject>] — optional subject name override; omit to auto-derive`
    - Issue: Hint emphasizes only the optional argument aspect but obscures init's primary purpose (creating the .kanban/ structure). Users may misunderstand what init does.
-   - Updated to: `[YYMMDD-<subject>] — initialise .kanban/ structure; optional subject override, omit to auto-derive`
+   - Updated to: `[YYYY-MM-DD-<subject>] — initialise .kanban/ structure; optional subject override, omit to auto-derive`
    - Why: Better conveys that init is an initialization command, with the subject argument as secondary/optional detail.
 
 2. **capture.md** — ACCURATE
@@ -66,9 +66,9 @@ Read all 9 command files and evaluated each `argument-hint` against the command'
    - Hint correctly shows TASK-NNN pattern and auto-select from in-review behavior. No changes.
 
 7. **pr.md** — IMPROVABLE
-   - Current: `[YYMMDD-<subject>] — subject to raise PR for; omit to auto-derive`
+   - Current: `[YYYY-MM-DD-<subject>] — subject to raise PR for; omit to auto-derive`
    - Issue: Phrase "raise PR for" is generic and doesn't hint at the full scope (comment handling, CI monitoring, pre-flight checks).
-   - Updated to: `[YYMMDD-<subject>] — subject for PR creation and review; omit to auto-derive`
+   - Updated to: `[YYYY-MM-DD-<subject>] — subject for PR creation and review; omit to auto-derive`
    - Why: "creation and review" better conveys that pr.md manages the full PR lifecycle, not just opening it.
 
 8. **cleanup.md** — ACCURATE

@@ -1,7 +1,7 @@
 ---
-id: "260321-pr-trunk-skip/TASK-004"
-subject: "260321-pr-trunk-skip"
-plan: "../../01-plan/260321-pr-trunk-skip/plan-pr-trunk-skip.md"
+id: "2026-03-21-pr-trunk-skip/TASK-004"
+subject: "2026-03-21-pr-trunk-skip"
+plan: "../../01-plan/2026-03-21-pr-trunk-skip/plan-pr-trunk-skip.md"
 effort: low
 status: done
 created_at: "2026-03-21T00:00:00Z"
@@ -24,7 +24,7 @@ consecutive_failures: 0
 
 ## Context
 
-Both `260321-capture-flow` and `260321-pr-trunk-skip` are scoped to `skills/kanban/` and both warrant a minor version bump (new behaviour). They ship together as v1.2.0. This ticket handles the bump and changelog entry for the pr-trunk-skip work; coordinate with the capture-flow TASK-006 to ensure only one 1.2.0 entry exists.
+Both `2026-03-21-capture-flow` and `2026-03-21-pr-trunk-skip` are scoped to `skills/kanban/` and both warrant a minor version bump (new behaviour). They ship together as v1.2.0. This ticket handles the bump and changelog entry for the pr-trunk-skip work; coordinate with the capture-flow TASK-006 to ensure only one 1.2.0 entry exists.
 
 Traced to: kanban skill versioning rules (minor bump for new feature).
 
@@ -42,11 +42,11 @@ Traced to: kanban skill versioning rules (minor bump for new feature).
 
 **Original plan vs. reality:**
 
-The original plan assumed that `260321-capture-flow` and `260321-pr-trunk-skip` would ship together as a single combined v1.2.0 minor bump. That plan was coherent at ticket-write time but the two subjects ran independently.
+The original plan assumed that `2026-03-21-capture-flow` and `2026-03-21-pr-trunk-skip` would ship together as a single combined v1.2.0 minor bump. That plan was coherent at ticket-write time but the two subjects ran independently.
 
 What actually happened:
 
-- `260321-capture-flow` shipped first and claimed **v1.2.0** ("Speak First") for its capture UX changes. That subject is already archived.
+- `2026-03-21-capture-flow` shipped first and claimed **v1.2.0** ("Speak First") for its capture UX changes. That subject is already archived.
 - TASK-002's builder handled the `pr.md` trunk-branch check and bumped to **v1.2.1** ("Branch Aware").
 - TASK-003's builder handled the companion `SKILL.md` docs addition and bumped to **v1.2.2** ("Both Doors").
 

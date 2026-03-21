@@ -1,4 +1,4 @@
-## Research: 260321-capture-flow
+## Research: 2026-03-21-capture-flow
 **Date**: 2026-03-21T00:00:00Z
 **Status**: Snapshot — may go stale. Verify before acting.
 

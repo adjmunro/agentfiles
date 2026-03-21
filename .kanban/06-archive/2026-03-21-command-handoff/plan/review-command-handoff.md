@@ -1,4 +1,4 @@
-# Review Checklist: 260321-command-handoff
+# Review Checklist: 2026-03-21-command-handoff
 
 Grep-verifiable acceptance criteria for TASK-002 through TASK-005.
 

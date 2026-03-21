@@ -1,4 +1,4 @@
-## Research: 260321-command-handoff
+## Research: 2026-03-21-command-handoff
 **Date**: 2026-03-21T00:00:00Z
 **Status**: Snapshot — may go stale. Verify before acting.
 
@@ -22,7 +22,7 @@ No test runner exists; this is a markdown agent-instruction system. TDD red phas
 
 **Session boundary checks** in capture.md (Phase 1) and plan.md (Phase 1) scan `.kanban/03-in-progress/` and `.kanban/04-in-review/` for tickets with a recent `claimed_at`. They have no current whitelist mechanism.
 
-**todo.md Session Boundary** (lines 33–54): argument resolver at line 37 extracts a `YYMMDD-*` pattern from `$ARGUMENTS`. It does NOT currently scan for active work sessions — it only checks for a verified plan file. The `from-plan-handoff` argument does not match `YYMMDD-*` and will fall through to subsequent resolution steps harmlessly.
+**todo.md Session Boundary** (lines 33–54): argument resolver at line 37 extracts a `YYYY-MM-DD-*` pattern from `$ARGUMENTS`. It does NOT currently scan for active work sessions — it only checks for a verified plan file. The `from-plan-handoff` argument does not match `YYYY-MM-DD-*` and will fall through to subsequent resolution steps harmlessly.
 
 **Clean completion signals**:
 - `capture.md`: implicit — reaching Phase 8 git commit without hitting a STOP
@@ -34,13 +34,13 @@ No test runner exists; this is a markdown agent-instruction system. TDD red phas
 - `capture.md`: new Phase 9 (handoff) inserts between existing Phase 8 (git commit) and Phase 9 (report, renumbered to Phase 10)
 - `plan.md`: new Phase 10 (handoff) inserts between existing Phase 9 (git commit) and Phase 10 (report, renumbered to Phase 11)
 
-**Argument passing**: `$ARGUMENTS` in todo.md first checks for `YYMMDD-*` match. `from-plan-handoff` does not match; it falls through silently. No code change needed to accept it — it just needs to not break anything (it won't). However, the plan (§3.3) requires an explicit whitelist. Add a check: "if argument contains `from-plan-handoff`, skip session boundary check and proceed to subject resolution."
+**Argument passing**: `$ARGUMENTS` in todo.md first checks for `YYYY-MM-DD-*` match. `from-plan-handoff` does not match; it falls through silently. No code change needed to accept it — it just needs to not break anything (it won't). However, the plan (§3.3) requires an explicit whitelist. Add a check: "if argument contains `from-plan-handoff`, skip session boundary check and proceed to subject resolution."
 
 **Discard sub-feature** lives entirely inside the plan.md handoff phase. It requires:
 1. Pre-flight scan of `.kanban/02-todo/` through `.kanban/06-archive/` for subject match
 2. Block + describe if tickets found
 3. AskUserQuestion requiring exact subject slug to confirm if clear
-4. `Bash` `rm -rf .kanban/01-plan/YYMMDD-<subject>/` on confirmed
+4. `Bash` `rm -rf .kanban/01-plan/YYYY-MM-DD-<subject>/` on confirmed
 
 ## Hazards
 

@@ -1,4 +1,4 @@
-## Research: 260321-kanban-ux-hints
+## Research: 2026-03-21-kanban-ux-hints
 **Date**: 2026-03-21T00:00:00Z
 **Status**: Snapshot — may go stale. Verify before acting.
 
@@ -48,15 +48,15 @@ description: Use when managing a software development project with a structured 
 
 | File | Current hint |
 |------|-------------|
-| init.md | `[YYMMDD-<subject>] — optional subject name override; omit to auto-derive` |
-| capture.md | `[YYMMDD-<subject>] — subject to capture; omit to auto-derive` |
-| plan.md | `[YYMMDD-<subject>] — subject to plan; omit to auto-derive` |
-| todo.md | `[YYMMDD-<subject>] — subject to break down; omit to auto-derive` |
-| work.md | `[YYMMDD-<subject>/TASK-NNN] — specific ticket path; omit to auto-select lowest unblocked` |
-| review.md | `[YYMMDD-<subject>/TASK-NNN] — specific ticket; omit to auto-select from 04-in-review` |
-| pr.md | `[YYMMDD-<subject>] — subject to raise PR for; omit to auto-derive` |
-| cleanup.md | `[YYMMDD-<subject>] — subject to archive; omit to auto-derive` |
-| next.md | `[YYMMDD-<subject>] — subject to work on; omit to list available subjects` |
+| init.md | `[YYYY-MM-DD-<subject>] — optional subject name override; omit to auto-derive` |
+| capture.md | `[YYYY-MM-DD-<subject>] — subject to capture; omit to auto-derive` |
+| plan.md | `[YYYY-MM-DD-<subject>] — subject to plan; omit to auto-derive` |
+| todo.md | `[YYYY-MM-DD-<subject>] — subject to break down; omit to auto-derive` |
+| work.md | `[YYYY-MM-DD-<subject>/TASK-NNN] — specific ticket path; omit to auto-select lowest unblocked` |
+| review.md | `[YYYY-MM-DD-<subject>/TASK-NNN] — specific ticket; omit to auto-select from 04-in-review` |
+| pr.md | `[YYYY-MM-DD-<subject>] — subject to raise PR for; omit to auto-derive` |
+| cleanup.md | `[YYYY-MM-DD-<subject>] — subject to archive; omit to auto-derive` |
+| next.md | `[YYYY-MM-DD-<subject>] — subject to work on; omit to list available subjects` |
 
 All look accurate. `work.md` and `review.md` correctly use the `TASK-NNN` path format since they operate at ticket granularity. Minor candidates for improvement: `pr.md` hint is generic ("raise PR for") — could be more informative.
 
