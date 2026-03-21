@@ -3,7 +3,7 @@ id: "260321-date-format/TASK-004"
 subject: "260321-date-format"
 plan: "../../01-plan/260321-date-format/plan-date-format.md"
 effort: medium
-status: in-review
+status: done
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T22:50:00Z"
 completed_at: "2026-03-21T23:00:00Z"
@@ -63,3 +63,18 @@ All 9 command files under `skills/kanban/commands/` updated to replace `YYMMDD` 
 **Verification:** `grep -r 'YYMMDD\|date +%y%m%d' skills/kanban/commands/` returns no matches.
 
 All ACs satisfied: Req 4.1, 4.2, 4.3, 6.1.
+
+## Review — 2026-03-22T00:00:00Z — PASS 100%
+
+| AC | Result | Evidence |
+|---|---|---|
+| 1. `grep -r 'YYMMDD' skills/kanban/commands/` returns no matches | PASS | No matches found |
+| 2. `grep -r 'date +%y%m%d' skills/kanban/commands/` returns no matches | PASS | No matches found |
+| 3. `date +%Y-%m-%d` matches in capture.md, plan.md, init.md only | PASS | Exactly those 3 files matched |
+| 4. All 9 command files contain YYYY-MM-DD | PASS | All 9 files confirmed via grep files_with_matches |
+| 5. Commit message templates use YYYY-MM-DD-`<subject>` format | PASS | Spot-checked cleanup.md, init.md, plan.md, capture.md, todo.md, work.md, pr.md |
+| 6. Example subject slugs use YYYY-MM-DD- prefix | PASS | Confirmed across all 9 files |
+
+Score: 6/6 = **100%** — threshold met (≥95%).
+
+Reviewers: Echo (Examiner) + Arden (Critic)
