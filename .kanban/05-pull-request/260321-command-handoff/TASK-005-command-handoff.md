@@ -50,3 +50,14 @@ Traced to plan §3.3 and §3.4.
 - Verification: `grep -c 'from-plan-handoff' skills/kanban/commands/todo.md` returns 1
 - No other changes made to todo.md or any other file
 - All acceptance criteria met
+
+## Review — 2026-03-21T00:00Z — PASS 100%
+
+| AC | Evidence | Status |
+|----|----------|--------|
+| `grep -c 'from-plan-handoff' skills/kanban/commands/todo.md` returns 1 | todo.md:35 — grep count = 1 | Satisfied |
+| Session Boundary section states: if `from-plan-handoff` present, skip check and proceed to subject resolution | todo.md:35, under `## Session Boundary` heading | Satisfied |
+| No other changes beyond the from-plan-handoff whitelist | Full file reviewed — only line 35 modified; all phases and YYMMDD-* logic intact | Satisfied |
+| YYMMDD-* argument extraction logic unchanged | todo.md:39 — priority 1 extraction rule unmodified | Satisfied |
+
+Test results: No test framework detected — skipping test execution.
