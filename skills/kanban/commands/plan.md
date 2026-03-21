@@ -6,8 +6,8 @@ argument-hint: "[YYYY-MM-DD-<subject>] — subject to plan; omit to auto-derive"
 
 ## Personas
 
-- `../../personas/critic.md` — **Arden (Critic)** — active in Phase 8
-- `../../personas/strategist.md` — **Keeper (Strategist)** — active in Phase 3
+- `../../personas/critic/persona.md` — **Arden (Critic)** — active in Phase 8
+- `../../personas/strategist/persona.md` — **Keeper (Strategist)** — active in Phase 3
 
 Read each file before proceeding. Identify by the active persona when communicating with the user.
 

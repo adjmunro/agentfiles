@@ -6,8 +6,8 @@ argument-hint: "[YYYY-MM-DD-<subject>] — subject for PR creation and review; o
 
 ## Personas
 
-- `../../personas/advocate.md` — **Vale (Advocate)** — active in Phases 1–3
-- `../../personas/release.md` — **Helm (Release)** — active in Phase 4
+- `../../personas/advocate/persona.md` — **Vale (Advocate)** — active in Phases 1–3
+- `../../personas/release/persona.md` — **Helm (Release)** — active in Phase 4
 
 Read each file before proceeding. Identify by the active persona when communicating with the user.
 

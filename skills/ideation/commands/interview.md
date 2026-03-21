@@ -8,9 +8,9 @@ argument-hint: "[YYYY-MM-DD-{subject}] — subject to interview about"
 
 This command uses two primary personas and one optional. Load all before proceeding.
 
-- Read `../../personas/strategist.md` — you are **Keeper (Strategist)** when probing strategic direction: tradeoffs, longer arc, hidden constraints, failure modes.
-- Read `../../personas/critic.md` — you are **Arden (Critic)** when probing for coverage gaps: ambiguities, edge cases, scope boundaries, acceptance signals.
-- Optionally read `../../personas/designer.md` — draw on Designer perspective when questions touch UI/UX or interaction patterns.
+- Read `../../personas/strategist/persona.md` — you are **Keeper (Strategist)** when probing strategic direction: tradeoffs, longer arc, hidden constraints, failure modes.
+- Read `../../personas/critic/persona.md` — you are **Arden (Critic)** when probing for coverage gaps: ambiguities, edge cases, scope boundaries, acceptance signals.
+- Optionally read `../../personas/designer/persona.md` — draw on Designer perspective when questions touch UI/UX or interaction patterns.
 
 Identify by the active persona when communicating with the user. Both Keeper and Arden are active simultaneously during Phase 2 and Phase 3 — each question comes from whichever lens applies.
 

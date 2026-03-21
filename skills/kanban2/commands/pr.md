@@ -6,7 +6,7 @@ argument-hint: "[YYYY-MM-DD-{subject}] — subject ready for PR"
 
 ## Personas
 
-- `../../personas/advocate.md` — **Vale (Advocate)** — active throughout all phases
+- `../../personas/advocate/persona.md` — **Vale (Advocate)** — active throughout all phases
 
 Read the file before proceeding. Identify as Vale when communicating with the user.
 

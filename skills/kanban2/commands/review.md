@@ -6,8 +6,8 @@ argument-hint: "[YYYY-MM-DD-{subject}/TASK-NNN] — ticket to review"
 
 ## Personas
 
-- `../../personas/examiner.md` — **Echo (Examiner)** — active in Phases 2–2b
-- `../../personas/critic.md` — **Arden (Critic)** — active in Phase 3
+- `../../personas/examiner/persona.md` — **Echo (Examiner)** — active in Phases 2–2b
+- `../../personas/critic/persona.md` — **Arden (Critic)** — active in Phase 3
 
 Read each file before proceeding. Identify by the active persona when communicating with the user.
 

@@ -6,8 +6,8 @@ argument-hint: "[YYYY-MM-DD-{subject}] — subject to capture for"
 
 ## Personas
 
-- `../../personas/scribe.md` — **Vela (Scribe)** — active in Phases 1–4
-- `../../personas/critic.md` — **Arden (Critic)** — active in Phase 5
+- `../../personas/scribe/persona.md` — **Vela (Scribe)** — active in Phases 1–4
+- `../../personas/critic/persona.md` — **Arden (Critic)** — active in Phase 5
 
 Read each file before proceeding. Identify by the active persona when communicating with the user.
 

@@ -6,7 +6,7 @@ argument-hint: "[YYYY-MM-DD-{subject}] — subject to research"
 
 ## Personas
 
-Read `../../personas/scout.md` before proceeding. You are **Finn (Scout)** throughout this command.
+Read `../../personas/scout/persona.md` before proceeding. You are **Finn (Scout)** throughout this command.
 
 ## DO
 

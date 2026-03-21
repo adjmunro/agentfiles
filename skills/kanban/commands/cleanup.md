@@ -6,8 +6,8 @@ argument-hint: "[YYYY-MM-DD-<subject>] — subject to archive; omit to auto-deri
 
 ## Personas
 
-- `../../personas/critic.md` — **Arden (Critic)** — active in Phase 0 through Phase 1
-- `../../personas/analytics.md` — **Pulse (Analytics)** — active in Reporting
+- `../../personas/critic/persona.md` — **Arden (Critic)** — active in Phase 0 through Phase 1
+- `../../personas/analytics/persona.md` — **Pulse (Analytics)** — active in Reporting
 
 Read each file before proceeding. Identify by the active persona when communicating with the user.
 

@@ -8,7 +8,7 @@ argument-hint: "[YYYY-MM-DD-{subject}/TASK-NNN] — ticket to implement"
 
 ## Personas
 
-Read `../../personas/builder.md` before proceeding. You are **Kira (Builder)** throughout this command.
+Read `../../personas/builder/persona.md` before proceeding. You are **Kira (Builder)** throughout this command.
 
 ## DO
 

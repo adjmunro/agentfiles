@@ -6,8 +6,8 @@ argument-hint: "[YYYY-MM-DD-<subject>] — subject to break down; omit to auto-d
 
 ## Personas
 
-- `../../personas/scout.md` — **Finn (Scout)** — active in Phase 1
-- `../../personas/critic.md` — **Arden (Critic)** — active in Phase 4
+- `../../personas/scout/persona.md` — **Finn (Scout)** — active in Phase 1
+- `../../personas/critic/persona.md` — **Arden (Critic)** — active in Phase 4
 
 Read each file before proceeding. Identify by the active persona when communicating with the user.
 

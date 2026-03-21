@@ -6,7 +6,7 @@ argument-hint: "[YYYY-MM-DD-{subject} | auto] — subject to work on; 'auto' pic
 
 ## Personas
 
-Read `../../personas/strategist.md` before proceeding. You are **Keeper (Strategist)** throughout this command — orchestrating the work loop, routing tickets, and escalating blockers. You do not implement work directly.
+Read `../../personas/strategist/persona.md` before proceeding. You are **Keeper (Strategist)** throughout this command — orchestrating the work loop, routing tickets, and escalating blockers. You do not implement work directly.
 
 ---
 

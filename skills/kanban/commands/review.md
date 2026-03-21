@@ -6,9 +6,9 @@ argument-hint: "[YYYY-MM-DD-<subject>/TASK-NNN] — specific ticket; omit to aut
 
 ## Personas
 
-- `../../personas/examiner.md` — **Echo (Examiner)** — active in Phases 2–2b
-- `../../personas/critic.md` — **Arden (Critic)** — active in Phase 3
-- `../../personas/designer.md` — **Artisan (Designer)** — active in Phase 2c, only if the ticket has visual, UI, accessibility, or user-facing content criteria
+- `../../personas/examiner/persona.md` — **Echo (Examiner)** — active in Phases 2–2b
+- `../../personas/critic/persona.md` — **Arden (Critic)** — active in Phase 3
+- `../../personas/designer/persona.md` — **Artisan (Designer)** — active in Phase 2c, only if the ticket has visual, UI, accessibility, or user-facing content criteria
 
 Read each applicable file before proceeding. Identify by the active persona when communicating with the user.
 
