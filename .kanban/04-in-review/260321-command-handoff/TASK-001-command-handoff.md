@@ -3,10 +3,10 @@ id: "260321-command-handoff/TASK-001"
 subject: "260321-command-handoff"
 plan: "../../01-plan/260321-command-handoff/plan-command-handoff.md"
 effort: low
-status: todo
+status: done
 created_at: "2026-03-21T00:00:00Z"
-claimed_at: ~
-completed_at: ~
+claimed_at: "2026-03-21T00:00:00Z"
+completed_at: "2026-03-21T00:00:00Z"
 stale_after_hours: 4
 depends_on: []
 spawned_tickets: []
@@ -46,3 +46,15 @@ The project is a markdown agent-instruction system with no test runner. "Red" me
 
 ---
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log
+
+### 2026-03-21 TDD Red Phase Baseline Checks
+
+Confirmed all planned changes absent:
+- `grep -c 'Phase 9' skills/kanban/commands/capture.md`: 0 ✓
+- `grep -c 'Phase 10' skills/kanban/commands/plan.md`: 0 ✓
+- `grep -c 'from-plan-handoff' skills/kanban/commands/todo.md`: 0 ✓
+- `grep -c 'Discard' skills/kanban/commands/plan.md`: 0 ✓
+
+Created review checklist at `.kanban/01-plan/260321-command-handoff/review-command-handoff.md` with 10 grep-verifiable acceptance criteria covering capture handoff (Phase 9–10, Recommended label), plan handoff (Phase 10–11, Recommended label, from-plan-handoff boundary), plan Discard option, and supporting features.

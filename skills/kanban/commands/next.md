@@ -11,7 +11,6 @@ argument-hint: "[YYMMDD-<subject>] — subject to work on; omit to list availabl
 - Select the lowest-numbered unblocked ticket from `02-todo/`
 - Detect stale in-progress tickets before starting any loop
 - Track consecutive identical errors and escalate before looping again
-- Ask the user before continuing to the next ticket after a PASS
 - Announce when all tickets are in `05-pull-request/` and the subject is ready for `/kanban-pr`
 
 ## DO NOT
@@ -72,9 +71,7 @@ argument-hint: "[YYMMDD-<subject>] — subject to work on; omit to list availabl
            │
     ┌──────▼────────────────────────────────┐
     │  Report result                        │
-    │  Continue with next ticket? (Y/n)     │
-    │  yes → Phase 2                        │
-    │  no  → stop, report progress summary  │
+    │  auto → Phase 2 (next ticket)         │
     │  no more 02-todo → announce PR-ready  │
     └───────────────────────────────────────┘
 ```
@@ -158,9 +155,7 @@ c. Read the review outcome (PASS or FAIL) from the ticket's frontmatter or revie
 
 **On PASS:**
 - Report the result clearly.
-- Ask via the ask-user tool: "Continue with next ticket in YYMMDD-<subject>? (Y/n)"
-- If yes → return to Phase 2 and select the next unblocked ticket.
-- If no → stop and print a progress summary (tickets completed, tickets remaining).
+- Return to Phase 2 and select the next unblocked ticket automatically.
 - If no tickets remain in `02-todo/` and all are in `05-pull-request/`, announce:
   > "All tickets in YYMMDD-<subject> are in 05-pull-request. This subject is ready for /kanban-pr."
 
