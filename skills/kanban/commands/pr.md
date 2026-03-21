@@ -42,6 +42,31 @@ Check these directories for any tickets under the subject folder:
 
 If any tickets remain in those stages, STOP. This command must not run until the full pipeline has been completed for all existing tickets.
 
+**3. Check for trunk branch.**
+
+Run `git branch --show-current` and compare the result against the fixed list: `main`, `master`, `develop`, `trunk`.
+
+- If the current branch is **not** on this list, this check passes silently — continue to Derive Subject.
+- If the current branch **is** on this list, proceed with the protection check below.
+
+**Trunk branch detected — query remote branch protection:**
+
+Derive `{owner}` and `{repo}` from `git remote get-url origin`. Then run:
+
+```
+gh api repos/{owner}/{repo}/branches/{branch}/protection
+```
+
+Interpret the result:
+
+- **Protected** (API returns protection rules): Print — "Branch is protected — proceeding with PR flow." Continue to Phase 1 as normal.
+- **Unprotected** (API returns 404 or indicates no protection rules): Print — "Branch is unprotected — skipping draft PR." Make a git commit:
+  ```
+  git commit --allow-empty -m "kanban(pr): skip draft PR for YYMMDD-<subject> — trunk branch unprotected"
+  ```
+  Then instruct: "Proceed to `/kanban-cleanup`." Do not continue to Phase 1.
+- **Check failed** (any other error — authentication failure, network failure, unexpected API response): STOP. Print a clear message describing the error. Ask the user: "Branch protection check failed. Skip the PR and go directly to cleanup, or raise a PR anyway?" Do not proceed until the user answers.
+
 ---
 
 ## Derive Subject

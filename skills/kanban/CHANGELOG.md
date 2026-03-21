@@ -4,6 +4,14 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## 1.2.1 — Branch Aware (2026-03-21)
+
+The PR command now checks whether you're on a trunk branch before opening a draft PR. Protected trunks proceed normally; unprotected trunks skip the PR step and route directly to cleanup with an audit-trail commit. If the protection check fails entirely, the command stops and asks rather than assuming.
+
+- Added Precondition Check 3 to `pr.md`: detects trunk branches (`main`, `master`, `develop`, `trunk`) before Phase 1
+- Queries `gh api repos/{owner}/{repo}/branches/{branch}/protection` to determine protection status
+- Three-way outcome: protected → normal flow; unprotected → skip with audit commit; check failed → stop and ask user
+
 ## 1.2.0 — Speak First (2026-03-21)
 
 Capture starts with your thoughts, not a form. Phase 4 opens with a single framing line and waits for you to write freely before asking any questions. The agent reads what you wrote, then asks targeted clarifying questions informed by what you actually said — no templates, no front-loaded structure.

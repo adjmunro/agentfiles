@@ -3,10 +3,10 @@ id: "260321-pr-trunk-skip/TASK-002"
 subject: "260321-pr-trunk-skip"
 plan: "../../01-plan/260321-pr-trunk-skip/plan-pr-trunk-skip.md"
 effort: medium
-status: in-progress
+status: in-review
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T21:20:00Z"
-completed_at: ~
+completed_at: "2026-03-21T21:30:00Z"
 stale_after_hours: 4
 depends_on:
   - "TASK-001"
@@ -52,3 +52,9 @@ Traced to: Req 1.1, 1.2, 2.1, 2.2, 2.3, 2.4, 3.1, 3.2.
 
 ---
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log — 2026-03-21T21:20:00Z
+
+Added Precondition Check 3 — Trunk Branch to `skills/kanban/commands/pr.md`.
+
+The new block was inserted immediately after the existing Precondition Check 2 (all tickets must have reached `05-pull-request/`) and immediately before the `## Derive Subject` section. It instructs the agent to run `git branch --show-current` and test the result against the hardcoded list `main`, `master`, `develop`, `trunk`. If the branch is not on the list the check passes silently and execution falls through to Derive Subject. If the branch is on the list, the agent derives `{owner}/{repo}` from `git remote get-url origin` and calls `gh api repos/{owner}/{repo}/branches/{branch}/protection`. A protected result prints a confirmation message and continues to Phase 1; a 404/unprotected result prints a skip message, emits an empty commit with the message `kanban(pr): skip draft PR for YYMMDD-<subject> — trunk branch unprotected`, and routes to `/kanban-cleanup`; any other error causes a hard stop and asks the user whether to skip or raise a PR. Phases 1–4 are unchanged.
