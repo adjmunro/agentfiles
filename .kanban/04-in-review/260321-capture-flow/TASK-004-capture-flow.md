@@ -3,10 +3,10 @@ id: "260321-capture-flow/TASK-004"
 subject: "260321-capture-flow"
 plan: "../../01-plan/260321-capture-flow/plan-capture-flow.md"
 effort: medium
-status: in-progress
+status: in-review
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T09:00:00Z"
-completed_at: "2026-03-21T09:15:00Z"
+completed_at: "2026-03-21T09:30:00Z"
 stale_after_hours: 4
 depends_on:
   - "TASK-003"
@@ -67,3 +67,7 @@ Phases 5–9 and all other content in capture.md are unchanged. No version bump 
 **Score:** (4 + 0.5) / 5 × 100 = 90%
 
 **Required fix:** Either (a) remove the quoted examples from the prohibition sentence so the grep produces no matches, or (b) revise the acceptance criterion to reflect that the grep will match quoted negative examples. The implementation intent is correct; the criterion and implementation are in tension.
+
+## Work Log — 2026-03-21 (Fix Applied)
+
+Fixed the grep false-positive by removing inline quoted examples from the Phase 4 prohibition sentence in `skills/kanban/commands/capture.md`. Changed "not as labeled sections or structured headers. Patterns like 'My read:', 'I'd recommend:', or 'Reasoning:' are prohibited." to "not as structured sections or formatted headers." The prohibition remains clear — no labeled sections, no structured formats — but the quoted examples that triggered the grep match have been removed. The semantic intent is unchanged; the grep verification now passes: `grep -n 'labeled\|My read\|I.d recommend' skills/kanban/commands/capture.md` returns no matches.
