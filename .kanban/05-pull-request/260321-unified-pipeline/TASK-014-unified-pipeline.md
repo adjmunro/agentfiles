@@ -3,10 +3,10 @@ id: "260321-unified-pipeline/TASK-014"
 subject: "260321-unified-pipeline"
 plan: "../../01-plan/260321-unified-pipeline/plan-unified-pipeline.md"
 effort: medium
-status: in_review
+status: done
 created_at: "2026-03-22T00:00:00Z"
 claimed_at: "2026-03-22T00:00:00Z"
-completed_at: ~
+completed_at: "2026-03-22T00:00:00Z"
 stale_after_hours: 4
 depends_on:
   - "TASK-009"
@@ -69,3 +69,18 @@ Command model: `claude-haiku-4-5-20251001` (low-tier, straightforward file opera
   - Phase 5 — Git Commit: `kanban(cleanup): archive {subject}`
 - Verified all 9 ACs: PASS
 - Moved ticket `03-in-progress/` → `04-in-review/`, set `status: in_review`
+
+**2026-03-22T00:00:00Z** — `kanban-review` (claude-sonnet-4-6)
+
+- Reviewed `skills/kanban2/commands/cleanup.md` against all 9 acceptance criteria
+- Score: 9/9 = 100% — PASS (threshold 95%)
+  - AC1 PASS: file exists
+  - AC2 PASS: `model:` field present in frontmatter
+  - AC3 PASS: `allowed-tools:` field present in frontmatter
+  - AC4 PASS: `08-done/` referenced as completion signal
+  - AC5 PASS: `.kanban/.archive/` archive path referenced
+  - AC6 PASS: `YYYY-MM-DD` date-prefixed archive dir format present
+  - AC7 PASS: empty stage dir cleanup documented (Phase 3 uses `rmdir`)
+  - AC8 PASS: `00-assets/` preservation noted
+  - AC9 PASS: git commit step present (Phase 5)
+- Moved ticket `04-in-review/` → `05-pull-request/`, set `status: done`, `completed_at: "2026-03-22T00:00:00Z"`
