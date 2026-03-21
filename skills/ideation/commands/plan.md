@@ -1,0 +1,197 @@
+---
+model: claude-opus-4-6
+allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
+argument-hint: "[YYYY-MM-DD-{subject}] — subject to plan"
+---
+
+## Personas
+
+This command uses two personas. Load both files before proceeding.
+
+- Read `../../kanban/personas/critic.md` — you are **Arden (Critic)** during Phase 3 (audit gate)
+- Read `../../kanban/personas/strategist.md` — you are **Keeper (Strategist)** during Phase 2 (draft plan)
+
+Identify by the active persona when communicating with the user.
+
+## DO
+
+- Read ALL session blocks in `00-input-{subject}.md` — not just the first one
+- Draft `02-plan-{subject}.md` covering 100% of captured input and interview answers
+- Auto-fix ALL audit gaps immediately — never ask permission to fix
+- Append the structured audit block to `02-plan-{subject}.md` (never skip)
+- Write `02-plan-{subject}.md` in place (overwrite/update, not append-only)
+- Commit after the phase completes
+
+## DO NOT
+
+- Stop at the first session block in `00-input-{subject}.md` — read everything
+- Ask permission to fix audit gaps — fix them immediately and silently
+- Skip the audit gate — it is mandatory
+- Write a plan without first loading the input file
+- Touch files outside the subject's `.kanban/YYYY-MM-DD-{subject}/` directory
+
+---
+
+## Phase 1 — Load Context
+
+Determine the subject slug from `$ARGUMENTS`. If omitted, derive it from the current session context (git worktree path, branch name, or recent conversation).
+
+Construct the input path:
+
+```
+.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md
+```
+
+Read the file in full. This file may contain multiple session blocks:
+- Initial capture block (verbatim user input)
+- One or more `## Interview YYYYMMDD-HH:MM` blocks (Q&A from the interview phase)
+- Any loop-back append blocks from prior "add more" cycles
+
+Read ALL blocks before proceeding.
+
+**STOP:** If the file does not exist, print:
+
+> Cannot run plan: `00-input-{subject}.md` does not exist. Run capture (Step 1) and interview (Step 3) first.
+
+Do not proceed.
+
+**STOP:** If the file contains no meaningful content (empty or stub only), print:
+
+> Cannot run plan: `00-input-{subject}.md` contains no input. Run capture (Step 1) first.
+
+Do not proceed.
+
+---
+
+## Phase 2 — Draft Plan
+
+**Active persona: Keeper (Strategist)**
+
+Using all session blocks from `00-input-{subject}.md`, draft `02-plan-{subject}.md` with exactly this structure:
+
+```markdown
+## Intent
+
+[Why this is being built — motivation, goals, and outcomes traced from the user's input. 1–3 sentences maximum.]
+
+## Requirements
+
+[Numbered requirements using a two-level scheme: 1.1, 1.2, 2.1, 2.2, etc. Group logically by theme or domain. Every requirement must be traceable to a specific phrase or item from the input or interview answers.]
+
+## Constraints
+
+[Hard limits, non-negotiables, and scope boundaries. Things the implementation must not violate or exceed. Include platform requirements, compatibility targets, and performance floors if stated.]
+
+## Out of Scope
+
+[What will NOT be built. Explicitly excluded features, integrations, or concerns. Deferred work belongs here, not in Requirements.]
+```
+
+Rules:
+- Requirements use two-level numbering: `1.1`, `1.2`, `2.1`, etc.
+- Each requirement is traceable to the input — if it can't be traced, it doesn't belong
+- Group requirements logically (e.g., by functional area, workflow step, or concern)
+- Constraints are hard limits only — preferences and recommendations go in Requirements
+- Out of Scope is explicit — if something is not mentioned, add a note that it's out of scope if there's any ambiguity
+
+Write the drafted plan to:
+
+```
+.kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md
+```
+
+---
+
+## Phase 3 — Critic Audit Gate (Step 5)
+
+**Active persona: Arden (Critic)**
+
+**Threshold: 95%.** This is not a formality. Find the gaps.
+
+### Step A — Enumerate Input
+
+Read `00-input-{subject}.md` in full (all session blocks). Break all content into a numbered list of discrete, verifiable items. Every stated requirement, constraint, goal, contextual detail, interview question answer, and decision made during the interview is a separate item. Be granular — split compound items.
+
+### Step B — Map Input to Plan
+
+Build a table mapping each input item to the plan requirement(s) that cover it:
+
+| # | Item (from input) | Plan Section | Status | Notes |
+|---|-------------------|--------------|--------|-------|
+
+Classify each item:
+- **Full** — addressed in the plan with sufficient detail to act on
+- **Partial** — mentioned but missing detail, context, or specificity
+- **Missing** — does not appear in the plan at all
+
+### Step C — Score
+
+```
+score = (full + 0.5 × partial) / total × 100
+```
+
+### Step D — Auto-Fix All Gaps
+
+For every Partial and Missing item: update `02-plan-{subject}.md` immediately to cover it.
+
+**Do NOT ask for permission. Do NOT skip any item. Do NOT flag gaps without fixing them.**
+
+Add new requirement entries, expand vague constraints, strengthen partial items, or extend the Out of Scope section as needed. Every gap must be resolved.
+
+### Step E — Rescore
+
+After all fixes are applied, recalculate the score. All items must reach Full status.
+
+### Step F — Append Audit Block
+
+Append the following structured block to `02-plan-{subject}.md`. Do not overwrite any existing content — this is always appended.
+
+```markdown
+---
+
+## Audit: input → plan — PASS
+
+**Date**: YYYY-MM-DDTHH:MM:SSZ  **Threshold**: 95%
+
+| # | Item | Status | Notes |
+|---|------|--------|-------|
+| 1 | [input item] | Full | [plan section reference] |
+| 2 | [input item] | Full | [was Partial, fixed in §X.Y] |
+
+- Full: N, Partial: N, Missing: N — Total: N
+- Score: (N + 0.5×N) / N × 100 = X%
+
+### Fixes Applied
+
+- [Describe each auto-fix made, or "None — all items were Full on first pass"]
+```
+
+Replace `PASS` with `FAIL` only if the audit score is still below 95% after all fixes are applied. A FAIL result means the auto-fix step did not fully resolve all gaps — diagnose and fix before committing.
+
+**STOP:** If the audit result is FAIL after fixes, diagnose which items remain unresolvable and report to the user before proceeding.
+
+---
+
+## Phase 4 — Git Commit
+
+Check whether the project is inside a git repository. Use `Bash` with `git rev-parse --is-inside-work-tree`.
+
+If inside a git repo:
+1. Stage `02-plan-{subject}.md`.
+2. Commit with the message: `kanban(plan): draft plan for {subject}`
+
+If not inside a git repo: skip this phase silently.
+
+---
+
+## Phase 5 — Report
+
+Report to the user:
+
+- The subject and plan file path
+- The audit result (PASS/FAIL, score, item counts: Full / Partial / Missing / Total)
+- Any auto-fixes applied during the audit
+- The git commit message (if a commit was made)
+- What comes next: Step 6 (Validate with User) — ask if they are satisfied with the plan, want to add more, or want to abandon
+
+Keep the report concise. The user should be able to confirm the plan is verified and know what to do next.
