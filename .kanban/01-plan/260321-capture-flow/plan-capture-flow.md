@@ -73,3 +73,26 @@ The current capture command opens Phase 4 with a multi-choice question before th
 
 ### Fixes Applied
 - None.
+
+## Audit: plan → todo — PASS
+**Date**: 2026-03-21T00:00:00Z  **Threshold**: 95%
+
+| # | Requirement | Ticket(s) | Status | Notes |
+|---|------------|-----------|--------|-------|
+| 1 | 1.1 Single framing line | TASK-001, TASK-002 | Full | |
+| 2 | 1.2 Wait for free-form text | TASK-001, TASK-002 | Full | |
+| 3 | 1.3 Remove opening multi-choice | TASK-001, TASK-002 | Full | |
+| 4 | 2.1 Read/process before questioning | TASK-001, TASK-003 | Full | |
+| 5 | 2.2 Questions from gaps, not template | TASK-001, TASK-003 | Full | |
+| 6 | 3.1 Natural-prose preamble per question | TASK-001, TASK-004 | Full | |
+| 7 | 3.2 Agent's own voice, no labeled sections | TASK-001, TASK-004 | Full | |
+| 8 | 3.3 Research at agent's discretion | TASK-001, TASK-004 | Full | |
+| 9 | 4.1 No hard cap | TASK-001, TASK-003 | Full | |
+| 10 | 4.2 Capture only, plan.md untouched | TASK-005, TASK-006 | Full | |
+| 11 | 4.3 Phases 5–9 unchanged | TASK-005 | Full | |
+
+- Full: 11, Partial: 0, Missing: 0 — Total: 11
+- Score: (11 + 0.5×0) / 11 × 100 = **100%**
+
+### Fixes Applied
+- None.
