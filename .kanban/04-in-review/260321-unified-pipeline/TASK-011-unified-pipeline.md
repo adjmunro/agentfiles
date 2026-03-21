@@ -3,10 +3,10 @@ id: "260321-unified-pipeline/TASK-011"
 subject: "260321-unified-pipeline"
 plan: "../../01-plan/260321-unified-pipeline/plan-unified-pipeline.md"
 effort: medium
-status: todo
+status: in_review
 created_at: "2026-03-22T00:00:00Z"
-claimed_at: ~
-completed_at: ~
+claimed_at: "2026-03-22T00:00:00Z"
+completed_at: "2026-03-22T00:00:00Z"
 stale_after_hours: 4
 depends_on:
   - "TASK-009"
@@ -56,3 +56,23 @@ Command model: `claude-haiku-4-5-20251001` (overridden by ticket `effort` field 
 
 ---
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log — 2026-03-22T00:00:00Z
+
+Implemented `skills/kanban2/commands/work.md` — the implementation command for the kanban2 skill.
+
+**What was done:**
+- Created `skills/kanban2/commands/work.md` with all required frontmatter: `model: claude-haiku-4-5-20251001`, `allowed-tools`, `argument-hint`
+- Structured command around 10 phases adapted from v1's work.md, with all paths updated to kanban2's subject-centric layout
+- Phase 1 (Session Boundary): added `from-ideation-handoff` passthrough check and in-progress conflict detection — WHY: kanban2 is work-only; active ticket conflicts must be surfaced before claiming new work to avoid split-brain state
+- Phase 2 (Ticket Selection): targets `04-todo/` (not v1's `02-todo/`) and moves claimed ticket to `05-in-progress/` — WHY: Req 3.2 requires the new directory structure; picking from `02-todo/` would be a hard regression
+- Phase 3 (Implementation): explicit plan-layer isolation section listing `00-input-*`, `01-research-*`, `02-plan-*`, `00-assets/`, `03-refinement/` as never-touch paths — WHY: Req 3.4; these belong to ideation and kanban2 must never corrupt them
+- Phase 3 (Implementation): WHY-comment requirement documented as non-negotiable with examples — WHY: Req 4.1 carry-forward from v1; omitting WHY-comments is a defect
+- Phase 4 (Stale Detection): implemented `stale_after_hours` check with continue/reset options — WHY: Req 4.1; interrupted sessions need explicit user confirmation before resuming
+- Phase 6 (Work Log): append-only zone instruction with cross-agent memory note — WHY: the ticket file is the only persistent state across sessions; destroying history breaks forensics
+- Phase 8 (Move to Review): targets `06-in-review/` (not v1's `04-in-review/`) — WHY: Req 3.2 path alignment
+- Consecutive Failure Escalation section: `consecutive_failures >= 2` warns, `>= 3` sends desktop notification and escalation block — WHY: Req 4.1 carry-forward; recurring same-gap failures need escalation before another failed attempt
+
+**All 10 ACs verified passing** via grep checks before moving to in-review.
+
+**No out-of-scope work discovered.** No new tickets spawned.
