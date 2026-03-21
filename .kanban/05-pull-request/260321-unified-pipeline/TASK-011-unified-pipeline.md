@@ -3,7 +3,7 @@ id: "260321-unified-pipeline/TASK-011"
 subject: "260321-unified-pipeline"
 plan: "../../01-plan/260321-unified-pipeline/plan-unified-pipeline.md"
 effort: medium
-status: in_review
+status: done
 created_at: "2026-03-22T00:00:00Z"
 claimed_at: "2026-03-22T00:00:00Z"
 completed_at: "2026-03-22T00:00:00Z"
