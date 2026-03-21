@@ -3,9 +3,9 @@ id: "260321-pr-trunk-skip/TASK-002"
 subject: "260321-pr-trunk-skip"
 plan: "../../01-plan/260321-pr-trunk-skip/plan-pr-trunk-skip.md"
 effort: medium
-status: todo
+status: in-progress
 created_at: "2026-03-21T00:00:00Z"
-claimed_at: ~
+claimed_at: "2026-03-21T21:20:00Z"
 completed_at: ~
 stale_after_hours: 4
 depends_on:
