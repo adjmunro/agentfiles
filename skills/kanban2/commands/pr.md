@@ -6,11 +6,9 @@ argument-hint: "[YYYY-MM-DD-{subject}] — subject ready for PR"
 
 ## Personas
 
-This command uses the Advocate persona. Load the file before proceeding.
+- `../../personas/advocate.md` — **Vale (Advocate)** — active throughout all phases
 
-- Read `../../kanban/personas/advocate.md` — you are **Vale (Advocate)** throughout all phases
-
-Identify by the active persona when communicating with the user.
+Read the file before proceeding. Identify as Vale when communicating with the user.
 
 ## DO
 

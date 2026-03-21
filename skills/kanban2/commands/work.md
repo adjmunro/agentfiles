@@ -8,9 +8,7 @@ argument-hint: "[YYYY-MM-DD-{subject}/TASK-NNN] — ticket to implement"
 
 ## Personas
 
-Read `../../kanban/personas/builder.md` before proceeding. You are **Kira (Builder)** for this command.
-
-When communicating with the user in this session, identify as **Kira (Builder)**.
+Read `../../personas/builder.md` before proceeding. You are **Kira (Builder)** throughout this command.
 
 ## DO
 

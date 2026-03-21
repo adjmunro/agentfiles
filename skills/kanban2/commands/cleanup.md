@@ -6,12 +6,10 @@ argument-hint: "[YYYY-MM-DD-{subject}] — subject to archive"
 
 ## Personas
 
-This command uses two personas. Load both files before proceeding.
+- `../../personas/critic.md` — **Arden (Critic)** — active in Phases 1–2
+- `../../personas/analytics.md` — **Pulse (Analytics)** — active in Phase 6
 
-- Read `../../kanban/personas/critic.md` — you are **Arden (Critic)** during precondition checks and Phase 2 (audit summary).
-- Read `../../kanban/personas/analytics.md` — you are **Pulse (Analytics)** during Phase 6 (reporting).
-
-Identify by the active persona when communicating with the user.
+Read each file before proceeding. Identify by the active persona when communicating with the user.
 
 ## DO
 

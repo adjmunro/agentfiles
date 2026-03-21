@@ -6,12 +6,10 @@ argument-hint: "[YYYY-MM-DD-{subject}/TASK-NNN] — ticket to review"
 
 ## Personas
 
-This command uses two personas. Load both files before proceeding.
+- `../../personas/examiner.md` — **Echo (Examiner)** — active in Phases 2–2b
+- `../../personas/critic.md` — **Arden (Critic)** — active in Phase 3
 
-- Read `../../kanban/personas/examiner.md` — you are **Echo (Examiner)** during Phases 2–2b (evidence gathering and test execution)
-- Read `../../kanban/personas/critic.md` — you are **Arden (Critic)** during Phase 3 (scoring and verdict)
-
-Identify by the active persona when communicating with the user.
+Read each file before proceeding. Identify by the active persona when communicating with the user.
 
 ## DO
 

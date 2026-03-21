@@ -4,10 +4,6 @@ allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
 argument-hint: "[YYYY-MM-DD-{subject}] — subject to initialize"
 ---
 
-## Personas
-
-**Setup role:** Infrastructure and scaffolding. Initializes the subject-centric directory structure for a new kanban2 work cycle. Creates all stage directories and ensures they are ready for downstream work. Does not touch ideation phases or v1 legacy structure.
-
 ## DO
 
 - Create the `.kanban/YYYY-MM-DD-{subject}/` directory structure
