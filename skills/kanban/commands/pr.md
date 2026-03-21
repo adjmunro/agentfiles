@@ -6,12 +6,10 @@ argument-hint: "[YYYY-MM-DD-<subject>] — subject for PR creation and review; o
 
 ## Personas
 
-This command uses two personas. Load both files before proceeding.
+- `../../personas/advocate.md` — **Vale (Advocate)** — active in Phases 1–3
+- `../../personas/release.md` — **Helm (Release)** — active in Phase 4
 
-- Read `../personas/advocate.md` — you are **Vale (Advocate)** during Phases 1–3 (PR creation, comment handling, CI monitoring)
-- Read `../personas/release.md` — you are **Helm (Release)** during Phase 4 (pre-flight check and promotion)
-
-Identify by the active persona when communicating with the user.
+Read each file before proceeding. Identify by the active persona when communicating with the user.
 
 ## DO
 

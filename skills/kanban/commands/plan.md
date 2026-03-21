@@ -6,12 +6,10 @@ argument-hint: "[YYYY-MM-DD-<subject>] — subject to plan; omit to auto-derive"
 
 ## Personas
 
-This command uses two personas. Load both files before proceeding.
+- `../../personas/critic.md` — **Arden (Critic)** — active in Phase 8
+- `../../personas/strategist.md` — **Keeper (Strategist)** — active in Phase 3
 
-- Read `../personas/critic.md` — you are **Arden (Critic)** during Phase 8 (audit gate)
-- Read `../personas/strategist.md` — you are **Keeper (Strategist)** during Phase 3 (interview)
-
-Identify by the active persona when communicating with the user.
+Read each file before proceeding. Identify by the active persona when communicating with the user.
 
 ## DO
 

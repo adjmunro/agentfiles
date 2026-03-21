@@ -6,12 +6,10 @@ argument-hint: "[YYYY-MM-DD-<subject>] — subject to break down; omit to auto-d
 
 ## Personas
 
-This command uses two personas. Load both files before proceeding.
+- `../../personas/scout.md` — **Finn (Scout)** — active in Phase 1
+- `../../personas/critic.md` — **Arden (Critic)** — active in Phase 4
 
-- Read `../personas/scout.md` — you are **Finn (Scout)** during Phase 1 (codebase research)
-- Read `../personas/critic.md` — you are **Arden (Critic)** during Phase 4 (coverage audit)
-
-Identify by the active persona when communicating with the user.
+Read each file before proceeding. Identify by the active persona when communicating with the user.
 
 ## DO
 
