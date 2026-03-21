@@ -40,6 +40,8 @@ Construct the input path:
 .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md
 ```
 
+<!-- STALENESS POLICY: NO TTL — append-only record; age does not indicate staleness. Load without age check. -->
+
 Read the file in full. This file may contain multiple session blocks:
 - Initial capture block (verbatim user input)
 - One or more `## Interview YYYYMMDD-HH:MM` blocks (Q&A from the interview phase)
@@ -108,7 +110,7 @@ Write the drafted plan to:
 
 ### Step A — Enumerate Input
 
-Read `00-input-{subject}.md` in full (all session blocks). Break all content into a numbered list of discrete, verifiable items. Every stated requirement, constraint, goal, contextual detail, interview question answer, and decision made during the interview is a separate item. Be granular — split compound items.
+Read `00-input-{subject}.md` in full (all session blocks). <!-- STALENESS POLICY: NO TTL — append-only record; age does not indicate staleness. Load without age check. --> Break all content into a numbered list of discrete, verifiable items. Every stated requirement, constraint, goal, contextual detail, interview question answer, and decision made during the interview is a separate item. Be granular — split compound items.
 
 ### Step B — Map Input to Plan
 

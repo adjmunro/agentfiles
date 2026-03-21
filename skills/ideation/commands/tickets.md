@@ -48,6 +48,12 @@ Once the subject is derived, locate the plan file:
 .kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md
 ```
 
+**Before loading the plan file, apply its staleness policy:**
+LOAD WITH CAVEAT (TTL: 7 days). Check its `created_at` frontmatter field (or file mtime as fallback).
+- If age ≤ 7 days: load normally.
+- If age > 7 days: load, but prepend this warning to any extracted content:
+  ⚠ STALE (written {N} days ago): treat as reference only. Verify against current codebase before acting.
+
 **STOP:** If the plan file does not exist, report: "No plan found. Run `/ideate` through Step 6 first." Do not proceed.
 
 **STOP:** If the plan file exists but contains no audit section (look for a heading containing "Audit" or "audit"), report: "Plan has not been audited. Run `/ideate` through Step 5 first." Do not proceed.
@@ -65,6 +71,10 @@ Scout is read-only. No files are modified in this phase.
 ### Scout Tasks
 
 1. Read `01-research-{subject}.md` if it exists — avoid duplicating work already done.
+   **Before loading, apply its staleness policy:** LOAD WITH CAVEAT (TTL: 48 hours). Check its `created_at` frontmatter field (or file mtime as fallback).
+   - If age ≤ 48 hours: load normally.
+   - If age > 48 hours: load, but prepend this warning to any extracted content:
+     ⚠ STALE (written {N} days ago): treat as reference only. Verify against current codebase before acting.
 2. Identify any relevant files, patterns, or conventions that have changed since that snapshot.
 3. Check what already exists so tickets don't duplicate implemented work.
 4. Note dependencies between the work items to suggest ticket ordering.

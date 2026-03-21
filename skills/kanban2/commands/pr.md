@@ -89,7 +89,12 @@ All bypass conditions cleared. Continue to Phase 3.
 
 **Gather PR content:**
 
-1. Read `.kanban/YYYY-MM-DD-{subject}/01-plan/plan-{subject}.md` and extract the `## Intent` section.
+1. Read `.kanban/YYYY-MM-DD-{subject}/01-plan/plan-{subject}.md`.
+   **Before loading, apply its staleness policy:** LOAD WITH CAVEAT (TTL: 7 days). Check its `created_at` frontmatter field (or file mtime as fallback).
+   - If age ≤ 7 days: load normally.
+   - If age > 7 days: load, but note in the PR body:
+     ⚠ STALE PLAN (written {N} days ago): intent statement may not reflect final implementation — verify with ticket history.
+   Extract the `## Intent` section.
 2. Read all ticket files from `.kanban/YYYY-MM-DD-{subject}/07-pull-request/`. For each ticket, extract its ID, title, and a one-line summary from the frontmatter or body.
 3. Compose the PR body using the format below.
 

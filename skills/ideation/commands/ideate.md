@@ -68,6 +68,10 @@ Wait for capture to complete before proceeding. Capture ends when `00-input-{sub
 
 ## Phase 3 — Step 2: Research
 
+<!-- INTENT ANCHOR — verify subject before dispatch -->
+<!-- Read: .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md -->
+<!-- Confirm: subject slug matches $ARGUMENTS (or derived slug from Phase 1). File must exist. Do not dispatch if missing. -->
+
 Invoke `research.md` for this subject. Research runs automatically — do not ask the user for input before or during research.
 
 Dispatch as subagent with:
@@ -82,6 +86,10 @@ Announce: "Research complete. Beginning interview (step 3 of 9)."
 
 ## Phase 4 — Step 3: Interview
 
+<!-- INTENT ANCHOR — verify subject before dispatch -->
+<!-- Read: .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md -->
+<!-- Confirm: subject slug is current (matches Phase 1 resolution). File must exist and contain substantive content. Do not dispatch if missing. -->
+
 Invoke `interview.md` for this subject.
 
 Dispatch as subagent with:
@@ -95,6 +103,10 @@ Wait for the interview to complete (user has answered all questions and answers 
 ---
 
 ## Phase 5 — Steps 4–5: Plan + Audit
+
+<!-- INTENT ANCHOR — verify subject before dispatch -->
+<!-- Read: .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md -->
+<!-- Confirm: subject slug is current (matches Phase 1 resolution). File must exist and contain at least one interview block. Do not dispatch if missing. -->
 
 Invoke `plan.md` for this subject. The plan phase writes the plan and runs the internal audit — both steps 4 and 5 are handled by a single phase file.
 
@@ -133,6 +145,10 @@ Options:
 ---
 
 ## Phase 7 — Steps 7–8: Tickets + Audit
+
+<!-- INTENT ANCHOR — verify subject before dispatch -->
+<!-- Read: .kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md -->
+<!-- Confirm: subject slug is current (matches Phase 1 resolution). Plan file must exist and contain an audit section. Do not dispatch if missing. -->
 
 Invoke `tickets.md` for this subject. The tickets phase writes all ticket files into `03-refinement/` and runs the internal ticket audit — both steps 7 and 8 are handled by a single phase file.
 

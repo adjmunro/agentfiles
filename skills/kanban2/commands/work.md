@@ -76,6 +76,11 @@ If inside a git repo:
 
 ## Phase 3 — Implementation
 
+<!-- INTENT ANCHOR — re-read original intent before writing any code -->
+<!-- 1. Read the ticket's `plan` frontmatter field to get the plan file path. -->
+<!-- 2. Read the `## Intent` section from that plan file. -->
+<!-- 3. State the intent in exactly 1 sentence before writing any code. Do not proceed until this sentence is written. -->
+
 Before writing a single line of code, read the full ticket file from top to bottom.
 
 **Required reading:**
@@ -83,6 +88,13 @@ Before writing a single line of code, read the full ticket file from top to bott
 - All existing `## Review` sections — understand exactly what failed in prior attempts and why
 - The `## Context` section — understand why this ticket exists
 - The `## Acceptance Criteria` section — understand the verifiable completion conditions
+
+**Staleness policies for artifacts read in this phase:**
+- Ticket file (`05-in-progress/TASK-NNN-*.md`): NO TTL — frontmatter is updated in-place and always reflects current state. Load without age check.
+- Plan file (path from ticket's `plan` frontmatter field): LOAD WITH CAVEAT (TTL: 7 days). Check its `created_at` frontmatter field (or file mtime as fallback).
+  - If age ≤ 7 days: load normally.
+  - If age > 7 days: load, but prepend this warning to any extracted content:
+    ⚠ STALE (written {N} days ago): treat as reference only. Plan may not reflect current codebase — verify requirements against existing code before implementing.
 
 **If prior Review sections exist:** Treat every identified issue as a constraint on your implementation. Do not repeat the same mistakes. Note which plan items each prior failure touched.
 

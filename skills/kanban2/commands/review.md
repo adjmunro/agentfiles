@@ -66,7 +66,16 @@ Read the ticket file. Confirm its frontmatter contains:
 
 ### Step A — Read the Plan
 
-Locate and read the plan file from the path referenced in the ticket's `plan` frontmatter field. If the path is relative, resolve it from the project root.
+Locate the plan file from the path referenced in the ticket's `plan` frontmatter field. If the path is relative, resolve it from the project root.
+
+**Before loading, apply its staleness policy:** LOAD WITH CAVEAT (TTL: 7 days). Check its `created_at` frontmatter field (or file mtime as fallback).
+- If age ≤ 7 days: load normally.
+- If age > 7 days: load, but prepend this warning to any extracted content:
+  ⚠ STALE (written {N} days ago): treat as reference only. Verify requirements against current codebase before scoring.
+
+Read the plan file.
+
+After reading the plan, extract the `## Intent` section and write a 1-sentence intent summary. This sentence MUST be the first line of your evidence report (Step D). All subsequent evidence judgments are anchored to this intent.
 
 ### Step B — Read All Changed Source Files
 
@@ -90,7 +99,7 @@ For each AC item listed in the ticket:
 
 ### Step D — Record the Evidence Table (no scores)
 
-Produce an internal evidence table with columns: `AC | Evidence (file:line or command) | Present?`
+Begin the evidence report with the 1-sentence intent summary extracted in Step A. Then produce an internal evidence table with columns: `AC | Evidence (file:line or command) | Present?`
 
 This table is input for the Critic. Do not attach pass/fail labels yet.
 

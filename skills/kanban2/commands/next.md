@@ -186,8 +186,18 @@ Subagent tier for review = medium.
 ### Loop steps
 
 ```
-a. Dispatch skills/kanban2/commands/work.md as subagent for the selected ticket
-b. Dispatch skills/kanban2/commands/review.md as subagent after work completes
+a. INTENT ANCHOR (before dispatching work):
+   - Note the subject directory name (YYYY-MM-DD-{subject})
+   - Derive the plan file path: .kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md
+   - Read the `## Intent` section from that plan file
+   - Pass the extracted intent text as context to the work subagent
+   Dispatch skills/kanban2/commands/work.md as subagent for the selected ticket
+
+b. INTENT ANCHOR (before dispatching review):
+   - Re-read the `## Intent` section from .kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md
+   - Pass the extracted intent text as context to the review subagent
+   Dispatch skills/kanban2/commands/review.md as subagent after work completes
+
 c. Read the review outcome (PASS or FAIL) from the ticket's frontmatter or review output
 ```
 

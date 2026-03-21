@@ -46,6 +46,14 @@ Construct the input paths:
 .kanban/YYYY-MM-DD-{subject}/01-research-{subject}.md
 ```
 
+**Before loading each file, apply its staleness policy:**
+
+- `00-input-{subject}.md` — NO TTL. Append-only record; age does not indicate staleness. Load without age check.
+- `01-research-{subject}.md` — LOAD WITH CAVEAT (TTL: 48 hours). Check its `created_at` frontmatter field (or file mtime as fallback).
+  - If age ≤ 48 hours: load normally.
+  - If age > 48 hours: load, but prepend this warning to any extracted content:
+    ⚠ STALE (written {N} days ago): treat as reference only. Verify against current codebase before acting.
+
 Read both files in full before proceeding. If either file is missing, **STOP** and print:
 
 > Cannot run interview: `{missing-file}` does not exist. Run capture (Step 1) and research (Step 2) first.
