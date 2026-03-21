@@ -1,7 +1,7 @@
 ---
 model: claude-haiku-4-5-20251001
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, AskUserQuestion
-argument-hint: "[YYMMDD-<subject> | auto] — subject to work on; 'auto' picks the next ready subject and loops"
+argument-hint: "[YYYY-MM-DD-<subject> | auto] — subject to work on; 'auto' picks the next ready subject and loops"
 ---
 
 ## DO
@@ -36,7 +36,7 @@ argument-hint: "[YYMMDD-<subject> | auto] — subject to work on; 'auto' picks t
                  │
 ┌────────────────▼────────────────────┐
 │         Phase 2: Ticket             │
-│  scan 02-todo/YYMMDD-<subject>/     │
+│  scan 02-todo/YYYY-MM-DD-<subject>/ │
 │  select lowest-numbered unblocked   │
 │  all blocked? → report chain, stop  │
 └────────────────┬────────────────────┘
@@ -81,7 +81,7 @@ argument-hint: "[YYMMDD-<subject> | auto] — subject to work on; 'auto' picks t
 
 ## Phase 1 — Subject Selection
 
-1. If `$ARGUMENTS` contains a subject in `YYMMDD-subject` format, use it directly. Skip to Phase 2.
+1. If `$ARGUMENTS` contains a subject in `YYYY-MM-DD-subject` format, use it directly. Skip to Phase 2.
 
 2. If `$ARGUMENTS` is `auto` (or omitted and only one subject exists in `02-todo/`):
    - Glob `.kanban/02-todo/*/` and sort subject directories by name (ascending — oldest date first).
@@ -117,7 +117,7 @@ A subject is **not claimed** (available to pick) if:
 - All its tickets are in `02-todo/`, OR
 - It has tickets in later stages but every one has an `expires_at` in the past
 
-When a subject is skipped as claimed in auto mode, note it in output: `"Skipping YYMMDD-<subject> — claimed (active tickets in-flight)"`.
+When a subject is skipped as claimed in auto mode, note it in output: `"Skipping YYYY-MM-DD-<subject> — claimed (active tickets in-flight)"`.
 
 When all remaining subjects with todo tickets are claimed, stop and list them so the user can decide whether to intervene.
 
@@ -125,7 +125,7 @@ When all remaining subjects with todo tickets are claimed, stop and list them so
 
 ## Phase 2 — Ticket Selection
 
-1. Glob `.kanban/02-todo/YYMMDD-<subject>/*.md` and sort numerically by filename prefix.
+1. Glob `.kanban/02-todo/YYYY-MM-DD-<subject>/*.md` and sort numerically by filename prefix.
 
 2. For each ticket (lowest number first):
    - Read the frontmatter and extract `depends_on` (list of ticket IDs or filenames).
@@ -135,20 +135,20 @@ When all remaining subjects with todo tickets are claimed, stop and list them so
 
 3. If **all** tickets in the subject are blocked:
    - Report the full blocking chain clearly.
-   - Use the ask-user tool: "All tickets in YYMMDD-<subject> are blocked by unmet dependencies. Resolve the blocking tickets first, or manually unblock one?"
+   - Use the ask-user tool: "All tickets in YYYY-MM-DD-<subject> are blocked by unmet dependencies. Resolve the blocking tickets first, or manually unblock one?"
    - Stop until the user responds.
 
 ---
 
 ## Stale Ticket Detection
 
-Before starting the loop, scan `.kanban/03-in-progress/YYMMDD-<subject>/` for ticket files where:
+Before starting the loop, scan `.kanban/03-in-progress/YYYY-MM-DD-<subject>/` for ticket files where:
 - `expires_at` is set in frontmatter and is in the past (`now > expires_at`)
 - The ticket has not moved to a later stage
 
 If any stale tickets are found, surface them via the ask-user tool:
 
-> "Found N stale ticket(s) in 03-in-progress/YYMMDD-<subject>. These may be from a crashed session:
+> "Found N stale ticket(s) in 03-in-progress/YYYY-MM-DD-<subject>. These may be from a crashed session:
 > - [ticket list]
 >
 > Resume them (continue work from where they left off) or move them back to 02-todo to start fresh?"
@@ -163,8 +163,8 @@ Wait for the user's decision before continuing. Do not silently skip stale ticke
 
 Construct a minimal context bundle for each subagent — do NOT pass your full session:
 - Ticket file path (absolute)
-- Subject name (`YYMMDD-<subject>`)
-- Plan file path (`.kanban/01-plan/YYMMDD-<subject>/plan.md` if it exists)
+- Subject name (`YYYY-MM-DD-<subject>`)
+- Plan file path (`.kanban/01-plan/YYYY-MM-DD-<subject>/plan.md` if it exists)
 - For work: instruct the subagent to behave as `kanban-work`
 - For review: instruct the subagent to behave as `kanban-review`
 
@@ -185,7 +185,7 @@ c. Read the review outcome (PASS or FAIL) from the ticket's frontmatter or revie
 - Report the result clearly.
 - Return to Phase 2 and select the next unblocked ticket automatically.
 - If no tickets remain in `02-todo/` and all are in `05-pull-request/`, announce:
-  > "All tickets in YYMMDD-<subject> are in 05-pull-request. This subject is ready for /kanban-pr."
+  > "All tickets in YYYY-MM-DD-<subject> are in 05-pull-request. This subject is ready for /kanban-pr."
 
 **On FAIL:**
 - Move the ticket back to `03-in-progress/` if it isn't already there.
@@ -207,7 +207,7 @@ When the same blocking error appears 2–3 consecutive times without meaningful 
 ║           ESCALATION — REPEATED FAILURE      ║
 ╠══════════════════════════════════════════════╣
 ║ Ticket:  [ticket filename]                   ║
-║ Subject: [YYMMDD-<subject>]                  ║
+║ Subject: [YYYY-MM-DD-<subject>]                  ║
 ║ Attempts: N                                  ║
 ╠══════════════════════════════════════════════╣
 ║ FAILURE PATTERN                              ║
@@ -233,7 +233,7 @@ When the same blocking error appears 2–3 consecutive times without meaningful 
 When stopping (user said no, abort, or no tickets remain), always print:
 
 ```
-Subject: YYMMDD-<subject>
+Subject: YYYY-MM-DD-<subject>
   Completed this session: [N tickets → 05-pull-request]
   Remaining in 02-todo:   [N tickets]
   Blocked:                [N tickets, list blockers]

@@ -1,7 +1,7 @@
 ---
 model: claude-opus-4-6
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
-argument-hint: "[YYMMDD-<subject>] — subject to plan; omit to auto-derive"
+argument-hint: "[YYYY-MM-DD-<subject>] — subject to plan; omit to auto-derive"
 ---
 
 ## Personas
@@ -15,11 +15,11 @@ Identify by the active persona when communicating with the user.
 
 ## DO
 
-- Read the captured input file from `.kanban/01-plan/YYMMDD-<subject>/`
+- Read the captured input file from `.kanban/01-plan/YYYY-MM-DD-<subject>/`
 - Interview the user to surface tradeoffs, ambiguities, and success criteria
 - Draft a structured plan covering 100% of captured input
 - Commit twice: once after drafting, once after audit
-- Operate only inside `.kanban/01-plan/YYMMDD-<subject>/`
+- Operate only inside `.kanban/01-plan/YYYY-MM-DD-<subject>/`
 
 ## DO NOT
 
@@ -40,21 +40,21 @@ Check for ticket files in `.kanban/03-in-progress/` or `.kanban/04-in-review/` t
 
 ## Phase 2 — Resolve Subject and Locate Input
 
-Determine the `YYMMDD-subject` slug using the following priority order. Stop at the first source that yields a result:
+Determine the `YYYY-MM-DD-subject` slug using the following priority order. Stop at the first source that yields a result:
 
-1. **`$ARGUMENTS` match** — if arguments contain a `YYMMDD-*` pattern, use it as-is.
+1. **`$ARGUMENTS` match** — if arguments contain a `YYYY-MM-DD-*` pattern, use it as-is.
 2. **Existing plan directories** — list `.kanban/01-plan/` and use the most recently modified subject directory.
 3. **Git worktree** — take the last path segment of the current worktree. Example (Claude Code): `Bash` with `git worktree list`.
 4. **Branch/log** — derive from the current branch name or recent commit subjects. Example (Claude Code): `Bash` with `git branch --show-current`.
 5. **Conversation context** — synthesise a slug from the current conversation.
-6. **Last resort** — `YYMMDD-` plus a brief slug from what the user just said.
+6. **Last resort** — `YYYY-MM-DD-` plus a brief slug from what the user just said.
 
-**Date prefix:** Compute `YYMMDD` from today's date once and reuse it throughout. Example (Claude Code): `Bash` with `date +%y%m%d`.
+**Date prefix:** Compute `YYYY-MM-DD` from today's date once and reuse it throughout. Example (Claude Code): `Bash` with `date +%Y-%m-%d`.
 
 Locate the input file at:
 
 ```
-.kanban/01-plan/YYMMDD-<subject>/input-<subject>.md
+.kanban/01-plan/YYYY-MM-DD-<subject>/input-<subject>.md
 ```
 
 **STOP:** If the file does not exist, print: "No captured input found. Run `/kanban-capture` first." Exit immediately.
@@ -120,7 +120,7 @@ Show the plan outline (section headings and requirement numbers with one-line su
 Write the approved plan to:
 
 ```
-.kanban/01-plan/YYMMDD-<subject>/plan-<subject>.md
+.kanban/01-plan/YYYY-MM-DD-<subject>/plan-<subject>.md
 ```
 
 ---
@@ -131,7 +131,7 @@ Check whether the project root is inside a git repository. Example (Claude Code)
 
 If inside a git repo:
 1. Stage the plan file.
-2. Commit with the message: `kanban(plan): draft plan for YYMMDD-<subject>`
+2. Commit with the message: `kanban(plan): draft plan for YYYY-MM-DD-<subject>`
 
 If not inside a git repo: skip silently.
 
@@ -197,7 +197,7 @@ Replace `PASS|FAIL` with the actual result. Score ≥ 95% is PASS. A FAIL result
 
 If inside a git repo:
 1. Stage the updated plan file.
-2. Commit with the message: `kanban(plan): audit verified YYMMDD-<subject>`
+2. Commit with the message: `kanban(plan): audit verified YYYY-MM-DD-<subject>`
 
 ---
 
@@ -227,7 +227,7 @@ If the user declines, return to the handoff options prompt and present the 4 cho
 Pass the `from-plan-handoff` argument when invoking kanban-todo so the session boundary check in that command is skipped:
 
 ```
-kanban-todo YYMMDD-<subject> from-plan-handoff
+kanban-todo YYYY-MM-DD-<subject> from-plan-handoff
 ```
 
 After `kanban-todo` completes:
@@ -266,7 +266,7 @@ Do not proceed unless the user's response matches the subject slug exactly (case
 
 **Step 4 — Delete on confirmed**
 
-Once the user has typed the exact subject slug: remove all files and the directory at `.kanban/01-plan/YYMMDD-<subject>/`. Report to the user that the plan has been discarded and the directory has been removed.
+Once the user has typed the exact subject slug: remove all files and the directory at `.kanban/01-plan/YYYY-MM-DD-<subject>/`. Report to the user that the plan has been discarded and the directory has been removed.
 
 ---
 

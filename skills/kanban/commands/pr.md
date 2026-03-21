@@ -1,7 +1,7 @@
 ---
 model: claude-sonnet-4-6
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, AskUserQuestion
-argument-hint: "[YYMMDD-<subject>] — subject for PR creation and review; omit to auto-derive"
+argument-hint: "[YYYY-MM-DD-<subject>] — subject for PR creation and review; omit to auto-derive"
 ---
 
 ## Personas
@@ -36,9 +36,9 @@ Run `git remote -v` and look for a `github.com` URL. If no GitHub remote is foun
 **2. Confirm all tickets for this subject have reached `05-pull-request/`.**
 
 Check these directories for any tickets under the subject folder:
-- `.kanban/02-todo/YYMMDD-<subject>/`
-- `.kanban/03-in-progress/YYMMDD-<subject>/`
-- `.kanban/04-in-review/YYMMDD-<subject>/`
+- `.kanban/02-todo/YYYY-MM-DD-<subject>/`
+- `.kanban/03-in-progress/YYYY-MM-DD-<subject>/`
+- `.kanban/04-in-review/YYYY-MM-DD-<subject>/`
 
 If any tickets remain in those stages, STOP. This command must not run until the full pipeline has been completed for all existing tickets.
 
@@ -62,7 +62,7 @@ Interpret the result:
 - **Protected** (API returns protection rules): Print — "Branch is protected — proceeding with PR flow." Continue to Phase 1 as normal.
 - **Unprotected** (API returns 404 or indicates no protection rules): Print — "Branch is unprotected — skipping draft PR." Make a git commit:
   ```
-  git commit --allow-empty -m "kanban(pr): skip draft PR for YYMMDD-<subject> — trunk branch unprotected"
+  git commit --allow-empty -m "kanban(pr): skip draft PR for YYYY-MM-DD-<subject> — trunk branch unprotected"
   ```
   Then instruct: "Proceed to `/kanban-cleanup`." Do not continue to Phase 1.
 - **Check failed** (any other error — authentication failure, network failure, unexpected API response): STOP. Print a clear message describing the error. Ask the user: "Branch protection check failed. Skip the PR and go directly to cleanup, or raise a PR anyway?" Do not proceed until the user answers.
@@ -71,7 +71,7 @@ Interpret the result:
 
 ## Derive Subject
 
-If no argument was provided, derive `YYMMDD-subject` by inspecting `.kanban/05-pull-request/` for a single subject folder. If multiple folders are present and no argument was given, ask the user to specify.
+If no argument was provided, derive `YYYY-MM-DD-subject` by inspecting `.kanban/05-pull-request/` for a single subject folder. If multiple folders are present and no argument was given, ask the user to specify.
 
 ---
 
@@ -79,8 +79,8 @@ If no argument was provided, derive `YYMMDD-subject` by inspecting `.kanban/05-p
 
 **Gather PR content:**
 
-1. Read `.kanban/01-plan/YYMMDD-<subject>/plan-<subject>.md` and extract the `## Intent` section.
-2. Read all ticket files from `.kanban/05-pull-request/YYMMDD-<subject>/`. For each ticket, extract its ID, title, and a one-line summary from the frontmatter or body.
+1. Read `.kanban/01-plan/YYYY-MM-DD-<subject>/plan-<subject>.md` and extract the `## Intent` section.
+2. Read all ticket files from `.kanban/05-pull-request/YYYY-MM-DD-<subject>/`. For each ticket, extract its ID, title, and a one-line summary from the frontmatter or body.
 3. Compose the PR body using the format below.
 
 **PR body format:**
@@ -94,7 +94,7 @@ If no argument was provided, derive `YYMMDD-subject` by inspecting `.kanban/05-p
 - TASK-002 — [title]: [one-line summary]
 
 ## Plan
-See: .kanban/01-plan/YYMMDD-<subject>/plan-<subject>.md
+See: .kanban/01-plan/YYYY-MM-DD-<subject>/plan-<subject>.md
 ```
 
 **Create the draft PR** using your platform's GitHub CLI. Example using `gh`:
@@ -106,7 +106,7 @@ gh pr create --draft --title "[Concise title derived from intent]" --body "[comp
 After the PR is created, make a git commit:
 
 ```
-git commit --allow-empty -m "kanban(pr): open draft PR for YYMMDD-<subject>"
+git commit --allow-empty -m "kanban(pr): open draft PR for YYYY-MM-DD-<subject>"
 ```
 
 (Use `--allow-empty` only if there are no staged changes; otherwise commit normally with the message above.)
@@ -177,10 +177,10 @@ A comment is valid when:
 - You are uncertain (lean toward creating a ticket)
 
 **Action:**
-1. Create a new ticket file in `.kanban/02-todo/YYMMDD-<subject>/` with proper frontmatter (ID, title, description, acceptance criteria derived from the reviewer's concern).
+1. Create a new ticket file in `.kanban/02-todo/YYYY-MM-DD-<subject>/` with proper frontmatter (ID, title, description, acceptance criteria derived from the reviewer's concern).
 2. Make a git commit:
    ```
-   git commit -m "kanban(pr): add TASK-NNN from PR feedback for YYMMDD-<subject>"
+   git commit -m "kanban(pr): add TASK-NNN from PR feedback for YYYY-MM-DD-<subject>"
    ```
 3. Reply to the PR comment acknowledging the concern and noting that a ticket has been created.
 4. The new ticket must travel the **full pipeline**: `kanban-work` → `kanban-review` → `05-pull-request/`. No shortcuts.
@@ -195,7 +195,7 @@ Monitor CI checks in the same polling loop. Do not treat CI as a separate phase 
 **If a CI check is failing:**
 
 1. Fetch and read the CI logs to diagnose the failure.
-2. Determine whether an existing ticket covers the fix, or create a new fix ticket in `.kanban/02-todo/YYMMDD-<subject>/`.
+2. Determine whether an existing ticket covers the fix, or create a new fix ticket in `.kanban/02-todo/YYYY-MM-DD-<subject>/`.
 3. Work the ticket through the full pipeline.
 4. Push the fix commits.
 5. Continue polling until the check turns green.
@@ -232,7 +232,7 @@ gh pr ready
 **Send a desktop notification** via your platform's notification tool. Example on macOS:
 
 ```
-osascript -e 'display notification "PR ready — your move" with title "Kanban: YYMMDD-<subject>"'
+osascript -e 'display notification "PR ready — your move" with title "Kanban: YYYY-MM-DD-<subject>"'
 ```
 
 Use the equivalent notification mechanism on Linux (e.g., `notify-send`) or Windows (e.g., PowerShell toast notifications).
@@ -242,7 +242,7 @@ Use the equivalent notification mechanism on Linux (e.g., `notify-send`) or Wind
 ```
 =========================================
   PR READY FOR REVIEW
-  YYMMDD-<subject>
+  YYYY-MM-DD-<subject>
   [PR URL]
 =========================================
 ```

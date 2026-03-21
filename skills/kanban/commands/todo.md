@@ -1,7 +1,7 @@
 ---
 model: claude-sonnet-4-6
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, AskUserQuestion
-argument-hint: "[YYMMDD-<subject>] — subject to break down; omit to auto-derive"
+argument-hint: "[YYYY-MM-DD-<subject>] — subject to break down; omit to auto-derive"
 ---
 
 ## Personas
@@ -34,9 +34,9 @@ Identify by the active persona when communicating with the user.
 
 **Whitelist: `from-plan-handoff`** — If `$ARGUMENTS` contains the token `from-plan-handoff`, skip the session boundary check and proceed directly to subject/plan resolution. The token is consumed and does not affect subject derivation.
 
-Derive `YYMMDD-subject` using the following priority order. Stop at the first match:
+Derive `YYYY-MM-DD-subject` using the following priority order. Stop at the first match:
 
-1. **`$ARGUMENTS`** — if arguments contain a `YYMMDD-*` pattern, use it as-is.
+1. **`$ARGUMENTS`** — if arguments contain a `YYYY-MM-DD-*` pattern, use it as-is.
 2. **Existing `.kanban/01-plan/` directories** — if exactly one subject directory exists and no argument was passed, use that name.
 3. **Git worktree path** — take the last path segment of the current worktree entry.
 4. **Conversation context** — synthesise a slug from what the work is about.
@@ -48,7 +48,7 @@ Derive `YYMMDD-subject` using the following priority order. Stop at the first ma
 Once the subject is derived, locate the plan file:
 
 ```
-.kanban/01-plan/YYMMDD-<subject>/plan-<subject>.md
+.kanban/01-plan/YYYY-MM-DD-<subject>/plan-<subject>.md
 ```
 
 **STOP:** If the plan file does not exist, report: "No verified plan found. Run `/kanban-plan` first." Do not proceed.
@@ -67,7 +67,7 @@ Scout's mission is to read and map, then write a single research snapshot.
 
 ### Scout Tasks
 
-1. Read the plan file in full: `.kanban/01-plan/YYMMDD-<subject>/plan-<subject>.md`
+1. Read the plan file in full: `.kanban/01-plan/YYYY-MM-DD-<subject>/plan-<subject>.md`
 2. Read the project's directory structure (top two levels).
 3. Read relevant source files, configs, and entry points identified in the plan.
 4. Grep for existing implementations, test patterns, and related conventions.
@@ -80,13 +80,13 @@ Scout's mission is to read and map, then write a single research snapshot.
 Write findings to:
 
 ```
-.kanban/01-plan/YYMMDD-<subject>/research-<subject>.md
+.kanban/01-plan/YYYY-MM-DD-<subject>/research-<subject>.md
 ```
 
 Use exactly this structure:
 
 ```markdown
-## Research: YYMMDD-<subject>
+## Research: YYYY-MM-DD-<subject>
 **Date**: ISO8601
 **Status**: Snapshot — may go stale. Verify before acting.
 
@@ -106,7 +106,7 @@ Use exactly this structure:
 [Scout's suggested order, with brief rationale based on dependencies]
 ```
 
-Git commit after writing: `kanban(todo): write research for YYMMDD-<subject>`
+Git commit after writing: `kanban(todo): write research for YYYY-MM-DD-<subject>`
 
 ---
 
@@ -141,7 +141,7 @@ For each logical unit of work beyond the TDD scaffolding:
 **STOP and confirm with the user** before creating any ticket files. Present the proposed list in this format:
 
 ```
-Proposed tickets for YYMMDD-<subject>:
+Proposed tickets for YYYY-MM-DD-<subject>:
 
   TASK-001  TDD Red Phase — [one-line description]          (no deps)
   TASK-002  [Title]       — [one-line description]          (depends: TASK-001)
@@ -160,20 +160,20 @@ Do not write any files until the user confirms.
 Once the user confirms, write each ticket to:
 
 ```
-.kanban/02-todo/YYMMDD-<subject>/TASK-NNN-<subject>.md
+.kanban/02-todo/YYYY-MM-DD-<subject>/TASK-NNN-<subject>.md
 ```
 
 Where:
 - `NNN` = zero-padded 3-digit sequence number (001, 002, ...)
-- `subject` = the short slug portion of the parent directory name (strip the `YYMMDD-` date prefix)
+- `subject` = the short slug portion of the parent directory name (strip the `YYYY-MM-DD-` date prefix)
 
 ### Ticket Frontmatter Schema
 
 ```yaml
 ---
-id: "YYMMDD-<subject>/TASK-NNN"
-subject: "YYMMDD-<subject>"
-plan: "../../01-plan/YYMMDD-<subject>/plan-<subject>.md"
+id: "YYYY-MM-DD-<subject>/TASK-NNN"
+subject: "YYYY-MM-DD-<subject>"
+plan: "../../01-plan/YYYY-MM-DD-<subject>/plan-<subject>.md"
 effort: low | medium | high
 status: todo
 created_at: "ISO8601"
@@ -231,7 +231,7 @@ If the builder must produce *something* whose exact form is unknown at planning 
 
 If a location or name genuinely matters (shared CI scripts, public API surface), note it as a **Constraint** in the plan — not buried in an AC.
 
-Git commit after writing: `kanban(todo): create N tickets for YYMMDD-<subject>`
+Git commit after writing: `kanban(todo): create N tickets for YYYY-MM-DD-<subject>`
 
 ---
 
@@ -281,7 +281,7 @@ If the score is below 95%:
 3. Re-run the audit and update the table and score.
 4. Repeat until the threshold is met.
 
-Git commit after audit: `kanban(todo): audit verified YYMMDD-<subject>`
+Git commit after audit: `kanban(todo): audit verified YYYY-MM-DD-<subject>`
 
 ---
 
