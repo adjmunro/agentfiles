@@ -3,9 +3,9 @@ id: "260321-unified-pipeline/TASK-007"
 subject: "260321-unified-pipeline"
 plan: "../../01-plan/260321-unified-pipeline/plan-unified-pipeline.md"
 effort: medium
-status: todo
+status: in_review
 created_at: "2026-03-22T00:00:00Z"
-claimed_at: ~
+claimed_at: "2026-03-22T00:00:00Z"
 completed_at: ~
 stale_after_hours: 4
 depends_on:
@@ -51,3 +51,9 @@ Command model: `claude-opus-4-6` (heavy reasoning for ticket drafting and critic
 
 ---
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log — 2026-03-22T00:00:00Z
+
+- Wrote `skills/ideation/commands/tickets.md` (Steps 7–8 of the ideation flow)
+- All 10 acceptance criteria verified passing
+- Ticket moved: `02-todo/` → `03-in-progress/` → `04-in-review/`
