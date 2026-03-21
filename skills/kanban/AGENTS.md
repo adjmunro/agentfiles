@@ -37,6 +37,8 @@ The ticket file is the audit trail — deleting and recreating it loses history.
 
 ## Versioning
 
+**Version bumps and changelog updates are NEVER kanban tickets.** Do not create TASK-NNN entries for version bumps or changelog entries — the correct version number is unknowable at ticket-creation time and will be wrong by implementation. Version and changelog updates happen automatically as part of implementation commits, not as planned work items.
+
 **Only bump the version when changes are scoped to `skills/kanban/`.** If a commit touches other parts of the repo but not this skill, do not bump the kanban version.
 
 Before committing any kanban changes, bump the version in `VERSION.md`:
