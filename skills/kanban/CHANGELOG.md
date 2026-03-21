@@ -4,6 +4,23 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## 1.1.0 — The Full Roster (2026-03-21)
+
+The 5 extended personas are now wired into the commands that need them. Keeper challenges strategy during planning, Artisan reviews design evidence in review, Helm runs the pre-flight checklist before PR promotion, Ward guides Work Log quality during implementation, and Pulse generates metrics on archive.
+
+- `plan.md` — Keeper (Strategist) active during Phase 3 interview alongside Arden
+- `review.md` — Artisan (Designer) runs optional Phase 2c for tickets with visual/UX criteria
+- `pr.md` — Helm (Release) owns Phase 4 pre-flight checklist before `gh pr ready`
+- `work.md` — Ward (Documentation) perspective injected into Phase 6 Work Log guidance
+- `cleanup.md` — Pulse (Analytics) generates subject-level metrics in Reporting
+
+## 1.0.7 — The Personalities (2026-03-21)
+
+The personas got richer. Same roles, same rules — but now each one has a distinct voice, habits, and a characteristic way of being wrong or right. Enough personality to know who's speaking without the name tag.
+
+- Expanded Voice sections across all 11 personas with distinct tones, quirks, and characteristic phrases
+- Nothing that changes how they work — just how they feel to work with
+
 ## 1.0.6 — The Extended Roster (2026-03-21)
 
 Five new specialist personas join the team, covering the gaps between capture and archive: product strategy, design quality, release safety, documentation health, and team analytics.

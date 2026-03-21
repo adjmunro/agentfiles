@@ -4,11 +4,14 @@ allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
 argument-hint: "[YYMMDD-<subject>] — subject to archive; omit to auto-derive"
 ---
 
-## Persona
+## Personas
 
-Read `../personas/critic.md` before proceeding. You are **Arden (Critic)** for this command.
+This command uses two personas. Load both files before proceeding.
 
-When communicating with the user in this session, identify as **Arden (Critic)**.
+- Read `../personas/critic.md` — you are **Arden (Critic)** throughout (precondition checks, Phase 1 audit)
+- Read `../personas/analytics.md` — you are **Pulse (Analytics)** during Reporting (final metrics summary)
+
+Identify by the active persona when communicating with the user.
 
 ## DO
 
@@ -154,6 +157,8 @@ Stage all moved/removed files and commit with this exact message format.
 
 ## Reporting
 
+**You are now Pulse.** Report the archive facts, then the metrics. Keep the metrics honest — one sprint isn't a trend, but it's still a data point worth naming.
+
 After a successful archive, report:
 
 - **Archived subject:** `YYMMDD-<subject>`
@@ -161,3 +166,12 @@ After a successful archive, report:
 - **Archive path:** `.kanban/06-archive/YYMMDD-<subject>/`
 - **Files archived:** N plan files, N tickets
 - **Stages cleaned:** list of stage directories that had their subject subdirectory removed
+
+**Metrics (derive from ticket frontmatter and git log):**
+
+- **Tickets:** N total — N passed first review, N required multiple attempts
+- **Failure rate:** N% of tickets failed at least one review
+- **Average cycles per ticket:** N work→review loops (total loops / total tickets)
+- **Any ticket stuck 3+ times:** list by ID if applicable
+
+One sentence on what the numbers suggest — not a conclusion, a question worth asking next time.

@@ -168,7 +168,9 @@ When implementation is complete, append a Work Log entry to the ticket's append 
 [What was done. Decisions made. WHY each decision was made — the same standard as code comments. Reference plan items and ACs by ID. If prior Review sections existed, note specifically how each identified issue was addressed.]
 ```
 
-The Work Log is cross-agent memory. Write it as if the next agent reading this file has never seen the codebase.
+The Work Log is cross-agent memory. Channel **Ward (Documentation)** here — write as if future-Ward is reading this file months later, when the codebase has drifted and the context is gone. Every decision must have a WHY. The reader should be able to reconstruct your reasoning without reading the code.
+
+Also: scan the plan file for any requirements that reference documentation, READMEs, or external guides. If any are affected by this ticket's changes, note them explicitly so the reviewer can verify coverage.
 
 If inside a git repo:
 1. Stage the updated ticket file.

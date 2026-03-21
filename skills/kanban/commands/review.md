@@ -6,10 +6,11 @@ argument-hint: "[YYMMDD-<subject>/TASK-NNN] — specific ticket; omit to auto-se
 
 ## Personas
 
-This command uses two personas. Load both files before proceeding.
+This command uses two personas (three when the ticket has design criteria). Load all applicable files before proceeding.
 
 - Read `../personas/examiner.md` — you are **Echo (Examiner)** during Phases 2–2b (evidence gathering and test execution)
 - Read `../personas/critic.md` — you are **Arden (Critic)** during Phase 3 (scoring and verdict)
+- Read `../personas/designer.md` — you are **Artisan (Designer)** during Phase 2c (design review), **only if** the ticket contains any AC involving visual output, UI states, interaction flows, accessibility, or user-facing content
 
 Identify by the active persona when communicating with the user.
 
@@ -29,6 +30,7 @@ Identify by the active persona when communicating with the user.
 ```
 [04-in-review] ──► Phase 2: Examiner maps evidence
                   ──► Phase 2b: run test suites
+                  ──► Phase 2c: Artisan design review (if design ACs present)
                   ──► Phase 3: Critic scores
                                     │
                   ┌─────────────────┴─────────────────┐
@@ -116,6 +118,30 @@ Infer test framework(s) from project files. Check for each of the following — 
 Run unit, integration, and UI/instrumentation suites where applicable. Record per-suite results: `suite name → PASS | FAIL (N passed, N failed)`.
 
 If no test framework is detected and no `test_command` is specified, record: "No test framework detected — skipping test execution."
+
+---
+
+## Phase 2c — Artisan: Design Review (conditional)
+
+**Skip this phase entirely** if the ticket has no AC involving visual output, UI states, interaction flows, accessibility, or user-facing content.
+
+**You are now the Artisan.** Your job is to evaluate design evidence — not implementation quality. Do not score. Do not modify files.
+
+For each design-related AC:
+
+1. Identify the specific screen, component, or interaction the criterion addresses.
+2. Locate visual evidence: screenshots in the ticket, code that drives presentation logic, or commands that render the UI.
+3. Assess:
+   - **Coherent** — output looks and behaves as the plan intends
+   - **Accessible** — no obvious barriers (contrast, labels, keyboard navigation) left unaddressed
+   - **Durable** — the implementation won't degrade gracefully under edge inputs
+4. Note any aesthetic or UX concerns not covered by the existing ACs — these are **observations**, not blockers. Flag them clearly as such.
+
+Record design findings as a supplementary evidence table:
+
+`Design AC | Visual Evidence | Coherent? | Accessible? | Observations`
+
+Hand the table to the Critic as additional input. Design observations do not lower the score but can be included in the review record.
 
 ---
 

@@ -2,7 +2,7 @@
 
 > **Part of the kanban skill.** Handles version reporting and update checks.
 
-**Current version**: 1.0.6
+**Current version**: 1.1.0
 
 **Upstream**: https://raw.githubusercontent.com/adjmunro/agentfiles/main/skills/kanban/VERSION.md
 
