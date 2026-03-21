@@ -4,6 +4,15 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## 1.2.0 — The Smooth Handoff (2026-03-21)
+
+Capture, plan, and todo now guide you to your next step instead of stopping abruptly. Handoff prompts let you stay in flow — move straight to planning, capture something else, or jump to work. You're always steering, never stuck waiting for the next command.
+
+- Added handoff prompt to `capture.md` Phase 9: enter planning mode, capture again, or do something else (Recommended label steers toward planning)
+- Added handoff prompt to `plan.md` Phase 6: start breaking into tickets, capture something else, or move on (Recommended toward todo-breakdown)
+- Added whitelist to `todo.md` to filter captured subjects before breaking them into tickets (skip unrelated or completed items)
+- Handoff prompts only show on clean completion: no unresolved gaps, successful commit, ready to move forward
+
 ## 1.1.4 — The Open Door (2026-03-21)
 
 Capture no longer front-loads the conversation with a structured question. Phase 4 now opens with a single short line — "What are you working on?" — and waits for the user to write freely before asking anything. The old `AskUserQuestion` opening is gone; clarifying questions come after the user has had a chance to say something on their own terms.
