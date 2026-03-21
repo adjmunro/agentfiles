@@ -78,7 +78,7 @@ Locate the plan file from the path referenced in the ticket's `plan` frontmatter
 **Before loading, apply its staleness policy:** LOAD WITH CAVEAT (TTL: 7 days). Check its `created_at` frontmatter field (or file mtime as fallback).
 - If age ≤ 7 days: load normally.
 - If age > 7 days: load, but prepend this warning to any extracted content:
-  ⚠ STALE (written {N} days ago): treat as reference only. Verify requirements against current codebase before scoring.
+  ⚠ STALE (written {N} days ago): treat as reference only. Verify all requirements against the current codebase before scoring.
 
 Read the plan file.
 
@@ -235,7 +235,7 @@ Append to the ticket file's append zone:
 | Criterion text | — | Missing | What needs to be added |
 
 Issues (prioritised):
-1. [Most critical — specific and actionable: what is missing, where it should live, why it matters]
+1. [Most critical — specific and actionable: what is missing, where it belongs, why it is required]
 2. [Next issue...]
 ```
 
@@ -282,18 +282,15 @@ Compare it against the primary blocking error from the previous FAIL on this tic
 **If the same primary error recurs 2–3 times unchanged** (not a new or different error — the identical gap, unaddressed):
 
 1. Fire a desktop notification using your platform's notification tool (e.g., `osascript -e 'display notification "Kanban: NNN stuck on [error]" with title "Review escalation"'` on macOS, or an equivalent mechanism on other platforms).
-2. Print a prominent terminal block:
+2. Print this exact escalation message:
 
    ```
-   ╔══════════════════════════════════════════════════╗
-   ║  REVIEW ESCALATION — TASK-NNN STUCK             ║
-   ║                                                  ║
-   ║  Recurring failure: [synthesised pattern]        ║
-   ║  Seen N times. Not resolved by prior attempts.   ║
-   ║                                                  ║
-   ║  Suggested fix direction:                        ║
-   ║  [Concrete, specific action to break the loop]   ║
-   ╚══════════════════════════════════════════════════╝
+   [ESCALATION] {subject}/{ticket-id} has failed review {N} times with
+   the same gap: "{gap description}". This may represent a broken
+   assumption in the plan. Options:
+     1. Fix the implementation gap (most common)
+     2. Create a plan amendment ticket and revisit
+     3. Mark this ticket as blocked with a note
    ```
 
 3. If your environment provides an ask-user tool, present the escalation through it and wait for explicit acknowledgment before any retry.

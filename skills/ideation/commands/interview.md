@@ -54,7 +54,7 @@ Construct the input paths:
 - `01-research-{subject}.md` — LOAD WITH CAVEAT (TTL: 48 hours). Check its `created_at` frontmatter field (or file mtime as fallback).
   - If age ≤ 48 hours: load normally.
   - If age > 48 hours: load, but prepend this warning to any extracted content:
-    ⚠ STALE (written {N} days ago): treat as reference only. Verify against current codebase before acting.
+    ⚠ STALE (written {N} days ago): treat as reference only. Verify all claims against the current codebase before acting.
 
 Read both files in full before proceeding. If either file is missing, **STOP** and print:
 
@@ -219,4 +219,4 @@ Report to the user:
 - Whether a git commit was made (and the commit message)
 - What comes next: Step 4 (Write Plan) using `ideation/commands/plan.md`
 
-Keep the report brief. The user should know the interview is complete and what to run next.
+Keep the report brief. The user must know the interview is complete and what to run next.

@@ -116,59 +116,18 @@ Kanban2 is a fresh implementation adapted for the new directory structure. Key d
   - These belong to ideation; kanban2 begins work only after tickets are promoted to `04-todo/`
 - **Archive path**: Finished work moves to `.kanban/.archive/YYYY-MM-DD-{subject}/`
 - **Shared personas**: Commands reference `../../kanban/personas/` (shared from v1, never duplicated)
-- **Same discipline**: Verbatim transcription, critic audit gates, per-unit commits, TDD red-phase discipline — all carry forward
 
 ## Personas
 
-All personas are shared from `skills/kanban/personas/`:
+See `skills/personas/SKILL.md` for the full roster. All personas are shared from `skills/kanban/personas/`. Each command file lists its active persona(s) and the phases they govern.
 
-- **Vela (Scribe)** — transcribes and documents
-- **Arden (Critic)** — audits completeness and correctness
-- **Finn (Scout)** — researches codebase
-- **Kira (Builder)** — implements changes
-- **Echo (Examiner)** — verifies acceptance criteria
-- **Vale (Advocate)** — advocates for the work in PR
-- **Keeper (Strategist)** — challenges scope assumptions
-- **Artisan (Designer)** — owns visual and UX quality
-- **Helm (Release)** — ensures shipping safety
-- **Ward (Documentation)** — maintains documentation health
-- **Pulse (Analytics)** — generates metrics
+## Command Details
 
-Commands identify their active persona(s) in transcripts.
+See the individual command files for full phase logic, DO/DO NOT rules, and escalation paths:
 
-## Carry-Forward from Kanban v1
-
-All established patterns from kanban v1 remain:
-
-- **Conventional commits** with scoped versioning
-- **Critic audit gate**: 95% threshold, auto-fix all gaps, append structured audit block
-- **AskUserQuestion**: max 4 options, `(Recommended)` label on default
-- **Ticket frontmatter schema**: id, subject, plan, effort, status, created_at, claimed_at, completed_at, stale_after_hours, depends_on, spawned_tickets, plan_items, acceptance_criteria, consecutive_failures
-- **TASK-001 = TDD red phase**: No exceptions, never merged into another ticket
-- **Acceptance criteria**: Empirically verifiable (runnable command with expected output, or unambiguous observable state)
-- **Git commits**: One per phase, with conventional commit messages
-- **Stale ticket detection** via `stale_after_hours`
-- **Consecutive failure escalation**: Desktop notification + escalation block when identical gap recurs 2–3 times
-- **Argument-based boundary passthrough**: Use `from-ideation-handoff` to whitelist sanctioned session crossings
-- **Research snapshot format**: Date, "may go stale" disclaimer, sections: Project Structure / Relevant Patterns / Dependencies / Hazards / Recommended Ticket Sequence
-- **PR bypass conditions**: Non-GitHub repo skips PR; unprotected trunk skips PR; check failure defers to user
-- **Phase numbering discipline**: When inserting new phases, renumber downstream and update all references
-
-## Session Design
-
-**Kanban2 is work-only.** It does not orchestrate capture or planning — those belong to the ideation skill (`/ideate`). Kanban2 begins when a ticket is pickable in `04-todo/`.
-
-**Session boundaries are hard:**
-- A work session is independent: claim, implement, log, complete
-- A review session is independent: run checks, score, route
-- An orchestration session identifies and claims the next ticket
-- No cross-session state (except ticket files themselves)
-
-**Escalation and stale detection:**
-- `stale_after_hours` field in ticket frontmatter triggers escalation prompts
-- Consecutive failures on the same ticket fire desktop notifications and escalation blocks
-- Consecutive same-error encounters (2–3 times) also escalate
-
-## Parallelization Safety
-
-Each git worktree has its own working directory, which means `.kanban/` at the repo root is a separate, independent directory tree per worktree — one worktree cannot see another's in-progress tickets or claim locks. This makes parallel sessions across different worktrees naturally isolated at the filesystem level; no coordination mechanism is needed between them, and such cross-worktree parallelism is safe and encouraged. The claim lock mechanism (`.kanban/{subject}/.claims/{ticket-id}.lock`) exists only to guard against races within a single worktree, where two sessions could otherwise both read a ticket as unclaimed and attempt to claim it simultaneously. This is the intended design: cross-worktree parallelism needs no locks; intra-worktree parallelism requires them.
+- `commands/init.md` — subject directory setup
+- `commands/work.md` — ticket claim and implementation
+- `commands/review.md` — evidence gathering, scoring, and verdict
+- `commands/pr.md` — PR preparation and bypass conditions
+- `commands/cleanup.md` — archive and metrics
+- `commands/next.md` — orchestration and work→review loop

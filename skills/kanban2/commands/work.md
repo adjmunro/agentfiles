@@ -119,7 +119,7 @@ Before writing a single line of code, read the full ticket file from top to bott
 - Plan file (path from ticket's `plan` frontmatter field): LOAD WITH CAVEAT (TTL: 7 days). Check its `created_at` frontmatter field (or file mtime as fallback).
   - If age ≤ 7 days: load normally.
   - If age > 7 days: load, but prepend this warning to any extracted content:
-    ⚠ STALE (written {N} days ago): treat as reference only. Plan may not reflect current codebase — verify requirements against existing code before implementing.
+    ⚠ STALE (written {N} days ago): treat as reference only. Plan will not reflect current codebase state — verify requirements against existing code before implementing.
 
 **If prior Review sections exist:** Treat every identified issue as a constraint on your implementation. Do not repeat the same mistakes. Note which plan items each prior failure touched.
 
@@ -168,8 +168,12 @@ stale = (now - claimed_at) > (stale_after_hours * 3600 seconds)
 ```
 
 If stale:
-1. Surface a warning to the user:
-   > Ticket `{ticket-id}` was claimed at `{claimed_at}` and has exceeded its `stale_after_hours` limit of `{N}` hours. It may represent a prior interrupted session.
+1. Surface this exact message to the user:
+   ```
+   [STALE TICKET] {subject}/{ticket-id} has been claimed for {N} hours
+   (stale_after_hours: {threshold}). The session that claimed it may have
+   been interrupted. Run `/kanban work {subject}` to resume or re-claim.
+   ```
 2. Ask the user whether to:
    - **(Recommended)** Continue — proceed with implementation as-if fresh
    - Reset — move the ticket back to `04-todo/`, clear `claimed_at` and `status`, and exit
@@ -197,7 +201,7 @@ Commit message format:
 feat({NNN}): [what and why in one line]
 ```
 
-Replace `{NNN}` with the ticket number. The message body should describe what changed and why it matters — not a laundry list of files touched.
+Replace `{NNN}` with the ticket number. The message body must describe what changed and why it matters — not a laundry list of files touched.
 
 Examples:
 - `feat(011): add work.md command — implements kanban2 ticket claim and implementation flow`
@@ -216,7 +220,7 @@ When implementation is complete, append a Work Log entry to the ticket's append 
 [What was done. Decisions made. WHY each decision was made — the same standard as code comments. Reference plan items and ACs by ID. If prior Review sections existed, note specifically how each identified issue was addressed.]
 ```
 
-The Work Log is cross-agent memory. Write as if future-Ward (Documentation persona) is reading this months later when the codebase has drifted and the context is gone. Every decision must have a WHY. The reader should be able to reconstruct your reasoning without reading the code.
+The Work Log is cross-agent memory. Write as if future-Ward (Documentation persona) is reading this months later when the codebase has drifted and the context is gone. Every decision must have a WHY. The reader must be able to reconstruct your reasoning without reading the code.
 
 If inside a git repo:
 1. Stage the updated ticket file.
@@ -270,7 +274,7 @@ After each phase that produces a meaningful artifact (claimed ticket, implementa
 feat(scope): implement {ticket-id}
 ```
 
-The commit body should state WHY — what this ticket delivers, which requirement it satisfies, what would break without it.
+The commit body must state WHY — what this ticket delivers, which requirement it satisfies, what would break without it.
 
 ---
 
@@ -284,9 +288,9 @@ Report to the user:
 - The number of commits made
 - Any new tickets spawned (with IDs and brief descriptions)
 - The final ticket location (now in `06-in-review/`)
-- Any issues encountered that the reviewer should be aware of
+- Any issues encountered that the reviewer must be aware of
 
-Keep the report concise. The user should be able to confirm the ticket is ready for local review without reading the ticket file themselves.
+Keep the report concise. The user must be able to confirm the ticket is ready for local review without reading the ticket file themselves.
 
 ---
 
@@ -294,14 +298,14 @@ Keep the report concise. The user should be able to confirm the ticket is ready 
 
 If the ticket's `consecutive_failures` field is ≥ 2, escalate before starting implementation:
 
-> Warning: This ticket has failed review `{consecutive_failures}` consecutive time(s). The same gap may be recurring. Review prior `## Review` sections carefully before proceeding.
+> Warning: This ticket has failed review `{consecutive_failures}` consecutive time(s). The same gap is recurring. Review prior `## Review` sections carefully before proceeding.
 
 If `consecutive_failures` is ≥ 3, send a desktop notification (if your environment supports it) and append an escalation block:
 
 ```markdown
 ## Escalation — YYYY-MM-DDTHH:MMZ
 
-Ticket has reached {N} consecutive failures. Identical gap may be recurring. Prior review sections reviewed: [yes/no]. Approach taken to break the pattern: [description].
+Ticket has reached {N} consecutive failures. Identical gap is recurring. Prior review sections reviewed: [yes/no]. Approach taken to break the pattern: [description].
 ```
 
 ---

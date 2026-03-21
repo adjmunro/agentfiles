@@ -236,22 +236,12 @@ When the same blocking error appears in 2–3 consecutive failures without meani
    ```
    Do not fail if this is unavailable.
 
-2. Print a prominent terminal block:
+2. Print this exact escalation message:
 
 ```
-╔══════════════════════════════════════════════╗
-║           ESCALATION — REPEATED FAILURE      ║
-╠══════════════════════════════════════════════╣
-║ Ticket:  [ticket filename]                   ║
-║ Subject: [YYYY-MM-DD-{subject}]              ║
-║ Attempts: N                                  ║
-╠══════════════════════════════════════════════╣
-║ FAILURE PATTERN                              ║
-║ [Synthesised summary of all review notes]    ║
-╠══════════════════════════════════════════════╣
-║ RECOMMENDED ACTION                           ║
-║ [Concrete, specific fix direction]           ║
-╚══════════════════════════════════════════════╝
+[LOOP DETECTED] The same error has occurred {N} times in a row:
+"{error description}". Stopping the loop to prevent runaway execution.
+Manual intervention required before resuming.
 ```
 
 3. Use `AskUserQuestion` to surface the full failure pattern and ask how to proceed:

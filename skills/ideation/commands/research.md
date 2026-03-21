@@ -167,4 +167,4 @@ Report to the user:
 - Whether the git commit was made (and the commit message if so)
 - Any WebFetch failures and the URLs that were skipped
 
-Keep the report concise. The user should be able to confirm research completed and know what gaps, if any, exist before the interview begins.
+Keep the report concise. The user must be able to confirm research completed and know what gaps, if any, exist before the interview begins.
