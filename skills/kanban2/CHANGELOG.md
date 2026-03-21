@@ -4,6 +4,16 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## 2.1.0 — The Audit Gate (2026-03-22)
+
+Review command lands for kanban2. Examiner + Critic dual-persona pipeline, 95% threshold, evidence-mapped ACs, and full PASS/FAIL routing adapted to the subject-centric directory structure.
+
+- Added `commands/review.md` — review command for kanban2
+- Picks up tickets from `06-in-review/` (not v1's `04-in-review/`)
+- PASS: sets `status: done`, moves ticket to `07-pull-request/`, announces when all subject tickets are ready for PR
+- FAIL: moves ticket back to `05-in-progress/`, increments `consecutive_failures`, same-error escalation after 2–3 identical gaps
+- Persona references updated to `../../kanban/personas/examiner.md` and `../../kanban/personas/critic.md`
+
 ## 2.0.0 — The New Order (2026-03-22)
 
 Kanban2 reimagines the work loop for the new subject-centric directory structure. Breaking change: tickets now live in `YYYY-MM-DD-{subject}/04-todo/` (not v1's `02-todo/{subject}/`), stage numbers shift from `03-in-progress` to `05-in-progress`, and the skill never touches plan-layer files. Same rock-solid orchestration and per-unit commit discipline as v1, adapted for the fresh architecture.
