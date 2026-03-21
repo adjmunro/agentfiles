@@ -3,7 +3,7 @@ id: "260321-capture-flow/TASK-003"
 subject: "260321-capture-flow"
 plan: "../../01-plan/260321-capture-flow/plan-capture-flow.md"
 effort: medium
-status: in-review
+status: done
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T00:01:00Z"
 completed_at: "2026-03-21T00:02:00Z"
@@ -54,3 +54,20 @@ Three targeted edits were made between the free-write collection paragraph and t
 3. **Topic areas reframed as guidance.** The bullet list (impl choices, tradeoffs, edge cases, constraints, acceptance signals, prior art) was relabelled: the lead sentence now reads "The following areas are **guidance** for what kinds of gaps are worth surfacing — not a mandatory sequence to work through." This preserves the list while making the advisory-not-prescriptive intent explicit.
 
 Rules preserved unchanged: one question at a time (sequential), no hard cap (run until picture is complete), Phases 5–9 untouched.
+
+---
+
+## Review — 2026-03-21
+
+**Reviewers:** Echo (Examiner), Arden (Critic)
+**Result:** PASS — 100% (5/5 satisfied, threshold 95%)
+
+| # | Criterion | Verdict |
+|---|-----------|---------|
+| 1 | Phase 4 instructs agent to read and process free-write before forming questions | SATISFIED |
+| 2 | Questions derived from gaps in user input, not a fixed template | SATISFIED |
+| 3 | No hard cap — run until picture is complete | SATISFIED |
+| 4 | One question at a time, sequentially | SATISFIED |
+| 5 | Topic areas listed as guidance, not mandatory sequence | SATISFIED |
+
+All criteria map to explicit text in Phase 4. Arden (Critic) found no grounds to contest any criterion. Ticket promoted to `05-pull-request`.
