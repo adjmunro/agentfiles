@@ -6,9 +6,9 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ## 1.2.3 — Right Format (2026-03-21)
 
-The directory structure diagram in SKILL.md now shows the correct `YYYY-MM-DD-<subject>/` date format instead of the old `YYMMDD-<subject>/` shorthand.
+The directory structure diagram in SKILL.md now shows the correct `YYYY-MM-DD-<subject>/` date format instead of the old short-form date prefix.
 
-- Updated `YYMMDD-<subject>/` to `YYYY-MM-DD-<subject>/` in the SKILL.md directory structure diagram
+- Updated the directory structure date prefix to `YYYY-MM-DD-<subject>/` in the SKILL.md directory structure diagram
 
 ## 1.2.2 — Both Doors (2026-03-21)
 

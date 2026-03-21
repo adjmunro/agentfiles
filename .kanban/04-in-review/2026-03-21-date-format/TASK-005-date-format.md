@@ -3,10 +3,10 @@ id: "260321-date-format/TASK-005"
 subject: "260321-date-format"
 plan: "../../01-plan/260321-date-format/plan-date-format.md"
 effort: low
-status: in-progress
+status: in-review
 created_at: "2026-03-21T00:00:00Z"
-claimed_at: ~
-completed_at: ~
+claimed_at: "2026-03-21T22:50:00Z"
+completed_at: "2026-03-21T23:20:00Z"
 stale_after_hours: 4
 depends_on:
   - "TASK-001"
@@ -74,3 +74,9 @@ All acceptance criteria met.
 **Issue:** The builder's work log claimed `CHANGELOG.md` had no `YYMMDD` occurrences, but the changelog entry they wrote to document this change itself contains `YYMMDD` in the description of the old format (`Updated \`YYMMDD-<subject>/\` to \`YYYY-MM-DD-<subject>/\``). AC3 is a literal grep with no exceptions for changelog prose — it fails as written.
 
 **Required fix:** Reword the CHANGELOG.md v1.2.3 entry to avoid using the old `YYMMDD` shorthand literally. For example: "Updated the directory structure diagram date format from the old shorthand to `YYYY-MM-DD-<subject>/`." This will make AC3's grep return no matches.
+
+## Work Log — 2026-03-21T23:15:00Z
+
+Fix: rewrote CHANGELOG.md v1.2.3 entry to avoid literal YYMMDD string.
+
+Replaced the two sentences in the v1.2.3 changelog entry that contained the old short-form date prefix with equivalent phrasing that describes the change without using the literal string.
