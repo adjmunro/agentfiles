@@ -3,7 +3,7 @@ id: "260321-date-format/TASK-001"
 subject: "260321-date-format"
 plan: "../../01-plan/260321-date-format/plan-date-format.md"
 effort: low
-status: in-review
+status: done
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T22:30:00Z"
 completed_at: "2026-03-21T22:40:00Z"
@@ -74,3 +74,16 @@ Output: `.kanban/01-plan/260321-date-format/verify-date-format.md`
 Covers: §1 directory renames, §2a active ticket frontmatter, §2b archive ticket frontmatter, §2c plan/input/research headers and prose, §3 command files with type breakdown and date-command table, §4 SKILL.md, §5 summary counts, §6 final verification suite.
 
 No implementation files were modified during this ticket.
+
+## Review — 2026-03-21T22:45:00Z — PASS 100%
+
+Reviewers: Echo (Examiner) + Arden (Critic)
+
+| Criterion | Result | Evidence |
+|-----------|--------|----------|
+| Checklist exists, written before any edits | PASS | `verify-date-format.md` exists; frontmatter reads `Status: Pre-implementation. All items unchecked.`; work log shows it was written at 22:40Z after research only |
+| Covers 11 dirs (before/after), 9 command files, SKILL.md, all .kanban/ content files | PASS | §1: 11-row directory table with explicit old→new paths; §2a–2c: 24 .kanban/ content files enumerated (5 active tickets, 19 archive tickets, 17 plan/input/research files); §3: 9 command files with per-file occurrence counts and `date +%y%m%d` sub-table; §4: SKILL.md line 55 |
+| Every item falsifiable by grep or file read | PASS | §1 ends with `ls`/`grep` commands; §3 and §4 each have explicit grep verification; §6 provides 5-command final verification suite |
+| No files modified — YYMMDD still returns matches | PASS | Live grep: 9 command files, 116 occurrences (matches §5 baseline exactly); SKILL.md line 55 still reads `YYMMDD-<subject>/` |
+
+Score: 4/4 = **100%**
