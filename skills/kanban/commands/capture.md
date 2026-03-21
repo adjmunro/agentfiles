@@ -106,6 +106,8 @@ Wait for the user to write before doing anything else. Collect their free-form r
 
 Once the user has submitted their free-form input, **read and process what they wrote** before forming any questions. Identify gaps, ambiguities, and non-obvious territory in their specific input. Questions must be derived from what is missing or unclear in what the user actually wrote — not drawn from a fixed template of required topics.
 
+Before asking each clarifying question, write a short natural-prose preamble. The preamble must cover three things: your interpretation of what the user wrote (what you understood them to mean), your recommendation or inclination on that point, and your reasoning for why the question needs to be asked. Write this in your own voice — flowing prose, first person, conversational — not as labeled sections or structured headers. Patterns like "My read:", "I'd recommend:", or "Reasoning:" are prohibited. You may draw on codebase reads, web research, or session context to inform the preamble at your own discretion, based on what the question warrants.
+
 The following areas are **guidance** for what kinds of gaps are worth surfacing — not a mandatory sequence to work through:
 
 - Technical implementation choices and tradeoffs
