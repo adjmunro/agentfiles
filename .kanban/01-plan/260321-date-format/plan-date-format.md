@@ -78,3 +78,29 @@
 
 ### Fixes Applied
 - None.
+
+## Audit: plan → todo — PASS
+**Date**: 2026-03-21T00:00:00Z  **Threshold**: 95%
+
+| # | Requirement | Ticket(s) | Status | Notes |
+|---|------------|-----------|--------|-------|
+| 1 | 1.1 Rename all .kanban/ dirs | TASK-001, TASK-002 | Full | |
+| 2 | 1.2 Include date-format itself | TASK-001, TASK-002 | Full | |
+| 3 | 2.1 Update id: frontmatter | TASK-001, TASK-003 | Full | |
+| 4 | 2.2 Update subject: frontmatter | TASK-001, TASK-003 | Full | |
+| 5 | 2.3 Update plan: relative paths | TASK-001, TASK-003 | Full | |
+| 6 | 3.1 Update # YYMMDD- titles | TASK-001, TASK-003 | Full | |
+| 7 | 3.2 Update ## Research: headers | TASK-001, TASK-003 | Full | |
+| 8 | 3.3 Update all cross-references | TASK-001, TASK-003 | Full | |
+| 9 | 4.1 Replace YYMMDD in 9 command files | TASK-001, TASK-004 | Full | |
+| 10 | 4.2 Fix date +%y%m%d template | TASK-001, TASK-004 | Full | |
+| 11 | 4.3 Update example slugs | TASK-001, TASK-004 | Full | |
+| 12 | 5.1 Update SKILL.md diagram | TASK-001, TASK-005 | Full | |
+| 13 | 5.2 Update other docs | TASK-001, TASK-005 | Full | |
+| 14 | 6.1 Update commit message templates | TASK-001, TASK-004 | Full | |
+
+- Full: 14, Partial: 0, Missing: 0 — Total: 14
+- Score: (14 + 0.5×0) / 14 × 100 = **100%**
+
+### Fixes Applied
+- None.
