@@ -4,6 +4,16 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## 1.0.6 — The Extended Roster (2026-03-21)
+
+Five new specialist personas join the team, covering the gaps between capture and archive: product strategy, design quality, release safety, documentation health, and team analytics.
+
+- Keeper (Strategist) — reframes problems before implementation; challenges scope assumptions
+- Artisan (Designer) — owns visual and UX quality from design system to pixel polish
+- Helm (Release) — final-mile shipping safety; readiness checklist, test verification, clean push
+- Ward (Documentation) — keeps docs honest; cross-references diffs, updates stale references
+- Pulse (Analytics) — velocity, test health, bottlenecks, and retrospective summaries
+
 ## 1.0.5 — The Characters (2026-03-21)
 
 The six specialist roles now have names and live in their own files. Vela (Scribe), Arden (Critic), Finn (Scout), Kira (Builder), Echo (Examiner), Vale (Advocate) — each with their own identity, voice, and cross-command rules. Commands reference their persona files directly, so personality and duties can be updated in one place.
