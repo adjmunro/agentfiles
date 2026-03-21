@@ -4,6 +4,11 @@ allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
 argument-hint: "[YYYY-MM-DD-{subject}/TASK-NNN] — ticket to review"
 ---
 
+<!-- PROGRESSIVE DISCLOSURE: This file contains instructions for all phases.
+     When starting, only Phase 1 is active. Do not process later phase blocks
+     until you reach them. Each phase block is clearly marked with an
+     "Active when:" comment that states the required condition. -->
+
 ## Personas
 
 - `../../personas/examiner/persona.md` — **Echo (Examiner)** — active in Phases 2–2b
@@ -44,6 +49,7 @@ Read each file before proceeding. Identify by the active persona when communicat
 ---
 
 ## Phase 1 — Resolve Ticket
+<!-- Active when: command is first invoked — always runs before any other phase -->
 
 Determine which ticket to review using this priority order. Stop at the first source that yields a result.
 
@@ -61,6 +67,7 @@ Read the ticket file. Confirm its frontmatter contains:
 ---
 
 ## Phase 2 — Examiner: Evidence Gathering (read-only)
+<!-- Active when: ticket has been resolved and confirmed in 06-in-review/ with status: in_review -->
 
 **You are now the Examiner.** Your job is to collect evidence — nothing else. Do not score. Do not modify files. Do not run tests yet.
 
@@ -106,6 +113,7 @@ This table is input for the Critic. Do not attach pass/fail labels yet.
 ---
 
 ## Phase 2b — Test Execution
+<!-- Active when: Examiner evidence table is complete (Step D done) -->
 
 Infer test framework(s) from project files. Check for each of the following — run ALL that match, not just the first:
 
@@ -127,6 +135,7 @@ If no test framework is detected and no `test_command` is specified, record: "No
 ---
 
 ## Phase 3 — Critic: Scoring and Verdict
+<!-- Active when: evidence table and test results are both complete (Phases 2 and 2b done) -->
 
 **You are now the Critic.** Apply the scoring formula to the Examiner's evidence table.
 
@@ -138,9 +147,7 @@ If no test framework is detected and no `test_command` is specified, record: "No
 
 ### Score
 
-```
-score = (satisfied + 0.5 × partial) / total × 100
-```
+> See `_shared.md § Audit Scoring Formula` for the formula and threshold.
 
 ### Verdict
 
@@ -150,6 +157,7 @@ score = (satisfied + 0.5 × partial) / total × 100
 ---
 
 ## Phase 4 — PASS Path
+<!-- Active when: Phase 3 verdict is PASS (score ≥ 95% and all test suites green) -->
 
 *Follow this path only if verdict is PASS.*
 
@@ -211,6 +219,7 @@ If ALL tickets for this subject are now in `07-pull-request/` (none remain in ea
 ---
 
 ## Phase 5 — FAIL Path
+<!-- Active when: Phase 3 verdict is FAIL (score < 95% or any test suite failing) -->
 
 *Follow this path only if verdict is FAIL.*
 
@@ -264,6 +273,7 @@ If not inside a git repo: skip silently.
 ---
 
 ## Phase 6 — Same-Error Escalation
+<!-- Active when: Phase 5 (FAIL path) complete — check for recurring error pattern -->
 
 After each FAIL, extract the primary blocking error or gap pattern from the review record just written.
 
@@ -293,6 +303,7 @@ Compare it against the primary blocking error from the previous FAIL on this tic
 ---
 
 ## Phase 7 — Report
+<!-- Active when: Phase 4 or Phase 5 (and optionally Phase 6) complete -->
 
 After completing either path, report:
 

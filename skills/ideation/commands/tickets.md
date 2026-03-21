@@ -4,6 +4,11 @@ allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
 argument-hint: "[YYYY-MM-DD-{subject}] — subject to create tickets for"
 ---
 
+<!-- PROGRESSIVE DISCLOSURE: This file contains instructions for all phases.
+     When starting, only Phase 1 is active. Do not process later phase blocks
+     until you reach them. Each phase block is clearly marked with an
+     "Active when:" comment that states the required condition. -->
+
 ## Personas
 
 - `../../personas/scout/persona.md` — **Finn (Scout)** — active in Phase 2
@@ -30,6 +35,7 @@ Read each file before proceeding. Identify by the active persona when communicat
 ---
 
 ## Phase 1 — Load Plan
+<!-- Active when: command is first invoked — always runs before any other phase -->
 
 Derive the subject using the following priority order. Stop at the first match:
 
@@ -63,6 +69,7 @@ Read the plan file in full. Enumerate every numbered requirement — these are t
 ---
 
 ## Phase 2 — Scout Research (Brief)
+<!-- Active when: plan file loaded and enumerated (Phase 1 complete) -->
 
 Activate **Finn (Scout)**. Run a quick, focused codebase scan to inform ticket scope and dependencies. This is not a full research session — it supplements the `01-research-{subject}.md` snapshot already written during Step 2.
 
@@ -84,6 +91,7 @@ Scout does not write a new research file here. If findings are significant, note
 ---
 
 ## Phase 3 — Draft Tickets
+<!-- Active when: Scout research complete (Phase 2 done) -->
 
 Activate the main implementation persona. Draft each ticket as a separate file.
 
@@ -120,33 +128,9 @@ For each logical unit of work:
 
 ### Ticket Frontmatter Schema
 
-Use exactly these fields. Do not add or remove fields.
+> See `../../kanban2/commands/_shared.md § Ticket Frontmatter Schema` when you need field definitions.
 
-```yaml
----
-id: "{subject}/TASK-NNN"
-subject: "{subject}"
-plan: "../02-plan-{subject}.md"
-effort: low|medium|high
-status: todo
-created_at: "YYYY-MM-DDTHH:MM:SSZ"
-claimed_at: ~
-completed_at: ~
-stale_after_hours: 4
-depends_on: []
-spawned_tickets: []
-plan_items:
-  - "Req X.Y — description"
-acceptance_criteria:
-  - "runnable command — expected result"
-consecutive_failures: 0
----
-```
-
-- `id` — `{subject}/TASK-NNN` where NNN is zero-padded (001, 002, ...)
-- `plan_items` — list every plan requirement this ticket addresses
-- `depends_on` — omit or leave empty if this ticket has no dependencies
-- `acceptance_criteria` — see rules below
+Note: for ideation tickets, the `id` field uses the shorter form `{subject}/TASK-NNN` and `plan` points to `../02-plan-{subject}.md` rather than the kanban2 path.
 
 ### Ticket Body Structure
 
@@ -191,6 +175,7 @@ kanban(tickets): draft N tickets for {subject}
 ---
 
 ## Phase 4 — Critic Audit Gate (Step 8)
+<!-- Active when: all ticket files drafted and committed (Phase 3 done) -->
 
 Activate **Arden (Critic)**. Audit ticket coverage against plan requirements.
 
@@ -250,6 +235,7 @@ kanban(tickets): audit verified {subject}
 ---
 
 ## Phase 5 — Git Commit
+<!-- Active when: audit passes at ≥ 95% (Phase 4 done) -->
 
 After Phase 4 completes and the audit passes:
 

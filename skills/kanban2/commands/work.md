@@ -4,6 +4,11 @@ allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion, Agent
 argument-hint: "[YYYY-MM-DD-{subject}/TASK-NNN] — ticket to implement"
 ---
 
+<!-- PROGRESSIVE DISCLOSURE: This file contains instructions for all phases.
+     When starting, only Phase 1 is active. Do not process later phase blocks
+     until you reach them. Each phase block is clearly marked with an
+     "Active when:" comment that states the required condition. -->
+
 > **Note on model selection:** The frontmatter model above is the default (low effort). At runtime, the actual model is determined by the ticket's `effort` field: `low` → fast/cheap model, `medium` → standard model, `high` → most capable model. Spawn subagents at the appropriate tier when your environment supports it.
 
 ## Personas
@@ -30,6 +35,7 @@ Read `../../personas/builder/persona.md` before proceeding. You are **Kira (Buil
 ---
 
 ## Phase 1 — Session Boundary
+<!-- Active when: command is first invoked — always runs before any other phase -->
 
 **Check that this is NOT a capture or plan session.** Kanban2 is work-only. If `$ARGUMENTS` contains `from-ideation-handoff`, this is a sanctioned crossing — proceed without challenge.
 
@@ -44,6 +50,7 @@ If the in-progress ticket IS stale (see Phase 4 for staleness definition), surfa
 ---
 
 ## Phase 2 — Ticket Selection
+<!-- Active when: Phase 1 check passed — no conflicting in-progress ticket found -->
 
 Determine which ticket to implement using the following priority order:
 
@@ -92,6 +99,7 @@ If inside a git repo:
 ---
 
 ## Phase 3 — Implementation
+<!-- Active when: ticket has been selected and claimed (moved to 05-in-progress/) -->
 
 <!-- INTENT ANCHOR — re-read original intent before writing any code -->
 <!-- 1. Read the ticket's `plan` frontmatter field to get the plan file path. -->
@@ -151,6 +159,7 @@ Kanban2 picks up work only after tickets are promoted to `04-todo/`.
 ---
 
 ## Phase 4 — Stale Detection
+<!-- Active when: ticket has been claimed — check staleness before proceeding to implementation -->
 
 After claiming a ticket, compute whether it is stale:
 
@@ -170,6 +179,7 @@ If the user chooses to continue, proceed to Phase 3 implementation. If reset, mo
 ---
 
 ## Phase 5 — Commit Discipline
+<!-- Active when: implementation is underway — apply throughout Phase 3 -->
 
 Commit after every meaningful, self-contained unit of work. A meaningful unit is one of:
 
@@ -196,6 +206,7 @@ Examples:
 ---
 
 ## Phase 6 — Append Work Log
+<!-- Active when: implementation is complete — all acceptance criteria have been addressed -->
 
 When implementation is complete, append a Work Log entry to the ticket's append zone (below the `<!-- Everything below this line is append-only -->` comment). The append zone is chronological and append-only — never edit existing entries.
 
@@ -214,6 +225,7 @@ If inside a git repo:
 ---
 
 ## Phase 7 — New Work Discovered
+<!-- Active when: during Phase 3 implementation — out-of-scope work is discovered -->
 
 If implementation reveals work that is clearly outside this ticket's acceptance criteria — a missing dependency, an adjacent bug, a required refactor — do NOT do that work here.
 
@@ -230,6 +242,7 @@ If inside a git repo, stage and commit the new ticket file:
 ---
 
 ## Phase 8 — Move to Review
+<!-- Active when: all acceptance criteria verified and work log appended -->
 
 When all acceptance criteria are verified, move the ticket from `.kanban/YYYY-MM-DD-{subject}/05-in-progress/` to `.kanban/YYYY-MM-DD-{subject}/06-in-review/`. Create the destination directory if it does not exist.
 
@@ -249,6 +262,7 @@ If inside a git repo:
 ---
 
 ## Phase 9 — Git Commit
+<!-- Active when: any phase produces a meaningful artifact (claimed ticket, implementation, work log, review move) -->
 
 After each phase that produces a meaningful artifact (claimed ticket, implementation commit, work log, review move), make a conventional commit:
 
@@ -261,6 +275,7 @@ The commit body should state WHY — what this ticket delivers, which requiremen
 ---
 
 ## Phase 10 — Report
+<!-- Active when: ticket has been moved to 06-in-review/ — all prior phases complete -->
 
 Report to the user:
 
@@ -291,54 +306,9 @@ Ticket has reached {N} consecutive failures. Identical gap may be recurring. Pri
 
 ---
 
-## Ticket Frontmatter Reference
+## Ticket Reference
+<!-- Active when: Phase 7 (spawning new tickets) — load field definitions only when needed -->
 
-```yaml
----
-id: "YYYY-MM-DD-{subject}/TASK-NNN"
-subject: "YYYY-MM-DD-{subject}"
-plan: "../../01-plan/YYYY-MM-DD-{subject}/plan-{subject}.md"
-effort: low | medium | high
-status: todo | in_progress | in_review | done
-created_at: "ISO8601"
-claimed_at: ~
-completed_at: ~
-stale_after_hours: 4
-depends_on:
-  - "TASK-001"
-spawned_tickets: []
-plan_items:
-  - "Req 2.1 — description"
-acceptance_criteria:
-  - "Verifiable command or observable output"
-consecutive_failures: 0
----
-```
-
----
-
-## Ticket Body Structure Reference
-
-```markdown
-## Context
-[Why this ticket exists — static, set once.]
-
-## Acceptance Criteria
-[Complete list — static, set once.]
-
----
-<!-- Everything below this line is append-only and chronological -->
-
-## Work Log — YYYY-MM-DDTHH:MMZ
-[What was done, decisions made, why each decision was made.]
-
-## Review — YYYY-MM-DDTHH:MMZ — FAIL 72%
-[Evidence table, issue list — written by reviewer, not by Builder.]
-
-## Work Log — YYYY-MM-DDTHH:MMZ
-[Addressing review issues from above — reference each issue by number or description.]
-```
-
-**Static zone** (`## Context`, `## Acceptance Criteria`): set once at ticket creation.
-
-**Append zone** (below `<!-- Everything below this line is append-only -->`): strictly chronological. Every entry is appended. Existing entries are never edited. This is the cross-agent audit trail.
+> See `_shared.md § Ticket Frontmatter Schema` when you need field definitions.
+> See `_shared.md § Ticket Body Structure` when you need the body template.
+> See `_shared.md § Directory Structure` when you need path references.
