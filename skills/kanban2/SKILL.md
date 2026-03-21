@@ -168,3 +168,7 @@ All established patterns from kanban v1 remain:
 - `stale_after_hours` field in ticket frontmatter triggers escalation prompts
 - Consecutive failures on the same ticket fire desktop notifications and escalation blocks
 - Consecutive same-error encounters (2–3 times) also escalate
+
+## Parallelization Safety
+
+Each git worktree has its own working directory, which means `.kanban/` at the repo root is a separate, independent directory tree per worktree — one worktree cannot see another's in-progress tickets or claim locks. This makes parallel sessions across different worktrees naturally isolated at the filesystem level; no coordination mechanism is needed between them, and such cross-worktree parallelism is safe and encouraged. The claim lock mechanism (`.kanban/{subject}/.claims/{ticket-id}.lock`) exists only to guard against races within a single worktree, where two sessions could otherwise both read a ticket as unclaimed and attempt to claim it simultaneously. This is the intended design: cross-worktree parallelism needs no locks; intra-worktree parallelism requires them.

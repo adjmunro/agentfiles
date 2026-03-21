@@ -36,6 +36,8 @@ Resolve the subject slug from `$ARGUMENTS`:
 2. If `$ARGUMENTS` is `new` or empty → use `AskUserQuestion` to ask: "What is the subject name for this ideation session?" Then slugify: lowercase, spaces → hyphens, strip non-alphanumerics except hyphens, prepend today's date as `YYYY-MM-DD`.
 3. Final subject slug format: `YYYY-MM-DD-{subject-slug}`.
 
+**Slug uniqueness guard:** If `.kanban/YYYY-MM-DD-{subject-slug}/` already exists and this is NOT a loop-back (i.e. `$ARGUMENTS` did not explicitly name it), append `-2` to the slug. If that also exists, try `-3`, and so on until a unique slug is found. Log which slug was chosen: "Subject directory already existed — using `YYYY-MM-DD-{subject-slug}` instead."
+
 Create the subject directory structure if it does not exist:
 
 ```

@@ -25,6 +25,7 @@ Read `../../personas/builder/persona.md` before proceeding. You are **Kira (Buil
 - Batch unrelated changes into a single commit
 - Edit existing entries in the ticket's append zone — only append new ones
 - Proceed if `.kanban/YYYY-MM-DD-{subject}/04-todo/` does not exist
+- Move a ticket to `05-in-progress/` without first writing a lock file to `.kanban/{subject}/.claims/`
 
 ---
 
@@ -56,6 +57,22 @@ Determine which ticket to implement using the following priority order:
 > No todo tickets found for this subject. Run `/kanban init` first or check that tickets have been promoted to `04-todo/`.
 
 Then exit. Do not touch any files.
+
+**Pre-claim check — run before moving any ticket:**
+
+1. Check for `.kanban/{subject}/.claims/{ticket-id}.lock`.
+2. If the lock file exists:
+   a. Read its `claimed_at` timestamp and `stale_after_hours` value.
+   b. If age > `stale_after_hours`: the lock is abandoned. Delete it and proceed to step 3.
+   c. If age ≤ `stale_after_hours`: this ticket is already claimed in this session. Skip it — select the next unclaimed ticket from `04-todo/` instead and repeat the pre-claim check for that ticket.
+3. Write the lock file to `.kanban/{subject}/.claims/{ticket-id}.lock` with:
+   ```
+   claimed_at: {ISO timestamp}
+   session_hint: {first 8 chars of a random UUID or current timestamp in ms}
+   stale_after_hours: {value from ticket frontmatter, default 4}
+   ```
+   Create `.kanban/{subject}/.claims/` if it does not exist.
+4. Then proceed to move the ticket to `05-in-progress/` and update its frontmatter.
 
 **Move the selected ticket** from `.kanban/YYYY-MM-DD-{subject}/04-todo/` to `.kanban/YYYY-MM-DD-{subject}/05-in-progress/`. Create the destination directory if it does not exist.
 
@@ -222,6 +239,8 @@ Update the ticket's frontmatter:
 status: in_review
 completed_at: "<ISO8601 timestamp>"
 ```
+
+**Lock file cleanup:** After moving the ticket to `06-in-review/`, delete `.kanban/{subject}/.claims/{ticket-id}.lock` if it exists. This releases the claim so the slot is available if the ticket is ever reset.
 
 If inside a git repo:
 1. Stage the moved ticket file.
