@@ -3,9 +3,9 @@ id: "260321-unified-pipeline/TASK-014"
 subject: "260321-unified-pipeline"
 plan: "../../01-plan/260321-unified-pipeline/plan-unified-pipeline.md"
 effort: medium
-status: todo
+status: in_review
 created_at: "2026-03-22T00:00:00Z"
-claimed_at: ~
+claimed_at: "2026-03-22T00:00:00Z"
 completed_at: ~
 stale_after_hours: 4
 depends_on:
@@ -51,3 +51,21 @@ Command model: `claude-haiku-4-5-20251001` (low-tier, straightforward file opera
 
 ---
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log
+
+**2026-03-22T00:00:00Z** — `kanban-work` (claude-sonnet-4-6)
+
+- Moved ticket `02-todo/` → `03-in-progress/`, set `status: in_progress`, `claimed_at: "2026-03-22T00:00:00Z"`
+- Read v1 reference: `skills/kanban/commands/cleanup.md` (Critic/Pulse pattern, v1 stage paths)
+- Created `skills/kanban2/commands/cleanup.md` with:
+  - Frontmatter: `model: claude-haiku-4-5-20251001`, `allowed-tools`, `argument-hint`
+  - Single persona: Arden (Critic) via `../../kanban/personas/critic.md`
+  - DO / DO NOT section with v1 coexistence guard
+  - Phase 1 — Completion Check: zero tickets in `04-todo/`–`07-pull-request/`, non-zero in `08-done/`
+  - Phase 2 — Audit Summary: count + sanity-check status fields
+  - Phase 3 — Clean Empty Dirs: `rmdir` empty stage dirs, preserve `08-done/` and `00-assets/`
+  - Phase 4 — Archive: `mkdir -p .kanban/.archive/`, `mv` subject to `.kanban/.archive/YYYY-MM-DD-{subject}/`
+  - Phase 5 — Git Commit: `kanban(cleanup): archive {subject}`
+- Verified all 9 ACs: PASS
+- Moved ticket `03-in-progress/` → `04-in-review/`, set `status: in_review`
