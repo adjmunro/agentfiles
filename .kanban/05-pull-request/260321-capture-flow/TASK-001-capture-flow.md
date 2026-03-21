@@ -3,7 +3,7 @@ id: "260321-capture-flow/TASK-001"
 subject: "260321-capture-flow"
 plan: "../../01-plan/260321-capture-flow/plan-capture-flow.md"
 effort: low
-status: in-review
+status: done
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T00:00:00Z"
 completed_at: "2026-03-21T00:00:00Z"
@@ -71,3 +71,26 @@ This checklist enumerates every requirement the new Phase 4 must exhibit, verifi
 ### Confirmation
 
 `capture.md` has not been read since the checklist was written. Verification of this checklist against the final `capture.md` will occur in a subsequent ticket (TASK-002 or later) when Phase 4 is implemented.
+
+---
+
+## Review — 2026-03-21
+
+**Reviewers:** Echo (Examiner) → Arden (Critic)
+**Result:** PASS — 100% (4/4 criteria fully satisfied)
+
+### Criterion Assessment
+
+| # | Criterion | Result |
+|---|-----------|--------|
+| 1 | Checklist exists in append zone, written before any capture.md edits | SATISFIED |
+| 2 | Each item is falsifiable by reading capture.md | SATISFIED |
+| 3 | All 9 required areas covered | SATISFIED |
+| 4 | capture.md is unmodified | SATISFIED |
+
+### Notes
+
+- All 9 required areas confirmed present: no multi-choice before free-write (items 1, 3); single framing line (item 1); free-write before questions (items 2, 3); questions from gaps not templates (item 5); natural-prose preamble (item 6); preamble voice rules (item 7); research discretion (item 8); no hard cap (item 9); phases 5–9 unchanged (items 10–16).
+- `git diff` on capture.md returned no output — file is provably unmodified, corroborating the self-attestation in the Confirmation section.
+- Checklist coverage exceeds the minimum: 16 items cover Phases 1–3 and Phase 10 in addition to the 9 required areas.
+- Arden (Critic) found no weaknesses to report.

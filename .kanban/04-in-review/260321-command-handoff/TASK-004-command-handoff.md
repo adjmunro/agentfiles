@@ -66,3 +66,15 @@ Implemented the full four-step Discard guard in `skills/kanban/commands/plan.md`
 - `subject slug`: 6 matches (>= 1) ✓
 - `manually`: 2 matches (>= 1) ✓
 - `Discard`: 3 matches (>= 2) ✓
+
+## Review — 2026-03-21T00:00Z — PASS 100.0%
+
+| AC | Evidence | Status |
+|----|----------|--------|
+| `grep -c 'Discard' plan.md` >= 2 | Returns 3 (plan.md lines 215, 216, 240) | Satisfied |
+| `grep -c '02-todo\|...' plan.md` >= 1 | Returns 2; Step 1 lists all five directories (02-todo through 06-archive) at plan.md:247 | Satisfied |
+| `grep -c 'subject slug' plan.md` >= 1 | Returns 6; Steps 3–4 require exact slug, case-sensitive | Satisfied |
+| `grep -c 'manually\|...\|explicit' plan.md` >= 1 | Returns 4; Step 2 at plan.md:257 instructs "manually remove" or "explicitly instruct" | Satisfied |
+| All four steps verifiable in plan.md | Steps 1–4 at plan.md:243–269 cover all sub-requirements in order: scan 02-06, block+describe+stop, exact slug required, delete 01-plan/YYMMDD-subject/ | Satisfied |
+
+Test results: No test framework detected — skipping test execution.
