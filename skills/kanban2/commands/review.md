@@ -134,8 +134,25 @@ If no test framework is detected and no `test_command` is specified, record: "No
 
 ---
 
+## Phase 2c — Documentation Check (Ward)
+<!-- Active when: ticket has any acceptance criteria involving documentation, README, comments, or docstrings -->
+
+Read `../../personas/documentation/persona.md` before proceeding with this phase.
+
+**Activation check:** Scan the ticket's acceptance criteria and `plan_items` for any mention of: documentation, README, comments, docstrings, changelog, or runbook. If none are present, skip Phase 2c entirely — do not add documentation requirements that weren't in the original ACs.
+
+**If Phase 2c is active, Ward checks:**
+
+1. For each AC that mentions docs, README, comments, or docstrings: verify the specific file exists and contains the content described. Cite the file and line (or record that it is absent).
+2. If the ticket's plan items include documentation tasks: verify each is complete against the actual files.
+3. Record findings in the evidence table alongside Phase 2 entries, with column `AC | Evidence (file:line or "absent") | Present?`.
+
+Ward does NOT add new documentation requirements. Ward only verifies what was already specified in the original ACs or plan.
+
+---
+
 ## Phase 3 — Critic: Scoring and Verdict
-<!-- Active when: evidence table and test results are both complete (Phases 2 and 2b done) -->
+<!-- Active when: evidence table and test results are both complete (Phases 2, 2b, and 2c done) -->
 
 **You are now the Critic.** Apply the scoring formula to the Examiner's evidence table.
 

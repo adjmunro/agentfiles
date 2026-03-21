@@ -137,17 +137,34 @@ git commit --allow-empty -m "kanban(pr): open draft PR for YYYY-MM-DD-{subject}"
 
 ## Phase 4 — Post-Merge
 
+Read `../../personas/release/persona.md` before proceeding. You are now **Helm (Release)**. Helm's job is pre-flight verification before any ticket is marked done.
+
 Wait for the PR to be merged, or ask the user to confirm merge if polling is not possible.
 
-**Once merge is confirmed:**
+**Once merge is confirmed, run Helm's pre-flight checklist before moving any tickets:**
 
-1. Move all ticket files from `.kanban/YYYY-MM-DD-{subject}/07-pull-request/` to `.kanban/YYYY-MM-DD-{subject}/08-done/`.
+1. **Verify actual merge** — confirm the PR was merged, not just closed or abandoned.
+   - Run: `gh pr view {PR-number} --json state,mergedAt,mergeCommit`
+   - Require `state: MERGED` and a non-null `mergedAt`. If the PR was closed without merging, STOP and report.
+
+2. **Verify CI on merge commit** — confirm CI passed on the merge commit itself, not only on the PR branch.
+   - Run: `gh pr checks {PR-number} --required` and inspect the post-merge status.
+   - If any required check is failing on the merged commit, STOP. Report the failing check and wait for the user.
+
+3. **Confirm merged commit in target branch** — verify the merge commit hash appears in the target branch history.
+   - Derive `mergeCommitSha` from the `gh pr view` output above.
+   - Run: `git branch --contains {mergeCommitSha}` and confirm the target branch is listed.
+   - If not listed, STOP. The merge may not be visible yet — wait or ask the user to confirm.
+
+**Only after all three checks pass**, proceed:
+
+4. Move all ticket files from `.kanban/YYYY-MM-DD-{subject}/07-pull-request/` to `.kanban/YYYY-MM-DD-{subject}/08-done/`.
    ```
    mv .kanban/YYYY-MM-DD-{subject}/07-pull-request/TASK-NNN-*.md \
       .kanban/YYYY-MM-DD-{subject}/08-done/
    ```
-2. Update `status: done` in the frontmatter of each moved ticket.
-3. Make a git commit:
+5. Update `status: done` in the frontmatter of each moved ticket.
+6. Make a git commit:
    ```
    git commit -m "kanban(pr): mark {subject} done → 08-done/"
    ```
