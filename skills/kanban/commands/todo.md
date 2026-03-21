@@ -216,6 +216,20 @@ Every acceptance criterion MUST be verifiable by running a command or observing 
 | "Tests pass" | "`npm test -- --testPathPattern=auth` exits 0" |
 | "Error handling improved" | "Sending request without auth header returns HTTP 401 with body `{\"error\":\"unauthorized\"}`" |
 
+### AC Must Specify Outcomes, Not Implementation
+
+ACs answer *"how do I know it's done?"* — not *"how should it be built?"*. Do not specify file names, directory locations, function names, or structural choices unless they are genuinely externally observable constraints (e.g. a CLI tool called by a fixed path in CI).
+
+If the builder must produce *something* whose exact form is unknown at planning time, describe what it must *do*, not what it must *be called* or *where it must live*.
+
+| Over-specified (avoid) | Outcome-focused (correct) |
+|---|---|
+| "File `verify-auth.sh` exists at repo root" | "A script exists that exits 0 when auth headers are valid and non-zero otherwise" |
+| "Function named `parseConfig()` in `src/config.ts`" | "`npm run build` exits 0 and config values are accessible at runtime" |
+| "Class `UserRepository` extends `BaseRepo`" | "User lookup returns the correct record for a known test ID" |
+
+If a location or name genuinely matters (shared CI scripts, public API surface), note it as a **Constraint** in the plan — not buried in an AC.
+
 Git commit after writing: `kanban(todo): create N tickets for YYMMDD-<subject>`
 
 ---

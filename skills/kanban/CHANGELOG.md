@@ -4,6 +4,14 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## 1.1.3 — The Right Question (2026-03-21)
+
+ACs should answer "how do I know it's done?" — not "how should it be built?". Added a new rule to `todo.md` that explicitly calls out over-specification: don't put file names, paths, or structural choices in ACs unless they're externally observable constraints. If location or naming matters, it belongs in the plan's Constraints section.
+
+- Added "AC Must Specify Outcomes, Not Implementation" guidance to `todo.md`
+- Includes a before/after table with concrete examples
+- Notes the escape hatch: if a name/path genuinely matters, put it in the plan as a Constraint
+
 ## 1.1.2 — The Handoff (2026-03-21)
 
 Capture now asks what you want to do next instead of just stopping. After a clean run, you get one prompt: enter planning mode, capture something else, or do something else entirely. The (Recommended) label steers you toward planning without forcing it.
