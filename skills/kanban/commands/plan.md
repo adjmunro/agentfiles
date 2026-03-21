@@ -201,7 +201,50 @@ If inside a git repo:
 
 ---
 
-## Phase 10 — Report
+## Phase 10 — Handoff
+
+**Only run this phase when the audit result is PASS.** Reaching Phase 9 (Git Commit, audit) implies PASS — the Phase 8 STOP guard blocks any FAIL from reaching here. If for any reason the audit result is FAIL, skip this phase silently and proceed to Phase 11.
+
+Use your environment's interactive question tool (e.g., `AskUserQuestion`) to present the following options. Present at most 4 options (hard limit). Label option 1 with `(Recommended)`.
+
+**Options:**
+
+1. **Start (Recommended)** — invoke `kanban-todo` for the current subject, then invoke `kanban-next` to begin the full work loop.
+2. **Quit** — invoke `kanban-todo` for the current subject to create tickets, then exit. The user handles the rest manually.
+3. **Something else** — freeform; treat the user's input as a normal in-context message with no special handler. Users may type "new" to start a fresh `kanban-capture` inline after todo runs, or anything else they need.
+4. **Discard** — remove the current subject's files from `.kanban/01-plan/`. See Discard guard instructions below.
+
+**Before invoking `kanban-todo` (options 1 and 2):**
+
+Present an explicit session-boundary confirmation prompt to the user:
+
+> "This will cross the capture/plan → work session boundary. Continue?"
+
+If the user declines, return to the handoff options prompt and present the 4 choices again. Do not invoke `kanban-todo` unless the user confirms.
+
+**Invoking `kanban-todo`:**
+
+Pass the `from-plan-handoff` argument when invoking kanban-todo so the session boundary check in that command is skipped:
+
+```
+kanban-todo YYMMDD-<subject> from-plan-handoff
+```
+
+After `kanban-todo` completes:
+- **Start** → invoke `kanban-next`
+- **Quit** → exit
+
+---
+
+### Discard guard instructions
+
+<!-- TODO: TASK-004 will implement the full Discard guard logic here. -->
+
+See Discard guard instructions below — full implementation deferred to TASK-004. For now, when the user selects Discard, inform them: "Discard guard is not yet implemented. Please remove the plan files manually from `.kanban/01-plan/YYMMDD-<subject>/`."
+
+---
+
+## Phase 11 — Report
 
 Report to the user:
 - The plan file path
