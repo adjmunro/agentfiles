@@ -1,7 +1,7 @@
 ---
 model: claude-opus-4-6
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
-argument-hint: "[YYMMDD-<subject>] — subject to capture; omit to auto-derive"
+argument-hint: "[YYYY-MM-DD-<subject>] — subject to capture; omit to auto-derive"
 ---
 
 ## Personas
@@ -42,7 +42,7 @@ Then exit. Do not write any files. No exceptions.
 
 Determine the subject slug using the following priority order. Work through each source in order and stop at the first that yields a usable result. NEVER ask the user.
 
-1. **`$ARGUMENTS` match** — if arguments were passed containing a `YYMMDD-*` pattern, extract and use it as-is.
+1. **`$ARGUMENTS` match** — if arguments were passed containing a `YYYY-MM-DD-*` pattern, extract and use it as-is.
 2. **Existing plan content** — inspect `.kanban/01-plan/` for existing subject directories. If the current conversation context maps clearly to an in-flight subject, route there and reuse that name.
 3. **Git worktree** — run `git worktree list` and take the last path segment of the **current** worktree entry (the one whose path matches the working directory). Example (Claude Code): `Bash` tool with `git worktree list`.
 4. **Conversation content** — synthesise a short slug from what the work is actually about based on context available in this session.
@@ -54,7 +54,7 @@ Determine the subject slug using the following priority order. Work through each
 - Replace spaces with hyphens
 - Strip all characters except alphanumerics and hyphens
 
-**Date prefix:** Compute `YYMMDD` from today's date once and use it throughout this run. Example (Claude Code): `Bash` tool with `date +%y%m%d`. The final subject name MUST follow the pattern `YYMMDD-subject-slug`.
+**Date prefix:** Compute `YYYY-MM-DD` from today's date once and use it throughout this run. Example (Claude Code): `Bash` tool with `date +%Y-%m-%d`. The final subject name MUST follow the pattern `YYYY-MM-DD-subject-slug`.
 
 ---
 
@@ -63,8 +63,8 @@ Determine the subject slug using the following priority order. Work through each
 Construct the target paths:
 
 ```
-.kanban/01-plan/YYMMDD-<subject>/
-.kanban/01-plan/YYMMDD-<subject>/input-<subject>.md
+.kanban/01-plan/YYYY-MM-DD-<subject>/
+.kanban/01-plan/YYYY-MM-DD-<subject>/input-<subject>.md
 ```
 
 **If the input file does not exist or is a stub (empty sections only):**
@@ -72,7 +72,7 @@ Construct the target paths:
 Create the subject directory if needed, then create the file with this structure:
 
 ```markdown
-# YYMMDD-<subject>
+# YYYY-MM-DD-<subject>
 
 ## What
 
@@ -89,7 +89,7 @@ Do NOT overwrite it. Append a new session block at the end of the file. The bloc
 
 ```markdown
 
-## Session YYMMDD-HH:MM
+## Session YYYY-MM-DD-HH:MM
 ```
 
 All content captured in this run goes inside this block. Prior sessions are immutable.
@@ -144,7 +144,7 @@ For a **first run**, distribute content across the four sections:
 - `## Constraints` — hard limits, assumptions, non-negotiables, out-of-scope items
 - `## Assets` — existing code, designs, documentation, references, or prior art the user mentioned
 
-For a **subsequent run**, all content goes inside the `## Session YYMMDD-HH:MM` block. Use the same four subsections within that block if the content warrants it, or write as a flat transcript if the session was narrowly focused.
+For a **subsequent run**, all content goes inside the `## Session YYYY-MM-DD-HH:MM` block. Use the same four subsections within that block if the content warrants it, or write as a flat transcript if the session was narrowly focused.
 
 User words are the audit ground truth. The plan will be audited against this file. Corruption here propagates everywhere downstream.
 
@@ -180,7 +180,7 @@ Check whether the project is inside a git repository. Example (Claude Code): `Ba
 
 If inside a git repo:
 1. Stage only the input file (and its parent directory if newly created).
-2. Commit with the message: `kanban(capture): capture raw input for YYMMDD-<subject>`
+2. Commit with the message: `kanban(capture): capture raw input for YYYY-MM-DD-<subject>`
 
 If not inside a git repo: skip this phase silently.
 

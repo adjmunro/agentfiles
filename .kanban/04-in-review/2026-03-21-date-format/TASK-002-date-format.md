@@ -3,10 +3,10 @@ id: "260321-date-format/TASK-002"
 subject: "260321-date-format"
 plan: "../../01-plan/260321-date-format/plan-date-format.md"
 effort: medium
-status: in-progress
+status: in-review
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T22:50:00Z"
-completed_at: ~
+completed_at: "2026-03-21T23:00:00Z"
 stale_after_hours: 4
 depends_on:
   - "TASK-001"
@@ -39,3 +39,27 @@ Traced to: Req 1.1, 1.2.
 
 ---
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log — 2026-03-21T22:50:00Z
+
+Renamed 13 directories from `260321-` to `2026-03-21-` using `mv`.
+
+| Old path | New path |
+|----------|----------|
+| `.kanban/01-plan/260321-date-format/` | `.kanban/01-plan/2026-03-21-date-format/` |
+| `.kanban/01-plan/260321-unified-pipeline/` | `.kanban/01-plan/2026-03-21-unified-pipeline/` |
+| `.kanban/02-todo/260321-date-format/` | `.kanban/02-todo/2026-03-21-date-format/` |
+| `.kanban/02-todo/260321-kanban-ux-hints/` | `.kanban/02-todo/2026-03-21-kanban-ux-hints/` |
+| `.kanban/03-in-progress/260321-date-format/` | `.kanban/03-in-progress/2026-03-21-date-format/` |
+| `.kanban/03-in-progress/260321-kanban-ux-hints/` | `.kanban/03-in-progress/2026-03-21-kanban-ux-hints/` |
+| `.kanban/04-in-review/260321-date-format/` | `.kanban/04-in-review/2026-03-21-date-format/` |
+| `.kanban/04-in-review/260321-kanban-ux-hints/` | `.kanban/04-in-review/2026-03-21-kanban-ux-hints/` |
+| `.kanban/05-pull-request/260321-date-format/` | `.kanban/05-pull-request/2026-03-21-date-format/` |
+| `.kanban/06-archive/260321-capture-flow/` | `.kanban/06-archive/2026-03-21-capture-flow/` |
+| `.kanban/06-archive/260321-command-handoff/` | `.kanban/06-archive/2026-03-21-command-handoff/` |
+| `.kanban/06-archive/260321-kanban-ux-hints/` | `.kanban/06-archive/2026-03-21-kanban-ux-hints/` |
+| `.kanban/06-archive/260321-pr-trunk-skip/` | `.kanban/06-archive/2026-03-21-pr-trunk-skip/` |
+
+Verification:
+- `find .kanban -type d -name '260321-*'`: (empty — no results)
+- `find .kanban -type d -name '2026-03-21-*'`: 13 results
