@@ -42,3 +42,24 @@ The kanban PR stage should be skipped when the current branch is a known trunk b
 - Per-repo trunk branch list configuration.
 - Changes to `kanban-next`.
 - Changes to any command other than `kanban-pr` and `SKILL.md`.
+
+## Audit: input → plan — PASS
+**Date**: 2026-03-21T00:00:00Z  **Threshold**: 95%
+
+| # | Item | Status | Notes |
+|---|------|--------|-------|
+| 1 | Skip PR on trunk | Full | §1.1, §3.1 |
+| 2 | Fixed list: main/master/develop/trunk | Full | §1.1, §1.2, Constraints |
+| 3 | Unless protected on remote | Full | §2.3 |
+| 4 | Check remote if in doubt | Full | §2.1, §2.4 |
+| 5 | gh CLI only | Full | §2.1, Constraints |
+| 6 | Failure → stop and ask | Full | §2.4, Constraints |
+| 7 | Mirrors non-GitHub path → cleanup | Full | §3.1 |
+| 8 | kanban-pr only, next unaffected | Full | §3.2, Out of Scope |
+| 9 | SKILL.md two bypass conditions | Full | §4.1 |
+
+- Full: 9, Partial: 0, Missing: 0 — Total: 9
+- Score: (9 + 0.5×0) / 9 × 100 = **100%**
+
+### Fixes Applied
+- None.
