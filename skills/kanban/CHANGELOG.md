@@ -4,6 +4,14 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## 1.0.4 — The Rename (2026-03-21)
+
+Three cosmetic-but-important clarifications: the review stage is now `in-review` everywhere (was `local-review`), the state machine in SKILL.md uses real directory names and correctly models the PR feedback loop, and subject placeholders in naming examples now use `<subject>` notation to make clear they're parameters.
+
+- Renamed `04-local-review/` → `04-in-review/` throughout all command files
+- Fixed state machine: FAIL routes to `03-in-progress` (not `02-todo`); PR feedback creates new `02-todo` tickets (not a separate stage)
+- Subject placeholders in file/path patterns now use `<subject>` notation (e.g. `input-<subject>.md`)
+
 ## 1.0.3 — The Audit Gap (2026-03-21)
 
 Four coverage gaps found by auditing the implementation against the original plan. All fixed — the audit now passes at ≥95%.
@@ -80,3 +88,10 @@ The planning command is here. `/kanban-plan` reads your captured input, intervie
 - Critic audit gate scores input→plan coverage at 95% threshold, auto-fixes all gaps, and appends a structured audit section to the plan file
 - Two-commit workflow: draft commit after plan is approved, audit commit after gate passes
 - Session boundary check prevents running plan while a work session is active for the same subject
+
+## 0.1.0 — The Foundation (2026-03-21)
+
+The skeleton is up. You can initialize a kanban board and capture raw ideas into structured input files. Nothing moves tickets yet — that comes next.
+
+- Added `commands/init.md` — sets up the board directory structure and stage folders
+- Added `commands/capture.md` — interviews the user and writes structured input files ready for planning

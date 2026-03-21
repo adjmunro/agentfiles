@@ -1,15 +1,15 @@
 ---
 model: claude-haiku-4-5-20251001
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent
-argument-hint: "[YYMMDD-subject/TASK-NNN] — specific ticket path; omit to auto-select lowest unblocked"
+argument-hint: "[YYMMDD-<subject>/TASK-NNN] — specific ticket path; omit to auto-select lowest unblocked"
 ---
 
-> **Note on model selection:** The frontmatter model above is the default (low effort). At runtime, the actual model is determined by the ticket's `effort` field: `low` → haiku, `medium` → sonnet, `high` → opus. Spawn subagents at the appropriate tier when your environment supports it.
+> **Note on model selection:** The frontmatter model above is the default (low effort). At runtime, the actual model is determined by the ticket's `effort` field: `low` → fast/cheap model, `medium` → standard model, `high` → most capable model. Spawn subagents at the appropriate tier when your environment supports it.
 
 ## DO
 
 - Act as **Builder** — implement exactly what the ticket's acceptance criteria specify, no more
-- Claim the lowest-numbered unblocked ticket from `02-todo/YYMMDD-subject/` unless `$ARGUMENTS` specifies a path
+- Claim the lowest-numbered unblocked ticket from `02-todo/YYMMDD-<subject>/` unless `$ARGUMENTS` specifies a path
 - Respect `depends_on` — skip tickets whose dependencies are not yet done
 - Include inline WHY-comments in every code change — this is a hard requirement, not a suggestion
 - Reference plan items and ticket IDs in code comments wherever a piece of code satisfies a requirement
@@ -24,7 +24,7 @@ argument-hint: "[YYMMDD-subject/TASK-NNN] — specific ticket path; omit to auto
 - Write code without WHY-comments — omitting them is a defect, not a style choice
 - Batch unrelated changes into a single commit
 - Edit existing entries in the ticket's append zone — only append new ones
-- Proceed if `02-todo/YYMMDD-subject/` does not exist (missing subject directory)
+- Proceed if `02-todo/YYMMDD-<subject>/` does not exist (missing subject directory)
 - Proceed if the plan file referenced in the ticket's frontmatter has no `## Audit` section
 
 ---
@@ -33,10 +33,10 @@ argument-hint: "[YYMMDD-subject/TASK-NNN] — specific ticket path; omit to auto
 
 Determine which ticket to work on using the following priority order:
 
-1. **`$ARGUMENTS` path** — if arguments contain a `YYMMDD-subject/TASK-NNN` pattern, use that ticket directly. Verify the file exists in `.kanban/02-todo/`.
+1. **`$ARGUMENTS` path** — if arguments contain a `YYMMDD-<subject>/TASK-NNN` pattern, use that ticket directly. Verify the file exists in `.kanban/02-todo/`.
 2. **Auto-select** — list `.kanban/02-todo/` for subject directories. Within the subject directory, list ticket files and select the lowest-numbered ticket whose dependencies are satisfied (see dependency check below).
 
-**Dependency check:** Read each candidate ticket's frontmatter `depends_on` list. For each listed ticket ID, confirm a file with that ID exists in `.kanban/04-local-review/YYMMDD-subject/` or `.kanban/05-pull-request/YYMMDD-subject/` with `status: done`. Skip any ticket where one or more dependencies are not yet done.
+**Dependency check:** Read each candidate ticket's frontmatter `depends_on` list. For each listed ticket ID, confirm a file with that ID exists in `.kanban/04-in-review/YYMMDD-<subject>/` or `.kanban/05-pull-request/YYMMDD-<subject>/` with `status: done`. Skip any ticket where one or more dependencies are not yet done.
 
 **STOP:** If no subject directory exists in `.kanban/02-todo/`, print exactly:
 
@@ -54,7 +54,7 @@ Then exit. Do not touch any files.
 
 ## Phase 2 — Claim Ticket
 
-Move the ticket file from `.kanban/02-todo/YYMMDD-subject/` to `.kanban/03-in-progress/YYMMDD-subject/`. Create the destination directory if it does not exist.
+Move the ticket file from `.kanban/02-todo/YYMMDD-<subject>/` to `.kanban/03-in-progress/YYMMDD-<subject>/`. Create the destination directory if it does not exist.
 
 Update the ticket's frontmatter:
 
@@ -69,7 +69,7 @@ Check whether the project is inside a git repository. Example (Claude Code): `Ba
 
 If inside a git repo:
 1. Stage the moved ticket file (old path deletion + new path addition).
-2. Commit with the message: `kanban(work): claim NNN-slug for YYMMDD-subject`
+2. Commit with the message: `kanban(work): claim NNN-slug for YYMMDD-<subject>`
 
 If not inside a git repo: skip silently.
 
@@ -122,9 +122,9 @@ Work only within the scope defined by this ticket's acceptance criteria. If impl
 ### Subagent Tier (when your environment supports it)
 
 If you can spawn subagents, select the tier based on the ticket's `effort` field:
-- `low` → haiku
-- `medium` → sonnet
-- `high` → opus
+- `low` → fast/cheap model (e.g. haiku)
+- `medium` → standard model (e.g. sonnet)
+- `high` → most capable model (e.g. opus)
 
 Each ticket is a self-contained work unit. If parallelism is available, individual tickets can run in parallel subagent sessions. The `.kanban/` ticket files are the cross-session memory — write them faithfully.
 
@@ -181,7 +181,7 @@ If implementation reveals work that is clearly outside this ticket's acceptance 
 
 Instead:
 
-1. Create a new ticket file in `.kanban/02-todo/YYMMDD-subject/` with proper frontmatter (see Ticket Frontmatter Reference below).
+1. Create a new ticket file in `.kanban/02-todo/YYMMDD-<subject>/` with proper frontmatter (see Ticket Frontmatter Reference below).
 2. Give it the next available `TASK-NNN` number in the subject directory.
 3. Add its ID to the `spawned_tickets` list in THIS ticket's frontmatter.
 4. If the new ticket must be completed before a future ticket can run, update that future ticket's `depends_on` accordingly.
@@ -195,18 +195,18 @@ If inside a git repo, stage and commit the new ticket file:
 
 When all acceptance criteria are verified:
 
-Move the ticket file from `.kanban/03-in-progress/YYMMDD-subject/` to `.kanban/04-local-review/YYMMDD-subject/`. Create the destination directory if it does not exist.
+Move the ticket file from `.kanban/03-in-progress/YYMMDD-<subject>/` to `.kanban/04-in-review/YYMMDD-<subject>/`. Create the destination directory if it does not exist.
 
 Update the ticket's frontmatter:
 
 ```yaml
-status: local-review
+status: in-review
 completed_at: "<ISO8601 timestamp>"
 ```
 
 If inside a git repo:
 1. Stage the moved ticket file.
-2. Commit with the message: `kanban(work): complete NNN-slug, moving to local-review`
+2. Commit with the message: `kanban(work): complete NNN-slug, moving to in-review`
 
 ---
 
@@ -218,7 +218,7 @@ Report to the user:
 - What was implemented and which ACs were satisfied
 - The number of commits made
 - Any new tickets spawned (with IDs and brief descriptions)
-- The final ticket location (now in `04-local-review/`)
+- The final ticket location (now in `04-in-review/`)
 - Any issues encountered that the reviewer should be aware of
 
 Keep the report concise. The user should be able to confirm the ticket is ready for local review without reading the ticket file themselves.
@@ -229,11 +229,11 @@ Keep the report concise. The user should be able to confirm the ticket is ready 
 
 ```yaml
 ---
-id: "YYMMDD-subject/TASK-NNN"
-subject: "YYMMDD-subject"
-plan: "../../01-plan/YYMMDD-subject/plan-YYMMDD-subject.md"
+id: "YYMMDD-<subject>/TASK-NNN"
+subject: "YYMMDD-<subject>"
+plan: "../../01-plan/YYMMDD-<subject>/plan-YYMMDD-<subject>.md"
 effort: low | medium | high
-status: todo | in-progress | local-review | done
+status: todo | in-progress | in-review | done
 created_at: "ISO8601"
 claimed_at: ~
 completed_at: ~

@@ -1,7 +1,7 @@
 ---
 model: claude-sonnet-4-6
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, AskUserQuestion
-argument-hint: "[YYMMDD-subject] — subject to break down; omit to auto-derive"
+argument-hint: "[YYMMDD-<subject>] — subject to break down; omit to auto-derive"
 ---
 
 ## DO
@@ -39,7 +39,7 @@ Derive `YYMMDD-subject` using the following priority order. Stop at the first ma
 Once the subject is derived, locate the plan file:
 
 ```
-.kanban/01-plan/YYMMDD-subject/plan-YYMMDD-subject.md
+.kanban/01-plan/YYMMDD-<subject>/plan-YYMMDD-<subject>.md
 ```
 
 **STOP:** If the plan file does not exist, report: "No verified plan found. Run `/kanban-plan` first." Do not proceed.
@@ -58,7 +58,7 @@ Scout's mission is to read and map, then write a single research snapshot.
 
 ### Scout Tasks
 
-1. Read the plan file in full: `.kanban/01-plan/YYMMDD-subject/plan-YYMMDD-subject.md`
+1. Read the plan file in full: `.kanban/01-plan/YYMMDD-<subject>/plan-YYMMDD-<subject>.md`
 2. Read the project's directory structure (top two levels).
 3. Read relevant source files, configs, and entry points identified in the plan.
 4. Grep for existing implementations, test patterns, and related conventions.
@@ -71,13 +71,13 @@ Scout's mission is to read and map, then write a single research snapshot.
 Write findings to:
 
 ```
-.kanban/01-plan/YYMMDD-subject/research-YYMMDD-subject.md
+.kanban/01-plan/YYMMDD-<subject>/research-YYMMDD-<subject>.md
 ```
 
 Use exactly this structure:
 
 ```markdown
-## Research: YYMMDD-subject
+## Research: YYMMDD-<subject>
 **Date**: ISO8601
 **Status**: Snapshot — may go stale. Verify before acting.
 
@@ -97,7 +97,7 @@ Use exactly this structure:
 [Scout's suggested order, with brief rationale based on dependencies]
 ```
 
-Git commit after writing: `kanban(todo): write research for YYMMDD-subject`
+Git commit after writing: `kanban(todo): write research for YYMMDD-<subject>`
 
 ---
 
@@ -132,7 +132,7 @@ For each logical unit of work beyond the TDD scaffolding:
 **STOP and confirm with the user** before creating any ticket files. Present the proposed list in this format:
 
 ```
-Proposed tickets for YYMMDD-subject:
+Proposed tickets for YYMMDD-<subject>:
 
   TASK-001  TDD Red Phase — [one-line description]          (no deps)
   TASK-002  [Title]       — [one-line description]          (depends: TASK-001)
@@ -151,7 +151,7 @@ Do not write any files until the user confirms.
 Once the user confirms, write each ticket to:
 
 ```
-.kanban/02-todo/YYMMDD-subject/TASK-NNN-subject.md
+.kanban/02-todo/YYMMDD-<subject>/TASK-NNN-<subject>.md
 ```
 
 Where:
@@ -162,9 +162,9 @@ Where:
 
 ```yaml
 ---
-id: "YYMMDD-subject/TASK-NNN"
-subject: "YYMMDD-subject"
-plan: "../../01-plan/YYMMDD-subject/plan-YYMMDD-subject.md"
+id: "YYMMDD-<subject>/TASK-NNN"
+subject: "YYMMDD-<subject>"
+plan: "../../01-plan/YYMMDD-<subject>/plan-YYMMDD-<subject>.md"
 effort: low | medium | high
 status: todo
 created_at: "ISO8601"
@@ -209,7 +209,7 @@ Every acceptance criterion MUST be verifiable by running a command or observing 
 | "Tests pass" | "`npm test -- --testPathPattern=auth` exits 0" |
 | "Error handling improved" | "Sending request without auth header returns HTTP 401 with body `{\"error\":\"unauthorized\"}`" |
 
-Git commit after writing: `kanban(todo): create N tickets for YYMMDD-subject`
+Git commit after writing: `kanban(todo): create N tickets for YYMMDD-<subject>`
 
 ---
 
@@ -233,7 +233,7 @@ Score: `(full + 0.5 × partial) / total × 100`
 
 ### Audit Format
 
-Append this block to the plan file (`plan-YYMMDD-subject.md`):
+Append this block to the plan file (`plan-YYMMDD-<subject>.md`):
 
 ```markdown
 ## Audit: plan → todo — PASS|FAIL
@@ -259,7 +259,7 @@ If the score is below 95%:
 3. Re-run the audit and update the table and score.
 4. Repeat until the threshold is met.
 
-Git commit after audit: `kanban(todo): audit verified YYMMDD-subject`
+Git commit after audit: `kanban(todo): audit verified YYMMDD-<subject>`
 
 ---
 

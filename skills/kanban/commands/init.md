@@ -1,7 +1,7 @@
 ---
 model: claude-haiku-4-5-20251001
 allowed-tools: Read, Glob, Bash, Write
-argument-hint: "[YYMMDD-subject] — optional subject name override; omit to auto-derive"
+argument-hint: "[YYMMDD-<subject>] — optional subject name override; omit to auto-derive"
 ---
 
 ## DO
@@ -36,7 +36,7 @@ Create the following six directories under `.kanban/` in the project root. Use y
 .kanban/01-plan/
 .kanban/02-todo/
 .kanban/03-in-progress/
-.kanban/04-local-review/
+.kanban/04-in-review/
 .kanban/05-pull-request/
 .kanban/06-archive/
 ```
@@ -70,20 +70,20 @@ The final subject name MUST follow the pattern `YYMMDD-subject-slug`.
 Create the subject directory under `01-plan/`, including an `assets/` subdirectory for any binary files or referenced assets:
 
 ```
-.kanban/01-plan/YYMMDD-subject/
-.kanban/01-plan/YYMMDD-subject/assets/
+.kanban/01-plan/YYMMDD-<subject>/
+.kanban/01-plan/YYMMDD-<subject>/assets/
 ```
 
 Create the stub input file at:
 
 ```
-.kanban/01-plan/YYMMDD-subject/input-YYMMDD-subject.md
+.kanban/01-plan/YYMMDD-<subject>/input-YYMMDD-<subject>.md
 ```
 
-The stub file MUST contain exactly the following structure (replace `YYMMDD-subject` with the derived name):
+The stub file MUST contain exactly the following structure (replace `YYMMDD-<subject>` with the derived name):
 
 ```markdown
-# YYMMDD-subject
+# YYMMDD-<subject>
 
 ## What
 
@@ -102,7 +102,7 @@ Check whether the project root is inside a git repository. Example (Claude Code)
 
 If inside a git repo:
 1. Stage the newly created `.kanban/` directory.
-2. Commit with the message: `kanban: initialise .kanban/ for YYMMDD-subject`
+2. Commit with the message: `kanban: initialise .kanban/ for YYMMDD-<subject>`
 
 If not inside a git repo: skip this phase silently. No warning needed.
 

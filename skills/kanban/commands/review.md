@@ -1,7 +1,7 @@
 ---
 model: claude-sonnet-4-6
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, AskUserQuestion
-argument-hint: "[YYMMDD-subject/TASK-NNN] — specific ticket; omit to auto-select from 04-local-review"
+argument-hint: "[YYMMDD-<subject>/TASK-NNN] — specific ticket; omit to auto-select from 04-in-review"
 ---
 
 ## DO
@@ -25,7 +25,7 @@ argument-hint: "[YYMMDD-subject/TASK-NNN] — specific ticket; omit to auto-sele
 ---
 
 ```
-[04-local-review] ──► Phase 2: Examiner maps evidence
+[04-in-review] ──► Phase 2: Examiner maps evidence
                   ──► Phase 2b: run test suites
                   ──► Phase 3: Critic scores
                                     │
@@ -47,16 +47,16 @@ argument-hint: "[YYMMDD-subject/TASK-NNN] — specific ticket; omit to auto-sele
 
 Determine which ticket to review using this priority order. Stop at the first source that yields a result.
 
-1. **`$ARGUMENTS` match** — if arguments contain a `YYMMDD-subject/TASK-NNN` or `TASK-NNN` pattern, locate that ticket under `.kanban/04-local-review/`.
-2. **Single ticket present** — if `.kanban/04-local-review/` contains exactly one ticket directory with exactly one ticket file, select it automatically.
-3. **Most recently modified** — if multiple tickets exist under `.kanban/04-local-review/`, select the one with the most recent `claimed_at` timestamp in frontmatter.
+1. **`$ARGUMENTS` match** — if arguments contain a `YYMMDD-<subject>/TASK-NNN` or `TASK-NNN` pattern, locate that ticket under `.kanban/04-in-review/`.
+2. **Single ticket present** — if `.kanban/04-in-review/` contains exactly one ticket directory with exactly one ticket file, select it automatically.
+3. **Most recently modified** — if multiple tickets exist under `.kanban/04-in-review/`, select the one with the most recent `claimed_at` timestamp in frontmatter.
 4. **Ask the user** — if resolution is still ambiguous, list the available tickets and ask which to review.
 
-**STOP:** If `.kanban/04-local-review/` contains no tickets, print: "No tickets in local review. Run `/kanban-do` to complete work first." Exit immediately.
+**STOP:** If `.kanban/04-in-review/` contains no tickets, print: "No tickets in in-review. Run `/kanban-do` to complete work first." Exit immediately.
 
 Read the ticket file. Confirm its frontmatter contains:
-- `status: local-review`
-- A `plan` field pointing to `plan-YYMMDD-subject.md`
+- `status: in-review`
+- A `plan` field pointing to `plan-YYMMDD-<subject>.md`
 
 ---
 
@@ -66,7 +66,7 @@ Read the ticket file. Confirm its frontmatter contains:
 
 ### Step A — Read the Plan
 
-Locate and read `plan-YYMMDD-subject.md` from the path referenced in the ticket's `plan` frontmatter field. If the path is relative, resolve it from the project root.
+Locate and read `plan-YYMMDD-<subject>.md` from the path referenced in the ticket's `plan` frontmatter field. If the path is relative, resolve it from the project root.
 
 ### Step B — Read All Changed Source Files
 
@@ -173,7 +173,7 @@ status: done
 Move the ticket directory:
 
 ```
-.kanban/04-local-review/YYMMDD-subject/ → .kanban/05-pull-request/YYMMDD-subject/
+.kanban/04-in-review/YYMMDD-<subject>/ → .kanban/05-pull-request/YYMMDD-<subject>/
 ```
 
 ### Step D — Git Commit
@@ -190,11 +190,11 @@ If not inside a git repo: skip silently.
 
 ### Step E — All-Tickets Check
 
-List all ticket files across `.kanban/03-in-progress/`, `.kanban/04-local-review/`, and `.kanban/05-pull-request/` for this subject.
+List all ticket files across `.kanban/03-in-progress/`, `.kanban/04-in-review/`, and `.kanban/05-pull-request/` for this subject.
 
 If ALL tickets for this subject are now in `05-pull-request/` (none remain in earlier stages):
 
-> "All tickets for YYMMDD-subject have passed local review. Run `/kanban-pr` to open the pull request."
+> "All tickets for YYMMDD-<subject> have passed in-review. Run `/kanban-pr` to open the pull request."
 
 ---
 
@@ -236,7 +236,7 @@ Increment `consecutive_failures` by 1. If the field does not exist, add it with 
 Move the ticket directory:
 
 ```
-.kanban/04-local-review/YYMMDD-subject/ → .kanban/03-in-progress/YYMMDD-subject/
+.kanban/04-in-review/YYMMDD-<subject>/ → .kanban/03-in-progress/YYMMDD-<subject>/
 ```
 
 ### Step D — Git Commit

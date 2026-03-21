@@ -1,7 +1,7 @@
 ---
 model: claude-opus-4-6
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
-argument-hint: "[YYMMDD-subject] — subject to capture; omit to auto-derive"
+argument-hint: "[YYMMDD-<subject>] — subject to capture; omit to auto-derive"
 ---
 
 ## DO
@@ -17,7 +17,7 @@ argument-hint: "[YYMMDD-subject] — subject to capture; omit to auto-derive"
 
 - Ask the user for a subject name — always derive it from the priority sources
 - Summarise, interpret, or paraphrase any user statement
-- Touch `02-todo/`, `03-in-progress/`, `04-local-review/`, `05-pull-request/`, or `06-archive/` under any circumstances
+- Touch `02-todo/`, `03-in-progress/`, `04-in-review/`, `05-pull-request/`, or `06-archive/` under any circumstances
 - Overwrite prior session content in an existing input file
 - Proceed if an active work session is detected for the subject (see Phase 1)
 
@@ -25,7 +25,7 @@ argument-hint: "[YYMMDD-subject] — subject to capture; omit to auto-derive"
 
 ## Phase 1 — Session Boundary Check
 
-Scan `.kanban/03-in-progress/` and `.kanban/04-local-review/` for ticket files belonging to the same subject as the one being captured. A match exists if any filename contains the derived subject slug or if a ticket's `subject:` frontmatter field matches.
+Scan `.kanban/03-in-progress/` and `.kanban/04-in-review/` for ticket files belonging to the same subject as the one being captured. A match exists if any filename contains the derived subject slug or if a ticket's `subject:` frontmatter field matches.
 
 **STOP:** If a matching ticket exists with a recent `claimed_at` timestamp (within the last 48 hours), print exactly:
 
@@ -60,8 +60,8 @@ Determine the subject slug using the following priority order. Work through each
 Construct the target paths:
 
 ```
-.kanban/01-plan/YYMMDD-subject/
-.kanban/01-plan/YYMMDD-subject/input-YYMMDD-subject.md
+.kanban/01-plan/YYMMDD-<subject>/
+.kanban/01-plan/YYMMDD-<subject>/input-YYMMDD-<subject>.md
 ```
 
 **If the input file does not exist or is a stub (empty sections only):**
@@ -69,7 +69,7 @@ Construct the target paths:
 Create the subject directory if needed, then create the file with this structure:
 
 ```markdown
-# YYMMDD-subject
+# YYMMDD-<subject>
 
 ## What
 
@@ -171,7 +171,7 @@ Check whether the project is inside a git repository. Example (Claude Code): `Ba
 
 If inside a git repo:
 1. Stage only the input file (and its parent directory if newly created).
-2. Commit with the message: `kanban(capture): capture raw input for YYMMDD-subject`
+2. Commit with the message: `kanban(capture): capture raw input for YYMMDD-<subject>`
 
 If not inside a git repo: skip this phase silently.
 

@@ -1,7 +1,7 @@
 ---
 model: claude-haiku-4-5-20251001
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
-argument-hint: "[YYMMDD-subject] — subject to archive; omit to auto-derive"
+argument-hint: "[YYMMDD-<subject>] — subject to archive; omit to auto-derive"
 ---
 
 ## DO
@@ -14,7 +14,7 @@ argument-hint: "[YYMMDD-subject] — subject to archive; omit to auto-derive"
 
 ## DO NOT
 
-- DO NOT proceed if any tickets remain in `02-todo/`, `03-in-progress/`, or `04-local-review/`
+- DO NOT proceed if any tickets remain in `02-todo/`, `03-in-progress/`, or `04-in-review/`
 - DO NOT archive if the PR is not yet merged (GitHub repos)
 - DO NOT remove stage directories themselves — only the subject subdirectories within them
 - DO NOT skip the final audit — it is the last quality gate before work is sealed
@@ -38,7 +38,7 @@ Is this a GitHub repo?
 │               (Archive is permanent — do not trigger prematurely.)
 │
 └── NO (non-GitHub / non-git) → Check 05-pull-request/
-          All tickets for this subject present in 05-pull-request/YYMMDD-subject/ → continue to Phase 1
+          All tickets for this subject present in 05-pull-request/YYMMDD-<subject>/ → continue to Phase 1
 ```
 
 ---
@@ -55,9 +55,9 @@ If omitted, auto-derive: scan `05-pull-request/` for subject subdirectories. If 
 
 **STOP immediately if any of the following are true:**
 
-1. Tickets for this subject exist in `02-todo/YYMMDD-subject/`
-2. Tickets for this subject exist in `03-in-progress/YYMMDD-subject/`
-3. Tickets for this subject exist in `04-local-review/YYMMDD-subject/`
+1. Tickets for this subject exist in `02-todo/YYMMDD-<subject>/`
+2. Tickets for this subject exist in `03-in-progress/YYMMDD-<subject>/`
+3. Tickets for this subject exist in `04-in-review/YYMMDD-<subject>/`
 
 List every blocking ticket by path and name. Do not proceed until the list is empty.
 
@@ -77,17 +77,17 @@ Do not proceed.
 - Proceed to archive if the threshold is not met — create gap tickets and loop first
 - Modify source code or alter ticket content (audit only)
 
-**Source:** `.kanban/01-plan/YYMMDD-subject/plan-YYMMDD-subject.md`
-**Target:** all ticket files in `.kanban/05-pull-request/YYMMDD-subject/`
+**Source:** `.kanban/01-plan/YYMMDD-<subject>/plan-YYMMDD-<subject>.md`
+**Target:** all ticket files in `.kanban/05-pull-request/YYMMDD-<subject>/`
 
-Read the plan. Extract every discrete requirement. For each requirement, locate the ticket(s) in `05-pull-request/YYMMDD-subject/` that address it and verify at least one ticket has a `PASS` review entry.
+Read the plan. Extract every discrete requirement. For each requirement, locate the ticket(s) in `05-pull-request/YYMMDD-<subject>/` that address it and verify at least one ticket has a `PASS` review entry.
 
 Classify each requirement:
 - **Full** — covered by one or more tickets, all with a `PASS` review entry
 - **Partial** — covered but the review entry is missing or ambiguous
 - **Missing** — no ticket addresses this requirement
 
-Append the following audit block to `plan-YYMMDD-subject.md`:
+Append the following audit block to `plan-YYMMDD-<subject>.md`:
 
 ```markdown
 ## Audit: plan → done tickets — PASS|FAIL
@@ -106,7 +106,7 @@ Append the following audit block to `plan-YYMMDD-subject.md`:
 
 **If score < 95%:**
 
-1. Create gap tickets in `.kanban/02-todo/YYMMDD-subject/` for every Missing or unresolvable Partial requirement
+1. Create gap tickets in `.kanban/02-todo/YYMMDD-<subject>/` for every Missing or unresolvable Partial requirement
 2. Auto-trigger `kanban-next` to run them through the full work → review loop
 3. **STOP.** Do not proceed to Phase 2 until a subsequent `kanban-cleanup` run achieves ≥95%
 
@@ -119,28 +119,28 @@ Append the following audit block to `plan-YYMMDD-subject.md`:
 ### Target Structure
 
 ```
-.kanban/06-archive/YYMMDD-subject/
-├── plan/        ← everything from 01-plan/YYMMDD-subject/
+.kanban/06-archive/YYMMDD-<subject>/
+├── plan/        ← everything from 01-plan/YYMMDD-<subject>/
 │                   (input files, plan doc, research notes, assets)
-└── tickets/     ← everything from 05-pull-request/YYMMDD-subject/
+└── tickets/     ← everything from 05-pull-request/YYMMDD-<subject>/
 ```
 
 ### Steps
 
-1. Create `.kanban/06-archive/YYMMDD-subject/plan/` and `.kanban/06-archive/YYMMDD-subject/tickets/`
-2. Move all contents of `.kanban/01-plan/YYMMDD-subject/` → `06-archive/YYMMDD-subject/plan/`
-3. Move all contents of `.kanban/05-pull-request/YYMMDD-subject/` → `06-archive/YYMMDD-subject/tickets/`
+1. Create `.kanban/06-archive/YYMMDD-<subject>/plan/` and `.kanban/06-archive/YYMMDD-<subject>/tickets/`
+2. Move all contents of `.kanban/01-plan/YYMMDD-<subject>/` → `06-archive/YYMMDD-<subject>/plan/`
+3. Move all contents of `.kanban/05-pull-request/YYMMDD-<subject>/` → `06-archive/YYMMDD-<subject>/tickets/`
 4. **Verify** the archive structure matches the tree above before removing originals
-5. Remove `.kanban/01-plan/YYMMDD-subject/` (the subject subdirectory only)
-6. Remove `.kanban/05-pull-request/YYMMDD-subject/` (the subject subdirectory only)
-7. Confirm no subject files remain in stages `02-todo/` through `04-local-review/` (they must already be empty per Phase 0)
+5. Remove `.kanban/01-plan/YYMMDD-<subject>/` (the subject subdirectory only)
+6. Remove `.kanban/05-pull-request/YYMMDD-<subject>/` (the subject subdirectory only)
+7. Confirm no subject files remain in stages `02-todo/` through `04-in-review/` (they must already be empty per Phase 0)
 
-Do not remove the stage directories themselves (e.g., do not delete `01-plan/` — only `01-plan/YYMMDD-subject/`).
+Do not remove the stage directories themselves (e.g., do not delete `01-plan/` — only `01-plan/YYMMDD-<subject>/`).
 
 ### Git Commit
 
 ```
-kanban(archive): complete YYMMDD-subject
+kanban(archive): complete YYMMDD-<subject>
 ```
 
 Stage all moved/removed files and commit with this exact message format.
@@ -151,8 +151,8 @@ Stage all moved/removed files and commit with this exact message format.
 
 After a successful archive, report:
 
-- **Archived subject:** `YYMMDD-subject`
+- **Archived subject:** `YYMMDD-<subject>`
 - **Final audit score:** XX% (Full: N, Partial: N, Missing: N / Total: N)
-- **Archive path:** `.kanban/06-archive/YYMMDD-subject/`
+- **Archive path:** `.kanban/06-archive/YYMMDD-<subject>/`
 - **Files archived:** N plan files, N tickets
 - **Stages cleaned:** list of stage directories that had their subject subdirectory removed
