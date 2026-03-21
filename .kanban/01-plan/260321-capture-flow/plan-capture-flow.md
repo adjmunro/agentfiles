@@ -47,3 +47,29 @@ The current capture command opens Phase 4 with a multi-choice question before th
 - Changes to any other kanban command file.
 - Changes to persona files.
 - Adding or removing question topic areas (implementation choices, tradeoffs, edge cases, constraints, acceptance signals — these remain as-is).
+
+## Audit: input → plan — PASS
+**Date**: 2026-03-21T00:00:00Z  **Threshold**: 95%
+
+| # | Item | Status | Notes |
+|---|------|--------|-------|
+| 1 | Multi-choice before free-write is the problem | Full | §1.3 |
+| 2 | Free-write first | Full | §1.1, §1.2 |
+| 3 | Interview based on free-write | Full | §2.1, §2.2 |
+| 4 | Multi-choice clarifies non-obvious things | Full | §2.2 |
+| 5 | Similar to /interview: read-first, ask-second | Full | §2.1 |
+| 6 | Summary of thoughts, recommendation, why | Full | §3.1 |
+| 7 | Preamble from agent's own analysis | Full | §3.3 |
+| 8 | Minimal framing (short line) | Full | §1.1, Constraints |
+| 9 | No hard cap on questions | Full | §4.1 |
+| 10 | Each question preceded by interpretation + recommendation + reasoning | Full | §3.1 |
+| 11 | Natural prose, not labeled sections | Full | §3.2, Constraints |
+| 12 | Capture only, not plan.md | Full | §4.2, Out of Scope |
+| 13 | Agent decides research, may include web | Full | §3.3, Constraints |
+| 14 | Phase 4 is the change location | Full | Constraints |
+
+- Full: 14, Partial: 0, Missing: 0 — Total: 14
+- Score: (14 + 0.5×0) / 14 × 100 = **100%**
+
+### Fixes Applied
+- None.
