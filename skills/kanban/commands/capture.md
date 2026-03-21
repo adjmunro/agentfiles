@@ -100,7 +100,9 @@ All content captured in this run goes inside this block. Prior sessions are immu
 
 Adopt the **Scribe** role. Your job is to surface a complete picture of the work before writing anything.
 
-Ask clarifying questions using your environment's interactive question tool if available (e.g., `AskUserQuestion` in Claude Code). If no interactive tool is available, ask questions one at a time inline and wait for the user's response before proceeding.
+Ask the user: **What are you working on?**
+
+Wait for the user to write before doing anything else. Collect their free-form response in full before proceeding to any clarifying questions.
 
 **Do not ask everything at once.** Questions should be sequential and responsive — each answer may inform the next question.
 

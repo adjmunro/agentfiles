@@ -4,6 +4,14 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## 1.1.4 — The Open Door (2026-03-21)
+
+Capture no longer front-loads the conversation with a structured question. Phase 4 now opens with a single short line — "What are you working on?" — and waits for the user to write freely before asking anything. The old `AskUserQuestion` opening is gone; clarifying questions come after the user has had a chance to say something on their own terms.
+
+- Removed the opening `AskUserQuestion` call from Phase 4 of `capture.md`
+- Replaced with a single framing line and an explicit wait-for-free-write instruction
+- Clarifying question guidance (topic areas, sequential flow) is unchanged and still runs after the free-write
+
 ## 1.1.3 — The Right Question (2026-03-21)
 
 ACs should answer "how do I know it's done?" — not "how should it be built?". Added a new rule to `todo.md` that explicitly calls out over-specification: don't put file names, paths, or structural choices in ACs unless they're externally observable constraints. If location or naming matters, it belongs in the plan's Constraints section.
