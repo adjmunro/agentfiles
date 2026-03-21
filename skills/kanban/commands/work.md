@@ -61,10 +61,10 @@ Update the ticket's frontmatter:
 
 ```yaml
 status: in-progress
-claimed_at: "<ISO8601 timestamp>"
+expires_at: "<ISO8601 timestamp 4 hours from now>"
 ```
 
-Compute the current ISO8601 timestamp. Example (Claude Code): `Bash` with `date -u +"%Y-%m-%dT%H:%MZ"`.
+Compute the expiry timestamp (now + 4 hours). Example (Claude Code): `Bash` with `date -u -v+4H +"%Y-%m-%dT%H:%MZ"` on macOS, or `date -u -d "+4 hours" +"%Y-%m-%dT%H:%MZ"` on Linux.
 
 Check whether the project is inside a git repository. Example (Claude Code): `Bash` with `git rev-parse --is-inside-work-tree`.
 
@@ -238,9 +238,8 @@ plan: "../../01-plan/YYMMDD-<subject>/plan-<subject>.md"
 effort: low | medium | high
 status: todo | in-progress | in-review | done
 created_at: "ISO8601"
-claimed_at: ~
+expires_at: ~
 completed_at: ~
-stale_after_hours: 4
 depends_on:
   - "TASK-001"
 spawned_tickets: []
