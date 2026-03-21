@@ -73,3 +73,20 @@ Traced to plan §2 and §3.
   - session boundary: 2 matches
   - confirmation: 1 match
   - audit PASS: 2 matches
+
+## Review — 2026-03-21T00:00Z — PASS 100.0%
+
+| AC | Evidence | Status |
+|----|----------|--------|
+| Phase 10 — Handoff heading exists (count = 1) | `grep -c 'Phase 10 — Handoff'` → 1; plan.md:204 | Satisfied |
+| Phase 11 — Report heading exists, renumbered (count = 1) | `grep -c 'Phase 11 — Report'` → 1; plan.md:247 | Satisfied |
+| Phase 10 after Phase 9, before Phase 11 (line order) | Lines 196, 204, 247 — correct ordering | Satisfied |
+| (Recommended) label on Start option | `grep -c 'Recommended'` → 2; plan.md:212 | Satisfied |
+| kanban-todo invocation documented for options 1–2 | `grep -c 'kanban-todo'` → 8; plan.md:212–213, 227–231 | Satisfied |
+| Session-boundary confirmation gate documented | `grep -c 'session boundary'` → 2; plan.md:219 | Satisfied |
+| from-plan-handoff argument passthrough documented | `grep -c 'from-plan-handoff'` → 2; plan.md:231 | Satisfied |
+| Freeform option (Something else) present | `grep -c 'Something else'` → 1; plan.md:214 | Satisfied |
+| Discard option present (stubbed with TASK-004 placeholder) | `grep -c 'Discard'` → 4; plan.md:215, 239–243 | Satisfied |
+| audit PASS gate condition documented | `grep -Ec 'audit.*PASS\|PASS.*audit'` → 2; plan.md:206 | Satisfied |
+
+Test results: No test framework detected — skipping test execution.
