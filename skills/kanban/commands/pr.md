@@ -1,7 +1,7 @@
 ---
 model: claude-sonnet-4-6
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, Agent, AskUserQuestion
-argument-hint: "[YYMMDD-<subject>] — subject to raise PR for; omit to auto-derive"
+argument-hint: "[YYMMDD-<subject>] — subject for PR creation and review; omit to auto-derive"
 ---
 
 ## Personas

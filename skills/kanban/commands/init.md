@@ -1,7 +1,7 @@
 ---
 model: claude-haiku-4-5-20251001
 allowed-tools: Read, Glob, Bash, Write
-argument-hint: "[YYMMDD-<subject>] — optional subject name override; omit to auto-derive"
+argument-hint: "[YYMMDD-<subject>] — initialise .kanban/ structure; optional subject override, omit to auto-derive"
 ---
 
 ## DO
