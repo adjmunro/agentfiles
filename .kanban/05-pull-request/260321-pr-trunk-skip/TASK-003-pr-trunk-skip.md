@@ -3,7 +3,7 @@ id: "260321-pr-trunk-skip/TASK-003"
 subject: "260321-pr-trunk-skip"
 plan: "../../01-plan/260321-pr-trunk-skip/plan-pr-trunk-skip.md"
 effort: low
-status: in-review
+status: done
 created_at: "2026-03-21T00:00:00Z"
 claimed_at: "2026-03-21T21:40:00Z"
 completed_at: "2026-03-21T21:50:00Z"
@@ -52,3 +52,17 @@ Replaced that line with a dedicated "PR Step Bypass Conditions" section enumerat
 Feature branches are explicitly called out as never subject to the trunk check.
 
 Also bumped VERSION.md from 1.2.1 → 1.2.2 and added CHANGELOG entry "1.2.2 — Both Doors".
+
+## Review — 2026-03-21T21:55:00Z — PASS 100%
+
+**Reviewers**: Echo (Examiner) + Arden (Critic)
+
+| # | Acceptance Criterion | Result | Evidence |
+|---|----------------------|--------|----------|
+| 1 | SKILL.md documents both PR bypass conditions (non-GitHub + trunk without protection) | PASS | SKILL.md lines 30–48: "PR Step Bypass Conditions" section names both conditions explicitly |
+| 2 | Trunk-bypass note mentions the `gh` protection check and best-effort caveat | PASS | Line 42: `gh api repos/{owner}/{repo}/branches/{branch}/protection`; line 46: "This is a best-effort check: when the answer is unknowable, the agent defers to the human." |
+| 3 | Existing non-GitHub skip note preserved (verbatim or improved) | PASS | Lines 34–35 retain and expand the non-GitHub bypass. Builder work log confirms "preserved and clarified — not removed." |
+| 4 | `grep 'trunk' skills/kanban/SKILL.md` returns a match in the bypass note | PASS | 4 matches on lines 38, 44, 45, 48 — all within the bypass section |
+| 5 | State machine diagram or surrounding prose makes both bypass paths clear to a first-time reader | PASS | Bypass section follows immediately after the state machine diagram; each path has a named heading, trigger condition, and outcome table |
+
+**Score**: 5 satisfied / 5 total = **100%** — above the 95% threshold.
