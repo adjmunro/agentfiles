@@ -182,3 +182,60 @@ Replace kanban v1's friction-heavy multi-command workflow with two new skills bu
 
 ### Fixes Applied
 Session 260322: added §6 (versioning and changelogs) to cover ideation's independent VERSION.md/CHANGELOG.md and kanban2's inherited changelog.
+
+## Audit: plan → tickets — PASS
+**Date**: 2026-03-22T00:00:00Z  **Threshold**: 95%
+
+| # | Requirement | Status | Tickets |
+|---|-------------|--------|---------|
+| 1 | §1.1 Subject dir YYYY-MM-DD-{subject}/ | Full | TASK-010, TASK-015 |
+| 2 | §1.2 Loose docs: 00-input, 01-research, 02-plan | Full | TASK-003, TASK-004, TASK-006 |
+| 3 | §1.3 00-assets/ folder | Full | TASK-003, TASK-010 |
+| 4 | §1.4 Stage dirs 03-refinement through 08-done | Full | TASK-007, TASK-010, TASK-011–014 |
+| 5 | §1.5 Completion signal: all tickets in 08-done/ | Full | TASK-014, TASK-015 |
+| 6 | §1.6 Archive: delete empty dirs, move whole subject folder | Full | TASK-014 |
+| 7 | §1.7 Archive path .kanban/.archive/YYYY-MM-DD-{subject}/ | Full | TASK-010, TASK-014 |
+| 8 | §1.8 V1 structure coexists unchanged | Full | TASK-010 |
+| 9 | §2.1 /ideate command; skills/ideation/ | Full | TASK-002 |
+| 10 | §2.2 ideate.md orchestrator + 5 phase files (not monolith) | Full | TASK-002, TASK-008 |
+| 11 | §2.3 Step 1 — capture.md: verbatim, 00-input, 00-assets | Full | TASK-003 |
+| 12 | §2.3 Step 2 — research.md: webfetch + file scan, before interview | Full | TASK-004 |
+| 13 | §2.3 Step 3 — interview.md: research-informed + recommendations + tradeoffs | Full | TASK-005 |
+| 14 | §2.3 Steps 4–5 — plan.md: draft + critic audit | Full | TASK-006 |
+| 15 | §2.3 Step 6 — validate loop: satisfied or add-more | Full | TASK-008 |
+| 16 | §2.3 Steps 7–8 — tickets.md: draft into 03-refinement/ + audit | Full | TASK-007 |
+| 17 | §2.3 Step 9 — hard stop: backlog or abandon only | Full | TASK-008 |
+| 18 | §2.4 Tickets in 03-refinement/ only until step 9 | Full | TASK-007, TASK-008 |
+| 19 | §2.5 Abandon: exact subject slug required (not yes/no) | Full | TASK-008 |
+| 20 | §2.6 Loop-back: append only, never overwrite | Full | TASK-003, TASK-008 |
+| 21 | §3.1 /kanban command; skills/kanban2/ | Full | TASK-009 |
+| 22 | §3.2 Work loop picks up from 04-todo/ | Full | TASK-011, TASK-015 |
+| 23 | §3.3 thin next.md-equivalent orchestrator | Full | TASK-015 |
+| 24 | §3.4 kanban2 never touches plan-layer files | Full | TASK-011 |
+| 25 | §3.5 Finished tickets → 08-done/ | Full | TASK-013, TASK-014 |
+| 26 | §4.1 Verbatim transcription (zero paraphrase) | Full | TASK-003 |
+| 27 | §4.1 Critic audit gate: 95% threshold, auto-fix, append block | Full | TASK-006, TASK-007 |
+| 28 | §4.1 AskUserQuestion: max 4 options, (Recommended) label | Full | TASK-005, TASK-008 |
+| 29 | §4.1 Ticket frontmatter schema | Full | TASK-007 (+ all tickets) |
+| 30 | §4.1 TASK-001 = TDD red phase, no exceptions | Full | TASK-001 |
+| 31 | §4.1 Acceptance criteria empirically verifiable | Full | TASK-007 (+ all tickets) |
+| 32 | §4.1 Git commits after each phase | Full | TASK-003–008, TASK-010–015 |
+| 33 | §4.1 Stale ticket detection (stale_after_hours) | Full | TASK-011, TASK-015 |
+| 34 | §4.1 Consecutive failure escalation + desktop notification | Full | TASK-011, TASK-015 |
+| 35 | §4.1 Boundary passthrough token (from-ideation-handoff) | Full | TASK-008 |
+| 36 | §4.1 Persona identification (reuse skills/kanban/personas/) | Full | TASK-002, TASK-009 |
+| 37 | §4.1 Research snapshot format (date, stale disclaimer, sections) | Full | TASK-004 |
+| 38 | §4.1 PR bypass conditions (non-GitHub, unprotected trunk, check fail) | Full | TASK-013 |
+| 39 | §4.2 Personas shared from skills/kanban/personas/, not duplicated | Full | TASK-002, TASK-009 |
+| 40 | §5.1 Build alongside v1; no changes to v1 files during build | Full | TASK-001 |
+| 41 | §6.1 Ideation VERSION.md + CHANGELOG.md; v1.0.0 | Full | TASK-002 |
+| 42 | §6.2 Kanban2 CHANGELOG inherits from v1 (continuation) | Full | TASK-009 |
+| 43 | §4.1 Phase numbering discipline when inserting phases | Partial | All command tasks — process rule, not directly grep-verifiable |
+
+- Full: 42, Partial: 1, Missing: 0 — Total: 43
+- Score: (42 + 0.5×1) / 43 × 100 = **98.8%** ✓ PASS
+
+**Note**: §5.3 (retire v1 after kanban2 verified) is explicitly Out of Scope during build per plan Constraints.
+
+### Fixes Applied
+No gaps found above 95% threshold. No auto-fixes required.
