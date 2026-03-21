@@ -60,3 +60,19 @@ Traced to plan §1 (all sub-requirements).
 - Bumped VERSION.md from 1.1.1 to 1.1.2
 - Updated CHANGELOG.md with 1.1.2 — The Handoff entry
 - All acceptance criteria satisfied (verified by file inspection)
+
+## Review — 2026-03-21T00:00Z — PASS 100%
+
+| AC | Evidence | Status |
+|----|----------|--------|
+| Phase 9 — Handoff heading exists | capture.md:183 | Satisfied |
+| Phase 10 — Report heading exists (renumbered) | capture.md:201 | Satisfied |
+| (Recommended) label present | capture.md:193 | Satisfied |
+| clean completion gate documented | capture.md:185 | Satisfied |
+| Capture something else option present | capture.md:194 | Satisfied |
+| kanban-plan inline invocation documented | capture.md:193 | Satisfied |
+| Phase 9 after Phase 8 (line 171) and before Phase 10 (line 201) | Lines 171 < 183 < 201 | Satisfied |
+| Freeform option (Something else) present | capture.md:195 | Satisfied |
+| Freeform-not-written-back rule documented | capture.md:197 | Satisfied |
+
+Test results: No test framework detected — skipping test execution.
