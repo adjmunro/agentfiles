@@ -4,6 +4,16 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## 1.1.2 — The Handoff (2026-03-21)
+
+Capture now asks what you want to do next instead of just stopping. After a clean run, you get one prompt: enter planning mode, capture something else, or do something else entirely. The (Recommended) label steers you toward planning without forcing it.
+
+- Added Phase 9 — Handoff to `commands/capture.md`, between git commit and report
+- Prompt only shown on clean completion — no unresolved Critic gaps and Phase 8 commit succeeded
+- Three options: Enter planning mode (Recommended), Capture something else, Something else (freeform)
+- Freeform input is not written back to the input file unless the agent judges it as capture content and the user confirms
+- Old Phase 9 (Report) renumbered to Phase 10
+
 ## 1.1.1 — The Hint (2026-03-21)
 
 Added `argument-hint` to the kanban skill's top-level SKILL.md, making all nine subcommands discoverable from the `/kanban` entry point. The hint lists each command in pipeline order so users can see what's available without running the command blind.

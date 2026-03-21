@@ -3,10 +3,10 @@ id: "260321-command-handoff/TASK-002"
 subject: "260321-command-handoff"
 plan: "../../01-plan/260321-command-handoff/plan-command-handoff.md"
 effort: medium
-status: todo
+status: done
 created_at: "2026-03-21T00:00:00Z"
-claimed_at: ~
-completed_at: ~
+claimed_at: "2026-03-21T00:00:00Z"
+completed_at: "2026-03-21T00:00:00Z"
 stale_after_hours: 4
 depends_on:
   - "TASK-001"
@@ -48,3 +48,15 @@ Traced to plan §1 (all sub-requirements).
 
 ---
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log — 2026-03-21T00:00:00Z
+
+- Read ticket and `skills/kanban/commands/capture.md` in full
+- Inserted new Phase 9 — Handoff section between Phase 8 (Git Commit) and old Phase 9 (Report)
+- Renumbered old Phase 9 (Report) to Phase 10 — Report
+- Phase 9 gates on clean completion: no unresolved Critic gaps from Phase 6, Phase 8 commit completed
+- Phase 9 uses AskUserQuestion with three options: Enter planning mode (Recommended), Capture something else, Something else (freeform)
+- Freeform option documented: not written to input file unless agent judges as capture content and user confirms
+- Bumped VERSION.md from 1.1.1 to 1.1.2
+- Updated CHANGELOG.md with 1.1.2 — The Handoff entry
+- All acceptance criteria satisfied (verified by file inspection)

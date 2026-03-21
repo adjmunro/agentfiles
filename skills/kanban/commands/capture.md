@@ -180,7 +180,25 @@ If not inside a git repo: skip this phase silently.
 
 ---
 
-## Phase 9 — Report
+## Phase 9 — Handoff
+
+This phase runs only on clean completion. Skip it silently if any of the following are true:
+
+- Phase 6 found unresolved Critic gaps (the user did not fully answer the follow-up question round)
+- Phase 8 git commit did not complete (e.g. not inside a git repo, or the commit failed)
+- Any STOP condition was triggered earlier in the run
+
+If capture completed cleanly, present the user with a choice of what to do next. Use `AskUserQuestion` with three options in this order:
+
+1. **Enter planning mode (Recommended)** — invoke `kanban-plan` inline for the current subject, passing the subject slug as the argument. This is the natural next step after capture.
+2. **Capture something else** — invoke a new `kanban-capture` inline in the same session. No context clearing is possible; the existing session context remains.
+3. **Something else** — treat the user's free-form response as a normal in-context message. No special handler is invoked.
+
+If the user selects option 3 and provides a free-form message, do NOT write it back to the input file. The exception: if the agent judges the content as additional capture material for the current subject, ask the user explicitly whether to append it. Only append if the user confirms.
+
+---
+
+## Phase 10 — Report
 
 Report to the user:
 
