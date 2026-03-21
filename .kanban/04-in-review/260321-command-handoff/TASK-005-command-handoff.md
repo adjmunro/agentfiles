@@ -3,10 +3,10 @@ id: "260321-command-handoff/TASK-005"
 subject: "260321-command-handoff"
 plan: "../../01-plan/260321-command-handoff/plan-command-handoff.md"
 effort: low
-status: todo
+status: done
 created_at: "2026-03-21T00:00:00Z"
-claimed_at: ~
-completed_at: ~
+claimed_at: "2026-03-21T00:00:00Z"
+completed_at: "2026-03-21T00:00:00Z"
 stale_after_hours: 4
 depends_on:
   - "TASK-003"
@@ -40,3 +40,13 @@ Traced to plan §3.3 and §3.4.
 
 ---
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log
+
+**2026-03-21T00:00:00Z** — Implementation complete.
+
+- Added `from-plan-handoff` whitelist to Session Boundary section of `skills/kanban/commands/todo.md` (line 35)
+- Whitelist check placed before the `YYMMDD-*` pattern extraction step
+- Verification: `grep -c 'from-plan-handoff' skills/kanban/commands/todo.md` returns 1
+- No other changes made to todo.md or any other file
+- All acceptance criteria met

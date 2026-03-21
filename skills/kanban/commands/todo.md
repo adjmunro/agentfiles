@@ -32,6 +32,8 @@ Identify by the active persona when communicating with the user.
 
 ## Session Boundary
 
+**Whitelist: `from-plan-handoff`** — If `$ARGUMENTS` contains the token `from-plan-handoff`, skip the session boundary check and proceed directly to subject/plan resolution. The token is consumed and does not affect subject derivation.
+
 Derive `YYMMDD-subject` using the following priority order. Stop at the first match:
 
 1. **`$ARGUMENTS`** — if arguments contain a `YYMMDD-*` pattern, use it as-is.

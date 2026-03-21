@@ -238,9 +238,35 @@ After `kanban-todo` completes:
 
 ### Discard guard instructions
 
-<!-- TODO: TASK-004 will implement the full Discard guard logic here. -->
+When the user selects Discard, execute the following four steps in order.
 
-See Discard guard instructions below — full implementation deferred to TASK-004. For now, when the user selects Discard, inform them: "Discard guard is not yet implemented. Please remove the plan files manually from `.kanban/01-plan/YYMMDD-<subject>/`."
+**Step 1 — Scan**
+
+Search all five work-stage directories for ticket files whose filename or `subject:` frontmatter field matches the current subject slug:
+
+- `.kanban/02-todo/`
+- `.kanban/03-in-progress/`
+- `.kanban/04-in-review/`
+- `.kanban/05-pull-request/`
+- `.kanban/06-archive/`
+
+For each directory, look for any file whose name contains the subject slug or whose YAML frontmatter contains `subject: "<subject-slug>"`.
+
+**Step 2 — Block if found**
+
+If any matching ticket files are found across those directories: describe the problem clearly to the user — list which directories contain tickets and how many files were found in each. Then stop. Do NOT delete any files. Inform the user they must either manually remove the tickets from those directories or explicitly instruct the agent to proceed despite the guard. Do not proceed until the user has resolved the conflict or explicitly overrides.
+
+**Step 3 — Confirm if clear**
+
+If no matching ticket files are found: use your environment's interactive question tool (e.g. `AskUserQuestion`, or an inline prompt) to ask the user to type the exact subject slug to confirm deletion. For example:
+
+> "No active tickets found for this subject. Type the exact subject slug to confirm deletion (e.g. `260321-command-handoff`). A simple yes or no is not sufficient."
+
+Do not proceed unless the user's response matches the subject slug exactly (case-sensitive).
+
+**Step 4 — Delete on confirmed**
+
+Once the user has typed the exact subject slug: remove all files and the directory at `.kanban/01-plan/YYMMDD-<subject>/`. Report to the user that the plan has been discarded and the directory has been removed.
 
 ---
 

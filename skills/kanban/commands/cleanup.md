@@ -122,6 +122,23 @@ Append the following audit block to `plan-<subject>.md`:
 
 ---
 
+## Phase 1.5 — Version Bump and Changelog
+
+If the subject's changes are scoped to `skills/kanban/` (check the committed file paths for this subject via `git log`):
+
+1. Read the current version from `VERSION.md`.
+2. Determine the appropriate semver increment based on what was changed:
+   - Patch — bug fixes, typos, minor corrections
+   - Minor — new features, behaviour changes
+   - Major — breaking changes
+3. Bump `VERSION.md` to the next version.
+4. Prepend a new entry to `CHANGELOG.md` following the format in `AGENTS.md`.
+5. Commit: `chore(kanban): bump version to X.Y.Z for YYMMDD-<subject>`
+
+If the subject's changes do not touch `skills/kanban/`, skip this phase silently.
+
+---
+
 ## Phase 2 — Archive
 
 ### Target Structure
