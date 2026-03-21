@@ -3,10 +3,10 @@ id: "260321-unified-pipeline/TASK-001"
 subject: "260321-unified-pipeline"
 plan: "../../01-plan/260321-unified-pipeline/plan-unified-pipeline.md"
 effort: low
-status: in_review
+status: done
 created_at: "2026-03-22T00:00:00Z"
 claimed_at: "2026-03-22T00:00:00Z"
-completed_at: ~
+completed_at: "2026-03-22T00:00:00Z"
 stale_after_hours: 4
 depends_on: []
 spawned_tickets: []
@@ -58,3 +58,19 @@ TDD red phase for 260321-unified-pipeline. Neither `skills/ideation/` nor `skill
 - ✓ AC-3: Review checklist file exists with 19 items (exceeds 15 minimum requirement)
 
 **Next**: Ready for review. This TDD red phase establishes the baseline zero-implementation state before TASK-002 through TASK-015 begin implementation.
+
+---
+
+## Audit: kanban-review — PASS
+**Date**: 2026-03-22T00:00:00Z  **Threshold**: 95%  **Reviewer**: kanban-review
+
+| # | Acceptance Criterion | Result | Notes |
+|---|----------------------|--------|-------|
+| AC-1 | `[ ! -d skills/ideation ]` — dir absent | Full | Confirmed: directory does not exist |
+| AC-2 | `[ ! -d skills/kanban2 ]` — dir absent | Full | Confirmed: directory does not exist |
+| AC-3 | `review-unified-pipeline.md` exists with ≥15 grep-verifiable items covering all required categories | Full | File exists; 19 items covering ideation scaffold (4), ideation commands (6), kanban2 scaffold (3), kanban2 commands (6) |
+
+- Full: 3, Partial: 0, Missing: 0 — Total: 3
+- Score: (3 + 0.5×0) / 3 × 100 = **100%** — PASS
+
+**Decision**: PASS — ticket moved to `05-pull-request/`, status set to `done`.
