@@ -4,6 +4,20 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v3.0.0 — The Big Rename (2026-03-22)
+
+Skill renamed from kanban2 to implement; user command renamed from `/kanban` to `/implement`; `init` command extracted to the shared `commands/init.md` at repo root so it is callable by any skill.
+
+- Skill directory renamed: `skills/kanban2/` → `skills/implement/`
+- User command renamed: `/kanban` → `/implement`
+- `commands/init.md` extracted to `commands/init.md` at repo root — no longer duplicated inside the skill
+- `SKILL.md` `id` field updated to `implement`
+- `argument-hint` updated: `init` removed (now at root level)
+- All internal `/kanban ...` references updated to `/implement ...`
+- "Distinction from Kanban v1" section removed from `SKILL.md`
+
+---
+
 ## v2.1.0 - 2026-03-22 - Review Command Launch
 
 Review command lands for kanban2. Examiner + Critic dual-persona pipeline, 95% threshold, evidence-mapped ACs, and full PASS/FAIL routing adapted to the subject-centric directory structure.

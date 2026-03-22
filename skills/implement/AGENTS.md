@@ -1,4 +1,4 @@
-# Kanban2 Skill
+# Implement Skill
 
 ## Git Commits
 
@@ -15,9 +15,9 @@ chore(scope): short description
 The commit body should be generated automatically — list what changed, why it matters, and any non-obvious implications. Keep the subject line under 72 characters.
 
 Examples:
-- `feat(kanban2): add init command for new subject-centric structure`
-- `fix(kanban2): correct status field in work.md ticket claim logic`
-- `refactor(kanban2): consolidate review and pr phase routing`
+- `feat(implement): add init command for new subject-centric structure`
+- `fix(implement): correct status field in work.md ticket claim logic`
+- `refactor(implement): consolidate review and pr phase routing`
 
 **Never force push.** There are no exceptions.
 
@@ -37,11 +37,11 @@ The ticket file is the audit trail — deleting and recreating it loses history.
 
 ## Versioning
 
-**Version bumps and changelog updates are NEVER kanban2 tickets.** Do not create TASK-NNN entries for version bumps or changelog entries — the correct version number is unknowable at ticket-creation time and will be wrong by implementation. Version and changelog updates happen automatically as part of implementation commits, not as planned work items.
+**Version bumps and changelog updates are NEVER implement tickets.** Do not create TASK-NNN entries for version bumps or changelog entries — the correct version number is unknowable at ticket-creation time and will be wrong by implementation. Version and changelog updates happen automatically as part of implementation commits, not as planned work items.
 
-**Only bump the version when changes are scoped to `skills/kanban2/`.** If a commit touches other parts of the repo but not this skill, do not bump the kanban2 version.
+**Only bump the version when changes are scoped to `skills/implement/`.** If a commit touches other parts of the repo but not this skill, do not bump the implement version.
 
-Before committing any kanban2 changes, bump the version in `VERSION.md`:
+Before committing any implement changes, bump the version in `VERSION.md`:
 
 ```
 **Current version**: X.Y.Z

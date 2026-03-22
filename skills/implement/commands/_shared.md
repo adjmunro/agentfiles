@@ -1,4 +1,4 @@
-# Kanban2 Shared Reference
+# Implement Shared Reference
 
 > This file is loaded on demand. Individual command files reference specific sections.
 > Do not load this file unless a command file explicitly requests a section.
@@ -85,11 +85,11 @@ score = (satisfied + 0.5 × partial) / total × 100
 
 ```
 .kanban/YYYY-MM-DD-{subject}/
-├── 00-input-*/          # read-only from kanban2
-├── 01-research-*/       # read-only from kanban2
-├── 02-plan-*/           # read-only from kanban2
-├── 00-assets/           # read-only from kanban2
-├── 03-refinement/       # read-only from kanban2
+├── 00-input-*/          # read-only from implement
+├── 01-research-*/       # read-only from implement
+├── 02-plan-*/           # read-only from implement
+├── 00-assets/           # read-only from implement
+├── 03-refinement/       # read-only from implement
 ├── 04-todo/             # tickets waiting to be claimed
 ├── 05-in-progress/      # tickets currently being worked
 ├── 06-in-review/        # tickets awaiting review
@@ -98,4 +98,4 @@ score = (satisfied + 0.5 × partial) / total × 100
 └── .claims/             # lock files — one per claimed ticket
 ```
 
-**Plan-layer isolation:** paths `00-input-*`, `01-research-*`, `02-plan-*`, `00-assets/`, and `03-refinement/` are read-only from kanban2. Never write, move, rename, or delete files in these paths.
+**Plan-layer isolation:** paths `00-input-*`, `01-research-*`, `02-plan-*`, `00-assets/`, and `03-refinement/` are read-only from implement. Never write, move, rename, or delete files in these paths.

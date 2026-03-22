@@ -9,7 +9,7 @@ Determine which ticket to review using this priority order. Stop at the first so
 3. **Most recently modified** — if multiple tickets exist under `06-in-review/`, select the one with the most recent `claimed_at` timestamp in frontmatter.
 4. **Ask the user** — if resolution is still ambiguous, list the available tickets and ask which to review.
 
-**STOP:** If `06-in-review/` contains no tickets, print: "No tickets in 06-in-review. Run `/kanban work` to complete work first." Exit immediately.
+**STOP:** If `06-in-review/` contains no tickets, print: "No tickets in 06-in-review. Run `/implement work` to complete work first." Exit immediately.
 
 Read the ticket file. Confirm its frontmatter contains:
 - `status: in_review`

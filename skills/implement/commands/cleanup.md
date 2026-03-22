@@ -22,7 +22,6 @@ Read each file before proceeding. Identify by the active persona when communicat
 ## DO NOT
 
 - DO NOT proceed if any tickets remain in `04-todo/`, `05-in-progress/`, `06-in-review/`, or `07-pull-request/` for this subject
-- DO NOT touch `.kanban/02-todo/`, `.kanban/03-in-progress/`, `.kanban/04-in-review/`, `.kanban/05-pull-request/` — those are v1 stage directories; never touch them
 - DO NOT remove `08-done/` — it always has content and must survive the archive
 - DO NOT remove `00-assets/` — preserve it even if empty (check for `.gitkeep`); it may contain referenced assets
 - DO NOT skip the git commit — it is the final record that this subject is sealed
@@ -33,7 +32,7 @@ Read each file before proceeding. Identify by the active persona when communicat
 
 If `[YYYY-MM-DD-{subject}]` is provided as an argument, use it directly.
 
-If omitted, scan `.kanban/` for subject directories at the top level (not inside stage dirs — in kanban2 the subject is the top-level directory). Ask the user which subject to archive before proceeding if multiple candidates exist.
+If omitted, scan `.kanban/` for subject directories at the top level (not inside stage directories — the subject is the top-level directory). Ask the user which subject to archive before proceeding if multiple candidates exist.
 
 The subject folder lives at: `.kanban/{subject}/` (e.g., `.kanban/260321-my-feature/`).
 
@@ -62,7 +61,7 @@ STOP: {subject} is not complete.
 Remaining tickets:
   - {path/TASK-NNN-name.md}
   ...
-Run kanban-work and kanban-review to finish them first.
+Run /implement work and /implement review to finish them first.
 ```
 
 If Phase 1 passes (all earlier stages empty, `08-done/` non-empty), print:
@@ -140,8 +139,6 @@ Check that `.kanban/.archive/{subject}/08-done/` exists and contains the expecte
 ```
 
 After the move, the subject is no longer live — it is archived. The original `.kanban/{subject}/` directory will no longer exist.
-
-**V1 coexistence reminder:** never touch `.kanban/02-todo/`, `.kanban/03-in-progress/`, `.kanban/04-in-review/`, `.kanban/05-pull-request/`, or `.kanban/06-archive/`. Those directories belong to the v1 pipeline.
 
 ---
 

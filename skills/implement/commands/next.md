@@ -23,7 +23,7 @@ Read `../../personas/strategist/persona.md` before proceeding. You are **Keeper 
 - When `auto` is passed, pick subjects automatically by lowest date prefix and loop across all of them without prompting
 - Detect stale in-progress tickets before starting any loop
 - Track consecutive identical errors and escalate before looping again
-- Announce when all tickets are in `07-pull-request/` and the subject is ready for `/kanban pr`
+- Announce when all tickets are in `07-pull-request/` and the subject is ready for `/implement pr`
 - Announce when all tickets are in `08-done/` and the subject is complete
 
 ## DO NOT
@@ -185,8 +185,8 @@ Construct a minimal context bundle for each subagent — do NOT pass your full s
 - Ticket file path (absolute)
 - Subject name (`YYYY-MM-DD-{subject}`)
 - Plan file path (`.kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md` if it exists — read-only reference)
-- For work: instruct the subagent to behave as `kanban-work` and dispatch `skills/kanban2/commands/work.md`
-- For review: instruct the subagent to behave as `kanban-review` and dispatch `skills/kanban2/commands/review.md`
+- For work: instruct the subagent to behave as `kanban-work` and dispatch `skills/implement/commands/work.md`
+- For review: instruct the subagent to behave as `kanban-review` and dispatch `skills/implement/commands/review.md`
 
 Subagent tier for work = ticket's `effort` field: `low` → fast/cheap model, `medium` → standard model, `high` → most capable model.
 Subagent tier for review = medium.
@@ -201,12 +201,12 @@ a. INTENT ANCHOR (before dispatching work):
    - Derive the plan file path: .kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md
    - Read the `## Intent` section from that plan file
    - Pass the extracted intent text as context to the work subagent
-   Dispatch skills/kanban2/commands/work.md as subagent for the selected ticket
+   Dispatch skills/implement/commands/work.md as subagent for the selected ticket
 
 b. INTENT ANCHOR (before dispatching review):
    - Re-read the `## Intent` section from .kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md
    - Pass the extracted intent text as context to the review subagent
-   Dispatch skills/kanban2/commands/review.md as subagent after work completes
+   Dispatch skills/implement/commands/review.md as subagent after work completes
 
 c. Read the review outcome (PASS or FAIL) from the ticket's frontmatter or review output
 ```
@@ -215,9 +215,9 @@ c. Read the review outcome (PASS or FAIL) from the ticket's frontmatter or revie
 - Report the result clearly.
 - Return to Phase 2 and select the next unblocked ticket automatically.
 - If no tickets remain in `04-todo/` and all are in `07-pull-request/`, announce:
-  > "All tickets in YYYY-MM-DD-{subject} are in 07-pull-request. This subject is ready for /kanban pr."
+  > "All tickets in YYYY-MM-DD-{subject} are in 07-pull-request. This subject is ready for /implement pr."
 - If all tickets are in `08-done/`, announce:
-  > "Subject YYYY-MM-DD-{subject} is complete. Run /kanban cleanup to archive."
+  > "Subject YYYY-MM-DD-{subject} is complete. Run /implement cleanup to archive."
 
 **On FAIL:**
 - Move the ticket back to `05-in-progress/` if it isn't already there.
@@ -232,7 +232,7 @@ When the same blocking error appears in 2–3 consecutive failures without meani
 
 1. Send a desktop notification (best-effort):
    ```bash
-   osascript -e 'display notification "Ticket stuck: same error repeated" with title "kanban2 escalation"'
+   osascript -e 'display notification "Ticket stuck: same error repeated" with title "implement escalation"'
    ```
    Do not fail if this is unavailable.
 
@@ -261,8 +261,8 @@ Manual intervention required before resuming.
 
 When subject transitions to fully ready for PR or cleanup:
 
-- **All tickets in `07-pull-request/`**: announce "Subject YYYY-MM-DD-{subject} is ready for /kanban pr."
-- **All tickets in `08-done/`**: announce "Subject complete. Run /kanban cleanup to archive."
+- **All tickets in `07-pull-request/`**: announce "Subject YYYY-MM-DD-{subject} is ready for /implement pr."
+- **All tickets in `08-done/`**: announce "Subject complete. Run /implement cleanup to archive."
 
 When stopping for any reason (user said no, abort, or no tickets remain), always print:
 
@@ -280,7 +280,7 @@ Subject: YYYY-MM-DD-{subject}
 
 | Stage | Command file | Subagent tier |
 |-------|-------------|---------------|
-| Work | `skills/kanban2/commands/work.md` | ticket `effort` field |
-| Review | `skills/kanban2/commands/review.md` | medium |
-| PR prep | `skills/kanban2/commands/pr.md` | medium |
-| Archive | `skills/kanban2/commands/cleanup.md` | low |
+| Work | `skills/implement/commands/work.md` | ticket `effort` field |
+| Review | `skills/implement/commands/review.md` | medium |
+| PR prep | `skills/implement/commands/pr.md` | medium |
+| Archive | `skills/implement/commands/cleanup.md` | low |

@@ -1,10 +1,10 @@
 # Version Action
 
-> **Part of the kanban2 skill.** Handles version reporting and update checks.
+> **Part of the implement skill.** Handles version reporting and update checks.
 
-**Current version**: 2.1.0
+**Current version**: 3.0.0
 
-**Upstream**: https://raw.githubusercontent.com/adjmunro/agentfiles/main/skills/kanban2/VERSION.md
+**Upstream**: https://raw.githubusercontent.com/adjmunro/agentfiles/main/skills/implement/VERSION.md
 
 ## Responding to Version Requests
 

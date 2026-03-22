@@ -62,7 +62,7 @@ Work only within the scope defined by this ticket's acceptance criteria. If impl
 
 ## Plan-Layer Isolation
 
-The following paths are **read-only** from kanban2. Never write, move, rename, or delete:
+The following paths are **read-only** from implement. Never write, move, rename, or delete:
 - `00-input-*` files
 - `01-research-*` files
 - `02-plan-*` files
@@ -92,7 +92,7 @@ feat({NNN}): [what and why in one line]
 Replace `{NNN}` with the ticket number. The message body must describe what changed and why it matters — not a laundry list of files touched.
 
 Examples:
-- `feat(011): add work.md command — implements kanban2 ticket claim and implementation flow`
+- `feat(011): add work.md command — implements ticket claim and implementation flow`
 - `feat(011): add stale detection — prevents resuming abandoned sessions without user confirmation`
 
 ## Ticket Reference
