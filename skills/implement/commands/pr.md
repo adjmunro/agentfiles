@@ -53,7 +53,7 @@ Work through the three checks below in order. The first failing check determines
 
 Run `git remote -v` and look for a `github.com` URL.
 
-- **No GitHub remote found**: Print — "No GitHub remote detected — skipping PR entirely." Announce that all tickets in `07-pull-request/{subject}/` are sufficient to proceed. Instruct the user to run the cleanup command manually. Do not continue to Check 2.
+- **No GitHub remote found**: Print — "No GitHub remote detected — skipping PR entirely." Move all ticket files from `.kanban/YYYY-MM-DD-{subject}/07-pull-request/` to `.kanban/YYYY-MM-DD-{subject}/08-done/`. Update each ticket's `status` frontmatter field to `done`. Commit with: `kanban(pr): mark {subject} complete — no PR required`. Then instruct the user to run the cleanup command. Do not continue to Check 2.
 - **GitHub remote found**: Continue to Check 2.
 
 ### Check 2 — Trunk branch protection
@@ -72,7 +72,7 @@ gh api repos/{owner}/{repo}/branches/{branch}/protection
 Interpret the result:
 
 - **Protected** (API returns protection rules): Print — "Branch is protected — proceeding with PR flow." Continue to Check 3.
-- **Unprotected** (API returns 404 or indicates no protection rules): Print — "Branch is unprotected — skipping draft PR." Make a git commit:
+- **Unprotected** (API returns 404 or indicates no protection rules): Print — "Branch is unprotected — skipping draft PR." Move all ticket files from `.kanban/YYYY-MM-DD-{subject}/07-pull-request/` to `.kanban/YYYY-MM-DD-{subject}/08-done/`. Update each ticket's `status` frontmatter field to `done`. Commit with: `kanban(pr): mark {subject} complete — no PR required`. Then make an additional empty commit:
   ```
   git commit --allow-empty -m "kanban(pr): skip draft PR for YYYY-MM-DD-{subject} — trunk branch unprotected"
   ```

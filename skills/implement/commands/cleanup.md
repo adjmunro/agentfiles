@@ -34,7 +34,7 @@ If `[YYYY-MM-DD-{subject}]` is provided as an argument, use it directly.
 
 If omitted, scan `.kanban/` for subject directories at the top level (not inside stage directories — the subject is the top-level directory). Ask the user which subject to archive before proceeding if multiple candidates exist.
 
-The subject folder lives at: `.kanban/{subject}/` (e.g., `.kanban/260321-my-feature/`).
+The subject folder lives at: `.kanban/{subject}/` (e.g., `.kanban/2026-03-21-my-feature/`).
 
 ---
 

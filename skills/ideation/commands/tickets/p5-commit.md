@@ -29,12 +29,13 @@ Include in the commit body:
 After the commit succeeds, promote all tickets from `03-refinement/` to `04-todo/`:
 
 1. Move every `TASK-NNN-{subject}.md` file from `03-refinement/` to `04-todo/`. Create `04-todo/` if it does not exist.
+   - Use `git mv` inside a git repo, or move the file and then `git add -A` to capture both the deletion and the addition.
 2. Stage and commit:
    ```
    kanban(tickets): promote N tickets to backlog for {subject}
    ```
 3. Report the ticket IDs now available in `04-todo/`.
 
-This makes the tickets immediately available to `implement work`. The refinement directory remains (now empty) as a record of where tickets originated.
+This makes the tickets immediately available to `implement work`. The `03-refinement/` directory is left in place but empty — it serves as a breadcrumb showing where tickets were staged before promotion.
 
 → Done. Return to orchestrator and report results.

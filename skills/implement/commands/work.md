@@ -47,6 +47,8 @@ Read `../../personas/builder/persona.md` before proceeding. You are **Kira (Buil
 | 7 | `work/p7-commit.md` | any phase produces a meaningful artifact |
 | 8 | `work/p8-move-to-review.md` | all ACs verified and work log appended |
 
+> **Execution order note:** Phase 4 (Stale Detection) runs immediately after Phase 2, before Phase 3 (Implementation). The numbering reflects logical grouping, not strict execution sequence. Actual order: 1 → 2 → 4 → 3 → 5 → 6 → 7 → 8.
+
 ## Execution
 
 Read Phase 1 file now: `work/p1-session-check.md`

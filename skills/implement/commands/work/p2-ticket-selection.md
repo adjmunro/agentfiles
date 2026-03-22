@@ -11,7 +11,7 @@ Determine which ticket to implement using the following priority order:
 
 **STOP:** If no ticket files exist in `04-todo/`, print exactly:
 
-> No todo tickets found for this subject. Run `/kanban init` first or check that tickets have been promoted to `04-todo/`.
+> No todo tickets found for this subject. Run `/init` first or check that tickets have been promoted to `04-todo/`.
 
 Then exit. Do not touch any files.
 

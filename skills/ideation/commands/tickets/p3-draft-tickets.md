@@ -37,7 +37,7 @@ For each logical unit of work:
 
 ### Ticket Frontmatter Schema
 
-> See `../../implement/commands/_shared.md § Ticket Frontmatter Schema` when you need field definitions.
+> See `../../../implement/commands/_shared.md § Ticket Frontmatter Schema` when you need field definitions.
 
 Note: for ideation tickets, the `id` field uses the shorter form `{subject}/TASK-NNN` and `plan` points to `../02-plan-{subject}.md` rather than the implement path.
 
@@ -75,6 +75,10 @@ Use this table when drafting ACs to catch common vague patterns before the Criti
 | Test passes | "Tests pass" | "`npm test -- --testPathPattern=auth` exits 0, 0 failures" |
 | API response | "Returns correct data" | "GET /users/1 returns HTTP 200 with `{\"id\":1}` in body" |
 | No regressions | "Existing tests still work" | "`npm test` exits 0, same number of passing tests as before claim" |
+
+### AC Commands — Environment Note
+
+When writing shell commands as ACs, use relative paths from the project root. In Claude Code environments, avoid `grep` in Bash — use the `Grep` tool instead for content searches. Where a Bash command is necessary, write it as a `python3 -c` assertion where possible, since Python is portable and avoids shell-tool restrictions.
 
 ### File Naming
 

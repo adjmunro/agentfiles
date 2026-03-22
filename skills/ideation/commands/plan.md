@@ -51,7 +51,7 @@ Read ALL blocks before proceeding.
 
 **STOP:** If the file does not exist, print:
 
-> Cannot run plan: `00-input-{subject}.md` does not exist. Run capture (Step 1) and interview (Step 3) first.
+> Cannot run plan: `00-input-{subject}.md` does not exist. Run capture (Step 1) first.
 
 Do not proceed.
 
