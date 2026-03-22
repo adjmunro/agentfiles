@@ -108,9 +108,26 @@ ITE = 1 − (padding_tokens / total_tokens), averaged across all instruction com
 Direction: ↑ higher is better (less padding = higher efficiency).
 Normalise: ITE × 100.
 
+### M14 — Persona-Phase Fit Score (PPF) [applies: persona system]
+**Apply if:** Does the workflow reference or load any persona files, or does any phase include a persona load directive? (yes = apply, no = skip)
+Methodology:
+1. List all phases in the workflow and identify each phase's primary cognitive demand:
+   - **Analysis / measurement**: systematic enumeration, quantitative scoring, pattern detection → ideal fit: analytics-style persona
+   - **Strategy / planning**: prioritisation, synthesis, forward-projection → ideal fit: strategist-style persona
+   - **Critique / adversarial review**: fault-finding, challenge, stress-testing → ideal fit: critic-style persona
+   - **Reporting / documentation**: neutrality, comprehensiveness, clarity → neutral observer is appropriate; loading any persona here risks bias
+   - **Creative generation**: divergent thinking, novelty-seeking → needs a creative or expansive persona; a critic or analyst here is a mismatch
+2. For each phase, determine fit:
+   - **Full fit (1.0)**: assigned persona's core trait directly matches the cognitive demand, OR the phase is a reporting/neutral phase and no persona is assigned
+   - **Partial fit (0.5)**: persona's traits are adjacent but not optimal (e.g., strategist on a measurement phase), OR a persona is assigned to a neutral phase but does not obviously conflict
+   - **Mismatch (0.0)**: persona's traits actively work against the phase's purpose (e.g., critic on a generative brainstorm), OR a high-value phase has no persona and a clear one exists
+3. Also check persona depth: for each persona file that is loaded, does it define at minimum — name, core trait/cognitive style, what it emphasises, what it de-emphasises, tone? A persona file missing two or more of these fields is functionally decorative and scores partial.
+PPF = sum(per_phase_scores) / total_phases_assessed
+Normalise: PPF × 100.
+
 ### Custom Metric Discovery
 
-**This step is mandatory.** After scoring M1–M13, Pulse examines the workflow for
+**This step is mandatory.** After scoring M1–M14, Pulse examines the workflow for
 quality dimensions not captured by any seed metric.
 
 Ask: *What could go wrong in this specific workflow that no seed metric would catch?*

@@ -32,6 +32,7 @@ Display this table, then the patterns table, then the stats summary. Nothing els
 | M11 · PSS | Parallelisation Safety Score | 1× | Parallel execution present | 90–100 | Whether concurrent mutations have explicit guards and release mechanisms |
 | M12 · IFS | Information Freshness Score | 2× | Cached artefacts present | 90–100 | Whether inter-session artefacts have TTL policies before re-use |
 | M13 · ITE | Instruction Token Efficiency | 1× | All workflows | 80–100 | What fraction of tokens are load-bearing vs. filler/padding |
+| M14 · PPF | Persona-Phase Fit Score | 1× | Persona system present | 80–100 | Whether each phase's assigned persona matches its cognitive demand, and whether unassigned phases should have one |
 
 ### Design Patterns
 
@@ -44,6 +45,7 @@ Display this table, then the patterns table, then the stats summary. Nothing els
 | P5 | Claim Registry | PSS ↑ | Any workflow with parallel or concurrent execution |
 | P6 | Symmetric Outcome Thresholds | ACC ↑ | Any workflow with multi-tier outcome classification |
 | P7 | Binary Applicability Gates | IAR ↓, ACC ↑ | Any workflow with conditional or optional steps |
+| P8 | Persona Rotation | PPF ↑ | Any workflow where a phase's persona is a poor fit, missing, or untested |
 
 ### Stats at a Glance
 
@@ -423,6 +425,26 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
+### Persona Rotation (P8)
+*Also matches: P8, persona, rotation, fit, alternative, invent, cognitive, style, reassign*
+
+**Problem it solves:** A persona system that assigns the same persona to every phase, or that assigns a persona by name without matching cognitive style to phase demand, produces worse output than no persona at all — because the agent adopts a style that conflicts with the task.
+
+**How it works:** For each phase that scores below full fit on Persona-Phase Fit (M14), try an alternative persona. First look for a better match among existing persona files. If none fits, invent a new persona: define name, core trait, cognitive style, what it emphasises, what it de-emphasises, and tone, and write it as a proper persona file. Compare the quality markers of the phase's output under the new assignment: does it produce more concrete outputs? More comprehensive coverage? More appropriate challenge?
+
+**When to apply:**
+- Any phase that scores partial or mismatch on Persona-Phase Fit
+- Any phase that is currently unassigned but has a non-trivial cognitive demand (analysis, critique, strategy, creative generation)
+- Any workflow whose persona files are thin (missing cognitive style, emphasis/de-emphasis fields, or tone)
+
+**When to invent vs. reuse:** Invent a new persona when the cognitive demand is genuinely novel and no existing persona is within 80% of the ideal style. Do not assign a slightly-wrong existing persona just to avoid creating a file — the fit matters more than the file count.
+
+**Targets:** Persona-Phase Fit Score (↑)
+
+**Typical gain:** Likely varies significantly by target. On workflows where personas are currently decorative (name-only, or loaded without matching style), expect +20–40pp. On well-designed persona systems, Persona Rotation may confirm the existing assignments are near-optimal, which is also valuable evidence.
+
+---
+
 ### Instruction Token Efficiency (M13 · ITE)
 *Also matches: M13, ITE, token, efficiency, padding, filler, compression, density, verbose*
 
@@ -447,5 +469,35 @@ Find the section below that best matches the argument. Display only that section
 **Note on tokenisation encoding:** A related but separate concern is how efficiently the text itself tokenises given the model's vocabulary (e.g. certain markdown symbols, CamelCase, or special characters produce more tokens per visible character than plain prose). This is worth tracking as a moonshot custom metric on targets where raw token cost is critical, but requires running an actual tokeniser and is too tooling-dependent to be a seed metric.
 
 **How to improve:** Audit for the padding categories above. Replace preamble phrases with direct imperatives ("Record X if Y" instead of "Please make sure to always record X when Y occurs"). Remove decorative dividers that add no navigational value. Convert narrative description paragraphs into explicit DO / DO NOT rules.
+
+**Stats:** New metric — no historical data yet.
+
+---
+
+### Persona-Phase Fit Score (M14 · PPF)
+*Also matches: M14, PPF, persona, fit, cognitive, role, assignment, rotation, mismatch*
+
+**Measures:** Whether each phase's assigned persona matches the cognitive demands of that phase — and whether phases without a persona should have one.
+
+**Intent:** A persona is not decoration. A critic persona on a measurement phase may produce sceptical scores that are too conservative; an analytics persona on a creative brainstorm may narrow the output prematurely. The value of a persona system comes from deliberate assignment — matching cognitive style to task demand. This metric surfaces mismatches that silently reduce output quality and identifies phases where adding a persona would be valuable but none was assigned.
+
+**Applies when:** The workflow references or loads any persona files, or any phase includes a persona load directive.
+
+**Weight:** 1×
+
+**Healthy range:** 80–100.
+
+**Risk at low scores:** Phases that would benefit from a sceptical reviewer fall back to the agent's default agreeable mode. Phases that need systematic enumeration get a creative persona that samples rather than catalogues. The workflow has a persona system but is not getting the benefit of it.
+
+**Cognitive demand taxonomy:**
+- **Analysis / measurement**: systematic enumeration, quantitative scoring, pattern detection → analytics-style persona
+- **Strategy / planning**: prioritisation, synthesis, forward-projection → strategist-style persona
+- **Critique / adversarial review**: fault-finding, challenge, stress-testing → critic-style persona
+- **Reporting / documentation**: neutrality, comprehensiveness, clarity → neutral observer (no persona is correct here)
+- **Creative generation**: divergent thinking, novelty-seeking → creative/expansive persona; a critic or analyst is a mismatch
+
+**Persona depth check:** A persona file that defines only a name and one-line description is functionally decorative. For full credit, each loaded persona must define at minimum: name, core trait, cognitive style, what it emphasises, what it de-emphasises, and tone.
+
+**How to improve:** Apply Persona Rotation (P8) — for each phase with a partial or mismatch score, try an alternative persona drawn from existing files or invent a new one. When inventing, write a proper persona file; do not assign a name without defining the cognitive style.
 
 **Stats:** New metric — no historical data yet.

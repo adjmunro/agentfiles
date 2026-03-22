@@ -53,6 +53,18 @@ feature-presence conditions ("X present") with a single yes/no question whose an
 is deterministically derivable from an earlier phase's output.
 Targets: IAR (↓), ACC (↑)
 
+#### P8 — Persona Rotation
+For workflows with a persona system where any phase scores below full fit on
+Persona-Phase Fit: try an alternative persona on that phase (drawn from existing
+persona files or newly invented) and compare output quality markers — concreteness,
+coverage, and appropriate challenge level. When no existing persona fits the cognitive
+demand of a phase, invent one: define name, core trait, cognitive style, what it
+emphasises, what it de-emphasises, and tone. Store it in the workflow's personas
+directory alongside existing personas. This pattern applies both to improving fit
+on existing assignments and to adding personas to phases that are currently unassigned
+but would benefit from a specific cognitive style.
+Targets: PPF (↑)
+
 For each hypothesis:
 
 ```
@@ -70,6 +82,8 @@ When forming novel hypotheses, ask:
 - Is there a structural change (split, merge, reorder) that would improve a custom metric?
 - Is there a workflow assumption that is never validated? Add a validation step.
 - Is there output that is produced but never verified? Add a verification gate.
+- Are all phases with meaningful cognitive demands assigned a persona? Would adding one improve output consistency or depth?
+- Is any assigned persona a poor fit for its phase's cognitive demands? Would a different existing persona, or a newly invented one, produce more grounded outputs?
 - Is there a pattern in *what fails* vs. *what succeeds* in this workflow?
 
 If a confirmed novel hypothesis generalises (would help other workflows of the same
