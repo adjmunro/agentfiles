@@ -24,6 +24,7 @@ Summon one or more personas and hold a freeform conversation with them. Each per
 | `documentation` | Ward (Documentation) | `../documentation/` |
 | `analytics` | Pulse (Analytics) | `../analytics/` |
 | `adversarial` | Rook (Adversary) | `../adversarial/` |
+| `synthesis` | Loom (Synthesist) | `../synthesis/` |
 
 ## Setup
 

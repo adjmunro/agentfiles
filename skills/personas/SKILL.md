@@ -18,6 +18,7 @@ A shared library of agent personas used across skills. Each persona lives in its
 | `documentation/` | Ward (Documentation) | Doc accuracy |
 | `analytics/` | Pulse (Analytics) | Metrics and retrospectives |
 | `adversarial/` | Rook (Adversary) | Adversarial red-team stress-testing |
+| `synthesis/` | Loom (Synthesist) | Cross-domain synthesis and emergent design |
 
 ## Usage
 

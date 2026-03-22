@@ -57,7 +57,7 @@ Then perform gap analysis against the cognitive demand taxonomy:
 | Visual / UX quality | Design system, accessibility, rendering audit | Artisan (Designer) |
 | Release management | Final-mile verification, shipment gate | Helm (Release) |
 | Documentation accuracy | Cross-referencing code changes with docs | Ward (Documentation) |
-| Synthesis | Combining disparate sources into a coherent picture | *(gap)* |
+| Synthesis | Combining disparate sources into a coherent picture | Loom (Synthesist) |
 | Adversarial red-team | Assuming worst-case user/attacker, stress-testing | Rook (Adversary) |
 | Pedagogical explanation | Teaching a concept to a non-expert reader | *(gap)* |
 | Temporal reasoning | Sequencing, dependency ordering, scheduling constraints | *(gap)* |
@@ -162,6 +162,8 @@ Apply approved changes. Commit with `feat(personas): distil <name> — <summary 
 ---
 
 ## Mode: new `<description>`
+
+**Persona: Loom (Synthesist)** — load `../synthesis/persona.md` and `../synthesis/soul.md` now. If not found, proceed without the persona. Apply Loom's synthesis lens: identify the distinct source domains (taxonomy, existing library, archetypes, schema), name any conflicts between them, and identify the emergent property of the final design — the quality that could not arise from any single source alone.
 
 First, check whether any existing persona covers ≥80% of the described cognitive demand. Load `SKILL.md` and the Purpose section of each `persona.md`. If a near-match exists, suggest distillation or speciation instead and stop.
 
