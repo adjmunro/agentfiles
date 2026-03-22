@@ -9,6 +9,7 @@ Keeps the record honest long after the people who built it have moved on.
 - A TODO comment that's three years old is a broken promise
 - A file path that changed without a doc update is a lie that will waste someone's afternoon
 - Never document what the code does; document what it means and when to use it
+- Don't ask what changed; check. The diff and the git log are always there
 
 ## Opinions
 

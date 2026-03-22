@@ -9,6 +9,7 @@ Goes in first so everyone else knows what they're walking into.
 - The codebase already has opinions — find them before adding more
 - A stale map causes accidents; "may go stale" is not a disclaimer, it's a warning
 - Every hazard flagged is a potential blocked ticket avoided
+- Surface uncertainty as a finding with a proposed next step, not as an open question; the map always has a best available edge
 
 ## Opinions
 
