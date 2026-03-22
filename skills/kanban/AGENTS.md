@@ -49,7 +49,7 @@ Before committing any kanban changes, bump the version in `VERSION.md`:
 
 Use semver:
 - Patch (1.0.0 → 1.0.1): Bug fixes, typos, minor corrections
-- Minor (1.0.0 → 1.1.0): New features, behavior changes
+- Minor (1.0.0 → 1.1.0): New features, behaviour changes
 - Major (1.0.0 → 2.0.0): Breaking changes
 
 When in doubt, bump the patch version.

@@ -27,6 +27,7 @@ Identify by persona name in all output during the phase where that persona is ac
 - Apply only the metrics that are applicable to the target workflow; skip others with an explicit reason
 - Compute the composite using only applied metrics in both numerator and denominator
 - Write all measurement and experiment data to `research-log.md` in the target directory
+
 - Create a git branch before making any changes if the target is inside a git repo
 - Commit each confirmed change separately with a conventional commit message
 - Present the Recommendation Brief and wait for human approval before beginning experiments
@@ -54,7 +55,7 @@ Re-read `research-log.md` in the target directory if it exists (Intent Anchor).
 Derive the target directory path from `$ARGUMENTS`. If `$ARGUMENTS` is empty or the
 path does not exist, stop and print:
 
-> No target directory provided. Usage: /optimize <path-to-workflow-directory>
+> No target directory provided. Usage: /optimise <path-to-workflow-directory>
 
 Then exit without touching any files.
 
@@ -114,13 +115,13 @@ log entry, etc.). IOT = phases_with_explicit_prior_artifact_read / total_phases.
 ### M2 — Directive Density (DD) [universal]
 Methodology: Count DO/DO NOT items and other imperative directives across all command
 files. Divide by total tokens / 100. DD = directives / (tokens / 100).
-Normalize: (DD / 2.0) × 100, cap at 100.
+Normalise: (DD / 2.0) × 100, cap at 100.
 
 ### M3 — Instruction Ambiguity Rate (IAR) [universal]
 Methodology: Scan all instructions for weak modal verbs with no scope qualifier:
 "should", "may", "might", "consider", "try to" (without an "if X" condition). Count
 these as ambiguous. IAR = ambiguous_instructions / total_instructions.
-Normalize: 100 − IAR%.
+Normalise: 100 − IAR%.
 
 ### M4 — Wiring Completeness Score (WCS) [applies: persona system]
 Methodology: List all persona files that exist. For each persona, check whether it is
@@ -130,7 +131,7 @@ WCS = wired_personas / total_personas.
 ### M5 — Redundancy Index (RI) [universal]
 Methodology: Identify instructions or rules that appear in more than one file with
 substantially the same meaning. RI = redundant_instruction_instances / total_instructions.
-Normalize: 100 − RI%.
+Normalise: 100 − RI%.
 
 ### M6 — AC Concreteness (ACC) [universal]
 Methodology: Find all acceptance criteria, stop conditions, or "done when" statements.
@@ -139,13 +140,13 @@ require subjective judgment (vague)? ACC = concrete_ACs / total_ACs.
 
 ### M7 — Subagent Alignment Score (SAS) [applies: subagent invocations]
 Methodology: For each subagent invocation, check whether the task delegated is
-appropriate for a subagent (isolated, parallelizable, no shared mutable state without
+appropriate for a subagent (isolated, parallelisable, no shared mutable state without
 explicit guards). SAS = appropriate_invocations / total_invocations.
 
 ### M8 — Human Touchpoint Count (HTC) [universal]
 Methodology: Count every point in a full end-to-end run where a human must provide
 input or approval (not counting the initial invocation). HTC = count of touchpoints.
-Normalize: max(0, 100 − (HTC / 20) × 100).
+Normalise: max(0, 100 − (HTC / 20) × 100).
 
 ### M9 — Context Decay Resilience (CDR) [applies: multi-session orchestration]
 Methodology: For each session boundary (points where a new agent session begins),
@@ -157,7 +158,7 @@ Methodology: For each phase in each command file, identify what files are loaded
 estimate what percentage of those tokens are actually relevant to the work of that
 phase. CLE = relevant_tokens_loaded / total_tokens_loaded (averaged across phases).
 
-### M11 — Parallelization Safety Score (PSS) [applies: parallel execution]
+### M11 — Parallelisation Safety Score (PSS) [applies: parallel execution]
 Methodology: For each mutation (write, move, delete) that could occur in a parallel
 context, check whether it has: (a) explicit guard against concurrent access, and
 (b) a defined release mechanism. Full credit = both guards; partial = one guard.
@@ -184,7 +185,7 @@ For each gap found, define a custom metric:
 **Methodology:** <exact counting or scoring method>
 **Direction:** ↑ higher / ↓ lower is better
 **Weight:** <1× or 2× — use 2× if this dimension is critical to the workflow's purpose>
-**Normalization:** <formula>
+**Normalisation:** <formula>
 ```
 
 Heuristics for finding custom metrics:
@@ -198,7 +199,7 @@ Heuristics for finding custom metrics:
 state why explicitly — do not silently skip.
 
 Write custom metric definitions to `research-log.md` under `## Custom Metrics — <date>`.
-Custom metrics persist and are re-applied on future runs of `/optimize` on the same target.
+Custom metrics persist and are re-applied on future runs of `/optimise` on the same target.
 
 ### Composite Calculation
 
@@ -207,7 +208,7 @@ Seed metrics applied: <list>
 Seed metrics skipped: <list with reasons>
 Custom metrics: <list>
 
-| Metric | Source | Raw | Normalized | Weight | Weighted |
+| Metric | Source | Raw | Normalised | Weight | Weighted |
 |--------|--------|-----|-----------|--------|----------|
 | ...    | seed / custom |  |  |  |  |
 | TOTAL  |        |     |           | <N>×   | <sum> / (<N>×100) |
@@ -239,7 +240,7 @@ For each hypothesis:
 **Problem observed:** <what the metric score reveals about the workflow>
 **Change proposed:** <specific, actionable change to one or more files>
 **Targets:** <metric IDs and predicted direction — include custom metrics>
-**Predicted improvement:** <estimated delta in normalized score>
+**Predicted improvement:** <estimated delta in normalised score>
 **Pattern applied:** <P1–P5 if applicable, or "novel — <name the new pattern>">
 **Risk level:** low / medium / high
 **Risk note:** <what could go wrong; what to check if disconfirmed>
@@ -308,7 +309,7 @@ Apply the same methodology used in Phase 2 to re-measure the targeted metric(s).
 
 ### Step d — Record result
 Determine outcome:
-- **Confirmed**: normalized score improved by ≥3 points on at least one target metric
+- **Confirmed**: normalised score improved by ≥3 points on at least one target metric
   with no other metric degraded by more than 2 points
 - **Partial**: improvement present but below threshold, or mixed (some metrics up, some down)
 - **Disconfirmed**: no meaningful improvement, or net negative
@@ -325,7 +326,7 @@ Update `research-log.md`:
 ```
 
 ### Step e — Commit or revert
-- **Confirmed**: commit with `feat(optimize): <description of change> [H<N>]`
+- **Confirmed**: commit with `feat(optimise): <description of change> [H<N>]`
 - **Partial**: commit with a note or revert at your discretion — document the decision
 - **Disconfirmed**: revert the change; document why in the log
 
@@ -385,7 +386,7 @@ If any confirmed hypothesis used a novel pattern (not P1–P5), document it:
 **Seed candidate:** yes / no / maybe — <reasoning>
 ```
 
-Seed candidates should be noted for potential inclusion in `skills/optimize/SKILL.md`
+Seed candidates should be noted for potential inclusion in `skills/optimise/SKILL.md`
 Design Patterns section in a future version.
 
 Append the full report to `research-log.md` under `## Final Results — <date>`.
@@ -393,7 +394,7 @@ Append the full report to `research-log.md` under `## Final Results — <date>`.
 Print a terminal summary:
 
 ```
-Optimization complete.
+Optimisation complete.
 Baseline: X%  →  Post: Y%  (+Z pp composite)
 
 Confirmed: <count> hypotheses

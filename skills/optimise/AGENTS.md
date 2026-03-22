@@ -1,4 +1,4 @@
-# Optimize Skill
+# Optimise Skill
 
 ## Git Commits
 
@@ -15,12 +15,12 @@ chore(scope): short description
 The commit body should be generated — describe what changed, why, and any non-obvious
 side effects. Keep the subject line under 72 characters.
 
-Common scopes: `optimize`, `commands`, `skills`
+Common scopes: `optimise`, `commands`, `skills`
 
 Examples:
-- `feat(optimize): add M13 metric for dependency graph coverage`
-- `fix(optimize): correct HTC normalization cap in scoring reference`
-- `refactor(optimize): split experiment loop into per-hypothesis phases`
+- `feat(optimise): add M13 metric for dependency graph coverage`
+- `fix(optimise): correct HTC normalisation cap in scoring reference`
+- `refactor(optimise): split experiment loop into per-hypothesis phases`
 
 **Never force push.** This is a hard rule with no exceptions.
 
@@ -28,10 +28,10 @@ Examples:
 
 ## Versioning
 
-**Only bump the version when changes are scoped to `skills/optimize/`.** If a commit
-touches other parts of the repo but not this skill, do not bump the optimize version.
+**Only bump the version when changes are scoped to `skills/optimise/`.** If a commit
+touches other parts of the repo but not this skill, do not bump the optimise version.
 
-Before committing any optimize changes, bump the version in `VERSION.md`:
+Before committing any optimise changes, bump the version in `VERSION.md`:
 
 ```
 1.X.Y
@@ -39,7 +39,7 @@ Before committing any optimize changes, bump the version in `VERSION.md`:
 
 Use semver:
 - Patch (1.0.0 → 1.0.1): Bug fixes, typos, minor corrections
-- Minor (1.0.0 → 1.1.0): New features, new metrics, behavior changes
+- Minor (1.0.0 → 1.1.0): New features, new metrics, behaviour changes
 - Major (1.0.0 → 2.0.0): Breaking changes to the loop structure or scoring model
 
 When in doubt, bump the patch version.

@@ -191,7 +191,7 @@ Construct a minimal context bundle for each subagent — do NOT pass your full s
 Subagent tier for work = ticket's `effort` field: `low` → fast/cheap model, `medium` → standard model, `high` → most capable model.
 Subagent tier for review = medium.
 
-**If subagents are unavailable**, run `work.md` then `review.md` behaviors sequentially in the current session rather than skipping either step.
+**If subagents are unavailable**, run `work.md` then `review.md` behaviours sequentially in the current session rather than skipping either step.
 
 ### Loop steps
 

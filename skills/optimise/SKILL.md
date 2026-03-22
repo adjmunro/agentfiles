@@ -1,14 +1,14 @@
 ---
-name: optimize
+name: optimise
 description: Use when you want to systematically measure and improve a workflow directory — agent skills, code repos, documentation stores, or any directory of instruction files
 argument-hint: "<path-to-target-workflow-directory>"
 ---
 
-# Optimize
+# Optimise
 
 ## Overview
 
-A scientific-method optimization loop for workflow directories. Point it at any folder
+A scientific-method optimisation loop for workflow directories. Point it at any folder
 of agent instructions, command files, or documentation and it will: measure what's
 wrong, form evidence-based hypotheses, apply changes, re-measure, and write a report.
 The same loop that produced the kanban/ideation/personas improvements is packaged here
@@ -31,16 +31,16 @@ so it can be reused on any target.
 The metric library is **not a fixed checklist**. M1–M12 are a seed library extracted
 from the kanban/ideation/personas study — they have track records and defined
 measurement methods. The skill applies applicable seeds, skips irrelevant ones, and
-**always discovers new metrics** tailored to the specific workflow being optimized.
+**always discovers new metrics** tailored to the specific workflow being optimised.
 
-Every optimization run should produce at least 1–2 custom metrics. If a workflow has
+Every optimisation run should produce at least 1–2 custom metrics. If a workflow has
 a quality dimension that no seed metric captures, that gap is itself a finding.
 
 ### Seed Metrics — Universal
 
 ### Universal Metrics
 
-| ID | Name | Direction | Weight | Normalization | Notes |
+| ID | Name | Direction | Weight | Normalisation | Notes |
 |----|------|-----------|--------|---------------|-------|
 | M2 | Directive Density (DD) | ↑ higher | 1× | (raw/2.0)×100, cap 100 | directives per 100 tokens |
 | M3 | Instruction Ambiguity Rate (IAR) | ↓ lower | 1× | 100 − raw% | % of instructions containing modal verbs with no scope |
@@ -54,19 +54,19 @@ a quality dimension that no seed metric captures, that gap is itself a finding.
 Skip these with explicit rationale when the target workflow does not use the
 relevant feature. Record the skip reason in the research log.
 
-| ID | Name | Applies When | Direction | Weight | Normalization |
+| ID | Name | Applies When | Direction | Weight | Normalisation |
 |----|------|-------------|-----------|--------|---------------|
 | M1 | Intent-to-Output Traceability (IOT) | multi-phase pipeline | ↑ higher | 2× | raw % |
 | M4 | Wiring Completeness Score (WCS) | persona system present | ↑ higher | 1× | raw % |
 | M7 | Subagent Alignment Score (SAS) | subagent invocations present | ↑ higher | 2× | raw % |
 | M9 | Context Decay Resilience (CDR) | multi-session orchestration | ↑ higher | 2× | raw % |
-| M11 | Parallelization Safety Score (PSS) | parallel/concurrent execution | ↑ higher | 2× | partial-credit % |
+| M11 | Parallelisation Safety Score (PSS) | parallel/concurrent execution | ↑ higher | 2× | partial-credit % |
 | M12 | Information Freshness Score (IFS) | cached or persisted artifacts | ↑ higher | 2× | raw % |
 
 ### Custom Metrics — Discovered Per-Run
 
 After applying seed metrics, Pulse derives additional metrics specific to the target
-workflow. Custom metrics follow the same format: name, direction, weight, normalization
+workflow. Custom metrics follow the same format: name, direction, weight, normalisation
 method, measurement methodology. They are included in the composite alongside seeds.
 
 Examples of custom metrics discovered in practice:
@@ -77,19 +77,19 @@ Examples of custom metrics discovered in practice:
 - **Naming Consistency** — for code repos: % of identifiers following declared conventions
 
 Custom metrics are recorded in `research-log.md` under `## Custom Metrics` with their
-full definition. They persist across optimization runs on the same workflow.
+full definition. They persist across optimisation runs on the same workflow.
 
 ### Composite Scoring Formula
 
 ```
-Composite = sum(normalized_score × weight) / (total_weight × 100) × 100
+Composite = sum(normalised_score × weight) / (total_weight × 100) × 100
 ```
 
 Where `total_weight` is the sum of weights for all applied metrics only. Skipped
 metrics do not contribute to the denominator. This ensures the composite is
 meaningful even when several workflow-specific metrics are inapplicable.
 
-Normalization per metric:
+Normalisation per metric:
 - **DD**: (raw_directives_per_100_tokens / 2.0) × 100, capped at 100
 - **IAR**: 100 − ambiguity_percentage
 - **RI**: 100 − redundancy_percentage
@@ -137,5 +137,5 @@ Targets: PSS (↑)
 
 See `VERSION.md` for current version. Changelog in `CHANGELOG.md`.
 
-Only bump the version when changes are scoped to `skills/optimize/`. Use semver:
+Only bump the version when changes are scoped to `skills/optimise/`. Use semver:
 patch for fixes, minor for new features, major for breaking changes.

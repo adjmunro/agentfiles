@@ -49,7 +49,7 @@ Before committing any kanban2 changes, bump the version in `VERSION.md`:
 
 Use semver:
 - Patch (2.0.0 → 2.0.1): Bug fixes, typos, minor corrections
-- Minor (2.0.0 → 2.1.0): New features, behavior changes
+- Minor (2.0.0 → 2.1.0): New features, behaviour changes
 - Major (2.0.0 → 3.0.0): Breaking changes
 
 When in doubt, bump the patch version.

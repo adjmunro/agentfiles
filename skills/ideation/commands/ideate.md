@@ -62,7 +62,7 @@ Dispatch as subagent with:
 - Input file path: `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md`
 - Whether this is a loop-back iteration (first run or append)
 
-If subagents are unavailable, run `capture.md` behavior sequentially in the current session.
+If subagents are unavailable, run `capture.md` behaviour sequentially in the current session.
 
 Wait for capture to complete before proceeding. Capture ends when `00-input-{subject}.md` is written (or appended) and a git commit is made.
 

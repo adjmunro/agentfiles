@@ -37,8 +37,17 @@ agentfiles/
 
 Each skill under `skills/` is self-contained: it has its own `AGENTS.md`, `CHANGELOG.md`, `VERSION.md`, and a `commands/` subdirectory with the actual skill logic.
 
+## Language & Spelling
+
+- **Documentation, comments, and all prose** (markdown files, AGENTS.md, SKILL.md, CHANGELOG.md, commit messages, inline comments): use **Oxford British English**.
+  - -ise endings: organise, optimise, customise, normalise, recognise, etc.
+  - British spellings: colour, behaviour, favour, honour, centre, analyse, catalogue, etc.
+  - Oxford comma: use a serial comma before the final item in a list of three or more.
+- **Code** (variable names, function names, identifiers, string literals, CLI flags, file paths that are part of a codebase): use **American English**, as most tooling, libraries, and APIs use American conventions.
+- When in doubt: if it will be read by a human, British English. If it will be executed by a machine, American English.
+
 ## Agent Compatibility
 
-- Write instructions in generalized language — no tool-specific API names in command files.
+- Write instructions in generalised language — no tool-specific API names in command files.
 - Each command file should work as a standalone prompt if pasted into a basic chat interface.
 - Hint at advanced features (subagents, parallel execution) but don't require them.

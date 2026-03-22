@@ -1,6 +1,6 @@
-# Skill Optimization Research Log
+# Skill Optimisation Research Log
 
-**Branch:** research/skill-optimization
+**Branch:** research/skill-optimisation
 **Subjects:** ideation v1.0.0, kanban2 v2.1.0, personas v1.0.0
 **Date:** 2026-03-22
 
@@ -10,7 +10,7 @@
 
 ### Metrics (with weights)
 
-| ID | Metric | Direction | Weight | Normalization |
+| ID | Metric | Direction | Weight | Normalisation |
 |----|--------|-----------|--------|---------------|
 | M1 | Intent-to-Output Traceability (IOT) | ↑ higher | 2× | raw % |
 | M2 | Directive Density (DD) | ↑ higher | 1× | (raw/2.0)×100, cap 100 |
@@ -22,16 +22,16 @@
 | M8 | Human Touchpoint Count (HTC) | ↓ lower | 2× | max(0, 100−(count/20)×100) |
 | M9 | Context Decay Resilience (CDR) | ↑ higher | 2× | raw % |
 | M10 | Context Loading Efficiency (CLE) | ↑ higher | 2× | raw % |
-| M11 | Parallelization Safety Score (PSS) | ↑ higher | 2× | partial-credit % |
+| M11 | Parallelisation Safety Score (PSS) | ↑ higher | 2× | partial-credit % |
 | M12 | Information Freshness Score (IFS) | ↑ higher | 2× | raw % |
 
-**Composite** = sum(normalized × weight) / (20 × 100) × 100
+**Composite** = sum(normalised × weight) / (20 × 100) × 100
 
 ---
 
 ## Baseline — 2026-03-22 (pre-experiment)
 
-| Metric | Raw Score | Normalized | Weight | Weighted |
+| Metric | Raw Score | Normalised | Weight | Weighted |
 |--------|-----------|-----------|--------|----------|
 | M1 IOT | 37% | 37 | 2× | 74 |
 | M2 DD | 1.43 d/100t | 72 | 1× | 72 |
@@ -58,8 +58,8 @@
 
 ### Key Strengths
 - **M7 SAS = 100%** — all subagent invocations are appropriate
-- **M3 IAR = 18.1%** (normalized 82) — ambiguity is low and mostly environmental
-- **M5 RI = 14.9%** (normalized 85) — redundancy is moderate, mainly boilerplate
+- **M3 IAR = 18.1%** (normalised 82) — ambiguity is low and mostly environmental
+- **M5 RI = 14.9%** (normalised 85) — redundancy is moderate, mainly boilerplate
 
 ---
 
@@ -75,7 +75,7 @@
 **Targets:** IFS 42% → 80%+
 **Status:** pending
 
-### H9 — Parallelization Hardening
+### H9 — Parallelisation Hardening
 **Hypothesis:** Fix intra-worktree claim races; document worktree isolation; investigate subject-level claim registry.
 **Targets:** PSS 40% → 70%+
 **Status:** pending
@@ -105,58 +105,58 @@
 ## Results (populated after each experiment)
 
 ### H7 — Intent Anchor Blocks
-**Pre-change:** CDR 23.4% (normalized 23), IOT 37% (normalized 37)
-**Post-change:** CDR 86% (normalized 86), IOT 55% (normalized 55)
+**Pre-change:** CDR 23.4% (normalised 23), IOT 37% (normalised 37)
+**Post-change:** CDR 86% (normalised 86), IOT 55% (normalised 55)
 **Delta:** CDR +63pp, IOT +18pp
 **Result:** confirmed
 **Notes:** Re-read directives at phase transitions dramatically improved CDR. IOT gains
 came from the same anchors, which explicitly reference prior-phase artifacts.
 
 ### H10 — Staleness Detection
-**Pre-change:** IFS 42% (normalized 42)
-**Post-change:** IFS 95% (normalized 95)
+**Pre-change:** IFS 42% (normalised 42)
+**Post-change:** IFS 95% (normalised 95)
 **Delta:** IFS +53pp
 **Result:** confirmed
 **Notes:** 3-tier TTL policy applied to all inter-session artifacts. The Tier A/B/C
 distinction kept the rules concrete and enforceable — no vague "check if fresh".
 
-### H9 — Parallelization Hardening
-**Pre-change:** PSS 40% partial (normalized 40)
-**Post-change:** PSS 85% (normalized 85)
+### H9 — Parallelisation Hardening
+**Pre-change:** PSS 40% partial (normalised 40)
+**Post-change:** PSS 85% (normalised 85)
 **Delta:** PSS +45pp
 **Result:** confirmed
 **Notes:** Claim registry pattern resolved intra-worktree races. Full guards added to
 all confirmed-mutation paths. Remaining 15% gap is read-only operations deemed safe.
 
 ### H6 — Interview → Recommendation Brief
-**Pre-change:** HTC 13 pts (normalized 35), IAR 18.1% (normalized 82)
-**Post-change:** HTC 7 pts (normalized 65), IAR 10% (normalized 90)
-**Delta:** HTC −6 pts (+30 normalized), IAR −8.1pp (+8 normalized)
+**Pre-change:** HTC 13 pts (normalised 35), IAR 18.1% (normalised 82)
+**Post-change:** HTC 7 pts (normalised 65), IAR 10% (normalised 90)
+**Delta:** HTC −6 pts (+30 normalised), IAR −8.1pp (+8 normalised)
 **Result:** confirmed
 **Notes:** Replacing open Q&A with structured approve/skip decisions removed 6 human
 touchpoints. IAR improved because recommendations include explicit scope qualifiers
 that replace vague "should/may" language.
 
 ### H8 — Progressive Disclosure
-**Pre-change:** CLE 10% (normalized 10)
-**Post-change:** CLE 57% (normalized 57)
+**Pre-change:** CLE 10% (normalised 10)
+**Post-change:** CLE 57% (normalised 57)
 **Delta:** CLE +47pp
 **Result:** confirmed
 **Notes:** Phase-scoped context loading reduced irrelevant tokens significantly.
 Theoretical ceiling is ~70% given shared support files that every phase needs.
 
 ### H1+H3+H4 — Redundancy, Modals, Escalation Templates
-**Pre-change:** RI 14.9% (normalized 85), IAR 18.1% (normalized 82)
-**Post-change:** RI 8% (normalized 92), IAR 10% (normalized 90)
-**Delta:** RI −6.9pp (+7 normalized), IAR improvement combined with H6
+**Pre-change:** RI 14.9% (normalised 85), IAR 18.1% (normalised 82)
+**Post-change:** RI 8% (normalised 92), IAR 10% (normalised 90)
+**Delta:** RI −6.9pp (+7 normalised), IAR improvement combined with H6
 **Result:** confirmed
 **Notes:** SKILL.md re-descriptions removed. Weak modals replaced with scoped
 conditionals. Escalation paths now carry exact copy rather than instructions to "add
 a clear message".
 
 ### H2+H5 — Wire Personas, Compress Soul Files
-**Pre-change:** WCS 81.8% (normalized 82)
-**Post-change:** WCS 100% (normalized 100)
+**Pre-change:** WCS 81.8% (normalised 82)
+**Post-change:** WCS 100% (normalised 100)
 **Delta:** WCS +18.2pp
 **Result:** confirmed
 **Notes:** Release and documentation personas wired into the two commands that were
@@ -218,7 +218,7 @@ missing them. Soul.md voice sections trimmed by ~25% with no personality loss.
   paths; races now impossible by construction
 - **M6 ACC**: +31pp — Escalation template work (H1+H3+H4) replaced vague "ensure X"
   with concrete, verifiable criteria
-- **M8 HTC**: +30pp normalized — Recommendation Brief pattern (H6) replaced 6 Q&A
+- **M8 HTC**: +30pp normalised — Recommendation Brief pattern (H6) replaced 6 Q&A
   checkpoints with structured approve/skip decisions
 - **M4 WCS**: +18pp — All personas wired (H2+H5); no command runs without its
   designated persona loaded
@@ -231,12 +231,12 @@ No hypotheses were disconfirmed or reverted. All 7 experiments confirmed.
 
 ### What Remains to Improve
 
-- **M2 DD**: 80 normalized — further gains possible by adding directives to the
+- **M2 DD**: 80 normalised — further gains possible by adding directives to the
   thinnest phase files (p2b-tests, p2c-documentation, p5-scope-enforcement)
-- **M6 ACC**: 92 normalized — remaining 8% are meta-instructions that resist
+- **M6 ACC**: 92 normalised — remaining 8% are meta-instructions that resist
   concretization without specific project context
-- **M10 CLE**: 86 normalized — ceiling is ~90%; remaining gap is orchestrator
+- **M10 CLE**: 86 normalised — ceiling is ~90%; remaining gap is orchestrator
   overhead (DO/DO NOT rules always loaded) which is correctly amortized
-- **M1 IOT**: 55 normalized — orchestrators verify artifact existence but a full
+- **M1 IOT**: 55 normalised — orchestrators verify artifact existence but a full
   read+summarize pattern at every transition would push this above 80
 
