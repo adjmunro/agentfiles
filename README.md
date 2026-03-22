@@ -17,7 +17,8 @@ agentfiles/
     ├── ideation/
     ├── implement/
     ├── optimise/
-    └── personas/
+    ├── personas/
+    └── summary/
 ```
 
 ## Skills
@@ -71,6 +72,15 @@ A shared library of agent personas used across skills. Each persona has a `perso
 
 **Commands:** `evolve`, `summon`
 
+### `/summary`
+
+Produces a structured briefing of git changes — what changed, why, and how to use new or updated features. Useful for resuming interrupted sessions, reviewing branches before raising a PR, and understanding what evolved since the last trunk sync.
+
+- `/summary` — changes since the branch parent (default)
+- `/summary pr` — same scope, framed for PR review
+- `/summary trunk` — since divergence from `main`
+- `/summary <ref>` — since a specific git ref or commit SHA
+
 ### `/british-english`
 
 Converts all human-readable prose in a target file or directory tree to Oxford British English. Leaves code, identifiers, CLI flags, and fenced/inline code blocks untouched.
@@ -97,6 +107,19 @@ Standalone command files that work without a skill context:
 | `hooks/pre-bash.sh` | `PreToolUse: Bash` | Blocks redundant Bash calls and redirects to dedicated tools (Read, Grep, Glob) |
 | `hooks/title-update.sh` | `SessionStart`, `UserPromptSubmit` | Updates the session title in the status line |
 | `hooks/readme-check.sh` | `PostToolUse: Bash` | Reminds the agent to update README.md when structural changes are committed |
+
+## Testing
+
+Each skill has a `TESTING.md` that records test strategy, scenarios, known issues, and a refinement log. Run a scenario, update the Status column, and append to Known Issues or Refinement Log as you go. The personas skill uses a single shared `TESTING.md` with one section per persona.
+
+| Skill | Testing doc |
+|-------|------------|
+| british-english | `skills/british-english/TESTING.md` |
+| ideation | `skills/ideation/TESTING.md` |
+| implement | `skills/implement/TESTING.md` |
+| optimise | `skills/optimise/TESTING.md` |
+| personas | `skills/personas/TESTING.md` |
+| summary | `skills/summary/TESTING.md` |
 
 ## Inspiration Resources
 
