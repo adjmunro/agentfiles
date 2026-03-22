@@ -1,13 +1,22 @@
 ---
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch, Agent
 model: claude-opus-4-6
-argument-hint: "<path-to-target-workflow-directory>"
+argument-hint: "<path-to-target-workflow-directory> | help"
 ---
 
 <!-- ORCHESTRATOR: This file contains global rules and the phase manifest only.
      For each phase, read the corresponding file from commands/phases/.
      Never read ahead to a later phase file — each phase's inputs are produced
      by the previous phase, and loading them early defeats progressive disclosure. -->
+
+---
+
+## Entry Point
+
+If `$ARGUMENTS` is exactly `help` (case-insensitive), read `commands/help.md` and
+display its output to the user. Do not run the phase pipeline. Stop after displaying.
+
+Otherwise, proceed to the DO rules and phase manifest below.
 
 ---
 
