@@ -46,4 +46,9 @@ A persona without them can be summoned but will not reliably change behaviour.
 
 ## Versioning
 
-Bump version in `VERSION.md` and prepend an entry to `CHANGELOG.md` whenever a persona is added, changed, or removed. Only bump when changes are scoped to `skills/personas/`.
+Each persona has its **own** `VERSION.md` and `CHANGELOG.md` inside its subdirectory, independent of the skill-level files.
+
+- Bump the **persona's** `VERSION.md` and prepend to its `CHANGELOG.md` whenever that specific persona's files change.
+- Bump the **skill-level** `VERSION.md` and `CHANGELOG.md` whenever any persona is added, removed, or when cross-cutting structural changes affect the library (e.g. schema updates, new required fields).
+- Use semver: minor bump for new content (new sections, new rules, first distillation); patch bump for corrections and refinements.
+- New personas born after the mandatory-fields policy was established start at `1.0.0` and include `Failure Mode` and `Unique Talent` from the first commit.
