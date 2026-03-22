@@ -4,6 +4,11 @@ allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion, Agent
 argument-hint: "[YYYY-MM-DD-{subject} | auto] — subject to work on; 'auto' picks next ready subject"
 ---
 
+<!-- PROGRESSIVE DISCLOSURE: This file contains instructions for all phases.
+     When starting, only Phase 1 is active. Do not process later phase blocks
+     until you reach them. Each phase block is clearly marked with an
+     "Active when:" comment that states the required condition. -->
+
 ## Personas
 
 Read `../../personas/strategist/persona.md` before proceeding. You are **Keeper (Strategist)** throughout this command — orchestrating the work loop, routing tickets, and escalating blockers. You do not implement work directly.
@@ -89,6 +94,7 @@ Read `../../personas/strategist/persona.md` before proceeding. You are **Keeper 
 ---
 
 ## Phase 1 — Subject Selection
+<!-- Active when: command is first invoked — always runs before any other phase -->
 
 1. If `$ARGUMENTS` contains a subject in `YYYY-MM-DD-{subject}` format, use it directly. Skip to Phase 2.
 
@@ -114,6 +120,7 @@ Read `../../personas/strategist/persona.md` before proceeding. You are **Keeper 
 ---
 
 ## Claimed Check
+<!-- Active when: subject selection is evaluating candidates in auto mode (Phase 1) -->
 
 A subject is **claimed** if it has any ticket files in `05-in-progress/`, `06-in-review/`, or `07-pull-request/` for that subject, AND at least one of those tickets has an `expires_at` timestamp that is **in the future** (`now < expires_at`).
 
@@ -134,6 +141,7 @@ When all remaining subjects with todo tickets are claimed, stop and list them so
 ---
 
 ## Phase 2 — Ticket Selection
+<!-- Active when: subject has been selected (Phase 1 complete) -->
 
 1. Glob `.kanban/YYYY-MM-DD-{subject}/04-todo/*.md` and sort numerically by filename prefix.
 
@@ -151,6 +159,7 @@ When all remaining subjects with todo tickets are claimed, stop and list them so
 ---
 
 ## Stale Ticket Detection
+<!-- Active when: ticket selected (Phase 2 done) — check before dispatching work -->
 
 Before starting the loop, scan `.kanban/YYYY-MM-DD-{subject}/05-in-progress/` for ticket files where:
 - `stale_after_hours` is set in frontmatter and enough time has elapsed since `claimed_at`
@@ -168,6 +177,7 @@ Wait for the user's decision before continuing. Do not silently skip stale ticke
 ---
 
 ## Phase 3 — Work→Review Loop
+<!-- Active when: ticket selected, stale check passed, and user confirmed any stale tickets -->
 
 ### Dispatching subagents
 
@@ -181,13 +191,23 @@ Construct a minimal context bundle for each subagent — do NOT pass your full s
 Subagent tier for work = ticket's `effort` field: `low` → fast/cheap model, `medium` → standard model, `high` → most capable model.
 Subagent tier for review = medium.
 
-**If subagents are unavailable**, run `work.md` then `review.md` behaviors sequentially in the current session rather than skipping either step.
+**If subagents are unavailable**, run `work.md` then `review.md` behaviours sequentially in the current session rather than skipping either step.
 
 ### Loop steps
 
 ```
-a. Dispatch skills/kanban2/commands/work.md as subagent for the selected ticket
-b. Dispatch skills/kanban2/commands/review.md as subagent after work completes
+a. INTENT ANCHOR (before dispatching work):
+   - Note the subject directory name (YYYY-MM-DD-{subject})
+   - Derive the plan file path: .kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md
+   - Read the `## Intent` section from that plan file
+   - Pass the extracted intent text as context to the work subagent
+   Dispatch skills/kanban2/commands/work.md as subagent for the selected ticket
+
+b. INTENT ANCHOR (before dispatching review):
+   - Re-read the `## Intent` section from .kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md
+   - Pass the extracted intent text as context to the review subagent
+   Dispatch skills/kanban2/commands/review.md as subagent after work completes
+
 c. Read the review outcome (PASS or FAIL) from the ticket's frontmatter or review output
 ```
 
@@ -216,22 +236,12 @@ When the same blocking error appears in 2–3 consecutive failures without meani
    ```
    Do not fail if this is unavailable.
 
-2. Print a prominent terminal block:
+2. Print this exact escalation message:
 
 ```
-╔══════════════════════════════════════════════╗
-║           ESCALATION — REPEATED FAILURE      ║
-╠══════════════════════════════════════════════╣
-║ Ticket:  [ticket filename]                   ║
-║ Subject: [YYYY-MM-DD-{subject}]              ║
-║ Attempts: N                                  ║
-╠══════════════════════════════════════════════╣
-║ FAILURE PATTERN                              ║
-║ [Synthesised summary of all review notes]    ║
-╠══════════════════════════════════════════════╣
-║ RECOMMENDED ACTION                           ║
-║ [Concrete, specific fix direction]           ║
-╚══════════════════════════════════════════════╝
+[LOOP DETECTED] The same error has occurred {N} times in a row:
+"{error description}". Stopping the loop to prevent runaway execution.
+Manual intervention required before resuming.
 ```
 
 3. Use `AskUserQuestion` to surface the full failure pattern and ask how to proceed:
@@ -247,6 +257,7 @@ When the same blocking error appears in 2–3 consecutive failures without meani
 ---
 
 ## Phase 4 — PR-Ready Announcement
+<!-- Active when: all tickets in subject have moved to 07-pull-request/ or 08-done/ -->
 
 When subject transitions to fully ready for PR or cleanup:
 

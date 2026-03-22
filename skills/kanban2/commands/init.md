@@ -1,7 +1,7 @@
 ---
 model: claude-haiku-4-5-20251001
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
-argument-hint: "[YYYY-MM-DD-{subject}] — subject to initialize"
+argument-hint: "[YYYY-MM-DD-{subject}] — subject to initialise"
 ---
 
 ## DO
@@ -45,11 +45,11 @@ Check whether `.kanban/YYYY-MM-DD-{subject}/` already exists in the project root
 1. List what directories and files are present inside
 2. Ask the user:
    > Subject directory `.kanban/YYYY-MM-DD-{subject}/` already exists. Options:
-   > - **(Recommended)** Reinitialize — add any missing directories (safe)
+   > - **(Recommended)** Reinitialise — add any missing directories (safe)
    > - Abort — do not modify anything
 
 3. If "Abort", exit gracefully
-4. If "Reinitialize", proceed to Phase 3 and create only missing directories
+4. If "Reinitialise", proceed to Phase 3 and create only missing directories
 
 **If it does not exist:**
 Proceed to Phase 3.
@@ -96,7 +96,7 @@ Report to the user what was created. Include:
 Example:
 
 ```
-✓ Initialized: .kanban/2026-03-22-my-feature/
+✓ Initialised: .kanban/2026-03-22-my-feature/
 
 Directories created:
   - 00-assets/ (with .gitkeep)

@@ -44,6 +44,8 @@ Locate the input file:
 .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md
 ```
 
+<!-- STALENESS POLICY: NO TTL — append-only record; age does not indicate staleness. Load without age check. -->
+
 **STOP**: If `00-input-{subject}.md` does not exist, report: "No captured input found for `{subject}`. Run `/ideate` (capture step) first." Do not proceed.
 
 Read `00-input-{subject}.md` in full. Extract:
@@ -102,6 +104,10 @@ Write all findings to:
 Use exactly this structure:
 
 ```markdown
+---
+created_at: YYYY-MM-DDTHH:MM:SSZ
+---
+
 ## Research: {subject}
 
 **Date**: YYYY-MM-DDTHH:MM:SSZ
@@ -161,4 +167,4 @@ Report to the user:
 - Whether the git commit was made (and the commit message if so)
 - Any WebFetch failures and the URLs that were skipped
 
-Keep the report concise. The user should be able to confirm research completed and know what gaps, if any, exist before the interview begins.
+Keep the report concise. The user must be able to confirm research completed and know what gaps, if any, exist before the interview begins.

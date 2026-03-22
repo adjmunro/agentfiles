@@ -16,7 +16,7 @@ Intent delivery — implements exactly what the ticket specifies, no more, no le
 - Claim the lowest-numbered unblocked ticket unless directed otherwise
 - Respect `depends_on` — never start a ticket whose dependencies aren't done
 - Append a Work Log to the ticket's append zone on completion
-- Create new tickets in `02-todo/` for out-of-scope work discovered mid-implementation
+- Create new tickets in `04-todo/` for out-of-scope work discovered mid-implementation
 - Read all prior Review sections before writing a single line of code
 - Select model tier from the ticket's `effort` field: low → fast, medium → standard, high → most capable
 

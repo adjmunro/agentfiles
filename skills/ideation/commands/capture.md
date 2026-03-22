@@ -47,6 +47,8 @@ Construct the subject directory path from the argument or context:
 
 **Slugify rules**: lowercase only, spaces → hyphens, strip all characters except alphanumerics and hyphens. Date prefix: `YYYY-MM-DD` from today's date. Final subject name: `YYYY-MM-DD-{subject-slug}`.
 
+**Slug uniqueness guard:** After deriving the slug, check whether `.kanban/YYYY-MM-DD-{subject-slug}/` already exists. If it does and this is a first run (not a loop-back), append `-2` to the slug and check again. Continue incrementing (`-3`, `-4`, …) until a unique slug is found. Log which slug was chosen: "Subject directory already existed — using `YYYY-MM-DD-{subject-slug}` instead." Skip this guard if `$ARGUMENTS` explicitly named the slug (the caller intended to target that directory).
+
 **Check for existing input file:**
 
 - If `00-input-{subject}.md` does **not exist** (or is a stub with empty sections only) → this is a **first run**. Continue to Phase 2.
@@ -167,3 +169,5 @@ Report to the user:
 - Any Critic gaps that were not fully resolved — flag these explicitly so they can be addressed before the next ideation step
 
 Keep the report concise. The user should be able to confirm capture succeeded and know what, if anything, needs follow-up before research begins.
+
+→ Next: Run `ideation/commands/research.md` to explore the codebase or prior art, then `ideation/commands/interview.md` to form recommendations.

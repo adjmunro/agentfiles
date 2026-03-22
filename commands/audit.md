@@ -2,7 +2,7 @@ Audit $ARGUMENTS. Emphasise preserving our intentions and reasons. If you think 
 
 ### The Protocol
 
-1. **Enumerate** -- Parse the source document into a numbered list of discrete, verifiable items. Each item is one requirement, constraint, behavior, or detail that can be independently checked.
+1. **Enumerate** -- Parse the source document into a numbered list of discrete, verifiable items. Each item is one requirement, constraint, behaviour, or detail that can be independently checked.
 2. **Map** -- For each source item, search the target document(s) for coverage. Classify each as:
    - **Full** -- The item appears in the target with sufficient detail
    - **Partial** -- The item is mentioned but missing detail, specificity, or context

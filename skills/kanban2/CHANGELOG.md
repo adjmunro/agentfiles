@@ -216,7 +216,7 @@ The planning command is here. `/kanban-plan` reads your captured input, intervie
 
 ## 0.1.0 — The Foundation (2026-03-21)
 
-The skeleton is up. You can initialize a kanban board and capture raw ideas into structured input files. Nothing moves tickets yet — that comes next.
+The skeleton is up. You can initialise a kanban board and capture raw ideas into structured input files. Nothing moves tickets yet — that comes next.
 
 - Added `commands/init.md` — sets up the board directory structure and stage folders
 - Added `commands/capture.md` — interviews the user and writes structured input files ready for planning

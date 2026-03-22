@@ -57,7 +57,7 @@ Once the subject is derived, locate the plan file:
 
 ## Phase 1 — Scout (read-only research)
 
-Spawn a Scout subagent if your environment supports subagents. If not, run Scout behavior in the current session. Either way: **Scout MUST NOT modify any source file or create any ticket.**
+Spawn a Scout subagent if your environment supports subagents. If not, run Scout behaviour in the current session. Either way: **Scout MUST NOT modify any source file or create any ticket.**
 
 **Tier: low** — Scout tasks are mechanical (read, search, map). Use a fast/cheap model (e.g. haiku). The overall `kanban-todo` command is medium-tier; only the Scout phase is low.
 

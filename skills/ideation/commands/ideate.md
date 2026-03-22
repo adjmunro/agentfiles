@@ -36,6 +36,8 @@ Resolve the subject slug from `$ARGUMENTS`:
 2. If `$ARGUMENTS` is `new` or empty → use `AskUserQuestion` to ask: "What is the subject name for this ideation session?" Then slugify: lowercase, spaces → hyphens, strip non-alphanumerics except hyphens, prepend today's date as `YYYY-MM-DD`.
 3. Final subject slug format: `YYYY-MM-DD-{subject-slug}`.
 
+**Slug uniqueness guard:** If `.kanban/YYYY-MM-DD-{subject-slug}/` already exists and this is NOT a loop-back (i.e. `$ARGUMENTS` did not explicitly name it), append `-2` to the slug. If that also exists, try `-3`, and so on until a unique slug is found. Log which slug was chosen: "Subject directory already existed — using `YYYY-MM-DD-{subject-slug}` instead."
+
 Create the subject directory structure if it does not exist:
 
 ```
@@ -60,13 +62,17 @@ Dispatch as subagent with:
 - Input file path: `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md`
 - Whether this is a loop-back iteration (first run or append)
 
-If subagents are unavailable, run `capture.md` behavior sequentially in the current session.
+If subagents are unavailable, run `capture.md` behaviour sequentially in the current session.
 
 Wait for capture to complete before proceeding. Capture ends when `00-input-{subject}.md` is written (or appended) and a git commit is made.
 
 ---
 
 ## Phase 3 — Step 2: Research
+
+<!-- INTENT ANCHOR — verify subject before dispatch -->
+<!-- Read: .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md -->
+<!-- Confirm: subject slug matches $ARGUMENTS (or derived slug from Phase 1). File must exist. Do not dispatch if missing. -->
 
 Invoke `research.md` for this subject. Research runs automatically — do not ask the user for input before or during research.
 
@@ -82,6 +88,10 @@ Announce: "Research complete. Beginning interview (step 3 of 9)."
 
 ## Phase 4 — Step 3: Interview
 
+<!-- INTENT ANCHOR — verify subject before dispatch -->
+<!-- Read: .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md -->
+<!-- Confirm: subject slug is current (matches Phase 1 resolution). File must exist and contain substantive content. Do not dispatch if missing. -->
+
 Invoke `interview.md` for this subject.
 
 Dispatch as subagent with:
@@ -90,11 +100,15 @@ Dispatch as subagent with:
 - Input file: `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md`
 - Research file: `.kanban/YYYY-MM-DD-{subject}/01-research-{subject}.md`
 
-Wait for the interview to complete (user has answered all questions and answers are recorded).
+Wait for the interview to complete (user has reviewed and approved/amended the recommendation brief, and decisions are recorded).
 
 ---
 
 ## Phase 5 — Steps 4–5: Plan + Audit
+
+<!-- INTENT ANCHOR — verify subject before dispatch -->
+<!-- Read: .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md -->
+<!-- Confirm: subject slug is current (matches Phase 1 resolution). File must exist and contain at least one interview block. Do not dispatch if missing. -->
 
 Invoke `plan.md` for this subject. The plan phase writes the plan and runs the internal audit — both steps 4 and 5 are handled by a single phase file.
 
@@ -133,6 +147,10 @@ Options:
 ---
 
 ## Phase 7 — Steps 7–8: Tickets + Audit
+
+<!-- INTENT ANCHOR — verify subject before dispatch -->
+<!-- Read: .kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md -->
+<!-- Confirm: subject slug is current (matches Phase 1 resolution). Plan file must exist and contain an audit section. Do not dispatch if missing. -->
 
 Invoke `tickets.md` for this subject. The tickets phase writes all ticket files into `03-refinement/` and runs the internal ticket audit — both steps 7 and 8 are handled by a single phase file.
 

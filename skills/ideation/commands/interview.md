@@ -6,31 +6,33 @@ argument-hint: "[YYYY-MM-DD-{subject}] — subject to interview about"
 
 ## Personas
 
-This command uses two primary personas and one optional. Load all before proceeding.
+This command uses two personas. Load both before proceeding.
 
-- Read `../../personas/strategist/persona.md` — you are **Keeper (Strategist)** when probing strategic direction: tradeoffs, longer arc, hidden constraints, failure modes.
-- Read `../../personas/critic/persona.md` — you are **Arden (Critic)** when probing for coverage gaps: ambiguities, edge cases, scope boundaries, acceptance signals.
-- Optionally read `../../personas/designer/persona.md` — draw on Designer perspective when questions touch UI/UX or interaction patterns.
+- Read `../../personas/strategist/persona.md` — you are **Keeper (Strategist)** during Phase 2 (Recommendation Formation) and Phase 5 (Critic Pass pre-check). Keeper reads for strategic direction: tradeoffs, longer arc, hidden constraints, failure modes.
+- Read `../../personas/critic/persona.md` — you are **Arden (Critic)** during Phase 5 (Critic Pass). Arden audits for coverage gaps: ambiguities, edge cases, scope boundaries, acceptance signals.
+- Optionally read `../../personas/designer/persona.md` — draw on Designer perspective when recommendations touch UI/UX or interaction patterns.
 
-Identify by the active persona when communicating with the user. Both Keeper and Arden are active simultaneously during Phase 2 and Phase 3 — each question comes from whichever lens applies.
+Identify by the active persona when communicating with the user.
 
 ## DO
 
-- Read BOTH `00-input-{subject}.md` AND `01-research-{subject}.md` before forming any questions
-- Give concrete recommendations for every question ("I recommend X because...")
-- Explain tradeoffs between options — pros, cons, performance, complexity, maintainability
-- Frame each question with context drawn from the input or research ("Given that X, I need to understand Y")
-- Ask only 5–7 questions maximum — focus on the highest-impact unknowns only
-- Append the Q&A session to `00-input-{subject}.md` as a new `## Interview YYYYMMDD-HH:MM` block (never overwrite)
-- Commit after recording answers
+- Read BOTH `00-input-{subject}.md` AND `01-research-{subject}.md` before forming any recommendations
+- Ground every recommendation in evidence from input or research — never assert without citing
+- Assign HIGH confidence only when the codebase or docs provide clear evidence; use UNCERTAIN for genuinely open questions
+- Limit the brief to 3–7 items — prioritise ruthlessly, do not pad
+- Present the entire brief as a single `AskUserQuestion` call — not one item at a time
+- Append the brief + user response as a structured block to `00-input-{subject}.md` (never overwrite)
+- Commit after recording the response
+- Pass Arden's 95% threshold before presenting the brief to the user
 
 ## DO NOT
 
-- Ask questions that the user already answered in `00-input-{subject}.md`
-- Ask questions the research in `01-research-{subject}.md` already resolved
-- Ask more than 7 questions — prioritise ruthlessly
-- Ask "What do you prefer?" without also stating what you recommend and why
-- Start asking questions before reading both input and research files
+- Ask open-ended "what do you think?" questions — every UNCERTAIN item must be targeted (X or Y)
+- Form recommendations for decisions already resolved in `00-input-{subject}.md` or `01-research-{subject}.md`
+- Present more than 7 recommendation items
+- Fake HIGH confidence on genuinely uncertain questions
+- Split the brief across multiple `AskUserQuestion` calls
+- Start forming recommendations before reading both input and research files
 - Overwrite any existing content in `00-input-{subject}.md`
 
 ---
@@ -46,70 +48,114 @@ Construct the input paths:
 .kanban/YYYY-MM-DD-{subject}/01-research-{subject}.md
 ```
 
-Read both files in full before proceeding. If either file is missing, **STOP** and print:
+**Before loading each file, apply its staleness policy:**
 
-> Cannot run interview: `{missing-file}` does not exist. Run capture (Step 1) and research (Step 2) first.
+- `00-input-{subject}.md` — NO TTL. Append-only record; age does not indicate staleness. Load without age check.
+- `01-research-{subject}.md` — LOAD WITH CAVEAT (TTL: 48 hours). Check its `created_at` frontmatter field (or file mtime as fallback).
+  - If age ≤ 48 hours: load normally.
+  - If age > 48 hours: load, but prepend this warning to any extracted content:
+    ⚠ STALE (written {N} days ago): treat as reference only. Verify all claims against the current codebase before acting.
 
-Do not ask questions. Do not proceed.
+Read both files before proceeding.
+
+- If `00-input-{subject}.md` is missing: **STOP** and print:
+  > Cannot run interview: `00-input-{subject}.md` does not exist. Run `/ideation capture` first.
+
+- If `01-research-{subject}.md` is missing: **WARN** and continue with only the input file. Print:
+  > ⚠ Research file not found — proceeding with input only. Confidence levels will reflect the absence of codebase evidence. Run `/ideation research` first for higher-quality recommendations.
+  All UNCERTAIN items that would normally cite codebase evidence must be marked UNCERTAIN (not HIGH).
 
 ---
 
-## Phase 2 — Identify Gaps
+## Phase 2 — Recommendation Formation
 
-Synthesise what is unknown, ambiguous, or requires a decision that affects implementation. Both personas are active — work through their distinct lenses.
+Acting as **Keeper (Strategist)**, synthesise the input and research snapshot into a set of opinionated recommendations — one per key decision point.
 
-**Keeper asks — strategic direction:**
-- **Tradeoffs** — what alternatives were considered and rejected, and why
-- **Longer arc** — what does this enable or foreclose six months from now
-- **Constraints hidden as requirements** — are any of these actually preferences, not hard limits
-- **Failure modes** — what could go wrong during build, deployment, or use
+**Identify decision points across these dimensions:**
 
-**Arden asks — coverage and precision:**
-- **Ambiguous requirements** — scope that could be interpreted multiple ways, unclear boundaries
-- **Edge cases** — what happens at the boundaries, with bad input, or under failure
-- **Acceptance signals** — how will the user know the work is done and correct?
-- **Hazards from research** — risks or conflicts the research snapshot flagged that need a decision
+- **Stack / technology choices** — frameworks, libraries, languages, tooling
+- **Approach / architecture** — how the system is structured, key patterns, integration boundaries
+- **Constraints** — are stated constraints hard limits or preferences? What does research confirm?
+- **Scope boundaries** — what is explicitly in scope vs. out of scope; what is ambiguous
+- **Implementation strategy** — sequencing, migration risk, build-vs-buy, phasing
 
-For each candidate question, check:
-1. Is this already answered in `00-input-{subject}.md`? If yes, skip it.
+For each candidate decision point, check:
+1. Is this already resolved in `00-input-{subject}.md`? If yes, skip it.
 2. Is this already resolved by `01-research-{subject}.md`? If yes, skip it.
-3. Is this high-impact enough to affect implementation? If no, skip it.
+3. Does this decision materially affect implementation? If no, skip it.
 
-Rank remaining candidates by implementation impact. Keep the top 5–7.
+For each remaining decision point, form one recommendation with all four fields:
 
----
+| Field | Description |
+|---|---|
+| **Recommendation** | What Keeper recommends — specific, not hedged |
+| **Why** | 1–2 sentences grounded in evidence from research or input |
+| **Alternative** | The best option if the user disagrees — not a placeholder |
+| **Confidence** | `HIGH` — clear evidence in codebase/docs · `UNCERTAIN` — genuinely open, no clear evidence |
 
-## Phase 3 — Interview
+**Confidence rules:**
+- `HIGH`: The research snapshot or input file provides direct evidence (an existing pattern, an explicit constraint, a documented dependency).
+- `UNCERTAIN`: No clear evidence exists. The decision is genuinely open and requires the user's preference. UNCERTAIN items become targeted binary questions in the brief (X or Y), not open prompts.
 
-Ask each question using `AskUserQuestion`. Before invoking the tool, identify which persona is asking (Keeper or Arden) and write a short prose preamble (first person, conversational) that:
-
-1. States the context from input or research that makes this question necessary
-2. Gives your recommendation ("I recommend A because...")
-3. Names the tradeoffs for each alternative
-
-**AskUserQuestion rules:**
-- Maximum 4 options per question
-- First option = your recommended option (pressing Enter defaults to it) — mark it with `(Recommended)`
-- If only 2 meaningful options exist, offer only 2; do not pad with fake alternatives
-- Ask questions one at a time — each answer may change what the next question needs to be
-
-**Example question structure:**
-
-> Given that the research snapshot shows [X existing pattern], and your input mentioned [Y requirement], I need to understand how you want to handle [Z decision point]. I recommend Option A — it aligns with existing patterns and minimises migration risk. Option B is cleaner architecturally but requires refactoring three existing modules.
-
-Then invoke `AskUserQuestion` with:
-- Option 1: `[Your recommendation] (Recommended)`
-- Option 2: `[Alternative 1]`
-- Option 3: `[Alternative 2]` (if applicable)
-- Option 4: `[Alternative 3]` (if applicable)
-
-Continue until all gaps are covered or the user's answers eliminate remaining questions.
+**Volume constraint:** Minimum 3 items, maximum 7. If you identify more than 7, rank by implementation impact and keep the top 7.
 
 ---
 
-## Phase 4 — Record Answers
+## Phase 3 — Recommendation Brief
 
-Append the complete Q&A session to `00-input-{subject}.md` as a new block. Never overwrite any existing content.
+Before presenting to the user, Arden runs a silent pre-check (Phase 5 logic applied early — see Phase 5 for audit criteria). If the brief does not pass the 95% threshold, revise it before proceeding.
+
+Once the brief passes, present it as a **single `AskUserQuestion` call** using this exact format:
+
+```
+## Recommendation Brief — {subject}
+
+I've reviewed your input and the codebase. Here are my recommendations for the key decisions. Reply with the item number to approve, or override with your preferred approach.
+
+**[1] {Decision area}: {Recommendation}**
+> Why: {evidence-based reason}
+> Alternative: {what to do if you disagree}
+> Confidence: HIGH
+
+**[2] {Decision area}: {Recommendation}**
+> Why: {evidence-based reason}
+> Alternative: {what to do if you disagree}
+> Confidence: HIGH
+
+[... continue for all HIGH-confidence items ...]
+
+---
+Items marked UNCERTAIN need your input:
+
+**[?A] {Decision}: Should this be X or Y?**
+> Context: {why this decision matters for implementation}
+
+**[?B] {Decision}: Should this be X or Y?**
+> Context: {why this decision matters for implementation}
+
+---
+Reply with: "approve all", "approve 1,2,4 change 3 to X", or override individual items inline.
+```
+
+**Presentation rules:**
+- HIGH-confidence items are numbered `[1]`, `[2]`, `[3]`, etc.
+- UNCERTAIN items are lettered `[?A]`, `[?B]`, etc., and appear in a separate section after the numbered items.
+- If there are no UNCERTAIN items, omit the UNCERTAIN section entirely.
+- If all items are UNCERTAIN, the numbered section is empty — list only the UNCERTAIN section.
+- Do not split this into multiple `AskUserQuestion` calls.
+
+---
+
+## Phase 4 — Parse Response and Record
+
+Parse the user's reply and apply their amendments to the recommendation set:
+
+- "approve all" → all items accepted as recommended
+- "approve 1,3 change 2 to X" → items 1 and 3 accepted; item 2 overridden with X
+- Inline overrides → record the user's stated preference verbatim
+- UNCERTAIN items answered → record which option the user chose
+
+Append the complete brief and the user's response to `00-input-{subject}.md` as a new block. Never overwrite any existing content.
 
 **Block format:**
 
@@ -117,46 +163,63 @@ Append the complete Q&A session to `00-input-{subject}.md` as a new block. Never
 
 ## Interview YYYYMMDD-HH:MM
 
-**Q1: [Question topic]**
+**Recommendation Brief**
 
-Context: [One sentence of context from input/research]
-Recommendation: [What you recommended and why]
-Answer: [User's answer verbatim or as selected]
+| # | Decision | Recommendation | Confidence | Status |
+|---|---|---|---|---|
+| 1 | {decision area} | {final recommendation after user response} | HIGH | Approved / Overridden: {user's choice} |
+| 2 | ... | ... | HIGH | Approved |
+| ?A | {decision} | {user's chosen option} | UNCERTAIN | Resolved: {X or Y} |
 
-**Q2: [Question topic]**
+**User Response (verbatim):**
+> {user's raw reply}
 
-Context: [One sentence of context from input/research]
-Recommendation: [What you recommended and why]
-Answer: [User's answer verbatim or as selected]
-
-[... continue for all questions asked ...]
+**Resolved Decisions:**
+- {decision area}: {final decision and rationale if amended}
+- [... one line per item ...]
 ```
 
 Use the current date and time for the block header (e.g. `## Interview 20260322-14:30`).
 
 ---
 
-## Phase 5 — Git Commit
+## Phase 5 — Critic Pass
+
+Acting as **Arden (Critic)**, audit the brief before it is sent (this pass also runs silently as the pre-check in Phase 3).
+
+Arden checks the following — every item must pass at 95% confidence before the brief is considered complete:
+
+1. **Evidence backing** — every HIGH-confidence recommendation cites traceable evidence from the research snapshot or input file. No assertion without a source.
+2. **UNCERTAIN integrity** — no item is marked UNCERTAIN to avoid making a call when evidence is available. Conversely, no item is marked HIGH when the evidence is absent.
+3. **Resolution completeness** — every UNCERTAIN item is phrased as a targeted binary choice (X or Y), not an open-ended question.
+4. **Scope coverage** — the brief covers all decision points that materially affect implementation. No significant unknown is silently omitted.
+5. **Plan readiness** — the brief, once the user responds, gives `plan.md` enough information to proceed without a follow-up interview.
+
+If any item fails, revise the affected recommendations and re-run the check. Do not present the brief to the user until the 95% threshold is met.
+
+---
+
+## Phase 6 — Git Commit
 
 Check whether the project is inside a git repository. Use `Bash` with `git rev-parse --is-inside-work-tree`.
 
 If inside a git repo:
 1. Stage only `00-input-{subject}.md`.
-2. Commit with the message: `kanban(interview): record interview answers for {subject}`
+2. Commit with the message: `kanban(interview): record recommendation brief for {subject}`
 
 If not inside a git repo: skip this phase silently.
 
 ---
 
-## Phase 6 — Report
+## Phase 7 — Report
 
 Report to the user:
 
 - The subject interviewed and both files read
-- How many questions were asked and which topics they covered
-- Any questions skipped because the input or research already resolved them
+- How many recommendations were formed (HIGH vs. UNCERTAIN breakdown)
+- Any decision points skipped because the input or research already resolved them
 - The path to the updated `00-input-{subject}.md`
 - Whether a git commit was made (and the commit message)
-- What comes next: Step 4 (Write Plan) using `ideation/commands/plan.md`
+- What comes next: run `ideation/commands/plan.md`
 
-Keep the report brief. The user should know the interview is complete and what to run next.
+Keep the report brief. The user must know the interview is complete and what to run next.
