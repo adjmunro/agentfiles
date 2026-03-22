@@ -303,10 +303,11 @@ Apply the same methodology used in Phase 2 to re-measure the targeted metric(s).
 
 ### Step d — Record result
 Determine outcome:
-- **Confirmed**: normalised score improved by ≥3 points on at least one target metric
+- **Confirmed**: normalised score improved by ≥3 points on at least one target metric,
   with no other metric degraded by more than 2 points
-- **Partial**: improvement present but below threshold, or mixed (some metrics up, some down)
-- **Disconfirmed**: no meaningful improvement, or net negative
+- **Partial**: ≥1 point but <3 points improvement on at least one target metric, OR any
+  net-positive composite delta that falls below the confirmed threshold
+- **Disconfirmed**: <1 point delta on all target metrics AND composite delta ≤0
 
 Update `research-log.md`:
 
