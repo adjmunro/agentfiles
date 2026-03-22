@@ -96,6 +96,8 @@ For each approved action, execute the relevant mode below.
 
 ## Mode: speciate `<name>`
 
+**Persona: Keeper (Strategist)** — load `../strategist/persona.md` and `../strategist/soul.md` now. If not found, proceed without the persona. Apply Keeper's strategic lens throughout: challenge whether each proposed divergence axis represents a genuinely distinct cognitive demand, or merely a stylistic variation that would collapse back to the parent in practice. One round of challenge per axis — then commit to a recommendation.
+
 Load the target persona's `persona.md` and `soul.md`.
 
 Analyse the persona for natural divergence axes — dimensions along which two specialised variants would each outperform the generalist in their niche. Good divergence axes:
