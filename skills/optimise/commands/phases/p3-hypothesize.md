@@ -6,7 +6,7 @@ Re-read `research-log.md` (Intent Anchor). Focus on the baseline section.
 
 Based on the weakest metrics (seed and custom), form 3–5 hypotheses.
 
-**The seed patterns (P1–P7) are starting points, not constraints.** If the workflow
+**The seed patterns (P1–P11) are starting points, not constraints.** If the workflow
 has a problem that no seed pattern addresses, invent the fix. Novel hypotheses are
 expected and valuable — they may become patterns for future runs.
 
@@ -75,6 +75,25 @@ of existing archetypes. Distillation sharpens existing personas using evidence f
 real runs: observed behaviors that consistently produced better outputs are crystallized
 as new DO rules; thin soul fields are deepened using patterns the run revealed.
 Targets: PRS (↑), PPF (↑)
+
+#### P10 — Failure Mode Registry
+For any workflow with multiple conditional branches or error states: enumerate all
+failure modes, verify each has an explicit recovery instruction in the command files,
+and add recovery paths where missing. A failure mode without a recovery instruction
+leaves the agent with no prescribed next action — it will improvise or halt.
+Applicable to: multi-phase pipelines, data ingestion workflows, deployment scripts,
+any workflow where phases can produce distinct error states.
+Targets: RPC (↑)
+
+#### P11 — File Role Stratification
+For workflow directories that mix agent-instruction files with human-reference files:
+add a classification step before scoring Directive Density and Instruction Token
+Efficiency. Separate instruction files (primary audience: agent — contains imperative
+verbs, phase logic, DO/DO NOT rules) from documentation files (primary audience:
+human — contains reference tables, explanatory prose, help content). Score only
+instruction files. Documentation token counts dilute both metrics and mask genuine
+instruction quality.
+Targets: DD (↑), ITE (↑)
 
 For each hypothesis, use the appropriate template:
 
