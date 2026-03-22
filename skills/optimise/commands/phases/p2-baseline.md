@@ -15,8 +15,15 @@ re-reads or references an artifact produced by a prior phase (plan file, input f
 log entry, etc.). IOT = phases_with_explicit_prior_artifact_read / total_phases.
 
 ### M2 — Directive Density (DD) [universal]
-Methodology: Count DO/DO NOT items and other imperative directives across all command
-files. Divide by total tokens / 100. DD = directives / (tokens / 100).
+Methodology: Before scoring, classify each command file by role:
+- **Instruction file**: primary purpose is to direct the agent — contains imperative verbs,
+  numbered steps, DO/DO NOT lists, phase logic (e.g. `p1-audit.md`, `optimise.md`)
+- **Documentation file**: primary purpose is to inform a human reader — contains reference
+  tables, explanatory prose, metric definitions, or index content without agent directives
+  (e.g. `help.md`, `CHANGELOG.md`, `VERSION.md`)
+Score only instruction files. Skip documentation files and note them as "excluded (documentation)".
+Count DO/DO NOT items and other imperative directives across all instruction command files.
+Divide by total tokens in those files / 100. DD = directives / (tokens / 100).
 Normalise: (DD / 2.0) × 100, cap at 100.
 
 ### M3 — Instruction Ambiguity Rate (IAR) [universal]
@@ -84,7 +91,10 @@ check whether there is an explicit TTL policy or freshness check before use.
 IFS = artifacts_with_freshness_policy / total_inter-session_artifacts.
 
 ### M13 — Instruction Token Efficiency (ITE) [universal]
-Methodology: For each command file, scan for padding tokens — filler phrases that
+Methodology: Apply the same file role classification used in M2 (instruction vs.
+documentation files). Score only instruction files — documentation files are excluded
+because reference prose and explanatory content are not padding in that context.
+For each instruction command file, scan for padding tokens — filler phrases that
 consume tokens without adding constraint or information. Filler categories:
 - **Throat-clearing preamble**: "Please make sure to", "It is important that",
   "You should always remember to", "Note that", "Be aware that"

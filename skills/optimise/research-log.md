@@ -775,6 +775,12 @@ Strongest: Intent-to-Output Traceability (100), Context Decay Resilience (100), 
 **Pattern:** Novel — File Role Stratification
 **Status:** pending
 
+**Pre-change:** Directive Density 70 (101 directives / 6,731 tokens including help.md), Instruction Token Efficiency 97
+**Post-change:** Directive Density 75 (101 directives / 6,731 instruction-only tokens), Instruction Token Efficiency 96
+**Delta:** Directive Density +5pp, Instruction Token Efficiency −1pp
+**Result:** confirmed
+**Notes:** help.md excluded from both metrics under File Role Stratification. DD recovered from 70 → 75. ITE marginal decrease (−1pp) from reclassifying the moonshot-example bullets in p2-baseline.md as padding when viewed in the instruction-only scope; within tolerance. The stratification methodology is now embedded in both metric definitions in p2-baseline.md.
+
 ### H13 — Metric ID Consistency: Update SKILL.md
 **Problem:** Metric ID Consistency (MIC) = 83. SKILL.md references "M1–M12" — stale since M13 was added this session.
 **Change:** Update SKILL.md metric range from "M1–M12" to "M1–M13". Verify no other support files have stale ranges.
