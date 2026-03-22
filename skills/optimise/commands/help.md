@@ -17,43 +17,44 @@ Display this table, then the patterns table, then the stats summary. Nothing els
 
 ### Seed Metrics
 
-| Metric | Weight | Applies when | Healthy | One-line purpose |
-|--------|--------|--------------|---------|-----------------|
-| Intent-to-Output Traceability | 2× | Multi-phase pipeline | 90–100 | Each phase re-reads the prior phase's output to prevent drift |
-| Directive Density | 1× | All workflows | 60–100 | How tightly packed with actionable instructions the workflow is |
-| Instruction Ambiguity Rate | 1× | All workflows | 85–100 | How many instructions use vague modals with no qualifying condition |
-| Wiring Completeness Score | 1× | Persona system present | 100 | Whether every defined persona is actually loaded and used |
-| Redundancy Index | 1× | All workflows | 75–95 | How much the same rule is repeated across files |
-| Acceptance Criteria Concreteness | 2× | All workflows | 85–100 | Whether "done" conditions are numeric and verifiable, not subjective |
-| Subagent Alignment Score | 1× | Subagent invocations present | 90–100 | Whether delegated tasks are genuinely safe to parallelise |
-| Human Touchpoint Count | 2× | All workflows | 95–100 | How often a human must intervene during a full run |
-| Context Decay Resilience | 2× | Session boundaries present | 100 | Whether every session handoff explicitly re-anchors intent |
-| Context Loading Efficiency | 2× | All workflows | 80–100 | What fraction of loaded tokens are relevant to the current phase |
-| Parallelisation Safety Score | 1× | Parallel execution present | 90–100 | Whether concurrent mutations have explicit guards and release mechanisms |
-| Information Freshness Score | 2× | Cached artefacts present | 90–100 | Whether inter-session artefacts have TTL policies before re-use |
+| ID | Metric | Weight | Applies when | Healthy | One-line purpose |
+|----|--------|--------|--------------|---------|-----------------|
+| M1 · IOT | Intent-to-Output Traceability | 2× | Multi-phase pipeline | 90–100 | Each phase re-reads the prior phase's output to prevent drift |
+| M2 · DD | Directive Density | 1× | All workflows | 60–100 | How tightly packed with actionable instructions the workflow is |
+| M3 · IAR | Instruction Ambiguity Rate | 1× | All workflows | 85–100 | How many instructions use vague modals with no qualifying condition |
+| M4 · WCS | Wiring Completeness Score | 1× | Persona system present | 100 | Whether every defined persona is actually loaded and used |
+| M5 · RI | Redundancy Index | 1× | All workflows | 75–95 | How much the same rule is repeated across files |
+| M6 · ACC | Acceptance Criteria Concreteness | 2× | All workflows | 85–100 | Whether "done" conditions are numeric and verifiable, not subjective |
+| M7 · SAS | Subagent Alignment Score | 1× | Subagent invocations present | 90–100 | Whether delegated tasks are genuinely safe to parallelise |
+| M8 · HTC | Human Touchpoint Count | 2× | All workflows | 95–100 | How often a human must intervene during a full run |
+| M9 · CDR | Context Decay Resilience | 2× | Session boundaries present | 100 | Whether every session handoff explicitly re-anchors intent |
+| M10 · CLE | Context Loading Efficiency | 2× | All workflows | 80–100 | What fraction of loaded tokens are relevant to the current phase |
+| M11 · PSS | Parallelisation Safety Score | 1× | Parallel execution present | 90–100 | Whether concurrent mutations have explicit guards and release mechanisms |
+| M12 · IFS | Information Freshness Score | 2× | Cached artefacts present | 90–100 | Whether inter-session artefacts have TTL policies before re-use |
+| M13 · ITE | Instruction Token Efficiency | 1× | All workflows | 80–100 | What fraction of tokens are load-bearing vs. filler/padding |
 
 ### Design Patterns
 
-| Pattern | Targets | When to apply |
-|---------|---------|---------------|
-| Intent Anchor Blocks | Context Decay Resilience ↑, Intent-to-Output Traceability ↑ | Any workflow with session boundaries or 3+ phases |
-| Staleness TTL Policies | Information Freshness Score ↑ | Any workflow with cached artefacts read across sessions |
-| Progressive Disclosure | Context Loading Efficiency ↑, Human Touchpoint Count ↓ | Any workflow with 3+ phases |
-| Recommendation Brief | Human Touchpoint Count ↓, Instruction Ambiguity Rate ↓ | Any workflow with a human approval gate |
-| Claim Registry | Parallelisation Safety Score ↑ | Any workflow with parallel or concurrent execution |
-| Symmetric Outcome Thresholds | Acceptance Criteria Concreteness ↑ | Any workflow with multi-tier outcome classification |
-| Binary Applicability Gates | Instruction Ambiguity Rate ↓, Acceptance Criteria Concreteness ↑ | Any workflow with conditional or optional steps |
+| ID | Pattern | Targets | When to apply |
+|----|---------|---------|---------------|
+| P1 | Intent Anchor Blocks | CDR ↑, IOT ↑ | Any workflow with session boundaries or 3+ phases |
+| P2 | Staleness TTL Policies | IFS ↑ | Any workflow with cached artefacts read across sessions |
+| P3 | Progressive Disclosure | CLE ↑, HTC ↓ | Any workflow with 3+ phases |
+| P4 | Recommendation Brief | HTC ↓, IAR ↓ | Any workflow with a human approval gate |
+| P5 | Claim Registry | PSS ↑ | Any workflow with parallel or concurrent execution |
+| P6 | Symmetric Outcome Thresholds | ACC ↑ | Any workflow with multi-tier outcome classification |
+| P7 | Binary Applicability Gates | IAR ↓, ACC ↑ | Any workflow with conditional or optional steps |
 
 ### Stats at a Glance
 
 Read `research-log.md` in the optimise skill directory and append a compact stats table:
 
-| Metric | Avg baseline | Best gain seen | Times weakest |
-|--------|-------------|---------------|---------------|
-| ... | ... | ... | ... |
+| ID | Metric | Avg baseline | Best gain seen | Times weakest |
+|----|--------|-------------|---------------|---------------|
+| M1 · IOT | ... | ... | ... | ... |
 
 Only include metrics that have been applied at least once. Keep it to one line per metric.
-End with: *"Run `/optimise help <metric name>` for full detail on any metric or pattern."*
+End with: *"Run `/optimise help <name or ID>` for full detail on any metric or pattern."*
 
 ---
 
@@ -63,7 +64,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Intent-to-Output Traceability
+### Intent-to-Output Traceability (M1 · IOT)
 *Also matches: M1, IOT, traceability, drift, pipeline*
 
 **Measures:** Whether each phase in a multi-phase pipeline explicitly re-reads the artefact produced by the previous phase before doing its own work.
@@ -84,7 +85,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Directive Density
+### Directive Density (M2 · DD)
 *Also matches: M2, DD, density, imperatives, directives*
 
 **Measures:** How many actionable instructions (DO / DO NOT items, imperatives) the workflow contains per 100 tokens of content.
@@ -105,7 +106,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Instruction Ambiguity Rate
+### Instruction Ambiguity Rate (M3 · IAR)
 *Also matches: M3, IAR, ambiguity, modal, vague, should, may*
 
 **Measures:** The proportion of instructions that use unscoped modal verbs ("should", "may", "might", "consider", "try to") with no qualifying condition.
@@ -128,7 +129,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Wiring Completeness Score
+### Wiring Completeness Score (M4 · WCS)
 *Also matches: M4, WCS, wiring, persona, connected*
 
 **Measures:** What proportion of defined persona files are actually loaded and used in at least one phase appropriate for their role.
@@ -149,7 +150,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Redundancy Index
+### Redundancy Index (M5 · RI)
 *Also matches: M5, RI, redundancy, duplication, repeated, single source of truth*
 
 **Measures:** The proportion of instructions that appear in more than one file with substantially the same meaning.
@@ -170,7 +171,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Acceptance Criteria Concreteness
+### Acceptance Criteria Concreteness (M6 · ACC)
 *Also matches: M6, ACC, acceptance, concrete, done, stop, confirmed, vague criteria*
 
 **Measures:** The proportion of "done when", "stop when", or "confirmed when" statements that are objectively verifiable (a number, a file count, an exit code) vs. subjective ("the result looks right", "improvement is meaningful").
@@ -191,7 +192,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Subagent Alignment Score
+### Subagent Alignment Score (M7 · SAS)
 *Also matches: M7, SAS, subagent, parallel agents, delegation, race condition*
 
 **Measures:** Whether tasks delegated to subagents are genuinely appropriate for subagent execution — isolated, parallelisable, without shared mutable state that would create race conditions.
@@ -212,7 +213,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Human Touchpoint Count
+### Human Touchpoint Count (M8 · HTC)
 *Also matches: M8, HTC, human, touchpoint, stall, approval, intervention*
 
 **Measures:** How many times a full end-to-end run requires a human to provide input or approval (not counting the initial invocation).
@@ -233,7 +234,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Context Decay Resilience
+### Context Decay Resilience (M9 · CDR)
 *Also matches: M9, CDR, session, handoff, context loss, decay, boundary*
 
 **Measures:** Whether every session boundary (where a new agent session begins) includes an explicit re-read of the original intent artefact before proceeding.
@@ -254,7 +255,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Context Loading Efficiency
+### Context Loading Efficiency (M10 · CLE)
 *Also matches: M10, CLE, context, loading, efficiency, tokens, irrelevant*
 
 **Measures:** What proportion of the tokens loaded at each phase are actually relevant to the work of that phase — averaged across all phases.
@@ -275,7 +276,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Parallelisation Safety Score
+### Parallelisation Safety Score (M11 · PSS)
 *Also matches: M11, PSS, parallel, concurrent, lock, mutex, guard, worktree*
 
 **Measures:** Whether each mutation (write, move, delete) that could occur in a parallel context has explicit guards: a concurrent-access check and a defined release mechanism.
@@ -296,7 +297,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Information Freshness Score
+### Information Freshness Score (M12 · IFS)
 *Also matches: M12, IFS, freshness, stale, TTL, cached, artefact, expiry*
 
 **Measures:** What proportion of artefacts that are written in one phase and read again in a later phase (or later session) have an explicit TTL policy or freshness check before use.
@@ -317,7 +318,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Intent Anchor Blocks
+### Intent Anchor Blocks (P1)
 *Also matches: P1, anchor, intent, re-read, drift*
 
 **Problem it solves:** Without an explicit re-read at each phase transition, later phases operate on memory rather than the actual recorded output — causing compounding drift.
@@ -332,7 +333,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Staleness TTL Policies
+### Staleness TTL Policies (P2)
 *Also matches: P2, TTL, stale, freshness, tier, regenerate, caveat*
 
 **Problem it solves:** Workflows that re-read cached artefacts without checking their age silently operate on outdated data.
@@ -347,7 +348,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Progressive Disclosure
+### Progressive Disclosure (P3)
 *Also matches: P3, progressive, phase-scoped, context, loading, on-demand*
 
 **Problem it solves:** Loading the full workflow corpus at phase 1 and keeping it in context through all phases wastes tokens and creates noise that distracts later-phase work.
@@ -362,7 +363,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Recommendation Brief
+### Recommendation Brief (P4)
 *Also matches: P4, brief, recommendation, approve, skip, open-ended, question*
 
 **Problem it solves:** Workflows that ask open-ended questions require the human to understand the workflow's internal state in order to answer. This increases cognitive load and stall time.
@@ -377,7 +378,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Claim Registry
+### Claim Registry (P5)
 *Also matches: P5, registry, lock, mutex, claim, write lock, concurrent*
 
 **Problem it solves:** Parallel agents writing to shared files without coordination silently corrupt data.
@@ -392,7 +393,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Symmetric Outcome Thresholds
+### Symmetric Outcome Thresholds (P6)
 *Also matches: P6, symmetric, thresholds, confirmed, partial, disconfirmed, numeric floor*
 
 **Problem it solves:** Workflows that define the passing case concretely but leave lower tiers vague ("no meaningful improvement") create a gap where the agent applies its own judgment.
@@ -407,7 +408,7 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
-### Binary Applicability Gates
+### Binary Applicability Gates (P7)
 *Also matches: P7, binary, applicability, gate, condition, yes/no, deterministic*
 
 **Problem it solves:** Vague feature-presence conditions like "multi-session orchestration: yes/no" require an agent to make a judgment call that different agents may resolve differently.
@@ -421,3 +422,30 @@ Find the section below that best matches the argument. Display only that section
 **Typical gain:** +5pp on Instruction Ambiguity Rate, +6pp on Acceptance Criteria Concreteness in the run where it was applied.
 
 ---
+
+### Instruction Token Efficiency (M13 · ITE)
+*Also matches: M13, ITE, token, efficiency, padding, filler, compression, density, verbose*
+
+**Measures:** What fraction of tokens in command files carry load-bearing content (directives, conditions, examples, named entities) vs. padding (filler phrases, decorative structure, narrative restatement).
+
+**Intent:** Every token an agent loads is a token it must process. Padding tokens — "please make sure to", "it is important that", decorative dividers, prose that describes rather than constrains — consume context budget without adding constraint. Tighter instructions are cheaper to load, less likely to be misread, and leave more room for the content that actually matters.
+
+**Applies when:** All workflows (universal).
+
+**Weight:** 1×
+
+**Healthy range:** 80–100.
+
+**Risk at low scores:** Instructions are verbose and harder to parse. The agent spends processing budget on filler before reaching the actual rule. In long workflows this compounds — later phases receive diluted signal.
+
+**What counts as padding:**
+- Throat-clearing preamble: "Please make sure to", "It is important that", "You should always remember to", "Note that", "Be aware that"
+- Redundant intensifiers: "very", "really", "quite", "always" where already implied by context
+- Decorative structure: divider lines used more than once per logical section, headers that restate the section title in the first sentence
+- Narrative restatement: sentences with no imperative verb and no condition that describe what the workflow does rather than constraining how
+
+**Note on tokenisation encoding:** A related but separate concern is how efficiently the text itself tokenises given the model's vocabulary (e.g. certain markdown symbols, CamelCase, or special characters produce more tokens per visible character than plain prose). This is worth tracking as a moonshot custom metric on targets where raw token cost is critical, but requires running an actual tokeniser and is too tooling-dependent to be a seed metric.
+
+**How to improve:** Audit for the padding categories above. Replace preamble phrases with direct imperatives ("Record X if Y" instead of "Please make sure to always record X when Y occurs"). Remove decorative dividers that add no navigational value. Convert narrative description paragraphs into explicit DO / DO NOT rules.
+
+**Stats:** New metric — no historical data yet.

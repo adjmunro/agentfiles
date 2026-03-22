@@ -83,9 +83,23 @@ Methodology: For each artifact that is read after being written in a prior sessi
 check whether there is an explicit TTL policy or freshness check before use.
 IFS = artifacts_with_freshness_policy / total_inter-session_artifacts.
 
+### M13 — Instruction Token Efficiency (ITE) [universal]
+Methodology: For each command file, scan for padding tokens — filler phrases that
+consume tokens without adding constraint or information. Filler categories:
+- **Throat-clearing preamble**: "Please make sure to", "It is important that",
+  "You should always remember to", "Note that", "Be aware that"
+- **Redundant intensifiers**: "very", "really", "quite", "always" (where already implied)
+- **Decorative structure**: divider lines (---) used more than once per logical section,
+  duplicate headers that restate the section title in the first sentence
+- **Narrative restatement**: prose that describes what the workflow does rather than
+  constraining how (detectable as sentences with no imperative verb and no condition)
+Count padding_tokens and total_tokens per file (estimate tokens as characters / 4).
+ITE = 1 − (padding_tokens / total_tokens), averaged across all command files.
+Normalise: ITE × 100.
+
 ### Custom Metric Discovery
 
-**This step is mandatory.** After scoring M1–M12, Pulse examines the workflow for
+**This step is mandatory.** After scoring M1–M13, Pulse examines the workflow for
 quality dimensions not captured by any seed metric.
 
 Ask: *What could go wrong in this specific workflow that no seed metric would catch?*
@@ -95,7 +109,7 @@ For each gap found, define a custom metric:
 ```markdown
 ### MX<N> — <Name> [custom]
 **Measures:** <what quality dimension>
-**Why seeds miss it:** <which M1-M12 gap this fills>
+**Why seeds miss it:** <which M1-M13 gap this fills>
 **Methodology:** <exact counting or scoring method>
 **Direction:** ↑ higher / ↓ lower is better
 **Weight:** <1× or 2× — use 2× if this dimension is critical to the workflow's purpose>
