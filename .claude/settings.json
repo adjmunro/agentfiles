@@ -11,5 +11,18 @@
       "WebFetch(domain:docs.openclaw.ai)",
       "Bash(gh api:*)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/adjmunro/Developer/agentfiles/hooks/readme-check.sh"
+          }
+        ]
+      }
+    ]
   }
 }
