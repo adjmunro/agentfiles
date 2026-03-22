@@ -19,6 +19,7 @@ A shared library of agent personas used across skills. Each persona lives in its
 | `analytics/` | Pulse (Analytics) | Metrics and retrospectives |
 | `adversarial/` | Rook (Adversary) | Adversarial red-team stress-testing |
 | `synthesis/` | Loom (Synthesist) | Cross-domain synthesis and emergent design |
+| `temporal/` | Arc (Sequencer) | Temporal reasoning and dependency sequencing |
 
 ## Usage
 

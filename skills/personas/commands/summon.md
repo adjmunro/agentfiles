@@ -25,6 +25,7 @@ Summon one or more personas and hold a freeform conversation with them. Each per
 | `analytics` | Pulse (Analytics) | `../analytics/` |
 | `adversarial` | Rook (Adversary) | `../adversarial/` |
 | `synthesis` | Loom (Synthesist) | `../synthesis/` |
+| `temporal` | Arc (Sequencer) | `../temporal/` |
 
 ## Setup
 

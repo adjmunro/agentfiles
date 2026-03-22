@@ -1,5 +1,19 @@
 # Personas Changelog
 
+## 1.3.0 — Optimise Run 3 (2026-03-22)
+
+**Opening composite: 92.6% → final: 95.1% (+2.5pp). All 4 hypotheses confirmed.**
+
+- Synced AGENTS.md schema with SQS quality criteria: added observability notes for Essence (must be library-unique), Contradictions (must be predictable in output), Voice (must enable imitation), and expanded Unique Talent with copy-paste self-test — SRCA 58→92 [H8]
+- Sharpened 7 weak soul fields across 6 personas (Keeper Essence+Opinions, Arden Essence, Echo Essence, Finn Essence, Ward Voice, Artisan Contradictions) to score 2/2 on SQS — SQS 95→100 [H10]
+- Added Essence drift and Unique Talent calibration steps to `evolve.md` distil soul verification pass — DMSC 67→100 [H9]
+- Added new persona **Arc (Sequencer)** (`temporal/persona.md` + `temporal/soul.md`) — fills temporal reasoning cognitive gap; PCC 81→88 [H11]
+- Updated SKILL.md roster, `commands/summon.md`, and `commands/evolve.md` taxonomy to include Arc
+- 5 new custom metrics defined: SQS, UTCU, SRCA, DMSC, PHSC
+- Novel pattern documented: NP4 (Essential vs. Conventional Ordering Test)
+
+---
+
 ## 1.2.0 — Optimise Run 2 (2026-03-22)
 
 **Composite: 88.1% → 94.4% (+6.3pp). All 3 hypotheses confirmed.**

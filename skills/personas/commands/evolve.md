@@ -72,7 +72,7 @@ Then perform gap analysis against the cognitive demand taxonomy:
 | Synthesis | Combining disparate sources into a coherent picture | Loom (Synthesist) |
 | Adversarial red-team | Assuming worst-case user/attacker, stress-testing | Rook (Adversary) |
 | Pedagogical explanation | Teaching a concept to a non-expert reader | *(gap)* |
-| Temporal reasoning | Sequencing, dependency ordering, scheduling constraints | *(gap)* |
+| Temporal reasoning | Sequencing, dependency ordering, scheduling constraints | Arc (Sequencer) |
 | Negotiation / trade-off | Comparing options against explicit criteria, recommending | *(gap)* |
 
 Note any gaps — cognitive modes with no dedicated persona are candidates for **new** mode.
