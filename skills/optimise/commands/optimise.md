@@ -229,9 +229,52 @@ Re-read `research-log.md` (Intent Anchor). Focus on the baseline section.
 
 Based on the weakest metrics (seed and custom), form 3–5 hypotheses.
 
-**The seed patterns (P1–P5) are starting points, not constraints.** If the workflow
+**The seed patterns (P1–P7) are starting points, not constraints.** If the workflow
 has a problem that no seed pattern addresses, invent the fix. Novel hypotheses are
 expected and valuable — they may become patterns for future runs.
+
+### Design Patterns
+
+#### P1 — Intent Anchor Blocks
+At every phase transition, the orchestrator re-reads the original intent artifact
+before proceeding. Prevents context drift across long sessions.
+Targets: CDR (↑), IOT (↑)
+
+#### P2 — Staleness TTL Policies (3-tier)
+Every artifact that can go stale carries an explicit TTL policy:
+- **Tier A — Regenerate**: artifact must be rebuilt before use if older than threshold
+- **Tier B — Load-with-caveat**: artifact is usable but model must flag staleness to user
+- **Tier C — No-TTL**: artifact is canonical and does not expire (e.g. original input)
+Targets: IFS (↑)
+
+#### P3 — Progressive Disclosure
+Phase-scoped context loading: each phase block lists only the files it needs. No
+phase loads the full workflow corpus. Context is loaded on demand, not preloaded.
+Targets: CLE (↑), HTC (↓)
+
+#### P4 — Recommendation Brief
+Replace open-ended human Q&A interviews with a model-formed recommendation brief.
+The model assembles evidence, states a recommended action per item, and asks the
+human to approve/reject per item rather than answer open questions.
+Targets: HTC (↓), IAR (↓)
+
+#### P5 — Claim Registry
+For workflows with parallel or concurrent execution: a shared registry file records
+which agent/phase currently holds a write lock on each artifact. All mutations check
+the registry before writing and release the lock on completion.
+Targets: PSS (↑)
+
+#### P6 — Symmetric Outcome Thresholds
+For workflows with multi-tier outcome classification (pass/warn/fail, etc.): define
+concrete numeric boundaries for every tier, not just the passing case. Use the
+confirmed/pass threshold as the anchor; define lower tiers relative to it.
+Targets: ACC (↑)
+
+#### P7 — Binary Applicability Gates
+For workflows with conditional instructions or optional steps: replace vague
+feature-presence conditions ("X present") with a single yes/no question whose answer
+is deterministically derivable from an earlier phase's output.
+Targets: IAR (↓), ACC (↑)
 
 For each hypothesis:
 
@@ -241,7 +284,7 @@ For each hypothesis:
 **Change proposed:** <specific, actionable change to one or more files>
 **Targets:** <metric IDs and predicted direction — include custom metrics>
 **Predicted improvement:** <estimated delta in normalised score>
-**Pattern applied:** <P1–P5 if applicable, or "novel — <name the new pattern>">
+**Pattern applied:** <P1–P7 if applicable, or "novel — <name the new pattern>">
 **Risk level:** low / medium / high
 **Risk note:** <what could go wrong; what to check if disconfirmed>
 ```
@@ -373,7 +416,7 @@ Then write three lists:
 
 ### Novel Pattern Candidates
 
-If any confirmed hypothesis used a novel pattern (not P1–P5), document it:
+If any confirmed hypothesis used a novel pattern (not P1–P7), document it:
 
 ```markdown
 ## Novel Patterns Discovered — <date>
