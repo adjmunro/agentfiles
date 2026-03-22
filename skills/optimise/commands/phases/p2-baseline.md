@@ -117,11 +117,14 @@ Methodology:
    - **Critique / adversarial review**: fault-finding, challenge, stress-testing → ideal fit: critic-style persona
    - **Reporting / documentation**: neutrality, comprehensiveness, clarity → neutral observer is appropriate; loading any persona here risks bias
    - **Creative generation**: divergent thinking, novelty-seeking → needs a creative or expansive persona; a critic or analyst here is a mismatch
-2. For each phase, determine fit:
+2. Before scoring, apply the persona staleness check:
+   - **Missing file**: if the phase's load directive references a `persona.md` that does not exist at the stated path, score that phase as mismatch (0.0) and record: "Broken reference — persona file not found." Do not attempt to infer what the persona would have been.
+   - **Speciated parent**: if the loaded persona's `soul.md` has no `## Origin` section but sibling directories contain personas whose Origin names this one as parent, note it as a staleness flag: "Possible superseded parent — more specific variants exist." Score the phase as partial (0.5) even if the cognitive fit is otherwise good, because the parent is likely less potent than the available specialization.
+3. For each phase where the persona file exists, determine fit:
    - **Full fit (1.0)**: assigned persona's core trait directly matches the cognitive demand, OR the phase is a reporting/neutral phase and no persona is assigned
-   - **Partial fit (0.5)**: persona's traits are adjacent but not optimal (e.g., strategist on a measurement phase), OR a persona is assigned to a neutral phase but does not obviously conflict
-   - **Mismatch (0.0)**: persona's traits actively work against the phase's purpose (e.g., critic on a generative brainstorm), OR a high-value phase has no persona and a clear one exists
-3. Also check persona depth using the M15 Richness Rubric: a persona scoring <71% (i.e., missing both Unique Talent and Failure Mode) is functionally decorative regardless of its other fields — its phase assignment scores partial regardless of cognitive alignment.
+   - **Partial fit (0.5)**: persona's traits are adjacent but not optimal (e.g., strategist on a measurement phase), OR a persona is assigned to a neutral phase but does not obviously conflict, OR the phase uses a speciated parent when a more specific variant exists
+   - **Mismatch (0.0)**: persona's traits actively work against the phase's purpose (e.g., critic on a generative brainstorm), OR a high-value phase has no persona and a clear one exists, OR the persona file is missing
+4. Also check persona depth using the M15 Richness Rubric: a persona scoring <71% (i.e., missing both Unique Talent and Failure Mode) is functionally decorative regardless of its other fields — its phase assignment scores partial regardless of cognitive alignment.
 PPF = sum(per_phase_scores) / total_phases_assessed
 Normalise: PPF × 100.
 

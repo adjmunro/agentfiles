@@ -30,6 +30,10 @@ Inventory the target directory:
    - Parallel or concurrent execution (parallel phase blocks, worktree patterns)
    - Cached or persisted artifacts (files written in one session and read in another)
 4. Record the feature presence/absence — this determines which metrics apply in Phase 2
+5. **Persona staleness check** (apply if persona system is present):
+   - For each persona load directive found in command files, check whether the referenced `persona.md` file exists at the stated path. If missing: flag as a broken reference — "Warning: phase N loads `<path>` which does not exist. This phase will run without a persona."
+   - For each persona file that does exist, check its `soul.md` for an `## Origin` section. If the Origin indicates this is a parent that has been speciated (i.e., child personas exist in sibling directories with this one named as their Origin), note it: "Note: `<persona>` has been speciated into `<children>`. Consider whether the phase should use a more specific variant."
+   - Record any broken references and speciation notes in `research-log.md` under the audit entry. Do not block the run — these are warnings, not errors.
 
 Write a brief audit summary to `research-log.md`:
 

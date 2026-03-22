@@ -26,6 +26,9 @@ Apply the specific change described in the hypothesis. Modify only the files
 necessary. Follow progressive disclosure — do not load context not needed for this
 change.
 
+For hypotheses marked `[persona experiment]`, use the Persona Experiment Protocol
+instead of this step and Step c.
+
 ### Step c — Re-measure
 Apply the same methodology used in Phase 2 to re-measure the targeted metric(s).
 Also check every other currently-applied metric (seed and custom) for secondary changes:
@@ -56,6 +59,45 @@ Update `research-log.md`:
 - **Confirmed**: commit with `feat(optimise): <description of change> [H<N>]`
 - **Partial**: commit with a note or revert at your discretion — document the decision
 - **Disconfirmed**: revert the change; document why in the log
+
+For persona experiments, use two commits if both persona files and phase directives changed:
+- `feat(personas): <description> [H<N>]` — persona file additions or modifications
+- `feat(optimise): update phase N persona assignment [H<N>]` — phase directive change (if any)
+
+---
+
+### Persona Experiment Protocol
+
+**Applies to:** hypotheses marked `[persona experiment]`.
+
+**Step b (persona) — Execute the evolution:**
+- **Rotation**: create the new persona file if it does not exist (full `persona.md` + `soul.md` per AGENTS.md spec, including Unique Talent and Failure Mode); update the phase's persona load directive to the new file
+- **Speciation**: run `/personas evolve speciate <name>`; on approval, update the phase directive to the chosen variant
+- **Distillation**: run `/personas evolve distil <name> from research-log.md`; verify the file changes are applied; no phase directive change needed
+- **Gap-fill**: run `/personas evolve new <description>`; on approval, add the persona load directive to the targeted phase
+
+**Step c (persona) — Re-measure + spot-check:**
+
+Re-measure Persona-Phase Fit and Persona Richness for the targeted phase.
+
+Then run a **spot-check**: apply the new persona to one small, representative task drawn from the targeted phase. Scope the task to complete in a single response (e.g., audit 2–3 items rather than the full phase scope; measure one hypothesis rather than all; score one file rather than the corpus).
+
+Score the output against the 3 quality markers defined in the hypothesis:
+- Each marker: pass (clearly met) / partial (partially met) / fail (not met)
+- Spot-check score = passes / 3 (or N markers if more were defined)
+
+If possible, also score the same task under the *old* persona (or with no persona) to establish a baseline. If a prior run's output for the same task exists in `research-log.md`, use that as the baseline instead of re-running.
+
+Record in `research-log.md`:
+```markdown
+**Spot-check task:** <what was run — 1 sentence>
+**Spot-check output (new persona):** <key observations — 2–4 sentences>
+**Marker scores:** [pass/partial/fail per marker]
+**Spot-check score:** N/3
+**Baseline (old persona or prior run):** <N/3 or "not available">
+```
+
+Use the spot-check score alongside the structural metric delta to determine confirmed/partial/disconfirmed. A persona experiment requires *both* structural improvement (M14 PPF or M15 PRS ≥+3pp) *and* a non-negative spot-check score to be confirmed. If structural metrics improve but the spot-check shows no quality gain, classify as partial.
 
 After all hypotheses are processed, write a summary to `research-log.md`:
 

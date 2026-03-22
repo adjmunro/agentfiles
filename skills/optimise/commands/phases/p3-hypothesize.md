@@ -76,18 +76,40 @@ real runs: observed behaviors that consistently produced better outputs are crys
 as new DO rules; thin soul fields are deepened using patterns the run revealed.
 Targets: PRS (↑), PPF (↑)
 
-For each hypothesis:
+For each hypothesis, use the appropriate template:
 
+**Standard hypothesis:**
 ```
 ### H<N> — <short name>
 **Problem observed:** <what the metric score reveals about the workflow>
 **Change proposed:** <specific, actionable change to one or more files>
-**Targets:** <full metric names and predicted direction — e.g. "Directive Density ↑, Context Loading Efficiency ↑" — include custom metrics>
+**Targets:** <full metric names and predicted direction — include custom metrics>
 **Predicted improvement:** <estimated delta in normalised score>
-**Pattern applied:** <full pattern name if applicable, e.g. "Intent Anchor Blocks", or "novel — <name the new pattern>">
+**Pattern applied:** <full pattern name, or "novel — <name>">
 **Risk level:** low / medium / high
 **Risk note:** <what could go wrong; what to check if disconfirmed>
 ```
+
+**Persona experiment** (use when pattern is Persona Rotation or Persona Speciation):
+```
+### H<N> — <short name> [persona experiment]
+**Problem observed:** <what Persona-Phase Fit or Persona Richness score reveals>
+**Phase targeted:** <which phase, and its current persona or lack thereof>
+**Change type:** rotation / speciation / distillation / gap-fill
+**Change proposed:** <specific: swap to [existing persona], or run `/personas evolve speciate <name>`, or run `/personas evolve distil <name> from research-log.md`, or run `/personas evolve new <description>`>
+**Quality markers:** <define exactly 3 observable outputs to check in the spot-check:
+  1. <e.g. "does the new persona catch gaps that the old one would accept?">
+  2. <e.g. "does output include concrete file:line citations rather than vague references?">
+  3. <e.g. "are all N items in the phase scope addressed, or does the persona sample selectively?">
+>
+**Targets:** <full metric names and predicted direction>
+**Predicted improvement:** <estimated delta>
+**Pattern applied:** Persona Rotation / Persona Speciation
+**Risk level:** low / medium / high
+**Risk note:** <e.g. "new persona may suppress output the downstream phase depends on">
+```
+
+Quality markers must be defined at hypothesis time — not left open-ended. They are what Phase 4 uses to score the spot-check. Choose markers that would be observable in a single-response task sample.
 
 When forming novel hypotheses, ask:
 - Is there a structural change (split, merge, reorder) that would improve a custom metric?
