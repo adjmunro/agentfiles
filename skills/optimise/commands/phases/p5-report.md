@@ -11,10 +11,12 @@ Build the final comparison table for all applied metrics:
 
 | Metric | Baseline | Post | Delta | Status |
 |--------|----------|------|-------|--------|
-| M2 DD  | ...      | ...  | ...   | ↑ / ↓ / — |
+| Directive Density | ... | ... | ... | ↑ / ↓ / — |
 | ...    |          |      |       |        |
 | **Composite** | X% | Y% | +Z pp | |
 ```
+
+Use the full metric name in the Metric column — never the abbreviation alone (e.g., "Directive Density", not "DD"; "Intent-to-Output Traceability", not "IOT").
 
 Then write three lists:
 
@@ -48,15 +50,18 @@ Seed candidates should be promoted to the Design Patterns section in
 
 Append the full report to `research-log.md` under `## Final Results — <date>`.
 
-Print a terminal summary:
+Print a terminal summary in plain language — no metric abbreviations or internal IDs:
 
 ```
 Optimisation complete.
 Baseline: X%  →  Post: Y%  (+Z pp composite)
 
-Confirmed: <count> hypotheses
+Confirmed: <count> experiments
 Partial:   <count>
 Dropped:   <count>
+
+Strongest improvement: <full metric name> (+N pp)
+Key change: <one plain-language sentence describing the most impactful experiment>
 
 Full report written to: <path>/research-log.md
 ```

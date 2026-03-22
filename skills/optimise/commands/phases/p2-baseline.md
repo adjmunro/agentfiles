@@ -102,15 +102,31 @@ For each gap found, define a custom metric:
 **Normalisation:** <formula>
 ```
 
-Heuristics for finding custom metrics:
+Heuristics for finding custom metrics — work through all of these before stopping:
 - What does this workflow *produce*? Does any seed measure output quality? If not, define one.
 - What is the most common failure mode for this *type* of workflow? Is it measured?
 - Are there cross-file consistency requirements (naming, schema, version alignment)? Measure them.
 - Is there a "trust chain" — files that depend on other files being correct? Measure completeness.
 - Does the workflow have escape hatches / fallback paths? Are they tested?
+- What would a user of this workflow complain about that no metric here would detect?
+- Is there a concept of "completeness" specific to this domain (e.g., all cases handled, all roles covered, all states reachable)?
+- What would an expert reviewer flag on first read that isn't currently measured?
 
-**Minimum:** propose at least 1 custom metric per run. If you genuinely cannot find a gap,
-state why explicitly — do not silently skip.
+**Minimum:** propose at least 5 new custom metrics per run. Casting a wide net costs nothing —
+a metric that turns out to score well is still useful evidence. If you genuinely cannot reach 5,
+state explicitly why each remaining gap is not measurable.
+
+**Moonshot requirement:** at least one of your custom metrics must be a *moonshot* — an
+unconventional or ambitious idea that might not obviously apply but could reveal a surprising
+insight if it does. Push past the obvious. Examples of moonshot thinking:
+- Measuring something that has never been measured in this type of workflow before
+- Treating an implicit assumption in the workflow as an explicit, scorable property
+- Borrowing a measurement concept from a completely different domain (e.g., applying a
+  reliability-engineering concept to a documentation workflow, or a usability heuristic to
+  a data pipeline)
+- Quantifying something qualitative that the workflow currently treats as unmeasurable
+
+Label the moonshot metric `[custom, moonshot]` so it is easy to identify.
 
 Write custom metric definitions to `research-log.md` under `## Custom Metrics — <date>`.
 Custom metrics persist and are re-applied on future runs of `/optimise` on the same target.
@@ -118,13 +134,13 @@ Custom metrics persist and are re-applied on future runs of `/optimise` on the s
 ### Composite Calculation
 
 ```
-Seed metrics applied: <list>
+Seed metrics applied: <list using full names>
 Seed metrics skipped: <list with reasons>
-Custom metrics: <list>
+Custom metrics: <list using full names>
 
 | Metric | Source | Raw | Normalised | Weight | Weighted |
 |--------|--------|-----|-----------|--------|----------|
-| ...    | seed / custom |  |  |  |  |
+| <Full Metric Name> | seed / custom |  |  |  |  |
 | TOTAL  |        |     |           | <N>×   | <sum> / (<N>×100) |
 
 Composite: <sum> / (<N> × 100) × 100 = <X>%

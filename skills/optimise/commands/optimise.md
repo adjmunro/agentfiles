@@ -22,6 +22,7 @@ argument-hint: "<path-to-target-workflow-directory>"
 - Commit each confirmed change separately with a conventional commit message
 - Present the Recommendation Brief and wait for human approval before beginning experiments
 - Re-read `research-log.md` at the start of each phase (Intent Anchor — pattern P1)
+- When addressing the user directly — in progress updates, the Recommendation Brief, and the final terminal summary — spell out metric and pattern names in full; never use abbreviations or shorthand identifiers alone (e.g., say "Directive Density" not just "DD", "Intent-to-Output Traceability" not just "IOT", "Intent Anchor Blocks" not just "P1"). Metric IDs such as M1, MX2, and H5 may appear in `research-log.md` entries as internal references, but must not appear in messages shown to the user without their full names alongside them.
 
 ## DO NOT
 

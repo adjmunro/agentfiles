@@ -59,9 +59,9 @@ For each hypothesis:
 ### H<N> — <short name>
 **Problem observed:** <what the metric score reveals about the workflow>
 **Change proposed:** <specific, actionable change to one or more files>
-**Targets:** <metric IDs and predicted direction — include custom metrics>
+**Targets:** <full metric names and predicted direction — e.g. "Directive Density ↑, Context Loading Efficiency ↑" — include custom metrics>
 **Predicted improvement:** <estimated delta in normalised score>
-**Pattern applied:** <P1–P7 if applicable, or "novel — <name the new pattern>">
+**Pattern applied:** <full pattern name if applicable, e.g. "Intent Anchor Blocks", or "novel — <name the new pattern>">
 **Risk level:** low / medium / high
 **Risk note:** <what could go wrong; what to check if disconfirmed>
 ```
@@ -88,12 +88,14 @@ Present the brief to the human:
 Based on baseline measurement, I recommend the following experiments.
 Please approve or skip each one.
 
-H1 — <name>: [approve / skip]
-H2 — <name>: [approve / skip]
+1. <name> — <one-sentence summary of problem and proposed change>: [approve / skip]
+2. <name> — <one-sentence summary>: [approve / skip]
 ...
 
 Reply with your decisions to proceed.
 ```
+
+Do not use metric abbreviations or hypothesis IDs in the brief shown to the user. Refer to metrics by full name (e.g., "Directive Density", "Context Loading Efficiency") and describe each experiment in plain language.
 
 **STOP. Wait for human approval. Do not proceed to Phase 4 until decisions are received.**
 
