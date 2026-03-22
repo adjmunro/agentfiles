@@ -13,10 +13,14 @@ argument-hint: "<path-to-target-workflow-directory> | help"
 
 ## Entry Point
 
-If `$ARGUMENTS` is exactly `help` (case-insensitive), read `commands/help.md` and
-display its output to the user. Do not run the phase pipeline. Stop after displaying.
+1. If `$ARGUMENTS` is exactly `help` (case-insensitive) — read `commands/help.md`
+   and display the **summary table** (Mode: Summary). Stop.
 
-Otherwise, proceed to the DO rules and phase manifest below.
+2. If `$ARGUMENTS` starts with `help ` followed by any text — read `commands/help.md`
+   and display the **detail section** (Mode: Detail) that best matches the remainder
+   of the argument. Stop.
+
+3. Otherwise — proceed to the DO rules and phase manifest below.
 
 ---
 
