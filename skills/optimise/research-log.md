@@ -1011,7 +1011,10 @@ Post weighted sum: 2,775 / 2,900 = 95.7%.
 ### MX16 — Pattern Experimental Validation Rate (PEV) [custom]
 **Measures:** % of design patterns in the seed library that have at least one confirmed experiment in the research log where the pattern was applied and its target metric improved.
 **Why seeds miss it:** The pattern library grows via promotion of novel patterns. No seed checks whether each promoted pattern has empirical evidence — a pattern could be added based on one run and never re-applied. An unvalidated pattern is speculation dressed as guidance.
-**Methodology:** For each pattern P1–PN in p3-hypothesize.md, search research-log.md for a confirmed hypothesis entry where "Pattern applied: P<N>" (or equivalent) appears and the target metric improved. PEV = validated_patterns / total_patterns.
+**Methodology:** For each pattern P1–PN in p3-hypothesize.md, search research-log.md for a confirmed hypothesis entry where "Pattern applied: P<N>" (or equivalent) appears and the target metric improved. PEV = validated_patterns / applicable_patterns.
+
+**Corrective-pattern exemption:** A pattern qualifies as *corrective* if its description begins with "For workflows where [metric] < [threshold]" or equivalent — meaning it only applies when a specific measurable condition is met. If that condition has never been true in any completed run, the pattern is scored as N/A and excluded from the denominator. An inapplicable pattern is not an unvalidated pattern. The distinction matters: "applicable but never run" is a gap; "never applicable" is structurally correct behaviour.
+
 **Direction:** ↑ higher
 **Weight:** 1×
 **Normalisation:** raw %

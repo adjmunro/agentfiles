@@ -53,7 +53,7 @@ feature-presence conditions ("X present") with a single yes/no question whose an
 is deterministically derivable from an earlier phase's output.
 Targets: IAR (↓), ACC (↑)
 
-#### P8 — Persona Rotation
+#### P8 — Persona Rotation [corrective — applies when PPF < 100]
 For workflows with a persona system where any phase scores below full fit on
 Persona-Phase Fit: try an alternative persona on that phase (drawn from existing
 persona files or newly invented) and compare output quality markers — concreteness,
