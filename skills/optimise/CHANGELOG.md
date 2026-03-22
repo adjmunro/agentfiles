@@ -2,6 +2,31 @@
 
 ---
 
+## v1.4.0 — 2026-03-22
+
+### Added
+- M14 — Persona-Phase Fit Score (PPF): new seed metric measuring whether phases have appropriately matched personas; applies when persona system is present; includes persona staleness check (missing files score 0.0, speciated parents score 0.5)
+- M15 — Persona Richness Score (PRS): new seed metric scoring each persona against the 14-point Richness Rubric; Unique Talent and Failure Mode are required fields (worth 2pts each); personas missing both score ≤71%
+- P8 (Persona Rotation) and P9 (Persona Speciation) added to Design Patterns
+- P10 (Failure Mode Registry) and P11 (File Role Stratification) promoted from run 3 novel patterns — these were confirmed in run 3 with seed-candidate status but not yet incorporated
+- `[persona experiment]` hypothesis sub-type in p3-hypothesize.md: rotation / speciation / distillation / gap-fill modes with 3 upfront quality markers, spot-check execution, and combined structural + spot-check confirmation rule
+- Persona staleness check in Phase 1 (p1-audit.md): detects broken load directive references and speciated parents
+- Persona experiment failure mode recovery paths in Phase 4: malformed persona file, ambiguous spot-check markers, evolve command unavailable
+- 5 new custom metrics: Persona Experiment Cycle Completeness (MX10), Phase Boundary Sharpness (MX11), Hypothesis Template Completeness (MX12), Cross-Run Learning Transfer (MX13, moonshot 2×), Spot-Check Protocol Completeness (MX14)
+- `/personas evolve` command: four modes — audit (scores personas on Richness Rubric + cognitive gap analysis), speciate (fork into 2–3 focused variants), distil (sharpen using evidence from run logs), new (gap-fill creation)
+- personas/AGENTS.md updated: required fields tables for persona.md and soul.md; Unique Talent and Failure Mode marked mandatory
+- First persona distillation: Pulse, Keeper, and Arden distilled using 4 runs of research-log evidence; each gained Unique Talent and Failure Mode sections, plus 1 evidence-based DO rule
+
+### Changed
+- p3-hypothesize.md range reference updated from "P1–P7" to "P1–P11"
+- Direction fields added to M14 and M15 definitions (completing all 15 seed metrics to the 4-field specification)
+- SKILL.md metric range updated to "M1–M15, P1–P11"
+
+### Fixed
+- Composite: 86.8% → 97.4% (+10.6pp) — seven metrics improved this run
+
+---
+
 ## v1.3.0 — 2026-03-22
 
 ### Added

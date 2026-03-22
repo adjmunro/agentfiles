@@ -963,6 +963,65 @@ Post weighted sum: 2,775 / 2,900 = 95.7%.
 
 ---
 
+## Final Results — 2026-03-22 (run 4)
+
+| Metric | Baseline | Post | Delta | Status |
+|--------|----------|------|-------|--------|
+| Intent-to-Output Traceability | 100 | 100 | — | — |
+| Directive Density | 100 | 100 | — | — |
+| Instruction Ambiguity Rate | 94 | 94 | — | — |
+| Wiring Completeness Score | 100 | 100 | — | — |
+| Redundancy Index | 88 | 88 | — | — |
+| AC Concreteness | 95 | 95 | — | — |
+| Human Touchpoint Count | 95 | 95 | — | — |
+| Context Decay Resilience | 100 | 100 | — | — |
+| Context Loading Efficiency | 95 | 95 | — | — |
+| Information Freshness Score | 100 | 100 | — | — |
+| Instruction Token Efficiency | 96 | 96 | — | — |
+| Persona-Phase Fit Score | 100 | 100 | — | — |
+| Persona Richness Score | 71 | 100 | +29pp | ↑ |
+| Self-Application Fidelity | 100 | 100 | — | — |
+| Metric Methodology Completeness | 87 | 100 | +13pp | ↑ |
+| Pattern Library Promotion Rate | 50 | 100 | +50pp | ↑ |
+| Persona Load Resilience | 100 | 100 | — | — |
+| Help Content Coverage | 100 | 100 | — | — |
+| Metric ID Consistency | 75 | 100 | +25pp | ↑ |
+| Experiment Isolation Score | 85 | 85 | — | — |
+| Recovery Path Completeness | 100 | 100 | — | — |
+| Hypothesis Surprise Rate | 70 | 70 | — | — |
+| Persona Experiment Cycle Completeness | 0 | 100 | +100pp | ↑ |
+| Phase Boundary Sharpness | 100 | 100 | — | — |
+| Hypothesis Template Completeness | 100 | 100 | — | — |
+| Cross-Run Learning Transfer | 50 | 100 | +50pp | ↑ |
+| Spot-Check Protocol Completeness | 88 | 100 | +12pp | ↑ |
+| **Composite** | **86.8%** | **97.4%** | **+10.6pp** | |
+
+Weights: IOT 2×, ACC 2×, HTC 2×, CDR 2×, CLE 2×, IFS 2×, PPF 2×, SAF 2×, PPR 2×, MIC 2×, CLT 2×. All others 1×. Total 38×.
+Post weighted sum: 3,703 / 3,800 = 97.4%.
+
+### What improved and why
+
+- **Persona Experiment Cycle Completeness**: +100pp (0→100) — first distillation of all three optimise personas (Pulse, Keeper, Arden) using 4 runs of research-log evidence. Each gained a Unique Talent (specific, evidence-cited behaviour) and Failure Mode (concrete anti-pattern with observable warning signs). H19.
+- **Pattern Library Promotion Rate**: +50pp (50→100) — NP1 (Failure Mode Registry) and NP2 (File Role Stratification) from run 3 promoted as P10 and P11 in p3-hypothesize.md. H16.
+- **Cross-Run Learning Transfer**: +50pp (50→100) — same change as H16; all 4 seed candidates now incorporated into instruction files. H16.
+- **Persona Richness Score**: +29pp (71→100) — all three personas now score 14/14 on the Richness Rubric. The two previously missing fields (Unique Talent: 2pts, Failure Mode: 2pts) are now present across all personas. H19.
+- **Metric ID Consistency**: +25pp (75→100) — stale "P1–P7" range reference in p3-hypothesize.md updated to "P1–P11". H16.
+- **Metric Methodology Completeness**: +13pp (87→100) — Direction fields added to M14 and M15, completing all 15 seed metrics to the 4-field specification. H17.
+- **Spot-Check Protocol Completeness**: +12pp (88→100) — recovery path for ambiguous spot-check markers added to Phase 4 persona experiment protocol. H18.
+
+### What was dropped and why
+
+Nothing dropped. All four hypotheses confirmed.
+
+### What remains to improve
+
+- **Hypothesis Surprise Rate**: 70 — structural fix (H15, run 3) enables detection but no confirmed experiments have recorded secondary gains yet; score will improve naturally as future runs accumulate full-spectrum delta data
+- **Experiment Isolation Score**: 85 — no pre-experiment dependency scan before multi-file changes; a dependency-check step in Phase 4 Step a could push this toward 95
+- **Instruction Ambiguity Rate**: 94 — small residual of unscoped "should" usages remain; targeted wording pass could close the gap to ~97
+- **Redundancy Index**: 88 — Design Patterns descriptions in p3-hypothesize.md partially overlap with novel-patterns entries in the log; consolidation would recover ~5pp without losing content
+
+---
+
 ### NP1 — Failure Mode Registry
 **Discovered in:** skills/optimise
 **Problem it solved:** Three failure modes (all-skip, non-git target, log contamination) had no recovery instructions — agents hitting these states had no prescribed next action.
