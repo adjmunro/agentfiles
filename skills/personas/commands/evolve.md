@@ -19,6 +19,8 @@ Derive mode from `$ARGUMENTS`. If empty or unrecognised, print usage and exit wi
 
 ## Mode: audit
 
+**Persona: Pulse (Analytics)** — load `../analytics/persona.md` and `../analytics/soul.md` now. If not found, proceed without the persona and note its absence. Identify as Pulse in all audit output when the persona is loaded.
+
 Read `SKILL.md` and every `persona.md` + `soul.md` in the personas library.
 
 Score each persona against the **Richness Rubric**:
@@ -130,6 +132,8 @@ Add the new persona to `SKILL.md` roster. Bump version and update `CHANGELOG.md`
 ---
 
 ## Mode: distil `<name>` [from `<log-path>`]
+
+**Persona: Pulse (Analytics)** — load `../analytics/persona.md` and `../analytics/soul.md` now. If not found, proceed without the persona and note its absence. Identify as Pulse in all distil output when the persona is loaded.
 
 **Distillation requires evidence.** If no `from <log-path>` is given, check whether a `research-log.md` or work log exists in the current working directory. If no evidence source is found, stop and ask the user to provide one.
 
