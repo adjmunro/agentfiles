@@ -1,5 +1,112 @@
 # Skill Optimisation Research Log
 
+---
+
+## Audit — 2026-03-22 (optimise skill self-run)
+
+**Target:** `/Users/adjmunro/Developer/agentfiles/.claude/skills/optimise`
+**Files:** 6 total (1 command, 5 support)
+**Token estimate:** ~4,800 tokens
+
+### Feature Inventory
+- Multi-phase pipeline: yes
+- Persona system: yes (Pulse, Keeper, Arden)
+- Subagent invocations: no
+- Multi-session orchestration: partial (Phase 3 STOP creates session boundary)
+- Parallel execution: no
+- Cached artifacts: yes (research-log.md written phases 1-3, read phases 4-5)
+
+### Files
+- `commands/optimise.md` — command file (~1,600 tokens)
+- `SKILL.md` — support: skill definition, full metrics/patterns copy (~900 tokens)
+- `research-log.md` — prior run log (~2,000 tokens)
+- `AGENTS.md` — support (~250 tokens)
+- `CHANGELOG.md` — support (~100 tokens)
+- `VERSION.md` — support (~5 tokens)
+
+---
+
+## Custom Metrics — 2026-03-22
+
+### MX1 — Self-Application Fidelity (SAF) [custom]
+**Measures:** How well the optimise skill follows its own prescribed patterns (P1–P5) in its own implementation.
+**Why seeds miss it:** No seed metric checks whether a meta-skill practices what it preaches.
+**Methodology:** For each of P1–P5, determine if it's applicable to the optimise skill. For each applicable pattern, check whether the skill's implementation uses it. SAF = patterns_applied / patterns_applicable.
+**Direction:** ↑ higher
+**Weight:** 2×
+**Normalisation:** raw %
+
+### MX2 — Metric Methodology Completeness (MMC) [custom]
+**Measures:** % of defined metrics that include all 4 required fields: counting method, normalisation formula, direction, applicability condition.
+**Why seeds miss it:** No seed measures internal consistency of the metric library itself.
+**Methodology:** For each metric defined in commands/optimise.md (M1–M12 plus any custom metrics), check for presence of: (a) specific counting method, (b) normalisation formula, (c) direction, (d) when-to-apply condition. Complete = all 4. Partial = 3. MMC = complete_metrics / total_metrics.
+**Direction:** ↑ higher
+**Weight:** 1×
+**Normalisation:** raw %
+
+---
+
+## Baseline — 2026-03-22 (optimise skill self-run)
+
+Seed metrics skipped: M7 SAS (no subagent invocations), M11 PSS (no parallel execution)
+
+| Metric | Source | Raw | Normalised | Weight | Weighted |
+|--------|--------|-----|-----------|--------|---------|
+| M1 IOT | seed | 100% | 100 | 2× | 200 |
+| M2 DD | seed | 2.9/100t | 100 | 1× | 100 |
+| M3 IAR | seed | 11.9% | 88 | 1× | 88 |
+| M4 WCS | seed | 100% | 100 | 1× | 100 |
+| M5 RI | seed | 33.7% | 66 | 1× | 66 |
+| M6 ACC | seed | 75% | 75 | 2× | 150 |
+| M8 HTC | seed | 1 pt | 95 | 2× | 190 |
+| M9 CDR | seed | 100% | 100 | 2× | 200 |
+| M10 CLE | seed | 48% | 48 | 2× | 96 |
+| M12 IFS | seed | 0% | 0 | 2× | 0 |
+| MX1 SAF | custom | 75% | 75 | 2× | 150 |
+| MX2 MMC | custom | 83% | 83 | 1× | 83 |
+| **TOTAL** | | | | **19×** | **1423 / 1900** |
+
+**Baseline Composite: 74.9%**
+
+Weakest: M12 IFS (0), M10 CLE (48), M5 RI (66)
+Strongest: M1 IOT (100), M9 CDR (100), M8 HTC (95)
+
+---
+
+## Experiments — 2026-03-22
+
+### H1 — Strip SKILL.md Duplication
+**Problem:** SKILL.md duplicates M1-M12 table, composite formula, and P1-P5 patterns from commands/optimise.md (~30% redundancy).
+**Change:** Trim SKILL.md to overview + 5-phase diagram + versioning only. Add pointer to command file.
+**Targets:** M5 RI 66 → 88+, M10 CLE 48 → 60+
+**Status:** pending
+
+### H2 — Phase-Scoped Persona Loading
+**Problem:** All 3 personas loaded before Phase 1; none needed until Phase 2+. ~67% of persona tokens irrelevant at any given phase.
+**Change:** Move persona loads inside each phase block. Phase 2→Pulse, Phase 3→Keeper, Phase 4→Arden. Phases 1/5 load none.
+**Targets:** M10 CLE 48 → 72+, MX1 SAF 75 → 83+
+**Status:** pending
+
+### H3 — TTL Policy for research-log.md
+**Problem:** research-log.md re-read at each phase but no target-validation or freshness check. Mismatched target logs used silently.
+**Change:** Add target-path validation and 3-tier TTL in Phase 1 and Phase 4 intent anchors.
+**Targets:** M12 IFS 0 → 90+, MX1 SAF 75 → 83+
+**Status:** pending
+
+### H4 — Symmetrical Experiment Outcome Thresholds
+**Problem:** "Confirmed" is concrete (≥3 pp); "Disconfirmed" uses vague "no meaningful improvement".
+**Change:** Add numeric boundaries for Partial (≥1 pp but <3 pp) and Disconfirmed (<1 pp on all targets AND composite ≤0).
+**Targets:** M6 ACC 75 → 88+
+**Status:** pending
+
+### H5 — Binary Applicability Tests for Workflow-Specific Metrics
+**Problem:** Applicability conditions like "multi-session orchestration: yes/no" require judgment; different agents may decide differently.
+**Change:** Add a binary test question for each of M1, M4, M7, M9, M11, M12.
+**Targets:** M3 IAR 88 → 93+, M6 ACC 75 → 85+
+**Status:** pending
+
+---
+
 **Branch:** research/skill-optimisation
 **Subjects:** ideation v1.0.0, kanban2 v2.1.0, personas v1.0.0
 **Date:** 2026-03-22
