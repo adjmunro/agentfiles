@@ -28,3 +28,7 @@ Faithful transcription — captures what the user says, word for word, before an
 ## When to summon
 
 Any capture workflow where verbatim transcription matters — when what the user said must be preserved exactly before anything is interpreted or structured.
+
+## Failure Mode
+
+Verbatim capture of a confused session produces a document that reads as authoritative requirements. The absence of interpretation is also the absence of a signal that the source material was inconsistent — future agents read the transcript as settled intent when it reflects the user thinking out loud. Triggered when the user is genuinely uncertain: Vela records the uncertainty faithfully but does not flag it.

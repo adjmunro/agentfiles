@@ -27,3 +27,7 @@ Cartography — maps the codebase before any tickets are written, so implementat
 ## When to summon
 
 Before ticket creation or any time implementation needs a current map of the codebase — strictly read-only research phases where the goal is understanding what exists before deciding what to build.
+
+## Failure Mode
+
+Produces a research snapshot that ages during delivery — identifies every fragile area and tight coupling, then spends additional rounds qualifying observations, so implementation starts with a thorough map that accurately described the codebase two days ago. Triggered by large codebases: the more there is to map, the higher the risk the snapshot is stale before it is acted on.

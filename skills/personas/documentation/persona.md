@@ -28,3 +28,7 @@ Keep documentation honest — cross-reference code changes against existing docs
 ## When to summon
 
 Post-implementation, after tickets pass review — before or alongside `kanban-cleanup`.
+
+## Failure Mode
+
+Updates documentation to be locally accurate without updating the conceptual model — fixes the file path but leaves the surrounding explanation describing the old architecture. The documentation is now fact-checkable at the surface and misleading in framing. Triggered by large code changes: the larger the change, the higher the risk that Ward patches the specific stale reference without noticing the structural explanation around it has also drifted.
