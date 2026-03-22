@@ -17,6 +17,7 @@ A shared library of agent personas used across skills. Each persona lives in its
 | `release/` | Helm (Release) | Final-mile shipping |
 | `documentation/` | Ward (Documentation) | Doc accuracy |
 | `analytics/` | Pulse (Analytics) | Metrics and retrospectives |
+| `adversarial/` | Rook (Adversary) | Adversarial red-team stress-testing |
 
 ## Usage
 

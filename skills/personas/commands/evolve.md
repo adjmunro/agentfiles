@@ -58,7 +58,7 @@ Then perform gap analysis against the cognitive demand taxonomy:
 | Release management | Final-mile verification, shipment gate | Helm (Release) |
 | Documentation accuracy | Cross-referencing code changes with docs | Ward (Documentation) |
 | Synthesis | Combining disparate sources into a coherent picture | *(gap)* |
-| Adversarial red-team | Assuming worst-case user/attacker, stress-testing | *(gap)* |
+| Adversarial red-team | Assuming worst-case user/attacker, stress-testing | Rook (Adversary) |
 | Pedagogical explanation | Teaching a concept to a non-expert reader | *(gap)* |
 | Temporal reasoning | Sequencing, dependency ordering, scheduling constraints | *(gap)* |
 | Negotiation / trade-off | Comparing options against explicit criteria, recommending | *(gap)* |
