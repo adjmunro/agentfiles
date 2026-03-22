@@ -6,18 +6,8 @@ argument-hint: "<path-to-target-workflow-directory>"
 
 <!-- PROGRESSIVE DISCLOSURE: Load and execute only the phase block you are currently in.
      Do not read ahead into later phases. Each phase's inputs are produced by the previous
-     phase — loading them early defeats progressive disclosure and inflates context. -->
-
-## Personas
-
-Before beginning Phase 1, load the following personas. Each is active during specific
-phases as indicated below.
-
-- **Pulse (Analytics)** — `../../personas/analytics/persona.md` — active in Phase 2 (measurement)
-- **Keeper (Strategist)** — `../../personas/strategist/persona.md` — active in Phase 3 (hypothesis)
-- **Arden (Critic)** — `../../personas/critic/persona.md` — active in Phase 4 (validation)
-
-Identify by persona name in all output during the phase where that persona is active.
+     phase — loading them early defeats progressive disclosure and inflates context.
+     Personas follow the same rule — load only the persona for the current phase. -->
 
 ---
 
@@ -99,7 +89,7 @@ Write a brief audit summary to `research-log.md`:
 
 ## Phase 2 — Baseline Measurement
 
-**Persona: Pulse (Analytics)**
+**Persona: Pulse (Analytics)** — load `../../personas/analytics/persona.md` now. Identify as Pulse in all Phase 2 output.
 
 Re-read `research-log.md` (Intent Anchor).
 
@@ -223,7 +213,7 @@ Note the 3 weakest metrics (candidates for Phase 3 hypotheses) and the 3 stronge
 
 ## Phase 3 — Hypothesis Formation
 
-**Persona: Keeper (Strategist)**
+**Persona: Keeper (Strategist)** — load `../../personas/strategist/persona.md` now. Identify as Keeper in all Phase 3 output.
 
 Re-read `research-log.md` (Intent Anchor). Focus on the baseline section.
 
@@ -283,7 +273,7 @@ Write the full hypothesis list to `research-log.md` under `## Experiments — <d
 
 ## Phase 4 — Experiment Loop
 
-**Persona: Arden (Critic)**
+**Persona: Arden (Critic)** — load `../../personas/critic/persona.md` now. Identify as Arden in all Phase 4 output.
 
 Re-read `research-log.md` (Intent Anchor). Confirm which hypotheses were approved.
 
