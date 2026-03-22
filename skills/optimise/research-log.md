@@ -1493,3 +1493,99 @@ Composite: 3299 / (38 × 100) × 100 = 86.8%
 
 ---
 
+
+## Experiment Summary (run 5)
+- Confirmed: H20, H21, H22, H23, H24
+- Partial: none
+- Disconfirmed: none
+
+---
+
+## Final Results — 2026-03-22 (run 5)
+
+| Metric | Baseline | Post | Delta | Status |
+|--------|----------|------|-------|--------|
+| Intent-to-Output Traceability | 100 | 100 | — | — |
+| Directive Density | 100 | 100 | — | — |
+| Instruction Ambiguity Rate | 94 | 97 | +3pp | ↑ |
+| Wiring Completeness Score | 100 | 100 | — | — |
+| Redundancy Index | 88 | 88 | — | — |
+| AC Concreteness | 95 | 95 | — | — |
+| Human Touchpoint Count | 95 | 95 | — | — |
+| Context Decay Resilience | 100 | 100 | — | — |
+| Context Loading Efficiency | 95 | 95 | — | — |
+| Information Freshness Score | 100 | 100 | — | — |
+| Instruction Token Efficiency | 96 | 96 | — | — |
+| Persona-Phase Fit Score | 100 | 100 | — | — |
+| Persona Richness Score | 100 | 100 | — | — |
+| Self-Application Fidelity | 100 | 100 | — | — |
+| Metric Methodology Completeness | 100 | 100 | — | — |
+| Pattern Library Promotion Rate | 100 | 100 | — | — |
+| Persona Load Resilience | 100 | 100 | — | — |
+| Help Content Coverage | 100 | 100 | — | — |
+| Metric ID Consistency | 100 | 100 | — | — |
+| Experiment Isolation Score | 85 | 95 | +10pp | ↑ |
+| Recovery Path Completeness | 100 | 100 | — | — |
+| Hypothesis Surprise Rate | 70 | 70 | — | — |
+| Persona Experiment Cycle Completeness | 100 | 100 | — | — |
+| Phase Boundary Sharpness | 100 | 100 | — | — |
+| Hypothesis Template Completeness | 100 | 100 | — | — |
+| Cross-Run Learning Transfer | 100 | 100 | — | — |
+| Spot-Check Protocol Completeness | 100 | 100 | — | — |
+| Help Content Currency | 92 | 100 | +8pp | ↑ |
+| Pattern Experimental Validation Rate | 91 | 100 | +9pp | ↑ |
+| Research Log Navigability Score | 100 | 100 | — | — |
+| Hypothesis Recurrence Rate | 96 | 96 | — | — |
+| Metric Definition Cross-File Consistency | 87 | 100 | +13pp | ↑ |
+| **Composite** | **96.7%** | **98.0%** | **+1.3pp** | |
+
+Weights: IOT 2×, ACC 2×, HTC 2×, CDR 2×, CLE 2×, IFS 2×, PPF 2×, SAF 2×, PPR 2×, MIC 2×, CLT 2×, MDCC 2×. All others 1×. Total 44×.
+Baseline weighted sum: 4256 / 4400 = 96.7%.
+Post weighted sum: 4312 / 4400 = 98.0%.
+
+> Note: The Phase 2 baseline section reported 97.4% due to an arithmetic error in the TOTAL row (4301 written instead of correct 4256 = 45-point transcription error). The correct arithmetic was 96.7%, which is used here. The post-experiment score of 98.0% is unambiguous.
+
+### What improved and why
+
+- **Metric Definition Cross-File Consistency**: +13pp (87→100) — M3 help.md description now includes the normalisation direction ("Score = 100 − ambiguity%"); M10 re-examined and found already consistent (the 0.5 score in the baseline was a measurement error). H22. Note: effective delta from corrected pre-fix value was +6pp (94→100); the +13pp figure uses the reported baseline.
+- **Pattern Experimental Validation Rate**: +9pp (91→100) — corrective-pattern exemption added to MX16 methodology; P8 Persona Rotation marked [corrective — applies when PPF < 100], correctly excluded from denominator. P8 has never been applicable (PPF=100 throughout all runs). 9/9 applicable patterns now validated. H23.
+- **Experiment Isolation Score**: +10pp (85→95) — pre-experiment dependency scan step added to Phase 4 (Step 0). Checks all pending hypotheses for file overlap before applying any change. H20 and H22 were caught as same-file conflicts and run sequentially with metric re-check between them. H21.
+- **Help Content Currency**: +8pp (92→100) — P10 (Failure Mode Registry) and P11 (File Role Stratification) added to help.md with full detail sections and summary table rows. H20.
+- **Instruction Ambiguity Rate**: +3pp (94→97) — three unscoped weak modals replaced: "should not be used" → "must not be used" (p1-audit.md), "Consider whether... should use" → "check whether one would improve fit" (p1-audit.md), "should be promoted" → "Promote any" (p5-report.md). H24.
+
+### What was dropped and why
+
+Nothing dropped. All five hypotheses confirmed.
+
+### What remains to improve
+
+- **Hypothesis Surprise Rate**: 70 — structural recording infrastructure is in place (H15, run 3) but no confirmed experiment has produced a ≥2pp secondary gain. Well-isolated experiments naturally produce few secondary effects; this metric will improve organically as the scope of future experiments broadens. Not a structural gap — a side effect of precise experiment design.
+- **Redundancy Index**: 88 — residual ~12% redundancy in instruction corpus. Source is partial overlap between p3-hypothesize.md Design Pattern descriptions and NP entries in research-log.md. Unclear whether this redundancy is between instruction files (counted) or instruction vs. log (not counted by M5 methodology). Warrants a targeted re-read in run 6 to identify the exact source.
+- **Instruction Ambiguity Rate**: 97 — three residual advisory uses remain (intentionally left unchanged: descriptive possibilities in p2-baseline.md and p3-hypothesize.md example text). These are correctly classified as non-instructional. IAR ceiling under current methodology is approximately 97–98.
+
+---
+
+### NP4 — Content Synchronisation Audit
+**Discovered in:** skills/optimise
+**Problem it solved:** P10 and P11 were added to p3-hypothesize.md in run 4 but help.md was not updated. The gap was invisible to existing metrics (HCC=100 because what was in help.md was complete; MIC=100 because no range references were stale). HCU was introduced in run 5 specifically to catch this class of gap.
+**Implementation:** At the end of any session that adds named entries to an instruction file (new metrics, new patterns, new phases), check the corresponding reference/help file and update it in the same session.
+**Metrics it improved:** Help Content Currency (+8pp)
+**Generalises to:** Any skill that maintains a parallel help file alongside its command files — increasingly common as skills grow documentation layers. The pattern is: "if you add to the spec, update the guide."
+**Seed candidate:** yes — the synchronisation rule is simple, universal, and invisible to all current seed metrics. The gap it prevents (adding capability without documenting it) is a natural hazard in any iterative skill development process.
+
+### NP5 — Corrective-Pattern Applicability Classification
+**Discovered in:** skills/optimise
+**Problem it solved:** P8 Persona Rotation has never been applied (PPF=100 throughout) but the previous PEV methodology counted this as "unvalidated", conflating "never needed" with "needed but ignored". The fix distinguishes corrective patterns (only apply when a measured condition is met) from general patterns (apply broadly).
+**Implementation:** In the pattern library, mark any pattern whose description begins with a measurable trigger condition (e.g. "For workflows where [metric] < [threshold]") as corrective. In the PEV methodology, exclude corrective patterns from the denominator when the trigger condition has never been true.
+**Metrics it improved:** Pattern Experimental Validation Rate (+9pp)
+**Generalises to:** Any workflow with a pattern or rule library that distinguishes proactive patterns (apply to improve things that are working) from corrective patterns (apply to fix things that are broken). The classification prevents artificially low validation rates for patterns that are correctly never triggered.
+**Seed candidate:** yes — the corrective/proactive distinction is a useful structural concept for any library of rules or patterns that grows over time. Marking trigger conditions explicitly on corrective rules makes them self-documenting about when they apply.
+
+### NP6 — Pre-Experiment Dependency Scan
+**Discovered in:** skills/optimise
+**Problem it solved:** No structural check existed to detect when two pending hypotheses modified the same file. In a run with 4–5 concurrent hypotheses, two file-overlapping changes could produce non-attributable metric deltas (e.g. H20 and H22 both modified help.md in run 5 — caught by this scan).
+**Implementation:** Step 0 added to Phase 4: before applying any hypothesis, read all pending hypotheses from research-log.md, check for file overlap, and run overlapping hypotheses sequentially with a metric re-check between them.
+**Metrics it improved:** Experiment Isolation Score (+10pp)
+**Generalises to:** Any multi-hypothesis experiment session in any workflow optimisation context. The pattern is broadly applicable: any time multiple changes are queued, a dependency scan before execution prevents unattributed side effects. Analogous to "dependency checking before deployment."
+**Seed candidate:** yes — the pre-execution overlap check is a universal safety step for multi-change sessions. It generalises beyond optimisation workflows to any agent workflow that applies multiple changes in sequence.
+

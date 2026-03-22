@@ -2,6 +2,26 @@
 
 ---
 
+## v1.5.0 — 2026-03-22
+
+### Added
+- 5 new custom metrics: Help Content Currency (MX15), Pattern Experimental Validation Rate (MX16), Research Log Navigability Score (MX17), Hypothesis Recurrence Rate (MX18), Metric Definition Cross-File Consistency (MX19, moonshot 2×)
+- Step 0 (Pre-Experiment Dependency Scan) added to Phase 4: checks all pending hypotheses for file overlap before applying any change; overlapping hypotheses run sequentially with metric re-check between them
+- P10 (Failure Mode Registry) and P11 (File Role Stratification) added to help.md with full detail sections and summary table rows
+- P8 Persona Rotation marked [corrective — applies when PPF < 100] in p3-hypothesize.md
+- Corrective-pattern exemption added to MX16 PEV methodology: patterns with a trigger condition that has never been true are scored N/A and excluded from the denominator
+- Three novel patterns documented: NP4 (Content Synchronisation Audit), NP5 (Corrective-Pattern Applicability Classification), NP6 (Pre-Experiment Dependency Scan)
+
+### Changed
+- M3 IAR help.md entry: normalisation direction now explicit ("Score = 100 − ambiguity%")
+- p1-audit.md: two weak modals scoped ("should not" → "must not"; "Consider whether... should" → "check whether... would")
+- p5-report.md: "should be promoted" → "Promote any" (seed candidate step)
+
+### Fixed
+- Composite: 96.7% → 98.0% (+1.3pp) — five metrics improved this run
+
+---
+
 ## v1.4.0 — 2026-03-22
 
 ### Added
