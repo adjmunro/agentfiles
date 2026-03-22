@@ -2,6 +2,25 @@
 
 ---
 
+## v1.6.0 — 2026-03-22
+
+### Added
+- P12 (Content Synchronisation Audit), P13 (Corrective-Pattern Applicability Classification), P14 (Pre-Experiment Dependency Scan) added to `p3-hypothesize.md` Design Patterns library
+- P12/P13/P14 added to `help.md`: summary table rows and full detail sections
+- Research log archival mechanism: Phase 5 now checks log size; if >15,000 tokens, archives older runs to `research-log-archive-<date>.md` and resets the live log to current run only
+- 5 new custom metrics: Novel Pattern Promotion Currency (MX20), Research Log Size Manageability (MX21), Hypothesis Effect Traceability (MX22, moonshot 2×), Cross-Metric Stability Rate (MX23), Implementation-Changelog Consistency (MX24)
+- First archival executed: `research-log-archive-2026-03-22.md` created; live log reduced from ~36,000t to ~8,000t
+- NP7 (Measurement Accuracy Retrospective) documented as novel pattern — seed candidate
+
+### Changed
+- SKILL.md: pattern range updated from "P1–P11" to "P1–P14"; seed candidate promotion pointer updated from "P10+" to "P12+"
+- Redundancy Index corrected from 88 to 97: precise audit found actual cross-instruction-file redundancy is ~3%, not the estimated ~12% (research-log.md was incorrectly included in scope)
+
+### Fixed
+- Composite: 93.1% → 98.1% (+5.0pp) — seven metrics improved this run (PPR, CLT, NPPC, CMSR, RLSM, RI, HET)
+
+---
+
 ## v1.5.0 — 2026-03-22
 
 ### Added
