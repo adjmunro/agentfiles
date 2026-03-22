@@ -42,6 +42,18 @@ Score each persona against the **Richness Rubric**:
 
 Maximum: 14 points per persona. Richness Score = points / 14 × 100.
 
+Also score each persona against the **Soul Quality Rubric** (SQS):
+
+| Heuristic | Test | Points |
+|-----------|------|--------|
+| Essence Specificity | Could this Essence sentence describe only this persona, or could it fit ≥2 others in the library without modification? Unique = 2, borderline = 1, generic = 0 | 0–2 |
+| Opinion Non-obviousness | Would a thoughtful person who had never read this persona hold these same opinions? Surprising/distinctive = 2, mixed = 1, obvious = 0 | 0–2 |
+| Contradiction Observability | Could someone reading the Contradictions section predict when the tension would surface in a real response? Observable = 2, partially = 1, stated-but-invisible = 0 | 0–2 |
+| Voice Predictability | Given a prompt and this Voice description alone, could someone write a recognisable first sentence in this persona's voice? Predictive = 2, partial = 1, vague = 0 | 0–2 |
+| Unique Talent Uniqueness | Could this Unique Talent sentence be copy-pasted into a different persona in the library without modification? Irreplaceable = 2, borderline = 1, generic = 0 | 0–2 |
+
+Maximum: 10 points. SQS = points / 10 × 100.
+
 Then perform gap analysis against the cognitive demand taxonomy:
 
 | Cognitive mode | Description | Covered by |
@@ -66,7 +78,7 @@ Then perform gap analysis against the cognitive demand taxonomy:
 Note any gaps — cognitive modes with no dedicated persona are candidates for **new** mode.
 
 Identify:
-- **Distillation candidates**: personas with Richness Score < 85, listed with their missing fields
+- **Distillation candidates**: personas with Richness Score < 85 **or** SQS < 60, listed with their missing or weak fields
 - **Speciation candidates**: personas whose Purpose spans multiple cognitive modes, or whose DO list implies two distinct use cases that would be sharper separated
 
 Present a Recommendation Brief:
@@ -74,9 +86,9 @@ Present a Recommendation Brief:
 ```
 ## Persona Audit
 
-| Persona | Richness | Missing |
-|---------|----------|---------|
-| ...     | X/14 (Y%) | ... |
+| Persona | Richness | SQS | Missing / Weak |
+|---------|----------|-----|----------------|
+| ...     | X/14 (Y%) | Z/10 (W%) | ... |
 
 Distillation candidates: ...
 Speciation candidates: ...
@@ -147,11 +159,17 @@ Scan the evidence for traces of this persona's activity:
 - Instructions that were followed exactly vs. those that were adapted or ignored
 - Behaviors that appeared in the output but are not captured in any DO rule — emergent patterns that appear in the evidence source at least twice, associated with outputs that scored confirmed (≥3pp improvement) or received explicit positive attribution
 
+Run a **soul verification pass** against the evidence before deriving candidates:
+
+- **Contradiction check**: for each Contradiction in soul.md, identify moments in the evidence where that tension could have surfaced. Did it? A stated Contradiction that left no trace across multiple uses is inert — aspirational rather than real. Flag it.
+- **Voice calibration**: compare the Voice section description to how the persona actually responded in the evidence. Does the description accurately predict the register, rhythm, and characteristic moves observed? Note any persistent divergence between described voice and actual voice.
+- **Inert soul content**: identify Core Truths or Opinions that left no observable trace in the evidence — no influence on conclusions, no tension with a DO rule, no appearance in output phrasing. These are candidates for sharpening or pruning.
+
 Derive distillation candidates:
 - **Sharpen**: a DO rule that is too vague and could be made more concrete (e.g., "be thorough" → "check every file listed in the Phase 1 audit before claiming coverage is complete")
 - **Add**: an emergent behavior that was effective but is absent from the file — write it as a new DO rule
 - **Prune**: a DO rule that was never exercised and appears situational to a specific workflow; demote to a note or remove
-- **Deepen**: a soul field that is thin relative to what the evidence reveals — e.g., a Contradictions entry that a run exposed but isn't captured
+- **Deepen**: a soul field that is thin or inert relative to what the evidence reveals — a Contradiction that never surfaced, a Voice description that didn't predict actual output, a Core Truth that left no trace
 
 Format each candidate as a specific proposed change — exact wording, exact location in the file. For each candidate, cite the evidence: include the section name or quoted phrase from the evidence source that supports the change. A candidate without an evidence citation is not ready to propose.
 
