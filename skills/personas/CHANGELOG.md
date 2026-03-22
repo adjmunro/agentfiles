@@ -1,5 +1,18 @@
 # Personas Changelog
 
+## 1.2.0 — Optimise Run 2 (2026-03-22)
+
+**Composite: 88.1% → 94.4% (+6.3pp). All 3 hypotheses confirmed.**
+
+- Added mandatory evidence citation requirement to `evolve.md` distil mode: each candidate (sharpen/add/prune/deepen) must cite the section name or quoted phrase from the evidence source — ECR 0→100, IOT 50→65 [H5]
+- Added Keeper (Strategist) persona directive to `evolve.md` speciate mode — PPF 80→90 [H6]
+- Added new persona **Loom (Synthesist)** (`synthesis/persona.md` + `synthesis/soul.md`) — fills synthesis cognitive gap; assigned to `evolve.md` new mode — PPF 90→100, PCC 75→81 [H7]
+- Updated SKILL.md roster, `commands/summon.md`, and `commands/evolve.md` taxonomy to include Loom
+- 5 new custom metrics defined: MIC, FPC, CFRV, PSA (all 100 at baseline), ECR (0 at baseline — resolved by H5)
+- Novel pattern documented: NP3 (Emergent Property Test for New Persona Creation)
+
+---
+
 ## 1.1.0 — Optimise Run 1 (2026-03-22)
 
 **Composite: 82.0% → 89.3% (+7.3pp). All 4 hypotheses confirmed.**
