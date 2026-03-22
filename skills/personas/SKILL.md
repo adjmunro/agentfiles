@@ -33,11 +33,14 @@ No invocation context needed beyond which phases the persona is active in. The p
 ## Commands
 
 - `commands/summon.md` — summon one or more personas for freeform conversation
+- `commands/evolve.md` — speciate, distil, and audit personas; create new variants with evidence-based sharpening
 
 ## Adding a Persona
 
 1. Create `{name}/` directory with `persona.md` and `soul.md`.
-2. `persona.md` structure: identity line, soul.md reference note, Purpose, DO, DO NOT, When to summon.
-3. `soul.md` structure: Essence, Core Truths, Opinions, Contradictions, Voice.
+2. `persona.md` structure: identity line, soul.md reference note, Purpose, DO (≥3 rules), DO NOT (≥2 rules), When to summon, **Failure Mode**.
+3. `soul.md` structure: Essence, Core Truths (≥3), Opinions (≥2), Contradictions (≥1), Voice, **Unique Talent**, Origin (speciated personas only).
 4. Add to the roster above.
 5. Bump version and update CHANGELOG.md.
+
+See `AGENTS.md` for full field definitions. **Unique Talent** and **Failure Mode** are mandatory — they are what distinguish a persona that changes behaviour from one that is merely decorative.
