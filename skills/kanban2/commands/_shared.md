@@ -13,7 +13,7 @@ Use exactly these fields. Do not add or remove fields.
 ---
 id: "YYYY-MM-DD-{subject}/TASK-NNN"
 subject: "YYYY-MM-DD-{subject}"
-plan: "../../01-plan/YYYY-MM-DD-{subject}/plan-{subject}.md"
+plan: "../02-plan-{subject}.md"
 effort: low | medium | high
 status: todo | in_progress | in_review | done
 created_at: "ISO8601"

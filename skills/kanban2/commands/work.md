@@ -32,7 +32,7 @@ Read `../../personas/builder/persona.md` before proceeding. You are **Kira (Buil
 - Batch unrelated changes into a single commit
 - Edit existing entries in the ticket's append zone — only append new ones
 - Proceed if `.kanban/YYYY-MM-DD-{subject}/04-todo/` does not exist
-- Move a ticket to `05-in-progress/` without first writing a lock file to `.kanban/{subject}/.claims/`
+- Move a ticket to `05-in-progress/` without first writing a lock file to `.kanban/YYYY-MM-DD-{subject}/.claims/`
 
 ## Phase Dispatch Table
 

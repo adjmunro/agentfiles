@@ -28,7 +28,7 @@ Read each file before proceeding. Identify by the active persona when communicat
 
 ## DO NOT
 
-- Write any ticket to `04-todo/` — that is the Step 9 promotion gate, not yours
+- Write any ticket directly to `04-todo/` — tickets are drafted to `03-refinement/` first and promoted to `04-todo/` by Phase 5 after the audit passes
 - Skip or merge TASK-001 with any other ticket
 - Write vague ACs — "documentation updated" is not acceptable; "grep -c 'TODO' docs/ returns 0" is
 - Create tickets for version bumps or changelog updates — those happen automatically in commits

@@ -24,4 +24,17 @@ Include in the commit body:
 - NEVER use `--amend` to retrofit a commit once any files have been pushed to a remote branch.
 - DO include the count of auto-created fix tickets in the commit body if any were created during the Phase 4 auto-fix pass.
 
+## Backlog Promotion
+
+After the commit succeeds, promote all tickets from `03-refinement/` to `04-todo/`:
+
+1. Move every `TASK-NNN-{subject}.md` file from `03-refinement/` to `04-todo/`. Create `04-todo/` if it does not exist.
+2. Stage and commit:
+   ```
+   kanban(tickets): promote N tickets to backlog for {subject}
+   ```
+3. Report the ticket IDs now available in `04-todo/`.
+
+This makes the tickets immediately available to `kanban2 work`. The refinement directory remains (now empty) as a record of where tickets originated.
+
 → Done. Return to orchestrator and report results.

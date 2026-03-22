@@ -11,7 +11,7 @@ status: in_review
 completed_at: "<ISO8601 timestamp>"
 ```
 
-**Lock file cleanup:** After moving the ticket to `06-in-review/`, delete `.kanban/{subject}/.claims/{ticket-id}.lock` if it exists. This releases the claim so the slot is available if the ticket is ever reset.
+**Lock file cleanup:** After moving the ticket to `06-in-review/`, delete `.kanban/YYYY-MM-DD-{subject}/.claims/{ticket-id}.lock` if it exists. This releases the claim so the slot is available if the ticket is ever reset.
 
 If inside a git repo:
 1. Stage the moved ticket file.
