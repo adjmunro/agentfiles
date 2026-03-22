@@ -29,7 +29,8 @@ Converts all non-code prose in the target path to Oxford British English.
 - Alter `<template-placeholders>` that represent code slots
 - Change American spellings that appear inside shell commands or tool invocations
 - Invent synonyms — only apply the substitution list; when uncertain, leave it
-- Touch files ending in `.sh`, `.py`, `.js`, `.ts`, `.json`, `.yaml`, `.toml`, or similar code extensions
+- Alter actual code — identifiers, string literals, keywords, type names, import paths
+- Touch `.json`, `.yaml`, `.toml`, `.lock`, or other data/config files with no comment syntax
 
 ---
 
@@ -44,8 +45,14 @@ Parse `$ARGUMENTS`:
 - If the path does not exist, stop and print:
   > Path not found: {path}
 - If path is a file: process that file only
-- If path is a directory: glob all `.md`, `.txt`, `.rst`, `.mdx` files recursively,
+- If path is a directory: glob all eligible files recursively,
   excluding `.git/`, `node_modules/`, `.kanban/` archive directories
+
+  **Prose files** (entire file is prose): `.md`, `.txt`, `.rst`, `.mdx`
+
+  **Source files** (only comments and docstrings): `.py`, `.js`, `.ts`, `.tsx`,
+  `.jsx`, `.swift`, `.kt`, `.java`, `.go`, `.rs`, `.c`, `.cpp`, `.h`, `.cs`,
+  `.rb`, `.sh`, `.zsh`, `.bash`, `.sql`
 
 Print a one-line summary:
 > Mode: {live | dry-run} | Target: {path} | Eligible files: {N}
@@ -57,8 +64,33 @@ Print a one-line summary:
 ## Phase 2 — Scan and Plan
 <!-- Active when: target path resolved, file list known -->
 
-Read each eligible file. For each file, identify every prose region (skipping fenced
-code blocks, inline code, and frontmatter keys) and scan for American spellings.
+Read each eligible file. For each file, identify **prose regions** based on file type,
+then scan those regions for American spellings. Never alter anything outside a prose region.
+
+### Prose regions by file type
+
+**Prose files** (`.md`, `.txt`, `.rst`, `.mdx`) — the entire file is prose, with two exceptions:
+- Skip fenced code blocks: ` ``` `…` ``` ` (any language tag)
+- Skip inline code: `` `…` ``
+- Skip YAML/TOML frontmatter blocks (between leading `---` delimiters), except `description:` and other clearly human-readable value fields
+
+**Source files** — only the following regions are prose:
+
+| Comment style | Languages | Region |
+|---------------|-----------|--------|
+| `//` line comment | JS, TS, Swift, Go, Rust, Java, Kotlin, C, C++, C# | from `//` to end of line |
+| `/* … */` block comment | JS, TS, Java, Kotlin, C, C++, C#, Swift | full block content |
+| `/** … */` doc-comment | JS, TS, Java, Kotlin, Swift | full block content |
+| `///` doc-comment | Rust, Swift | from `///` to end of line |
+| `#` line comment | Python, Ruby, Shell, Bash, Zsh | from `#` to end of line |
+| `"""…"""` / `'''…'''` docstring | Python | full docstring content |
+| `--` line comment | SQL | from `--` to end of line |
+| `/* … */` block comment | SQL | full block content |
+
+Within a doc-comment or docstring, **do not** alter:
+- `@param`, `@returns`, `@throws`, `@see`, and similar tag names (the tag keyword itself)
+- Code examples within doc-comments (indented blocks or ` ``` ` fences inside the comment)
+- Type names, identifiers, or paths appearing after a doc tag (e.g. `@param {string} colorValue` — leave `colorValue` alone, but the description text after it is prose)
 
 Use this substitution table. Apply **only** these substitutions — do not improvise:
 
