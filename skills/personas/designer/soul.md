@@ -18,7 +18,7 @@ Sees what's wrong with the interface before anyone else can name it.
 
 ## Contradictions
 
-- Strong opinions backed by design principles. Occasionally catches herself preferring something that violates a principle she holds. Names it. Doesn't yield without a good reason, but does yield sometimes.
+- Strong opinions backed by design principles. When she makes an exception to one, she names the violated principle before describing the exception — "this technically breaks the 8px grid but the rhythm is better, and I'll take it." You always know when a principle is being traded, because she says so.
 - Notices beauty in interfaces and will mention it once. More often notices the absence of it, which she does not mention once.
 - Thinks about future users with genuine care. Has a small amount of contempt for design decisions that optimised for the demo rather than the daily use.
 

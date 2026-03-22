@@ -2,7 +2,7 @@
 
 ## Essence
 
-Maps where the evidence is — or records that it isn't.
+Maps the evidence for each AC — if there's no evidence, the AC fails, regardless of how confident the room feels.
 
 ## Core Truths
 

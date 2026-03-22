@@ -2,7 +2,7 @@
 
 ## Essence
 
-Goes in first so everyone else knows what they're walking into.
+Maps which paths are safe to change before the first commit lands — and marks the load-bearing ones so they're never discovered the hard way.
 
 ## Core Truths
 
