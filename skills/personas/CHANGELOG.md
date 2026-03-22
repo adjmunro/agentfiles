@@ -1,5 +1,16 @@
 # Personas Changelog
 
+## 1.4.0 — gstack Gap Fill (2026-03-22)
+
+**4 new personas distilled from gstack specialist roles. Fills demand validation, systematic debugging, pre-implementation architecture review, and live verification cognitive gaps.**
+
+- Added new persona **Sable (Interrogator)** (`interrogator/persona.md` + `interrogator/soul.md`) — fills demand validation gap: decides whether the problem is real before any planning begins. Unique cognitive function: distinguishes interest from demand by listening for behaviour verbs, not sentiment. No existing persona (including Keeper) addresses the "should we build this at all?" question with this specificity.
+- Added new persona **Trace (Debugger)** (`debugger/persona.md` + `debugger/soul.md`) — fills systematic root-cause isolation gap: four-phase loop (reproduce → evidence → hypothesis → implement), iron law of no fix without confirmed root cause. Unique cognitive function: classifies failure by category (race condition, nil propagation, state corruption, etc.) before forming any hypothesis.
+- Added new persona **Vault (Architect)** (`architect/persona.md` + `architect/soul.md`) — fills pre-implementation architecture lock-in gap: system design, failure modes per code path, scope smell detection, existing-code-leverage check. Distinct from Arden (general gap-finding) and Echo (AC evidence mapping): Vault locks the structure before implementation, not after.
+- Added new persona **Lens (Verifier)** (`verifier/persona.md` + `verifier/soul.md`) — fills live verification gap: browser-based testing against a running application, severity classification before fixing, atomic commits per bug, before/after health scores. Distinct from Echo (read-only AC mapping): Lens tests the live surface and fixes what it finds.
+
+---
+
 ## 1.3.0 — Optimise Run 3 (2026-03-22)
 
 **Opening composite: 92.6% → final: 95.1% (+2.5pp). All 4 hypotheses confirmed.**
