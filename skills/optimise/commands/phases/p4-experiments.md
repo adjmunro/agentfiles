@@ -99,6 +99,11 @@ Record in `research-log.md`:
 
 Use the spot-check score alongside the structural metric delta to determine confirmed/partial/disconfirmed. A persona experiment requires *both* structural improvement (M14 PPF or M15 PRS ≥+3pp) *and* a non-negative spot-check score to be confirmed. If structural metrics improve but the spot-check shows no quality gain, classify as partial.
 
+**Persona experiment failure modes and recovery paths:**
+- **Malformed persona file** (missing Unique Talent or Failure Mode sections): use the persona as-is but record the richness gap in the log. Score the phase as partial on M14 PPF regardless of cognitive alignment. Note in the hypothesis result: "Persona file incomplete — M15 PRS gap not closed."
+- **Ambiguous spot-check markers** (quality marker cannot be scored pass/partial/fail objectively): score that marker as partial (0.5) and record the ambiguity in the `**Marker scores:**` field. A marker that is genuinely untestable in a single response does not fail — it scores partial by default.
+- **Persona evolution command unavailable** (`evolve.md` not found or the `/personas evolve` skill fails): proceed without the evolve command. Create the persona manually per the AGENTS.md spec (full `persona.md` + `soul.md`, including Unique Talent and Failure Mode). Note in the result: "evolve.md unavailable — persona created manually."
+
 After all hypotheses are processed, write a summary to `research-log.md`:
 
 ```markdown
