@@ -115,7 +115,7 @@ Find the section below that best matches the argument. Display only that section
 ### Instruction Ambiguity Rate (M3 · IAR)
 *Also matches: M3, IAR, ambiguity, modal, vague, should, may*
 
-**Measures:** The proportion of instructions that use unscoped modal verbs ("should", "may", "might", "consider", "try to") with no qualifying condition.
+**Measures:** The proportion of instructions that use unscoped modal verbs ("should", "may", "might", "consider", "try to") with no qualifying condition. Score = 100 − ambiguity%, so a lower proportion of ambiguous instructions produces a higher score.
 
 **Intent:** An instruction like "should be recorded" gives no guidance on when or why — two agents may interpret it differently. A scope qualifier ("should be recorded if the target is inside a git repo") makes the instruction deterministic. This metric identifies instructions that rely on agent judgment where explicit rules would be better.
 
