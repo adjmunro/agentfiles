@@ -35,7 +35,7 @@ Oxford comma is **not** enforced automatically — it requires contextual judgem
 - `$ARGUMENTS` may be a single file or a directory (recursive)
 - Append `--dry-run` to preview changes without writing
 - **Prose files** (`.md`, `.txt`, `.rst`, `.mdx`): entire file is converted, except fenced code blocks and inline code
-- **Source files** (`.py`, `.js`, `.ts`, `.tsx`, `.swift`, `.kt`, `.java`, `.go`, `.rs`, `.c`, `.cpp`, `.h`, `.cs`, `.rb`, `.sh`, `.sql`): only comments and docstrings are converted — code is never touched
+- **Source files** (`.py`, `.js`, `.jsx`, `.ts`, `.tsx`, `.swift`, `.kt`, `.java`, `.go`, `.rs`, `.c`, `.cpp`, `.h`, `.cs`, `.rb`, `.sh`, `.zsh`, `.bash`, `.sql`): only comments and docstrings are converted — code is never touched
 - Skips binary files, `.git/`, `node_modules/`, `.json`/`.yaml`/`.toml` data files, and `.kanban/` archives
 
 ## Versioning

@@ -19,9 +19,9 @@ After reading the plan, extract the `## Intent` section and write a 1-sentence i
 
 ### Step B — Read All Changed Source Files
 
-From the ticket's implementation notes or `## Changes` section, identify all files modified during the work session. Read each one in full (use `offset`/`limit` for large files).
+From the ticket's Work Log entries, identify all files modified during the work session. Read each one in full (use `offset`/`limit` for large files).
 
-If the ticket does not list changed files explicitly, infer them:
+If the Work Log does not list changed files explicitly, infer them:
 - Check `git diff HEAD~1 --name-only` or `git status` for recently modified files
 - Cross-reference with the plan's requirements to identify relevant files
 

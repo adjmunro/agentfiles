@@ -169,3 +169,5 @@ Report to the user:
 - Any Critic gaps that were not fully resolved — flag these explicitly so they can be addressed before the next ideation step
 
 Keep the report concise. The user should be able to confirm capture succeeded and know what, if anything, needs follow-up before research begins.
+
+→ Next: Run `ideation/commands/research.md` to explore the codebase or prior art, then `ideation/commands/interview.md` to form recommendations.

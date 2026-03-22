@@ -56,11 +56,14 @@ Construct the input paths:
   - If age > 48 hours: load, but prepend this warning to any extracted content:
     ⚠ STALE (written {N} days ago): treat as reference only. Verify all claims against the current codebase before acting.
 
-Read both files in full before proceeding. If either file is missing, **STOP** and print:
+Read both files before proceeding.
 
-> Cannot run interview: `{missing-file}` does not exist. Run capture (Step 1) and research (Step 2) first.
+- If `00-input-{subject}.md` is missing: **STOP** and print:
+  > Cannot run interview: `00-input-{subject}.md` does not exist. Run `/ideation capture` first.
 
-Do not form recommendations. Do not proceed.
+- If `01-research-{subject}.md` is missing: **WARN** and continue with only the input file. Print:
+  > ⚠ Research file not found — proceeding with input only. Confidence levels will reflect the absence of codebase evidence. Run `/ideation research` first for higher-quality recommendations.
+  All UNCERTAIN items that would normally cite codebase evidence must be marked UNCERTAIN (not HIGH).
 
 ---
 
@@ -217,6 +220,6 @@ Report to the user:
 - Any decision points skipped because the input or research already resolved them
 - The path to the updated `00-input-{subject}.md`
 - Whether a git commit was made (and the commit message)
-- What comes next: Step 4 (Write Plan) using `ideation/commands/plan.md`
+- What comes next: run `ideation/commands/plan.md`
 
 Keep the report brief. The user must know the interview is complete and what to run next.

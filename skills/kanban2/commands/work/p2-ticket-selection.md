@@ -17,18 +17,20 @@ Then exit. Do not touch any files.
 
 **Pre-claim check — run before moving any ticket:**
 
-1. Check for `.kanban/{subject}/.claims/{ticket-id}.lock`.
+In these steps, `{subject}` is the **full** `YYYY-MM-DD-{subject}` slug (e.g. `2026-03-22-linkcheck`), matching the directory name used everywhere else.
+
+1. Check for `.kanban/YYYY-MM-DD-{subject}/.claims/{ticket-id}.lock`.
 2. If the lock file exists:
    a. Read its `claimed_at` timestamp and `stale_after_hours` value.
    b. If age > `stale_after_hours`: the lock is abandoned. Delete it and proceed to step 3.
    c. If age ≤ `stale_after_hours`: this ticket is already claimed in this session. Skip it — select the next unclaimed ticket from `04-todo/` instead and repeat the pre-claim check for that ticket.
-3. Write the lock file to `.kanban/{subject}/.claims/{ticket-id}.lock` with:
+3. Write the lock file to `.kanban/YYYY-MM-DD-{subject}/.claims/{ticket-id}.lock` with:
    ```
    claimed_at: {ISO timestamp}
    session_hint: {first 8 chars of a random UUID or current timestamp in ms}
    stale_after_hours: {value from ticket frontmatter, default 4}
    ```
-   Create `.kanban/{subject}/.claims/` if it does not exist.
+   Create `.kanban/YYYY-MM-DD-{subject}/.claims/` if it does not exist.
 4. Then proceed to move the ticket to `05-in-progress/` and update its frontmatter.
 
 **Move the selected ticket** from `.kanban/YYYY-MM-DD-{subject}/04-todo/` to `.kanban/YYYY-MM-DD-{subject}/05-in-progress/`. Create the destination directory if it does not exist.

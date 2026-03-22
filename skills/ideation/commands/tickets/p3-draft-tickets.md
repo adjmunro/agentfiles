@@ -86,10 +86,4 @@ TASK-002-{subject}.md
 
 Where `{subject}` is the short slug portion of the parent directory name (strip the `YYYY-MM-DD-` date prefix).
 
-Git commit after writing all ticket files:
-
-```
-kanban(tickets): draft N tickets for {subject}
-```
-
-→ Next: Read `tickets/p4-critic-audit.md` and execute it.
+→ Next: Read `tickets/p4-critic-audit.md` and execute it. (The final git commit happens in p5, after the audit passes.)
