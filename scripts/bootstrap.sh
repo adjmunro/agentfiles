@@ -12,6 +12,7 @@
 set -e
 
 AGENTFILES_URL="https://raw.githubusercontent.com/adjmunro/agentfiles/main"
+AGENTFILES_RAW="$AGENTFILES_URL"
 
 # ── Resolve source ────────────────────────────────────────────────────────────
 
@@ -23,50 +24,60 @@ else
   use_local=false
 fi
 
-# ── Detect target dirs ────────────────────────────────────────────────────────
+# ── Verify git repo ───────────────────────────────────────────────────────────
 
 if [[ ! -d ".git" ]]; then
   echo "Error: not a git repository. Run from your project root after git init."
   exit 1
 fi
 
-# Prefer .claude/commands/, fall back to .agents/commands/
-if [[ -d ".claude" ]]; then
-  target_dir=".claude/commands/install"
-elif [[ -d ".agents" ]]; then
-  target_dir=".agents/commands/install"
+# ── Detect target skills dir ──────────────────────────────────────────────────
+#
+# Prefer .agents/skills/ (agent-agnostic), fall back to .claude/skills/.
+# Create the chosen dir if it does not exist.
+
+if [[ -d ".agents" ]]; then
+  skills_dir=".agents/skills"
+elif [[ -d ".claude" ]]; then
+  skills_dir=".claude/skills"
 else
-  # Create .claude/ as default
   mkdir -p .claude
-  target_dir=".claude/commands/install"
+  skills_dir=".claude/skills"
 fi
 
-mkdir -p "$target_dir/components"
+target_dir="$skills_dir/install"
 
-# ── Install files ─────────────────────────────────────────────────────────────
+mkdir -p \
+  "$target_dir/commands" \
+  "$target_dir/commands/components"
+
+# ── Install helper ────────────────────────────────────────────────────────────
 
 install_file() {
-  local rel_path="$1"          # path within skills/install/commands/
-  local dest="$2"              # destination path
+  local rel_path="$1"   # path within the skills/install/ directory in agentfiles
+  local dest="$2"
 
   if $use_local; then
-    cp "$AGENTFILES_PATH/skills/install/commands/$rel_path" "$dest"
+    cp "$AGENTFILES_PATH/skills/install/$rel_path" "$dest"
   else
-    curl -sSL "$AGENTFILES_URL/skills/install/commands/$rel_path" -o "$dest"
+    curl -sSL "$AGENTFILES_RAW/skills/install/$rel_path" -o "$dest"
   fi
 }
 
+# ── Install skill package ─────────────────────────────────────────────────────
+
 echo "Installing to $target_dir/ ..."
 
-install_file "install.md"                              "$target_dir/install.md"
-install_file "components/kanban.md"                    "$target_dir/components/kanban.md"
-install_file "components/sign-hook.md"                 "$target_dir/components/sign-hook.md"
-install_file "components/british-english-hook.md"      "$target_dir/components/british-english-hook.md"
-install_file "components/symlinks.md"                  "$target_dir/components/symlinks.md"
-install_file "components/gradle-idea.md"               "$target_dir/components/gradle-idea.md"
-install_file "components/bash-guard.md"                "$target_dir/components/bash-guard.md"
-install_file "components/readme-hook.md"               "$target_dir/components/readme-hook.md"
-install_file "components/title-hook.md"                "$target_dir/components/title-hook.md"
+install_file "SKILL.md"                                        "$target_dir/SKILL.md"
+install_file "commands/install.md"                             "$target_dir/commands/install.md"
+install_file "commands/components/kanban.md"                   "$target_dir/commands/components/kanban.md"
+install_file "commands/components/sign-hook.md"                "$target_dir/commands/components/sign-hook.md"
+install_file "commands/components/british-english-hook.md"     "$target_dir/commands/components/british-english-hook.md"
+install_file "commands/components/symlinks.md"                 "$target_dir/commands/components/symlinks.md"
+install_file "commands/components/gradle-idea.md"              "$target_dir/commands/components/gradle-idea.md"
+install_file "commands/components/bash-guard.md"               "$target_dir/commands/components/bash-guard.md"
+install_file "commands/components/readme-hook.md"              "$target_dir/commands/components/readme-hook.md"
+install_file "commands/components/title-hook.md"               "$target_dir/commands/components/title-hook.md"
 
 echo ""
 echo "✓ /install skill installed to $target_dir/"
