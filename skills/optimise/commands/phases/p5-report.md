@@ -50,6 +50,19 @@ Promote any seed candidates to the Design Patterns section in
 
 Append the full report to `research-log.md` under `## Final Results — <date>`.
 
+### Research Log Archival
+
+After appending the report, check the size of `research-log.md`:
+
+- Estimate the approximate token count (characters ÷ 4, or line count × average tokens per line).
+- If the log exceeds **15,000 tokens**, archive it:
+  1. Create `research-log-archive-<date>.md` in the same directory. Copy all content from the log up to and including the previous run's `## Final Results` section into the archive file.
+  2. Replace the archived content in `research-log.md` with a single header line: `## Archive: see research-log-archive-<date>.md for runs prior to <current run date>`.
+  3. Keep the current run's Intent, Audit, Baseline, Hypotheses, and Final Results sections in the live log.
+- If the log is under 15,000 tokens, no action needed — note "Log within size threshold; no archival required."
+
+This keeps the live log within a single-context load (~15,000t) while preserving all historical data in the archive file.
+
 Print a terminal summary in plain language — no metric abbreviations or internal IDs:
 
 ```
