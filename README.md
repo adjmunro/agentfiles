@@ -22,7 +22,63 @@ agentfiles/
     └── summary/
 ```
 
+## Getting Started
+
+### Bootstrap a new project
+
+From any git repository, run:
+
+```zsh
+zsh <(curl -sSL https://raw.githubusercontent.com/adjmunro/agentfiles/main/scripts/bootstrap.sh)
+```
+
+This downloads the `/install` skill into `.claude/commands/install/`. Then:
+
+```
+/install all
+```
+
+To install specific components only:
+
+```
+/install kanban
+/install symlinks
+/install bash-guard
+/install readme-hook
+/install title-hook
+/install sign-hook
+/install british-english-hook
+/install gradle-idea
+```
+
+### Cold-start agent prompt
+
+No curl access? Paste this into any agent:
+
+```
+Fetch https://raw.githubusercontent.com/adjmunro/agentfiles/main/scripts/bootstrap.sh
+and execute it in the current directory. Then run /install all.
+```
+
+---
+
 ## Skills
+
+### `/install`
+
+Bootstraps any git repository with agentfiles components. Run `/install all` to
+apply the full standard setup, or pick components individually.
+
+| Component | What it installs |
+|-----------|-----------------|
+| `kanban` | `.kanban/` directory scaffold (01-plan through 06-archive) and command symlinks |
+| `sign-hook` | Batch commit-signing pre-push hook |
+| `british-english-hook` | Pre-commit British English enforcement (perl, portable) |
+| `symlinks` | AGENTS.md/CLAUDE.md/GEMINI.md unification, skills/hooks dir migration, worktrees |
+| `gradle-idea` | Gradle IDEA plugin with `.worktrees` exclusion |
+| `bash-guard` | Pre-tool-use hook blocking redundant Bash calls (cat/grep/find/ls) |
+| `readme-hook` | Post-commit hook reminding the agent to update README.md on structural changes |
+| `title-hook` | Terminal title hook — sets window title from repo/branch/PR context |
 
 ### `/implement`
 

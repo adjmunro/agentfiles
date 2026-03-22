@@ -1,16 +1,14 @@
 # Component: gradle-idea
 
-Configures the Gradle IDEA plugin in the target project to exclude the `.worktrees/`
-directory from IntelliJ IDEA indexing, adds `.worktrees/` to `.gitignore`, and
-creates the `.worktrees/` directory with symlinks from `.claude/` and `.agents/`.
-
-**Inputs:** `$TARGET`, `$AGENTFILES_ROOT`
+Configures the Gradle IDEA plugin in the current project to exclude `.worktrees/`
+from IntelliJ IDEA indexing, adds `.worktrees/` to `.gitignore`, and creates the
+`.worktrees/` directory with symlinks from `.claude/` and `.agents/`.
 
 ## DO
 
 - Detect whether the build file is Groovy (`build.gradle`) or Kotlin DSL (`build.gradle.kts`)
 - Only modify the root-level build file — never touch submodule build files
-- Check before adding: skip the plugin or exclusion if already present
+- Check before adding: skip if already present
 - Add `.worktrees/` to `.gitignore` only if not already present
 
 ## DO NOT
@@ -23,61 +21,41 @@ creates the `.worktrees/` directory with symlinks from `.claude/` and `.agents/`
 
 ## Phase 1 — Find Root Build File
 
-Use Glob to check for `$TARGET/build.gradle` then `$TARGET/build.gradle.kts`.
+Glob for `./build.gradle` then `./build.gradle.kts` in the current directory.
 
-- If `build.gradle` exists: set `$BUILD_FILE=$TARGET/build.gradle`, `$BUILD_TYPE=groovy`
-- If `build.gradle.kts` exists: set `$BUILD_FILE=$TARGET/build.gradle.kts`, `$BUILD_TYPE=kts`
-- If neither exists: print the following and stop:
-
-> No root build.gradle or build.gradle.kts found in `{target}`.
-> The gradle-idea component requires a Gradle project.
+- Found `build.gradle`: set `$BUILD_FILE=./build.gradle`, `$BUILD_TYPE=groovy`
+- Found `build.gradle.kts`: set `$BUILD_FILE=./build.gradle.kts`, `$BUILD_TYPE=kts`
+- Neither found: print the following and stop:
+  > No root build.gradle or build.gradle.kts found. The gradle-idea component requires a Gradle project.
 
 ---
 
 ## Phase 2 — Add idea Plugin
 
-Read `$BUILD_FILE`.
+Read `$BUILD_FILE`. Check if already configured:
+- Groovy: `apply plugin: 'idea'` or `'idea'` in a `plugins { }` block
+- KTS: `id("idea")` in a `plugins { }` block
 
-**Detect whether the idea plugin is already configured:**
-- Groovy: look for `apply plugin: 'idea'` or `'idea'` inside a `plugins { }` block
-- KTS: look for `id("idea")` inside a `plugins { }` block
-
-If already present: print "idea plugin already configured — skipping" and go to Phase 3.
+If already present: print "idea plugin already configured — skipping". Go to Phase 3.
 
 **If not present:**
 
-For **Groovy** (`build.gradle`):
-- If a `plugins { }` block exists: add `apply plugin: 'idea'` on a new line immediately
-  after the closing `}` of the plugins block
-- If no `plugins { }` block: insert `apply plugin: 'idea'` near the top of the file,
-  after any `buildscript { }` block (or at the very top if no buildscript block exists)
+For **Groovy**: add `apply plugin: 'idea'` after the closing `}` of any `plugins { }` block,
+or near the top of the file if no plugins block exists.
 
-For **KTS** (`build.gradle.kts`):
-- If a `plugins { }` block exists: add `    id("idea")` as the last entry inside it,
-  before the closing `}`
-- If no `plugins { }` block exists: insert at the top of the file:
-  ```kotlin
-  plugins {
-      id("idea")
-  }
-  ```
+For **KTS**: add `    id("idea")` as the last entry inside the `plugins { }` block, or
+insert a new `plugins { id("idea") }` block at the top if none exists.
 
-Write the modified build file.
-Print: "✓ idea plugin added to `{build_file}`"
+Write the file. Print: "✓ idea plugin added to `{build_file}`"
 
 ---
 
 ## Phase 3 — Add idea Module Exclusion
 
-Read the (now updated) `$BUILD_FILE`.
+Read the updated `$BUILD_FILE`. Check for an existing `.worktrees` exclusion in an
+`idea { }` block. If already present: print "idea module exclusion already configured — skipping".
 
-**Check for an existing `idea { }` block with a `.worktrees` exclusion:**
-- Groovy: look for `excludeDirs` referencing `.worktrees`
-- KTS: look for `excludeDirs.add` referencing `.worktrees`
-
-If already present: print "idea module exclusion already configured — skipping" and go to Phase 4.
-
-**If not present:** Append the following block at the end of `$BUILD_FILE`.
+**If not present:** append to `$BUILD_FILE`:
 
 For **Groovy**:
 ```groovy
@@ -97,44 +75,32 @@ idea {
 }
 ```
 
-Write the file.
 Print: "✓ idea module exclusion for `.worktrees` added"
 
 ---
 
 ## Phase 4 — Update .gitignore
 
-Check whether `$TARGET/.gitignore` exists.
+- `.gitignore` absent: create it with `.worktrees/`
+- `.gitignore` present, `.worktrees` already listed: print "already in `.gitignore` — skipped"
+- `.gitignore` present, not listed: append `.worktrees/` on a new line
 
-- If it does not exist: create it with the content `.worktrees/`
-- If it exists: check whether `.worktrees/` or `.worktrees` appears as a line
-  - Present: print "`.worktrees` already in `.gitignore` — skipped"
-  - Absent: append `.worktrees/` on a new line at the end
-
-Print: "✓ `.worktrees/` added to `.gitignore`" (or the skipped message)
+Print: "✓ `.worktrees/` added to `.gitignore`" (or skipped message)
 
 ---
 
 ## Phase 5 — Worktrees Directory and Symlinks
 
-1. Create `$TARGET/.worktrees/` as a real directory if it does not exist.
-   Print: "✓ Created `.worktrees/`"
-
-2. If `.claude/` exists in `$TARGET`:
-   - If `.claude/worktrees` does not exist: create symlink `.claude/worktrees` → `../.worktrees`
-   - If it already points correctly: print "`.claude/worktrees` already linked — skipped"
-   - Print: "✓ `.claude/worktrees` → `.worktrees`"
-
-3. If `.agents/` exists in `$TARGET`:
-   - Same logic for `.agents/worktrees` → `../.worktrees`
-   - Print: "✓ `.agents/worktrees` → `.worktrees`"
+1. Create `.worktrees/` if it does not exist. Print: "✓ Created `.worktrees/`"
+2. If `.claude/` exists: create `.claude/worktrees` → `../.worktrees` if absent. Print: "✓ `.claude/worktrees` → `.worktrees`"
+3. If `.agents/` exists: same for `.agents/worktrees`. Print: "✓ `.agents/worktrees` → `.worktrees`"
 
 ---
 
 ## Phase 6 — Report
 
 ```
-gradle-idea installation complete for: {target}
+gradle-idea installation complete
 
   Build file:      {build_file}
   idea plugin:     ✓ added  |  already present — skipped

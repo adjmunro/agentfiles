@@ -1,48 +1,44 @@
 # Component: british-english-hook
 
-Writes a git pre-commit hook to `$TARGET/.git/hooks/pre-commit` that enforces
-British English spelling in staged prose files using portable perl substitutions.
-The hook auto-corrects and re-stages — it does not block the commit.
-
-**Inputs:** `$TARGET`, `$AGENTFILES_ROOT`
+Writes a git pre-commit hook to `.git/hooks/pre-commit` that enforces British
+English spelling in staged prose files using portable perl substitutions. The hook
+auto-corrects and re-stages — it does not block the commit.
 
 ## DO
 
 - Back up any existing pre-commit hook before replacing it
-- Chain to the original hook at the end if one existed — do not discard prior behaviour
+- Chain to the original hook at the end if one existed
 - Apply substitutions only to prose files (`.md`, `.txt`, `.adoc`)
-- Re-stage modified files after substitution so the corrected text goes into the commit
-- Use `perl -pi -e` for in-place substitution — it is portable across macOS and Linux
+- Re-stage modified files after substitution so corrected text goes into the commit
+- Use `perl -pi -e` — portable across macOS and Linux
 
 ## DO NOT
 
-- Apply substitutions inside fenced code blocks (lines between ` ``` ` delimiters)
-- Abort the commit due to substitutions — the hook is advisory/auto-fix, not blocking
-- Require any external tool beyond `git`, `perl`, and standard POSIX utilities
+- Apply substitutions inside fenced code blocks
+- Abort the commit due to substitutions — correction is automatic, not blocking
+- Require any tool beyond `git`, `perl`, and standard POSIX utilities
 
 ---
 
 ## Phase 1 — Check for Existing Hook
 
-Check whether `$TARGET/.git/hooks/pre-commit` exists.
+Check whether `.git/hooks/pre-commit` exists.
 
-- If it contains the comment `# Installed by agentfiles british-english-hook`:
+- If it contains `# Installed by agentfiles british-english-hook`:
   Print "british-english-hook already installed" and stop.
 - If it exists but does NOT contain that comment:
-  Copy it to `$TARGET/.git/hooks/pre-commit.bak`
+  Copy it to `.git/hooks/pre-commit.bak`
   Print: "Existing pre-commit hook backed up to `.git/hooks/pre-commit.bak` — it will be chained."
   Set `$HAD_EXISTING_HOOK=true`
-- If it does not exist: proceed without backup. Set `$HAD_EXISTING_HOOK=false`.
+- If it does not exist: set `$HAD_EXISTING_HOOK=false`
 
 ---
 
 ## Phase 2 — Write Hook Script
 
-Write the following script to `$TARGET/.git/hooks/pre-commit`.
-
-At the end, replace `[CHAIN]` with:
-- `exec "$(git rev-parse --git-dir)/hooks/pre-commit.bak"` if `$HAD_EXISTING_HOOK=true`
-- Remove the `[CHAIN]` line entirely if `$HAD_EXISTING_HOOK=false`
+Write the following to `.git/hooks/pre-commit`, then replace `[CHAIN]`:
+- If `$HAD_EXISTING_HOOK=true`: replace `[CHAIN]` with `exec "$(git rev-parse --git-dir)/hooks/pre-commit.bak"`
+- If `$HAD_EXISTING_HOOK=false`: remove the `[CHAIN]` line entirely
 
 ```zsh
 #!/usr/bin/env zsh
@@ -52,10 +48,8 @@ At the end, replace `[CHAIN]` with:
 
 set -e
 
-# Prose file extensions to process
 prose_extensions='.*\.(md|txt|adoc)$'
 
-# Get staged prose files (added or modified, not deleted)
 staged=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null \
          | grep -E "$prose_extensions" || true)
 
@@ -64,7 +58,7 @@ staged=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null \
 for file in ${(f)staged}; do
   [[ -f "$file" ]] || continue
 
-  # -ize → -ise endings
+  # -ize → -ise
   perl -pi -e '
     s/\borganize\b/organise/g; s/\bOrganize\b/Organise/g; s/\bORGANIZE\b/ORGANISE/g;
     s/\boptimize\b/optimise/g; s/\bOptimize\b/Optimise/g; s/\bOPTIMIZE\b/OPTIMISE/g;
@@ -93,14 +87,11 @@ for file in ${(f)staged}; do
     s/\bneighbor\b/neighbour/g; s/\bNeighbor\b/Neighbour/g;
     s/\blabor\b/labour/g; s/\bLabor\b/Labour/g;
     s/\bhumor\b/humour/g; s/\bHumor\b/Humour/g;
-    s/\bodor\b/odour/g; s/\bOdor\b/Odour/g;
-    s/\bvapor\b/vapour/g; s/\bVapor\b/Vapour/g;
   ' "$file"
 
   # -re endings
   perl -pi -e '
     s/\bcenter\b/centre/g; s/\bCenter\b/Centre/g;
-    s/\btheatre\b/theatre/g;
     s/\bfiber\b/fibre/g; s/\bFiber\b/Fibre/g;
     s/\bmeter\b/metre/g; s/\bMeter\b/Metre/g;
   ' "$file"
@@ -112,7 +103,6 @@ for file in ${(f)staged}; do
     s/\bcatalog\b/catalogue/g; s/\bCatalog\b/Catalogue/g;
     s/\bdialog\b/dialogue/g; s/\bDialog\b/Dialogue/g;
     s/\bcanceled\b/cancelled/g; s/\bCanceled\b/Cancelled/g;
-    s/\bcanceling\b/cancelling/g; s/\bCanceling\b/Cancelling/g;
     s/\bmodeling\b/modelling/g; s/\bModeling\b/Modelling/g;
   ' "$file"
 
@@ -122,16 +112,12 @@ done
 [CHAIN]
 ```
 
-After writing, run `chmod 755 "$TARGET/.git/hooks/pre-commit"`.
+After writing: run `chmod 755 .git/hooks/pre-commit`
 
 ---
 
-## Phase 3 — Verify and Report
+## Phase 3 — Report
 
-Confirm the file is executable:
-- Run `ls -l "$TARGET/.git/hooks/pre-commit"` and check for `x` in permissions
-
-Print:
 ```
 ✓ pre-commit hook installed: .git/hooks/pre-commit
   Substitution categories: -ize→-ise, -our, -re, miscellaneous

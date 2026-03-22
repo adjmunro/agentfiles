@@ -14,30 +14,37 @@ argument-hint: "<component> [target-path]"
 | Component | What it installs |
 |-----------|-----------------|
 | `kanban` | `.kanban/` directory scaffold (01-plan through 06-archive) and command symlinks for ideation and implement |
-| `sign-hook` | Batch commit-signing pre-push hook (delegates to `install-sign-hook`) |
-| `british-english-hook` | Pre-commit git hook enforcing British English spelling in staged prose |
+| `sign-hook` | Batch commit-signing pre-push hook |
+| `british-english-hook` | Pre-commit British English enforcement (perl, portable) |
 | `symlinks` | Agent-agnostic AGENTS.md normalisation, skills/hooks directory migration, worktrees |
-| `gradle-idea` | Gradle idea plugin configuration, `.gitignore` entry, and worktrees directory |
+| `gradle-idea` | Gradle idea plugin with `.worktrees` exclusion, `.gitignore`, and worktrees directory |
+| `bash-guard` | Pre-tool-use hook blocking redundant Bash calls (cat/grep/find/ls → Read/Grep/Glob) |
+| `readme-hook` | Post-commit hook reminding the agent to update README.md on structural changes |
+| `title-hook` | Terminal title hooks (SessionStart + UserPromptSubmit) — repo/branch/PR context |
+| `all` | Runs all of the above except `gradle-idea` (which is Gradle-project specific) |
 
 ## Usage
 
-```
-/install kanban ~/my-project
-/install sign-hook ~/my-project
-/install british-english-hook ~/my-project
-/install symlinks ~/my-project
-/install gradle-idea ~/my-project
-```
-
-If `target-path` is omitted, the current working directory is used as the target.
-
-Run multiple components in sequence to fully configure a new project:
+Run from within the target repository (after bootstrapping):
 
 ```
-/install kanban ~/my-project
-/install symlinks ~/my-project
-/install sign-hook ~/my-project
-/install british-english-hook ~/my-project
+/install all
+/install kanban
+/install symlinks
+/install sign-hook
+/install british-english-hook
+/install bash-guard
+/install readme-hook
+/install title-hook
+/install gradle-idea
+```
+
+## Bootstrap
+
+To get `/install` into a new repo from scratch:
+
+```zsh
+zsh <(curl -sSL https://raw.githubusercontent.com/adjmunro/agentfiles/main/scripts/bootstrap.sh)
 ```
 
 ## Versioning

@@ -1,11 +1,11 @@
 ---
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
-argument-hint: "<component> [target-path]"
+argument-hint: "<component>"
 ---
 
 # Install — Dispatcher
 
-Installs a named component from the agentfiles repository into a target project.
+Installs a named component into the current working directory (which must be a git repository).
 
 ## Available Components
 
@@ -16,82 +16,92 @@ Installs a named component from the agentfiles repository into a target project.
 | `british-english-hook` | Pre-commit British English enforcement hook |
 | `symlinks` | Agent-agnostic AGENTS.md, skills/hooks directory migration, worktrees |
 | `gradle-idea` | Gradle idea plugin, `.gitignore` entry, worktrees directory |
+| `bash-guard` | Pre-tool-use hook blocking redundant Bash calls |
+| `readme-hook` | Post-tool-use hook prompting README updates on structural changes |
+| `title-hook` | Session and prompt hooks setting the terminal title from git context |
+| `all` | Runs: kanban, symlinks, sign-hook, british-english-hook, bash-guard, readme-hook, title-hook |
 
 ## DO
 
-- Resolve the agentfiles root as the repository containing this command file
-  (this file is at `skills/install/commands/install.md`, so the root is three levels up)
-- Resolve the target path from `$ARGUMENTS` (second token), defaulting to cwd if absent
-- Verify the target is a git repository before touching anything
-- Delegate all logic to the component file — do not inline component steps here
+- Use the current working directory as the target — never ask for a path
+- Verify the current directory is a git repository before touching anything
+- Resolve `$AGENTFILES_PATH` once and pass it to components that need it
+- For `all`: run each component in sequence, continuing even if one warns
 
 ## DO NOT
 
-- Run more than one component per invocation
-- Modify any file outside the target repository (except `~/.local/bin/` for sign-hook)
-- Proceed if the target path does not exist or is not a git repository
-- Duplicate logic from `commands/install-sign-hook.md` — reference it instead
+- Modify any file outside the current repository (except `~/.local/bin/` for sign-hook)
+- Proceed if the current directory is not a git repository
 
 ---
 
-## Phase 1 — Resolve Arguments
+## Phase 1 — Parse Arguments
 
-Parse `$ARGUMENTS`:
-- First token: component name (required)
-- Remaining tokens: target path (optional, defaults to current working directory)
+Read `$ARGUMENTS`:
+- If empty: print the component table above and stop.
+- First token: component name.
 
-**Valid component names:** `kanban`, `sign-hook`, `british-english-hook`, `symlinks`, `gradle-idea`
+**Valid component names:** `kanban`, `sign-hook`, `british-english-hook`, `symlinks`,
+`gradle-idea`, `bash-guard`, `readme-hook`, `title-hook`, `all`
 
-If no arguments are given, print the component table above and stop.
-
-If the component name is not in the list above, print:
-
+If the name is not in the list, print:
 > Unknown component: `{name}`
-> Valid components: kanban, sign-hook, british-english-hook, symlinks, gradle-idea
+> Valid components: kanban, sign-hook, british-english-hook, symlinks, gradle-idea, bash-guard, readme-hook, title-hook, all
 
 Stop without touching any files.
 
-**Resolve the agentfiles root:**
+---
 
-This command file lives at `skills/install/commands/install.md` within the agentfiles
-repo. Navigate three parent directories up from this file's location to find the
-agentfiles root. Store this absolute path as `$AGENTFILES_ROOT`.
+## Phase 2 — Verify Repository
 
-**Resolve the target path:**
+Run: `git rev-parse --git-dir`
 
-- If provided: expand any `~` and resolve to an absolute path
-- If not provided: use the current working directory
-- Verify the path exists; if not, stop and print:
-  > Target path not found: `{path}`
-
-Verify the target is a git repository:
-- Run: `git -C "{target}" rev-parse --git-dir`
-- If this fails, stop and print:
-  > `{path}` is not a git repository. Initialise git first (`git init`).
-
-Store resolved values: `$COMPONENT`, `$TARGET`, `$AGENTFILES_ROOT`
+If this fails, stop and print:
+> Not a git repository. Initialise git first (`git init`).
 
 ---
 
-## Phase 2 — Dispatch
+## Phase 3 — Resolve Agentfiles Source
 
-Read the file at:
+Two components (`kanban` command symlinks, `sign-hook`) need to read files from
+agentfiles. Resolve the source once here and pass it to those components.
 
-```
-$AGENTFILES_ROOT/skills/install/commands/components/$COMPONENT.md
-```
+Set `$AGENTFILES_PATH` if the environment variable is set and the path exists locally.
 
-Execute the instructions in that file. The variables `$COMPONENT`, `$TARGET`, and
-`$AGENTFILES_ROOT` are in scope for the component.
+If `$AGENTFILES_PATH` is not set or the path does not exist:
+- Set `$AGENTFILES_URL=https://raw.githubusercontent.com/adjmunro/agentfiles/main`
+- Components that need remote files will fetch via WebFetch from this URL
+- Components that do not need agentfiles source are unaffected either way
 
 ---
 
-## Phase 3 — Final Report
+## Phase 4 — Dispatch
 
-After the component completes, print a one-line summary:
+**Single component:** Read the file at `skills/install/commands/components/{component}.md`
+(relative to `$AGENTFILES_PATH`) and execute it.
+
+**`all`:** Execute each component in this order, reading and running each component file:
+1. `kanban`
+2. `symlinks`
+3. `sign-hook`
+4. `british-english-hook`
+5. `bash-guard`
+6. `readme-hook`
+7. `title-hook`
+
+Between each component, print a divider:
+```
+─────────────────────────────────────
+```
+
+---
+
+## Phase 5 — Final Report
+
+After all components complete, print:
 
 ```
-✓ install/{component} complete — {target}
+✓ install/{component} complete
 ```
 
-If the component reported any warnings, list them beneath the summary.
+For `all`, print a summary line for each component with ✓ or ⚠ for warnings.

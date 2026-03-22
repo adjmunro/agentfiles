@@ -1,35 +1,36 @@
 # Component: sign-hook
 
-Delegates entirely to the existing `install-sign-hook` command. All logic for
-resolving the repository, installing `git-sign-branch`, and writing the pre-push
-hook lives there. This file is a thin handoff so the install dispatcher can
-invoke it uniformly alongside the other components.
-
-**Inputs:** `$TARGET`, `$AGENTFILES_ROOT`
+Installs the batch commit-signing pre-push hook. Delegates to the
+`install-sign-hook` command, reading it either from a local agentfiles checkout
+or directly from GitHub.
 
 ## DO
 
-- Pass `$TARGET` as the argument to `install-sign-hook`
-- Report whatever that command reports, verbatim
+- Prefer `$AGENTFILES_PATH` if it is set and valid (local read)
+- Fall back to fetching `install-sign-hook.md` from `$AGENTFILES_URL` via WebFetch
+- Execute the command with the current working directory as the target
 
 ## DO NOT
 
 - Duplicate any logic from `install-sign-hook.md`
-- Add steps before or after the delegation
 
 ---
 
 ## Delegation
 
-Read `$AGENTFILES_ROOT/commands/install-sign-hook.md` now and execute it,
-treating `$TARGET` as the `$ARGUMENTS` value for that command.
+**If `$AGENTFILES_PATH` is set and valid:**
+Read `$AGENTFILES_PATH/commands/install-sign-hook.md` and execute it, treating
+the current working directory as `$ARGUMENTS`.
 
-That command handles everything:
-- Resolving the target repository
-- Installing `~/.local/bin/git-sign-branch` from `$AGENTFILES_ROOT/scripts/sign-branch.sh`
-- Checking whether `~/.local/bin` is on `$PATH`
+**Otherwise:**
+Fetch `$AGENTFILES_URL/commands/install-sign-hook.md` via WebFetch and execute it,
+treating the current working directory as `$ARGUMENTS`.
+
+That command handles all of:
+- Installing `~/.local/bin/git-sign-branch` (fetching the script from agentfiles if needed)
+- Checking `$PATH`
 - Detecting and backing up any existing pre-push hook
-- Writing and making executable the new hook
-- Verifying the installation
+- Writing and making the new hook executable
+- Verification
 
 Report its output directly.
