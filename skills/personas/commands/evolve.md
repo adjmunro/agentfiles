@@ -74,6 +74,10 @@ Then perform gap analysis against the cognitive demand taxonomy:
 | Pedagogical explanation | Teaching a concept to a non-expert reader | *(gap)* |
 | Temporal reasoning | Sequencing, dependency ordering, scheduling constraints | Arc (Sequencer) |
 | Negotiation / trade-off | Comparing options against explicit criteria, recommending | *(gap)* |
+| Demand validation | Stress-testing whether the problem is real before any planning begins | Sable (Interrogator) |
+| Root cause isolation | Symptom-to-cause debugging via evidence-driven hypothesis testing | Trace (Debugger) |
+| Architecture review | Pre-implementation failure-mode naming and existing-code leverage check | Vault (Architect) |
+| Live verification | Testing the running application to classify and fix defects by severity | Lens (Verifier) |
 
 Note any gaps — cognitive modes with no dedicated persona are candidates for **new** mode.
 
