@@ -2,14 +2,14 @@
 
 ---
 
-## v1.1.1 — 2026-03-22
+## v1.1.1 - 2026-03-22 - Essence Rewrite
 
 ### Changed
 - `soul.md` Essence rewritten to be distinguishable from generic gap-finding archetypes: names the gate-and-compensating-regression role specifically (SQS sharpening pass)
 
 ---
 
-## v1.1.0 — 2026-03-22
+## v1.1.0 - 2026-03-22 - Distillation Pass
 
 ### Added
 - `Failure Mode` section added to `persona.md`: gap enumeration without priority ordering — lists everything wrong without distinguishing what matters
@@ -21,14 +21,14 @@
 
 ---
 
-## v1.0.1 — 2026-03-22
+## v1.0.1 - 2026-03-22 - Soul Compression
 
 ### Changed
 - `soul.md` compressed for conciseness
 
 ---
 
-## v1.0.0 — 2026-03-22
+## v1.0.0 - 2026-03-22 - Initial Release
 
 ### Added
 - Initial release: `persona.md` moved to dedicated subdirectory; `soul.md` created

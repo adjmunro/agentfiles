@@ -2,7 +2,7 @@
 
 ---
 
-## v1.0.0 — 2026-03-22
+## v1.0.0 - 2026-03-22 - Initial Release
 
 ### Added
 - Initial release: full `persona.md` and `soul.md` created — live application testing; derives a test plan from the visible surface; classifies severity before fixing

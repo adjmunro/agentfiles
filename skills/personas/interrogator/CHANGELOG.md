@@ -2,7 +2,7 @@
 
 ---
 
-## v1.0.0 — 2026-03-22
+## v1.0.0 - 2026-03-22 - Initial Release
 
 ### Added
 - Initial release: full `persona.md` and `soul.md` created — demand validation; asks "should this be built at all?" by listening for behaviour verbs rather than interest signals

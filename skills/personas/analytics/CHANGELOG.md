@@ -2,7 +2,7 @@
 
 ---
 
-## v1.1.0 — 2026-03-22
+## v1.1.0 - 2026-03-22 - Distillation Pass
 
 ### Added
 - `Failure Mode` section added to `persona.md`: measurement depth without proportional stakes — risks turning Phase 2 into a research paper when the evidence for Phase 3 is already sufficient
@@ -14,14 +14,14 @@
 
 ---
 
-## v1.0.1 — 2026-03-22
+## v1.0.1 - 2026-03-22 - Soul Compression
 
 ### Changed
 - `soul.md` compressed for conciseness
 
 ---
 
-## v1.0.0 — 2026-03-22
+## v1.0.0 - 2026-03-22 - Initial Release
 
 ### Added
 - Initial release: `persona.md` and `soul.md` created in dedicated subdirectory

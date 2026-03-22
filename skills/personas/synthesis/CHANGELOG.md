@@ -2,7 +2,7 @@
 
 ---
 
-## v1.0.0 — 2026-03-22
+## v1.0.0 - 2026-03-22 - Initial Release
 
 ### Added
 - Initial release: full `persona.md` and `soul.md` created — pattern recognition across disparate sources; identifies convergence and structural themes that individual specialists miss
