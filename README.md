@@ -71,6 +71,10 @@ A shared library of agent personas used across skills. Each persona has a `perso
 | Rook (Adversary) | Red-team stress-testing |
 | Loom (Synthesis) | Pattern recognition across disparate sources |
 | Arc (Temporal) | Temporal reasoning and sequencing |
+| Sable (Interrogator) | Demand validation — should this be built at all? |
+| Trace (Debugger) | Systematic root-cause isolation |
+| Vault (Architect) | Pre-implementation architecture lock-in and failure-mode naming |
+| Lens (Verifier) | Live application testing and severity classification |
 
 **Commands:** `evolve`, `summon`
 
