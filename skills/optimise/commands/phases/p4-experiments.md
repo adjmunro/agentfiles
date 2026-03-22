@@ -17,6 +17,14 @@ undo rather than `git revert`."
 
 For each approved hypothesis, in order:
 
+### Step 0 — Pre-experiment dependency scan
+Before applying any hypothesis, read the full list of pending (approved but not yet run) hypotheses from `research-log.md`. Check whether any two pending hypotheses modify the same file.
+
+- If two or more pending hypotheses touch the same file: record the overlap in `research-log.md` (e.g. "H20 and H22 both modify help.md — running sequentially with metric re-check between them"). Run them in sequence; re-measure the shared-file metrics between each.
+- If no overlap exists: proceed directly.
+
+This step applies once per Phase 4 session, not once per hypothesis.
+
 ### Step a — Record pre-change score
 Measure the targeted metric(s) at their current state. Record as "pre-change" in
 `research-log.md`.
