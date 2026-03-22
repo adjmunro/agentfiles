@@ -16,4 +16,12 @@ Include in the commit body:
 - Audit score
 - Any tickets auto-created during the fix pass
 
+## DO / DO NOT
+
+- NEVER commit if the audit score is below 95% — the commit gate only opens when Phase 4 passes.
+- ALWAYS stage all new and modified files before committing; do not commit a partial ticket set.
+- MUST include the audit score in the commit body — a bare ticket count is not sufficient.
+- NEVER use `--amend` to retrofit a commit once any files have been pushed to a remote branch.
+- DO include the count of auto-created fix tickets in the commit body if any were created during the Phase 4 auto-fix pass.
+
 → Done. Return to orchestrator and report results.

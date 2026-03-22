@@ -7,8 +7,11 @@
 ### Classify each AC item
 
 - **Satisfied** — fully met by the implementation; clear evidence exists
+  > ✗ Vague classification: "looks like it works" / ✓ Concrete: "`src/auth.ts:42` checks token expiry; confirmed by evidence table entry for AC-3"
 - **Partial** — partially met; describe specifically what is missing or incomplete
+  > ✗ Vague: "mostly done" / ✓ Concrete: "login flow implemented (AC-1 satisfied) but logout endpoint missing (AC-2 has no file:line evidence)"
 - **Missing** — no corresponding implementation found
+  > ✗ Vague: "not sure if implemented" / ✓ Concrete: "no file modified contains the string `rate-limit`; AC-5 has no evidence entry"
 
 ### Score
 

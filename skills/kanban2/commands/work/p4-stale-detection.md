@@ -21,4 +21,12 @@ If stale:
 
 If the user chooses to continue, proceed to Phase 3 implementation. If reset, move the ticket back and exit cleanly.
 
+## DO / DO NOT
+
+- ALWAYS check `claimed_at` before evaluating `stale_after_hours` — if `claimed_at` is empty the ticket was never claimed and the staleness formula cannot apply.
+- NEVER silently continue past a stale ticket; always surface the stale message and wait for an explicit user decision.
+- DO present exactly two options — Continue or Reset — do not add a third option or skip the prompt.
+- NEVER clear `claimed_at` on a Continue decision; only clear it on a Reset.
+- MUST move the ticket back to `04-todo/` and clear both `claimed_at` and `status` fields if the user chooses Reset before exiting.
+
 → Next: Read `work/p3-implementation.md` and execute it.

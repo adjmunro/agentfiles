@@ -12,4 +12,12 @@ After completing either path, report:
 - The commit message (if a commit was made)
 - The all-tickets-passed announcement, if triggered
 
+## DO / DO NOT
+
+- ALWAYS include the final numeric score percentage in the report, not just PASS/FAIL — the user needs the exact score to judge proximity to the threshold.
+- NEVER omit the per-suite test results breakdown; a top-level PASS is insufficient without suite-level detail.
+- MUST report the destination path the ticket was moved to — do not just state the verdict.
+- DO include any security or logic issues flagged during evidence gathering even if the overall verdict is PASS.
+- NEVER fabricate a commit message in the report — only include the commit message if a commit was actually made.
+
 → Done. Return to orchestrator and report results.

@@ -65,6 +65,17 @@ Every AC MUST be verifiable by running a command or observing a concrete state. 
 
 ACs answer *"how do I know it's done?"* — not *"how should it be built?"*. Do not specify file names, directory locations, or function names unless they are genuinely externally observable constraints.
 
+### Vague → Concrete Reference
+
+Use this table when drafting ACs to catch common vague patterns before the Critic audit:
+
+| Pattern | Vague | Concrete |
+|---------|-------|----------|
+| File exists | "Config file created" | "`ls .env` exits 0 and file contains `DATABASE_URL`" |
+| Test passes | "Tests pass" | "`npm test -- --testPathPattern=auth` exits 0, 0 failures" |
+| API response | "Returns correct data" | "GET /users/1 returns HTTP 200 with `{\"id\":1}` in body" |
+| No regressions | "Existing tests still work" | "`npm test` exits 0, same number of passing tests as before claim" |
+
 ### File Naming
 
 ```

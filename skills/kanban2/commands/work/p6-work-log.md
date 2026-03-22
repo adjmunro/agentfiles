@@ -16,4 +16,12 @@ If inside a git repo:
 1. Stage the updated ticket file.
 2. Commit with the message: `kanban(work): log progress on {TASK-NNN}`
 
+## DO / DO NOT
+
+- NEVER edit existing Work Log entries — the append zone is chronological and append-only; only add new entries.
+- ALWAYS include the WHY behind each decision, not just a description of what was done.
+- MUST reference plan items and ACs by ID when they are relevant to the logged work.
+- NEVER write a Work Log entry before implementation is complete — this phase runs after all AC work is done.
+- DO explicitly note how each prior Review issue was addressed if any Review sections already exist in the ticket.
+
 → Next: Read `work/p8-move-to-review.md` and execute it.

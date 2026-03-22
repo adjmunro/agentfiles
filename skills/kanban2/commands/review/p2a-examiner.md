@@ -31,7 +31,9 @@ For each AC item listed in the ticket:
 
 1. Identify the specific file(s) and line number(s) that satisfy it — be precise.
 2. If the criterion involves a command or observable output (non-coding AC), record the command verbatim; it will be executed in Phase 2b.
+   > ✗ Vague: "verify the feature behaves correctly" / ✓ Concrete: "run `npm test -- --testPathPattern=auth` and confirm exit 0 with 0 failures"
 3. If no evidence exists, note it explicitly as absent.
+   > ✗ Vague: "ensure error handling works" / ✓ Concrete: "send request without auth header; confirm HTTP 401 with `{\"error\":\"unauthorized\"}` in body"
 4. Flag any of the following, regardless of AC status:
    - Security issues (hardcoded secrets, injection vectors, missing auth checks)
    - Logic errors (off-by-one, incorrect conditionals, missing null checks)

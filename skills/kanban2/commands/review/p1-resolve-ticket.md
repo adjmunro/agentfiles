@@ -15,4 +15,12 @@ Read the ticket file. Confirm its frontmatter contains:
 - `status: in_review`
 - A `plan` field pointing to the subject plan file
 
+## DO / DO NOT
+
+- NEVER proceed past this phase without confirming the ticket's frontmatter contains `status: in_review` — a ticket not yet promoted to `06-in-review/` must not be reviewed.
+- ALWAYS stop and print the no-ticket message if `06-in-review/` contains no tickets; do not attempt to search other directories.
+- DO select the most recently modified ticket automatically when multiple tickets exist — do not prompt the user unless resolution is still ambiguous after applying all four priority rules.
+- NEVER modify the ticket file during this phase — resolution is read-only.
+- MUST confirm the `plan` frontmatter field is present and non-empty before proceeding to Phase 2a.
+
 → Next: Read `review/p2a-examiner.md` and execute it.
