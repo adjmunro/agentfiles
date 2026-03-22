@@ -1,5 +1,18 @@
 # Personas Changelog
 
+## v1.5.0 - 2026-03-22 - Optimise Run 4
+
+**Opening composite: 94.7% → final: 97.5% (+2.8pp). All 3 hypotheses confirmed. Auto loop complete (>95% threshold).**
+
+- Registered 4 new personas in SKILL.md and summon.md rosters: Sable (Interrogator), Trace (Debugger), Vault (Architect), Lens (Verifier) — WCS+RSS 78→100, PEBS 89→100 [H12]
+- Added 4 new cognitive modes to evolve.md taxonomy: demand validation, root cause isolation, architecture review, live verification — CGDC+TLBC 80→100, PCC 88→90 [H13]
+- Sharpened overlapping prompting heuristics: "what would you flag?" now explicitly a *filter shift*; "what's your honest take?" now explicitly a *character shift* — PHSC 83→100 [H14]
+- 5 new custom metrics defined: CDA, TLBC, PVC, PEBS, FMCS (all ≥86 at baseline)
+- Research log archived: runs 1–3 moved to `research-log-archive-2026-03-22.md`; live log retains run 4 only
+- Novel pattern documented: NP5 (Library Registration Sweep — 3-location atomicity rule)
+
+---
+
 ## v1.4.0 - 2026-03-22 - gstack Gap Fill
 
 **4 new personas distilled from gstack specialist roles. Fills demand validation, systematic debugging, pre-implementation architecture review, and live verification cognitive gaps.**

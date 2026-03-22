@@ -20,6 +20,10 @@ A shared library of agent personas used across skills. Each persona lives in its
 | `adversarial/` | Rook (Adversary) | Adversarial red-team stress-testing |
 | `synthesis/` | Loom (Synthesist) | Cross-domain synthesis and emergent design |
 | `temporal/` | Arc (Sequencer) | Temporal reasoning and dependency sequencing |
+| `interrogator/` | Sable (Interrogator) | Demand validation — should this be built at all? |
+| `debugger/` | Trace (Debugger) | Root cause isolation via evidence-driven hypothesis testing |
+| `architect/` | Vault (Architect) | Pre-implementation architecture review and failure-mode naming |
+| `verifier/` | Lens (Verifier) | Live application testing and severity classification |
 
 ## Usage
 

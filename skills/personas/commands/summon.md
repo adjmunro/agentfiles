@@ -26,6 +26,10 @@ Summon one or more personas and hold a freeform conversation with them. Each per
 | `adversarial` | Rook (Adversary) | `../adversarial/` |
 | `synthesis` | Loom (Synthesist) | `../synthesis/` |
 | `temporal` | Arc (Sequencer) | `../temporal/` |
+| `interrogator` | Sable (Interrogator) | `../interrogator/` |
+| `debugger` | Trace (Debugger) | `../debugger/` |
+| `architect` | Vault (Architect) | `../architect/` |
+| `verifier` | Lens (Verifier) | `../verifier/` |
 
 ## Setup
 
@@ -89,8 +93,8 @@ Specific phrases shift how a persona operates. Use them when the default mode is
 
 - **"take your time"** — signals a complex problem needing depth; the persona slows down, examines more carefully, and surfaces considerations it would otherwise compress
 - **"be comprehensive"** — full coverage, not a quick answer; the persona addresses all angles before concluding
-- **"what would you flag?"** — shifts from answering to critiquing; surfaces concerns the persona would hold back in a supportive mode. Especially effective with Arden, Rook, and Finn.
-- **"what's your honest take?"** — surfaces the persona's opinions and contradictions rather than their official-role output; useful when you want the character's unfiltered view rather than a considered answer
+- **"what would you flag?"** — a *filter shift*: the persona stays in their professional role but surfaces concerns they would normally hold back in a supportive or polite mode. Use this when you want the persona's function applied without diplomatic softening. Especially effective with Arden, Rook, and Finn.
+- **"what's your honest take?"** — a *character shift*: the persona steps out of their functional role and responds as themselves — opinions, contradictions, and reactions from the soul file rather than considered professional output. Use this when you want the person, not the function.
 
 These work because models respond to framing signals. The phrases above shift the persona's operating mode without breaking character.
 
