@@ -116,6 +116,10 @@ Normalise: (DD / 2.0) × 100, cap at 100.
 Methodology: Scan all instructions for weak modal verbs with no scope qualifier:
 "should", "may", "might", "consider", "try to" (without an "if X" condition). Count
 these as ambiguous. IAR = ambiguous_instructions / total_instructions.
+A **scope qualifier** is an `if X` condition, a domain restriction, or a specific
+named target. Scoped (not ambiguous): *"should be recorded if the target is inside a
+git repo"*. Unscoped (ambiguous): *"should be recorded"*. Descriptive uses of
+"may/can" (stating a possibility, not an instruction) do not count.
 Normalise: 100 − IAR%.
 
 ### M4 — Wiring Completeness Score (WCS) [applies: persona system]
