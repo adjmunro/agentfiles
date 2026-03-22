@@ -32,7 +32,7 @@ agentfiles/
 ├── commands/         # Standalone agent command files
 ├── hooks/            # Shell hooks for agent tooling
 └── skills/
-    └── kanban/       # The kanban skill — full pipeline from capture to archive
+    └── kanban2/      # The implement skill — subject-centric pipeline from capture to archive
 ```
 
 Each skill under `skills/` is self-contained: it has its own `AGENTS.md`, `CHANGELOG.md`, `VERSION.md`, and a `commands/` subdirectory with the actual skill logic.

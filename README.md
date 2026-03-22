@@ -15,19 +15,12 @@ agentfiles/
 └── skills/           # Self-contained skills — each has AGENTS.md, CHANGELOG.md, VERSION.md
     ├── british-english/
     ├── ideation/
-    ├── kanban/
     ├── kanban2/
     ├── optimise/
     └── personas/
 ```
 
 ## Skills
-
-### `/kanban`
-
-A folder-based, ticket-driven development workflow. Moves work through a defined pipeline — capture raw intent, plan it, break it into tickets, implement, review, raise a PR, then archive. The folder is the status; every decision traces back to the original capture.
-
-**Commands:** `init`, `capture`, `plan`, `todo`, `work`, `review`, `pr`, `cleanup`, `next`
 
 ### `/kanban` (kanban2)
 
