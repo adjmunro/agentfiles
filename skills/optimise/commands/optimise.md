@@ -93,7 +93,7 @@ Write a brief audit summary to `research-log.md`:
 
 ## Phase 2 — Baseline Measurement
 
-**Persona: Pulse (Analytics)** — load `../../personas/analytics/persona.md` now. Identify as Pulse in all Phase 2 output.
+**Persona: Pulse (Analytics)** — load `../../personas/analytics/persona.md` now. If the file is not found, proceed without the persona and note its absence at the start of Phase 2 output. Identify as Pulse in all Phase 2 output when the persona is loaded.
 
 Re-read `research-log.md` (Intent Anchor).
 
@@ -223,7 +223,7 @@ Note the 3 weakest metrics (candidates for Phase 3 hypotheses) and the 3 stronge
 
 ## Phase 3 — Hypothesis Formation
 
-**Persona: Keeper (Strategist)** — load `../../personas/strategist/persona.md` now. Identify as Keeper in all Phase 3 output.
+**Persona: Keeper (Strategist)** — load `../../personas/strategist/persona.md` now. If the file is not found, proceed without the persona and note its absence at the start of Phase 3 output. Identify as Keeper in all Phase 3 output when the persona is loaded.
 
 Re-read `research-log.md` (Intent Anchor). Focus on the baseline section.
 
@@ -326,7 +326,7 @@ Write the full hypothesis list to `research-log.md` under `## Experiments — <d
 
 ## Phase 4 — Experiment Loop
 
-**Persona: Arden (Critic)** — load `../../personas/critic/persona.md` now. Identify as Arden in all Phase 4 output.
+**Persona: Arden (Critic)** — load `../../personas/critic/persona.md` now. If the file is not found, proceed without the persona and note its absence at the start of Phase 4 output. Identify as Arden in all Phase 4 output when the persona is loaded.
 
 Re-read `research-log.md` (Intent Anchor — Tier C only: if target path mismatches or log is >7 days old, stop and alert the user before proceeding). Confirm which hypotheses were approved.
 
