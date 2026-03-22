@@ -1,0 +1,102 @@
+## Phase 3 — Hypothesis Formation
+
+**Persona: Keeper (Strategist)** — load `../../../personas/strategist/persona.md` now. If the file is not found, proceed without the persona and note its absence at the start of Phase 3 output. Identify as Keeper in all Phase 3 output when the persona is loaded.
+
+Re-read `research-log.md` (Intent Anchor). Focus on the baseline section.
+
+Based on the weakest metrics (seed and custom), form 3–5 hypotheses.
+
+**The seed patterns (P1–P7) are starting points, not constraints.** If the workflow
+has a problem that no seed pattern addresses, invent the fix. Novel hypotheses are
+expected and valuable — they may become patterns for future runs.
+
+### Design Patterns
+
+#### P1 — Intent Anchor Blocks
+At every phase transition, the orchestrator re-reads the original intent artifact
+before proceeding. Prevents context drift across long sessions.
+Targets: CDR (↑), IOT (↑)
+
+#### P2 — Staleness TTL Policies (3-tier)
+Every artifact that can go stale carries an explicit TTL policy:
+- **Tier A — Regenerate**: artifact must be rebuilt before use if older than threshold
+- **Tier B — Load-with-caveat**: artifact is usable but model must flag staleness to user
+- **Tier C — No-TTL**: artifact is canonical and does not expire (e.g. original input)
+Targets: IFS (↑)
+
+#### P3 — Progressive Disclosure
+Phase-scoped context loading: each phase block lists only the files it needs. No
+phase loads the full workflow corpus. Context is loaded on demand, not preloaded.
+Targets: CLE (↑), HTC (↓)
+
+#### P4 — Recommendation Brief
+Replace open-ended human Q&A interviews with a model-formed recommendation brief.
+The model assembles evidence, states a recommended action per item, and asks the
+human to approve/reject per item rather than answer open questions.
+Targets: HTC (↓), IAR (↓)
+
+#### P5 — Claim Registry
+For workflows with parallel or concurrent execution: a shared registry file records
+which agent/phase currently holds a write lock on each artifact. All mutations check
+the registry before writing and release the lock on completion.
+Targets: PSS (↑)
+
+#### P6 — Symmetric Outcome Thresholds
+For workflows with multi-tier outcome classification (pass/warn/fail, etc.): define
+concrete numeric boundaries for every tier, not just the passing case. Use the
+confirmed/pass threshold as the anchor; define lower tiers relative to it.
+Targets: ACC (↑)
+
+#### P7 — Binary Applicability Gates
+For workflows with conditional instructions or optional steps: replace vague
+feature-presence conditions ("X present") with a single yes/no question whose answer
+is deterministically derivable from an earlier phase's output.
+Targets: IAR (↓), ACC (↑)
+
+For each hypothesis:
+
+```
+### H<N> — <short name>
+**Problem observed:** <what the metric score reveals about the workflow>
+**Change proposed:** <specific, actionable change to one or more files>
+**Targets:** <metric IDs and predicted direction — include custom metrics>
+**Predicted improvement:** <estimated delta in normalised score>
+**Pattern applied:** <P1–P7 if applicable, or "novel — <name the new pattern>">
+**Risk level:** low / medium / high
+**Risk note:** <what could go wrong; what to check if disconfirmed>
+```
+
+When forming novel hypotheses, ask:
+- Is there a structural change (split, merge, reorder) that would improve a custom metric?
+- Is there a workflow assumption that is never validated? Add a validation step.
+- Is there output that is produced but never verified? Add a verification gate.
+- Is there a pattern in *what fails* vs. *what succeeds* in this workflow?
+
+If a confirmed novel hypothesis generalises (would help other workflows of the same
+type), note it in `research-log.md` under `## Novel Patterns Discovered`. These
+candidates can be proposed for inclusion in the seed library.
+
+Format these as a **Recommendation Brief** — do not ask open-ended questions. State
+each recommendation with its evidence and predicted outcome, then ask for a binary
+approve/skip decision per hypothesis.
+
+Present the brief to the human:
+
+```
+## Recommendation Brief
+
+Based on baseline measurement, I recommend the following experiments.
+Please approve or skip each one.
+
+H1 — <name>: [approve / skip]
+H2 — <name>: [approve / skip]
+...
+
+Reply with your decisions to proceed.
+```
+
+**STOP. Wait for human approval. Do not proceed to Phase 4 until decisions are received.**
+
+Write the full hypothesis list to `research-log.md` under `## Experiments — <date>`.
+
+When human approval is received, read `commands/phases/p4-experiments.md` to continue.
