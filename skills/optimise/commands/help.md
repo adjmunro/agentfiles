@@ -239,7 +239,7 @@ Find the section below that best matches the argument. Display only that section
 
 **How to improve:** Apply Recommendation Brief — replace open-ended questions with structured approve/skip decisions. The agent forms the recommendation; the human only needs to say yes or no.
 
-**Stats:** Scored 95 in both runs (one touchpoint: the Phase 3 approval gate). Considered appropriate — never targeted.
+**Stats:** Scored 100 after the Phase 3 approval gate was removed — the workflow now self-audits the hypothesis list and auto-proceeds. Zero mandatory touchpoints per run.
 
 ---
 

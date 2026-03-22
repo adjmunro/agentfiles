@@ -2,6 +2,24 @@
 
 ---
 
+## v1.7.0 — 2026-03-22
+
+### Added
+- Loop support: `/optimise N <path>` runs the full 5-phase cycle N times; `/optimise auto <path>` loops until the composite score exceeds 95% using `(confirmed + 0.5 × partial) / total × 100`; default (no specifier) remains a single run
+- Loop Control section in `optimise.md`: defines loop termination rules, hypothesis numbering continuity across iterations, and the zero-hypothesis exit condition for auto mode
+- Self-Audit step in Phase 3: before proceeding to experiments, the agent audits the hypothesis list for intent accuracy, checks coverage using the composite formula, and fills gaps for any metric below 80 with no hypothesis targeting it
+
+### Changed
+- Phase 3 approval gate removed: the Recommendation Brief is displayed as information but no longer requires human approval before Phase 4 begins — the self-audit replaces it
+- `optimise.md` DO rule "Present the Recommendation Brief and wait for human approval" removed
+- `optimise.md` DO NOT rule "Begin Phase 4 without explicit human approval" removed
+- `help.md` HTC stats note updated: scored 100 after approval gate removal (zero mandatory touchpoints per run)
+
+### Fixed
+- Human Touchpoint Count (M8 · HTC): was capped at 95 by the Phase 3 gate; now 100
+
+---
+
 ## v1.6.0 — 2026-03-22
 
 ### Added

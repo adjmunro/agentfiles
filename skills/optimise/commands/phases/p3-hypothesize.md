@@ -176,32 +176,30 @@ type), note it in `research-log.md` under `## Novel Patterns Discovered`. These
 candidates can be proposed for inclusion in the seed library.
 
 Format these as a **Recommendation Brief** — do not ask open-ended questions. State
-each recommendation with its evidence and predicted outcome, then ask for a binary
-approve/skip decision per hypothesis.
-
-Present the brief to the human:
+each recommendation with its evidence and predicted outcome.
 
 ```
 ## Recommendation Brief
 
-Based on baseline measurement, I recommend the following experiments.
-Please approve or skip each one.
+Based on baseline measurement, the following experiments are queued.
 
-1. <name> — <one-sentence summary of problem and proposed change>: [approve / skip]
-2. <name> — <one-sentence summary>: [approve / skip]
+1. <name> — <one-sentence summary of problem and proposed change>
+2. <name> — <one-sentence summary>
 ...
-
-Reply with your decisions to proceed.
 ```
 
-Do not use metric abbreviations or hypothesis IDs in the brief shown to the user. Refer to metrics by full name (e.g., "Directive Density", "Context Loading Efficiency") and describe each experiment in plain language.
+Do not use metric abbreviations or hypothesis IDs in the brief. Refer to metrics by full name (e.g., "Directive Density", "Context Loading Efficiency") and describe each experiment in plain language.
 
-**STOP. Wait for human approval. Do not proceed to Phase 4 until decisions are received.**
+### Self-Audit
 
-If the human skips all hypotheses, proceed directly to Phase 5. Write a note to
-`research-log.md`: "All hypotheses skipped — no experiments run. Proceeding to report."
-Read `commands/phases/p5-report.md` to continue. Phase 5 should reflect zero experiments.
+Before proceeding to experiments, audit the hypothesis list for intent and accuracy:
 
-Write the full hypothesis list to `research-log.md` under `## Experiments — <date>`.
+1. **Intent check** — does each hypothesis address a real gap in the baseline measurement, or is it speculative? Remove any hypothesis not grounded in a measured metric shortfall. Note removals in `research-log.md`.
+2. **Coverage check** — compute the projected composite score: `(confirmed_estimate + 0.5 × partial_estimate) / total_hypotheses × 100`. If this projection already clears **> 95**, the list is sufficient. If below 95 and the audit reveals uncovered gaps, add further hypotheses to close them.
+3. **Gap fill** — for any measured metric still below 80 with no hypothesis targeting it, add one now. Prefer patterns from the seed library; invent novel ones where none fit.
 
-When human approval is received, read `commands/phases/p4-experiments.md` to continue.
+Write the final hypothesis list (post-audit) to `research-log.md` under `## Experiments — <date>`.
+
+If zero hypotheses remain after the audit, write: "No hypotheses survived audit — no experiments to run. Proceeding to report." Read `commands/phases/p5-report.md` to continue.
+
+Otherwise, read `commands/phases/p4-experiments.md` to continue.

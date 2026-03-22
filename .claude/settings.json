@@ -6,7 +6,10 @@
     "allow": [
       "Read(./**)",
       "Write(./**)",
-      "Edit(./**)"
+      "Edit(./**)",
+      "WebFetch(domain:block.github.io)",
+      "WebFetch(domain:docs.openclaw.ai)",
+      "Bash(gh api:*)"
     ]
   }
 }
