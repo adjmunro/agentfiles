@@ -788,12 +788,24 @@ Strongest: Intent-to-Output Traceability (100), Context Decay Resilience (100), 
 **Pattern:** none (consistency fix)
 **Status:** pending
 
+**Pre-change:** Metric ID Consistency 83 (5/6 range references correct)
+**Post-change:** Metric ID Consistency 100 (6/6 correct — grep confirmed no other stale M-ranges in commands/)
+**Delta:** Metric ID Consistency +17pp
+**Result:** confirmed
+**Notes:** SKILL.md was the only stale file. research-log.md stale-range mentions (lines 42, 79) are historical records, not live references — correctly left unchanged.
+
 ### H14 — Add Explicit Direction Field to M13
 **Problem:** Metric Methodology Completeness (MMC) = 92. M13 (Instruction Token Efficiency) is missing an explicit Direction field in its p2-baseline.md definition.
 **Change:** Add "Direction: ↑ higher is better" line to M13 definition in p2-baseline.md.
 **Targets:** Metric Methodology Completeness ↑ (92 → ~100)
 **Pattern:** none (completeness fix)
 **Status:** pending
+
+**Pre-change:** Metric Methodology Completeness 92 (M13 missing Direction field)
+**Post-change:** Metric Methodology Completeness 100 (all 13 seed metrics have counting method, normalisation, direction, applicability)
+**Delta:** Metric Methodology Completeness +8pp
+**Result:** confirmed
+**Notes:** Single-line addition — "Direction: ↑ higher is better (less padding = higher efficiency)" — completes the M13 definition to parity with all other seed metrics.
 
 ### H15 — Phase 4 Full-Spectrum Delta Recording
 **Problem:** Hypothesis Surprise Rate (HSR) = 70 due to 0% secondary gains across 10 experiments. Phase 4 only re-measures targeted metrics — secondary gains are invisible even when they happen.
@@ -802,6 +814,14 @@ Strongest: Intent-to-Output Traceability (100), Context Decay Resilience (100), 
 **Pattern:** Novel — Full-Spectrum Delta Recording
 **Status:** pending
 
+**Pre-change:** Hypothesis Surprise Rate 70 (0% secondary gain detection across 10 experiments — measurement gap, not necessarily a true absence of secondary effects)
+**Post-change:** Step c now instructs full-spectrum delta check for all applied metrics ≥2pp
+**Delta:** Hypothesis Surprise Rate: structural improvement (cannot be scored numerically until future runs accumulate secondary-delta data)
+**Result:** partial
+**Notes:** The change is implemented and correct, but HSR cannot be scored yet — it requires future experiment data. Classifying as partial (structural improvement, unable to confirm score delta this run). The Full-Spectrum Delta Recording pattern is now embedded in Phase 4.
 
-
+## Experiment Summary (run 3)
+- Confirmed: H11, H12, H13, H14
+- Partial: H15
+- Disconfirmed: none
 

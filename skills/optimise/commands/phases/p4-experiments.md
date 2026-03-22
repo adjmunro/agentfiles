@@ -28,6 +28,10 @@ change.
 
 ### Step c — Re-measure
 Apply the same methodology used in Phase 2 to re-measure the targeted metric(s).
+Also check every other currently-applied metric (seed and custom) for secondary changes:
+if any non-targeted metric has moved ≥2pp in either direction, record it. These secondary
+deltas inform the Hypothesis Surprise Rate and reveal systemic effects invisible to
+targeted-only measurement.
 
 ### Step d — Record result
 Determine outcome:

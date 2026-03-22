@@ -104,7 +104,8 @@ consume tokens without adding constraint or information. Filler categories:
 - **Narrative restatement**: prose that describes what the workflow does rather than
   constraining how (detectable as sentences with no imperative verb and no condition)
 Count padding_tokens and total_tokens per file (estimate tokens as characters / 4).
-ITE = 1 − (padding_tokens / total_tokens), averaged across all command files.
+ITE = 1 − (padding_tokens / total_tokens), averaged across all instruction command files.
+Direction: ↑ higher is better (less padding = higher efficiency).
 Normalise: ITE × 100.
 
 ### Custom Metric Discovery

@@ -26,7 +26,7 @@ so it can be reused on any target.
                                                [Phase 5: Report]
 ```
 
-Full metric library (M1–M12), composite scoring formula, custom metric discovery
+Full metric library (M1–M13), composite scoring formula, custom metric discovery
 process, and design patterns (P1–P7): see `commands/optimise.md` (Phase 3 section).
 Novel patterns discovered per run are recorded in `research-log.md`; once confirmed
 as seed candidates they are promoted to P8+ in `commands/optimise.md`.
