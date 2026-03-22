@@ -50,6 +50,9 @@ Display this table, then the patterns table, then the stats summary. Nothing els
 | P9 | Persona Speciation | PRS ↑, PPF ↑ | Any workflow where personas are thin (missing Unique Talent or Failure Mode) or where a cognitive demand has no matching persona |
 | P10 | Failure Mode Registry | RPC ↑ | Any workflow with multiple conditional branches or error states |
 | P11 | File Role Stratification | DD ↑, ITE ↑ | Any workflow that mixes agent-instruction files with human-reference files in the same directory |
+| P12 | Content Synchronisation Audit | HCU ↑ | Any skill that maintains a parallel help/reference file alongside its command files |
+| P13 | Corrective-Pattern Applicability Classification | PEV ↑ | Any workflow with a pattern library that distinguishes proactive from corrective patterns |
+| P14 | Pre-Experiment Dependency Scan | EIS ↑ | Any multi-hypothesis session where ≥2 changes are queued |
 
 ### Stats at a Glance
 
@@ -536,6 +539,59 @@ Both are executed via `/personas evolve` — the command handles scoring, recomm
 **How to improve:** Audit for the padding categories above. Replace preamble phrases with direct imperatives ("Record X if Y" instead of "Please make sure to always record X when Y occurs"). Remove decorative dividers that add no navigational value. Convert narrative description paragraphs into explicit DO / DO NOT rules.
 
 **Stats:** New metric — no historical data yet.
+
+---
+
+### Content Synchronisation Audit (P12)
+*Also matches: P12, content sync, synchronisation, help file, reference file, named entries, documentation, help currency*
+
+**Problem it solves:** When a skill's instruction files gain new named entries — new metrics, new patterns, new phases, new steps — its parallel help or reference files fall out of sync. Users querying the help command find no entry for the new content, creating a gap between what the system does and what is documented. The trust chain between instruction and documentation breaks silently: no error is thrown, so the gap persists until someone notices by accident.
+
+**How it works:** Whenever an instruction file is updated with new named entries in any session, read every corresponding reference or help file in the same session and check whether matching entries exist. Add missing entries before the session closes. Run this check proactively — do not wait until a baseline measures Help Content Currency (MX15) below threshold.
+
+**When to apply:**
+- Any skill that maintains a parallel help.md or reference guide alongside its command files
+- After adding new metrics, patterns, phases, or named rules to any instruction file
+- During any Phase 4 experiment that adds named content to instruction files
+
+**Targets:** Help Content Currency (↑)
+
+**Typical gain:** On a skill where 3 new patterns were added to instruction files but not yet documented in help.md: +15–25pp on Help Content Currency. Gain scales with the number of undocumented named entries.
+
+---
+
+### Corrective-Pattern Applicability Classification (P13)
+*Also matches: P13, corrective, applicability, classification, trigger condition, dormant, pattern validation, PEV*
+
+**Problem it solves:** Pattern libraries that grow over time mix two kinds of patterns: proactive patterns (apply to improve things that are already working) and corrective patterns (apply only when a specific measured condition is met). When measuring Pattern Experimental Validation Rate, treating never-applicable corrective patterns as unvalidated inflates perceived validation debt and creates pressure to run experiments on patterns whose trigger conditions have never fired.
+
+**How it works:** In the pattern library, mark each corrective pattern with its explicit trigger condition using a `[corrective — applies when <condition>]` tag on the pattern header. When measuring Pattern Experimental Validation Rate (MX16 · PEV): count only applicable patterns in the denominator. A pattern is applicable if its trigger condition has been true at least once in the workflow's run history. A pattern whose trigger condition has never been true is correctly dormant — exclude it from the PEV denominator and record it as `N/A` rather than unvalidated.
+
+**When to apply:**
+- Any workflow with a pattern library that distinguishes proactive from corrective patterns
+- When Pattern Experimental Validation Rate is below 90% and some unvalidated patterns have trigger conditions
+- When adding a new corrective pattern to any library
+
+**Targets:** Pattern Experimental Validation Rate (↑)
+
+**Typical gain:** On a library where 1–2 corrective patterns have never been triggered: +8–15pp on Pattern Experimental Validation Rate by removing them from the denominator. The primary value is measurement accuracy — preventing false deficit signals.
+
+---
+
+### Pre-Experiment Dependency Scan (P14)
+*Also matches: P14, dependency scan, file overlap, concurrent, sequential, multi-hypothesis, experiment isolation*
+
+**Problem it solves:** When multiple hypotheses are approved in a single session and two or more modify the same file, applying them concurrently or in arbitrary order produces non-attributable metric deltas. It becomes impossible to assign credit or blame to either change — the score moved, but which hypothesis caused it?
+
+**How it works:** Before applying the first experiment in any Phase 4 session, read the full list of pending (approved, not yet run) hypotheses. Check whether any two pending hypotheses modify the same file. If overlap is found: note it in the research log and run the overlapping hypotheses sequentially with a metric re-check between each. If no overlap exists: proceed in any order. This scan runs once per Phase 4 session, not once per hypothesis.
+
+**When to apply:**
+- Any Phase 4 session where ≥2 hypotheses are approved
+- Any multi-hypothesis optimisation context where changes are queued for concurrent application
+
+**Targets:** Experiment Isolation Score (↑)
+
+**Typical gain:** Primarily a measurement integrity fix rather than a score improvement. On runs where overlapping hypotheses were previously applied concurrently: expect +10–20pp on Experiment Isolation Score. The main benefit is that future attribution decisions become trustworthy.
 
 ---
 

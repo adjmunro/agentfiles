@@ -6,7 +6,7 @@ Re-read `research-log.md` (Intent Anchor). Focus on the baseline section.
 
 Based on the weakest metrics (seed and custom), form 3–5 hypotheses.
 
-**The seed patterns (P1–P11) are starting points, not constraints.** If the workflow
+**The seed patterns (P1–P14) are starting points, not constraints.** If the workflow
 has a problem that no seed pattern addresses, invent the fix. Novel hypotheses are
 expected and valuable — they may become patterns for future runs.
 
@@ -94,6 +94,39 @@ human — contains reference tables, explanatory prose, help content). Score onl
 instruction files. Documentation token counts dilute both metrics and mask genuine
 instruction quality.
 Targets: DD (↑), ITE (↑)
+
+#### P12 — Content Synchronisation Audit
+Whenever an instruction file is updated with new named entries (new metrics, new
+patterns, new phases, new steps), check and update every corresponding reference
+or help file in the same session. Named entries in instruction files that lack a
+matching help entry are invisible to users of the skill's help command and degrade
+the trust chain between what the system does and what is documented.
+Applicable to: any skill that maintains a parallel help/reference file alongside
+its command files.
+Targets: HCU (↑)
+
+#### P13 — Corrective-Pattern Applicability Classification
+In any pattern or rule library that distinguishes proactive patterns (apply to
+improve things that are already working) from corrective patterns (apply only when
+a specific measured condition is met), mark corrective patterns explicitly with
+their trigger condition. When measuring pattern validation rate, exclude corrective
+patterns from the denominator if their trigger condition has never been true.
+A pattern that has never been applicable is not unvalidated — it is correctly
+dormant. Conflating the two inflates perceived validation debt.
+Applicable to: any workflow with a library of rules or patterns that grows over time.
+Targets: PEV (↑)
+
+#### P14 — Pre-Experiment Dependency Scan
+Before applying the first experiment in any multi-hypothesis session, read all
+pending (approved, not yet run) hypotheses and check whether any two modify the
+same file. If overlap is found, note it in the log and run the overlapping
+hypotheses sequentially with a metric re-check between them rather than applying
+both at once. Without this scan, two simultaneous changes to the same file produce
+non-attributable metric deltas — it becomes impossible to assign credit or blame
+to either hypothesis.
+Applicable to: any multi-hypothesis experiment session; any workflow optimisation
+context where ≥2 changes are queued for concurrent application.
+Targets: EIS (↑)
 
 For each hypothesis, use the appropriate template:
 
