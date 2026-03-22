@@ -633,3 +633,169 @@ No hypotheses were disconfirmed or reverted. All 7 experiments confirmed.
 - **M1 IOT**: 55 normalised — orchestrators verify artifact existence but a full
   read+summarize pattern at every transition would push this above 80
 
+---
+
+## Audit — 2026-03-22 (run 3)
+
+**Target:** `/Users/adjmunro/Developer/agentfiles/.claude/skills/optimise`
+**Files:** 12 total (7 command, 4 support, 1 log)
+**Token estimate:** ~9,208 tokens (command: ~8,038, support: ~1,170)
+
+> ⚠️ **Log contamination note:** Lines 402–634 of this log contain data from a
+> different target (subjects: ideation v1.0.0, kanban2 v2.1.0, personas v1.0.0).
+> That data was appended by mistake in a prior session. Run 3 data begins here.
+> Prior optimise-skill runs (run 1 and run 2) are intact at lines 1–399.
+
+### Feature Inventory
+- Multi-phase pipeline: yes (5 phases across p1–p5 phase files + orchestrator)
+- Persona system: yes (Pulse in p2, Keeper in p3, Arden in p4)
+- Subagent invocations: no
+- Multi-session orchestration: yes (Phase 3 STOP creates session boundary)
+- Parallel execution: no
+- Cached artifacts: yes (research-log.md written phases 1–3, read phases 4–5)
+
+### Files
+- `commands/optimise.md` — command (orchestrator) (~525t)
+- `commands/help.md` — command (help reference, **new since run 2**) (~4,134t)
+- `commands/phases/p1-audit.md` — command (phase) (~408t)
+- `commands/phases/p2-baseline.md` — command (phase) (~980t)
+- `commands/phases/p3-hypothesize.md` — command (phase) (~809t)
+- `commands/phases/p4-experiments.md` — command (phase) (~484t)
+- `commands/phases/p5-report.md` — command (phase) (~528t)
+- `SKILL.md` — support (~337t)
+- `AGENTS.md` — support (~262t)
+- `CHANGELOG.md` — support (~569t)
+- `VERSION.md` — support (~2t)
+- `research-log.md` — log (not scored)
+
+---
+
+## Custom Metrics — 2026-03-22 (run 3)
+
+### MX5 — Help Content Coverage (HCC) [custom]
+**Measures:** Whether each documented metric and pattern in help.md includes all required detail fields.
+**Why seeds miss it:** No seed checks whether the help reference itself is complete — a metric with a missing "how to improve" entry leaves users unable to act on a low score.
+**Methodology:** For each of the 13 seed metrics and 7 patterns, check presence of: (a) Measures/Problem, (b) Intent/How it works, (c) Risk/Targets, (d) How to improve/When to apply. HCC = fully_covered / total_documented.
+**Direction:** ↑ higher
+**Weight:** 1×
+**Normalisation:** raw %
+
+### MX6 — Metric ID Consistency (MIC) [custom]
+**Measures:** Whether metric and pattern ID ranges referenced across files are mutually consistent (no stale or incorrect ranges).
+**Why seeds miss it:** M5 catches duplicated instructions, not stale numerical references. A file saying "M1–M12" when M13 exists causes an agent to silently skip the new metric.
+**Methodology:** Identify all explicit metric count or range statements across command and support files (e.g., "M1–M12", "P1–P7"). Check each against current reality. MIC = correct_references / total_references.
+**Direction:** ↑ higher
+**Weight:** 2×
+**Normalisation:** raw %
+
+### MX7 — Experiment Isolation Score (EIS) [custom]
+**Measures:** What fraction of the hypothesis template's structural constraints enforce single-dimension changes.
+**Why seeds miss it:** M6 checks outcome classification quality, not whether the experiment design enforces clean attribution.
+**Methodology:** Check the hypothesis template and DO NOT rules for: (a) explicit single-concern constraint, (b) one-commit rule, (c) prohibition on multi-file conflation. EIS = isolation_constraints_present / total_expected_isolation_constraints.
+**Direction:** ↑ higher
+**Weight:** 1×
+**Normalisation:** raw %
+
+### MX8 — Recovery Path Completeness (RPC) [custom]
+**Measures:** What fraction of identified failure modes have explicit recovery instructions in the command files.
+**Why seeds miss it:** No seed asks whether the workflow knows what to do when things go wrong — only whether it is well-structured for the happy path.
+**Methodology:** Enumerate failure modes: target not found, log mismatch, log stale, all hypotheses skipped, disconfirmed experiment, git unavailable, persona not found, log contamination. For each, check for explicit recovery instruction. RPC = modes_with_recovery / total_modes.
+**Direction:** ↑ higher
+**Weight:** 1×
+**Normalisation:** raw %
+
+### MX9 — Hypothesis Surprise Rate (HSR) [custom, moonshot]
+**Measures:** The fraction of confirmed experiments that also improved at least one non-targeted metric by ≥2pp.
+**Why seeds miss it:** All other metrics evaluate current workflow state. This evaluates the optimisation loop's own history — whether improvements are perfectly isolated or whether fixing one thing also fixes others.
+**Methodology:** For each confirmed experiment in research-log.md, check delta rows for any non-targeted metric improving ≥2pp. HSR = experiments_with_secondary_gains / total_confirmed_experiments.
+**Direction:** Target range 20–40% is healthy. Normalise: 20–40% → 100; 10–20% or 40–60% → 80; 0–10% or >60% → 70.
+**Weight:** 1×
+**Normalisation:** see above
+
+---
+
+## Baseline — 2026-03-22 (run 3)
+
+Seed metrics skipped: Subagent Alignment Score (no subagent invocations), Parallelisation Safety Score (no parallel execution)
+Custom metrics re-applied: MX1 SAF, MX2 MMC, MX3 PPR, MX4 PLR
+Custom metrics new: MX5 HCC, MX6 MIC, MX7 EIS, MX8 RPC, MX9 HSR
+
+| Metric | Source | Raw | Normalised | Weight | Weighted |
+|--------|--------|-----|-----------|--------|----------|
+| Intent-to-Output Traceability | seed | 100% | 100 | 2× | 200 |
+| Directive Density | seed | 1.39/100t | 70 | 1× | 70 |
+| Instruction Ambiguity Rate | seed | ~5% | 95 | 1× | 95 |
+| Wiring Completeness Score | seed | 100% | 100 | 1× | 100 |
+| Redundancy Index | seed | ~12% | 88 | 1× | 88 |
+| Acceptance Criteria Concreteness | seed | ~93% | 93 | 2× | 186 |
+| Human Touchpoint Count | seed | 1 pt | 95 | 2× | 190 |
+| Context Decay Resilience | seed | 100% | 100 | 2× | 200 |
+| Context Loading Efficiency | seed | ~95% | 95 | 2× | 190 |
+| Information Freshness Score | seed | 100% | 100 | 2× | 200 |
+| Instruction Token Efficiency | seed | ~87% | 87 | 1× | 87 |
+| Self-Application Fidelity | custom | 100% | 100 | 2× | 200 |
+| Metric Methodology Completeness | custom | 12/13 | 92 | 1× | 92 |
+| Pattern Library Promotion Rate | custom | 100% | 100 | 2× | 200 |
+| Persona Load Resilience | custom | 100% | 100 | 1× | 100 |
+| Help Content Coverage | custom | 100% | 100 | 1× | 100 |
+| Metric ID Consistency | custom | 5/6 | 83 | 2× | 166 |
+| Experiment Isolation Score | custom | ~85% | 85 | 1× | 85 |
+| Recovery Path Completeness | custom | 5/8 | 63 | 1× | 63 |
+| Hypothesis Surprise Rate | custom | 0% | 70 | 1× | 70 |
+| **TOTAL** | | | | **29×** | **2,682 / 2,900** |
+
+**Baseline Composite (Run 3): 92.5%**
+
+Weakest: Recovery Path Completeness (63), Directive Density (70), Hypothesis Surprise Rate (70)
+Strongest: Intent-to-Output Traceability (100), Context Decay Resilience (100), Information Freshness Score (100)
+
+> Note: Directive Density dropped from 100 → 70 due to help.md (4,134 tokens of reference documentation) joining the command file corpus. This is an artefact of help.md's documentary nature rather than instruction quality regression. Worth investigating whether ITE and DD methodologies should distinguish instruction files from documentation files.
+
+---
+
+## Experiments — 2026-03-22 (run 3)
+
+### H11 — Recovery Path Completeness: Missing Failure Modes
+**Problem:** Recovery Path Completeness (RPC) = 63. Three failure modes have no recovery instruction: (a) user approves zero hypotheses, (b) git unavailable at target, (c) research-log contains contaminated foreign data.
+**Change:** Add recovery handling for all three cases to p3-hypothesize.md, p4-experiments.md, and p1-audit.md respectively.
+**Targets:** Recovery Path Completeness ↑ (63 → 100)
+**Pattern:** Novel — Failure Mode Registry
+**Status:** pending
+
+**Pre-change:** Recovery Path Completeness 63 (5/8 modes covered)
+**Post-change:** Recovery Path Completeness 100 (8/8 modes covered)
+**Delta:** Recovery Path Completeness +37pp
+**Result:** confirmed
+**Notes:** Three explicit recovery paths added: contamination check in p1-audit.md (detects foreign Subjects/Branch headers), all-skip path in p3-hypothesize.md (route to Phase 5 with zero experiments), non-git note in p4-experiments.md (proceed without branching, note in log).
+
+### H12 — Directive Density: Exclude Documentation Files from Scope
+**Problem:** Directive Density = 70 (down from 100) — caused entirely by help.md's 4,134 documentation tokens diluting the count. DD was designed for instruction files that constrain agent behaviour; applying it to human-facing reference docs is a category error.
+**Change:** Update M2 DD and M13 ITE methodologies in p2-baseline.md to scope measurements to instruction command files only, excluding documentation command files (identifiable by an argument-hint that accepts lookup keywords rather than workflow paths).
+**Targets:** Directive Density ↑ (70 → ~95), Instruction Token Efficiency ↑ (87 → ~90)
+**Pattern:** Novel — File Role Stratification
+**Status:** pending
+
+### H13 — Metric ID Consistency: Update SKILL.md
+**Problem:** Metric ID Consistency (MIC) = 83. SKILL.md references "M1–M12" — stale since M13 was added this session.
+**Change:** Update SKILL.md metric range from "M1–M12" to "M1–M13". Verify no other support files have stale ranges.
+**Targets:** Metric ID Consistency ↑ (83 → 100)
+**Pattern:** none (consistency fix)
+**Status:** pending
+
+### H14 — Add Explicit Direction Field to M13
+**Problem:** Metric Methodology Completeness (MMC) = 92. M13 (Instruction Token Efficiency) is missing an explicit Direction field in its p2-baseline.md definition.
+**Change:** Add "Direction: ↑ higher is better" line to M13 definition in p2-baseline.md.
+**Targets:** Metric Methodology Completeness ↑ (92 → ~100)
+**Pattern:** none (completeness fix)
+**Status:** pending
+
+### H15 — Phase 4 Full-Spectrum Delta Recording
+**Problem:** Hypothesis Surprise Rate (HSR) = 70 due to 0% secondary gains across 10 experiments. Phase 4 only re-measures targeted metrics — secondary gains are invisible even when they happen.
+**Change:** Update p4-experiments.md Step c to also check and record any currently-applied metric that changed ≥2pp from the pre-change score, beyond the primary targets.
+**Targets:** Hypothesis Surprise Rate ↑ (observability improvement — actual score depends on what future experiments reveal)
+**Pattern:** Novel — Full-Spectrum Delta Recording
+**Status:** pending
+
+
+
+

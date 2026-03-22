@@ -10,6 +10,11 @@ If inside a git repo, check out a new branch:
 git checkout -b optimize/<target-dir-name>-<date>
 ```
 
+If the target is not inside a git repo, proceed without branching. Note this in
+`research-log.md` at the start of the experiments section: "No git repo at target —
+changes are not version-controlled. Revert instructions in Step e refer to manual
+undo rather than `git revert`."
+
 For each approved hypothesis, in order:
 
 ### Step a — Record pre-change score

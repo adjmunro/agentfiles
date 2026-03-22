@@ -99,6 +99,10 @@ Do not use metric abbreviations or hypothesis IDs in the brief shown to the user
 
 **STOP. Wait for human approval. Do not proceed to Phase 4 until decisions are received.**
 
+If the human skips all hypotheses, proceed directly to Phase 5. Write a note to
+`research-log.md`: "All hypotheses skipped — no experiments run. Proceeding to report."
+Read `commands/phases/p5-report.md` to continue. Phase 5 should reflect zero experiments.
+
 Write the full hypothesis list to `research-log.md` under `## Experiments — <date>`.
 
 When human approval is received, read `commands/phases/p4-experiments.md` to continue.

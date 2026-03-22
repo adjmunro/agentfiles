@@ -6,6 +6,7 @@ If `research-log.md` exists in the target directory, apply the 3-tier TTL policy
 - **Tier A — Regenerate**: the log's `**Target:**` header does not match `$ARGUMENTS` path → archive the existing log to `research-log-archived-<date>.md`, start a fresh log.
 - **Tier B — Load-with-caveat**: target matches AND log date is >7 days old → load but flag to the user: "Warning: research-log.md is from <date> — scores may be stale."
 - **Tier C — Use as-is**: target matches AND log is ≤7 days old → read and proceed.
+- **Contamination check** (apply after Tier A/B/C): after loading, scan for `**Subjects:**` or `**Branch:**` metadata headers that reference a different workflow (e.g., subject names not matching the target directory). If found, warn the user: "Warning: this research-log appears to contain data from a different target (subjects: <X>). Prior score data in the contaminated section should not be used as a baseline." Continue with the run — do not archive unless the user requests it.
 If `research-log.md` does not exist, proceed without reading.
 
 Derive the target directory path from `$ARGUMENTS`. If `$ARGUMENTS` is empty or the
