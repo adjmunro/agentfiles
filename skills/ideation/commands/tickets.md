@@ -4,10 +4,12 @@ allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
 argument-hint: "[YYYY-MM-DD-{subject}] — subject to create tickets for"
 ---
 
-<!-- PROGRESSIVE DISCLOSURE: This file contains instructions for all phases.
-     When starting, only Phase 1 is active. Do not process later phase blocks
-     until you reach them. Each phase block is clearly marked with an
-     "Active when:" comment that states the required condition. -->
+<!-- This file is a phase dispatcher. It contains ONLY boot logic and phase dispatch.
+     All phase instructions live in tickets/ subdirectory files.
+     Each phase file contains only that phase's instructions — no future-phase content
+     is loaded until needed. Read only the current phase file. Do not pre-read future phases. -->
+
+# Tickets — Orchestrator
 
 ## Personas
 
@@ -32,235 +34,18 @@ Read each file before proceeding. Identify by the active persona when communicat
 - Create tickets for version bumps or changelog updates — those happen automatically in commits
 - Proceed if the plan file (`02-plan-{subject}.md`) is missing
 
----
-
-## Phase 1 — Load Plan
-<!-- Active when: command is first invoked — always runs before any other phase -->
-
-Derive the subject using the following priority order. Stop at the first match:
-
-1. **`$ARGUMENTS`** — if arguments contain a `YYYY-MM-DD-*` pattern, use it as-is.
-2. **Existing `.kanban/` subject directories** — if exactly one subject directory exists with a `02-plan-*.md` file, use that name.
-3. **Git worktree path** — take the last path segment of the current worktree entry.
-4. **Conversation context** — synthesise a slug from what the work is about.
-5. **Branch name and recent commits** — derive from `git branch --show-current` and `git log --oneline -5`.
-6. **Last resort** — combine today's date with a brief summary slug.
-
-**Slugify rules:** lowercase, hyphens for spaces, alphanumerics and hyphens only.
-
-Once the subject is derived, locate the plan file:
-
-```
-.kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md
-```
-
-**Before loading the plan file, apply its staleness policy:**
-LOAD WITH CAVEAT (TTL: 7 days). Check its `created_at` frontmatter field (or file mtime as fallback).
-- If age ≤ 7 days: load normally.
-- If age > 7 days: load, but prepend this warning to any extracted content:
-  ⚠ STALE (written {N} days ago): treat as reference only. Verify against current codebase before acting.
-
-**STOP:** If the plan file does not exist, report: "No plan found. Run `/ideate` through Step 6 first." Do not proceed.
-
-**STOP:** If the plan file exists but contains no audit section (look for a heading containing "Audit" or "audit"), report: "Plan has not been audited. Run `/ideate` through Step 5 first." Do not proceed.
-
-Read the plan file in full. Enumerate every numbered requirement — these are the items that must map to ticket ACs during the audit.
-
----
-
-## Phase 2 — Scout Research (Brief)
-<!-- Active when: plan file loaded and enumerated (Phase 1 complete) -->
-
-Activate **Finn (Scout)**. Run a quick, focused codebase scan to inform ticket scope and dependencies. This is not a full research session — it supplements the `01-research-{subject}.md` snapshot already written during Step 2.
-
-Scout is read-only. No files are modified in this phase.
-
-### Scout Tasks
-
-1. Read `01-research-{subject}.md` if it exists — avoid duplicating work already done.
-   **Before loading, apply its staleness policy:** LOAD WITH CAVEAT (TTL: 48 hours). Check its `created_at` frontmatter field (or file mtime as fallback).
-   - If age ≤ 48 hours: load normally.
-   - If age > 48 hours: load, but prepend this warning to any extracted content:
-     ⚠ STALE (written {N} days ago): treat as reference only. Verify against current codebase before acting.
-2. Identify any relevant files, patterns, or conventions that have changed since that snapshot.
-3. Check what already exists so tickets don't duplicate implemented work.
-4. Note dependencies between the work items to suggest ticket ordering.
-
-Scout does not write a new research file here. If findings are significant, note them inline as you draft tickets (Phase 3).
-
----
-
-## Phase 3 — Draft Tickets
-<!-- Active when: Scout research complete (Phase 2 done) -->
-
-Activate the main implementation persona. Draft each ticket as a separate file.
-
-### Destination Directory
-
-All tickets MUST be written to:
-
-```
-.kanban/YYYY-MM-DD-{subject}/03-refinement/
-```
-
-**NEVER write tickets to `04-todo/`** — that directory is the Step 9 promotion gate. Tickets only move there when the user explicitly chooses "Add to backlog" at Step 9.
-
-### TASK-001 — TDD Red Phase (mandatory, always first)
-
-TASK-001 is ALWAYS the TDD red phase. No exceptions.
-
-- **What it verifies**: that neither the skill nor any key files exist yet (red — nothing passes yet)
-- **Effort**: `low`
-- **ACs**: verify that the target files do not exist, test stubs fail, no implementation is present
-
-### Remaining Tickets
-
-For each logical unit of work:
-
-- One ticket per self-contained unit completable in a single agent session
-- Small enough for a low-effort model to implement without ambiguity
-- Use Scout's dependency findings to set `depends_on` in frontmatter
-
-**Effort tiers:**
-- `low` — research, documentation, simple utilities; use a fast/cheap model
-- `medium` — standard implementation work; use a standard model
-- `high` — complex reasoning, security-critical logic, architectural decisions; use the most capable model
-
-### Ticket Frontmatter Schema
-
-> See `../../kanban2/commands/_shared.md § Ticket Frontmatter Schema` when you need field definitions.
-
-Note: for ideation tickets, the `id` field uses the shorter form `{subject}/TASK-NNN` and `plan` points to `../02-plan-{subject}.md` rather than the kanban2 path.
-
-### Ticket Body Structure
-
-```markdown
-## Context
-[Why this ticket exists, traced directly to plan items. Written once, never modified.]
-
-## Acceptance Criteria
-[Complete list. Each item is empirically verifiable — a command with expected output, or a state that can be observed without interpretation.]
-
-<!-- Everything below this line is append-only and chronological -->
-```
-
-### Acceptance Criteria Must Be Empirically Verifiable
-
-Every AC MUST be verifiable by running a command or observing a concrete state. Vague criteria are not acceptable.
-
-| NOT acceptable | Acceptable |
-|---|---|
-| "Documentation updated" | "`grep -c 'TODO' docs/` returns 0" |
-| "Tests pass" | "`npm test -- --testPathPattern=auth` exits 0" |
-| "Error handling improved" | "Sending request without auth header returns HTTP 401 with body `{\"error\":\"unauthorized\"}`" |
-
-ACs answer *"how do I know it's done?"* — not *"how should it be built?"*. Do not specify file names, directory locations, or function names unless they are genuinely externally observable constraints.
-
-### File Naming
-
-```
-TASK-001-{subject}.md
-TASK-002-{subject}.md
-...
-```
-
-Where `{subject}` is the short slug portion of the parent directory name (strip the `YYYY-MM-DD-` date prefix).
-
-Git commit after writing all ticket files:
-
-```
-kanban(tickets): draft N tickets for {subject}
-```
-
----
-
-## Phase 4 — Critic Audit Gate (Step 8)
-<!-- Active when: all ticket files drafted and committed (Phase 3 done) -->
-
-Activate **Arden (Critic)**. Audit ticket coverage against plan requirements.
-
-### Scoring
-
-- **Full** — requirement is directly addressed by a ticket's AC with a verifiable command or observable state
-- **Partial** — requirement is mentioned in a ticket's context or `plan_items` but the AC doesn't fully verify it
-- **Missing** — no ticket addresses the requirement
-
-Score: `(full + 0.5 × partial) / total × 100`
-
-**Threshold: 95%.** Do not round up.
-
-### Audit Table
-
-Build a coverage table:
-
-| # | Requirement | Ticket(s) | Status | Notes |
-|---|-------------|-----------|--------|-------|
-| 1 | Req text    | TASK-001  | Full   |       |
-
-### Auto-Fix (if score < 95%)
-
-If the score falls below 95%, auto-fix immediately — **never ask permission**:
-
-1. For every **Missing** requirement: create a new ticket in `03-refinement/` that covers it.
-2. For every **Partial** requirement: strengthen the relevant ticket's ACs so they are fully verifiable.
-3. Re-run the audit, update the table and score.
-4. Repeat until the threshold is met.
-
-### Audit Block
-
-Append this block to the plan file (`02-plan-{subject}.md`):
-
-```markdown
-## Audit: plan → tickets — PASS|FAIL
-**Date**: ISO8601  **Threshold**: 95%
-
-| # | Requirement | Ticket(s) | Status | Notes |
-|---|------------|-----------|--------|-------|
-| 1 | Req text   | TASK-001  | Full   |       |
-
-- Full: N, Partial: N, Missing: N — Total: N
-- Score: (full + 0.5×partial) / total × 100 = **XX%**
-
-### Fixes Applied
-- Created TASK-NNN for requirement X (was Missing)
-- Strengthened TASK-NNN AC for requirement Y (was Partial)
-```
-
-Git commit after audit passes:
-
-```
-kanban(tickets): audit verified {subject}
-```
-
----
-
-## Phase 5 — Git Commit
-<!-- Active when: audit passes at ≥ 95% (Phase 4 done) -->
-
-After Phase 4 completes and the audit passes:
-
-1. Stage all new and modified files.
-2. Commit with the message:
-
-```
-kanban(tickets): draft N tickets for {subject}
-```
-
-Include in the commit body:
-- Number of tickets created
-- Audit score
-- Any tickets auto-created during the fix pass
-
----
-
-## Key Rules Summary
-
-| Rule | Detail |
-|------|--------|
-| Ticket destination | `03-refinement/` only — never `04-todo/` |
-| TASK-001 | Always TDD red phase — no exceptions |
-| ACs | Must be empirically verifiable commands or observable states |
-| Audit threshold | 95% — do not round up |
-| Auto-fix | Fix gaps immediately — never ask permission |
-| Version/changelog tickets | Never create these — they happen automatically in commits |
-| Frontmatter schema | Fixed — use exact fields from schema above |
+## Phase Dispatch Table
+
+| Phase | File | Active when |
+|-------|------|-------------|
+| 1 | `tickets/p1-load-plan.md` | command is first invoked |
+| 2 | `tickets/p2-scout-research.md` | plan loaded and enumerated |
+| 3 | `tickets/p3-draft-tickets.md` | Scout research complete |
+| 4 | `tickets/p4-critic-audit.md` | all ticket files drafted and committed |
+| 5 | `tickets/p5-commit.md` | audit passes at ≥ 95% |
+
+## Execution
+
+Read Phase 1 file now: `tickets/p1-load-plan.md`
+Execute it completely. Then read the next phase file as instructed within that file.
+Each phase file ends with a "→ Next" line pointing to the next phase file.
