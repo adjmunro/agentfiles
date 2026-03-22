@@ -38,13 +38,7 @@ Resolve the subject slug from `$ARGUMENTS`:
 
 **Slug uniqueness guard:** If `.kanban/YYYY-MM-DD-{subject-slug}/` already exists and this is NOT a loop-back (i.e. `$ARGUMENTS` did not explicitly name it), append `-2` to the slug. If that also exists, try `-3`, and so on until a unique slug is found. Log which slug was chosen: "Subject directory already existed — using `YYYY-MM-DD-{subject-slug}` instead."
 
-Create the subject directory structure if it does not exist:
-
-```
-.kanban/YYYY-MM-DD-{subject}/
-.kanban/YYYY-MM-DD-{subject}/00-assets/
-.kanban/YYYY-MM-DD-{subject}/03-refinement/
-```
+Invoke `commands/init.md` with the derived subject slug to create the subject scaffold. This creates `.kanban/YYYY-MM-DD-{subject}/` with all stage directories. If the directory already exists, `init.md` handles reinitialisation safely — only missing directories are added.
 
 **Check for loop-back**: If `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md` exists with substantive content, this is a loop-back iteration. Note this for Phase 2 — `capture.md` will append a new session block rather than create a fresh file.
 
