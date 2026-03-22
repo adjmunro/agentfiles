@@ -6,7 +6,7 @@ If `research-log.md` exists in the target directory, apply the 3-tier TTL policy
 - **Tier A — Regenerate**: the log's `**Target:**` header does not match `$ARGUMENTS` path → archive the existing log to `research-log-archived-<date>.md`, start a fresh log.
 - **Tier B — Load-with-caveat**: target matches AND log date is >7 days old → load but flag to the user: "Warning: research-log.md is from <date> — scores may be stale."
 - **Tier C — Use as-is**: target matches AND log is ≤7 days old → read and proceed.
-- **Contamination check** (apply after Tier A/B/C): after loading, scan for `**Subjects:**` or `**Branch:**` metadata headers that reference a different workflow (e.g., subject names not matching the target directory). If found, warn the user: "Warning: this research-log appears to contain data from a different target (subjects: <X>). Prior score data in the contaminated section should not be used as a baseline." Continue with the run — do not archive unless the user requests it.
+- **Contamination check** (apply after Tier A/B/C): after loading, scan for `**Subjects:**` or `**Branch:**` metadata headers that reference a different workflow (e.g., subject names not matching the target directory). If found, warn the user: "Warning: this research-log appears to contain data from a different target (subjects: <X>). Prior score data in the contaminated section must not be used as a baseline." Continue with the run — do not archive unless the user requests it.
 If `research-log.md` does not exist, proceed without reading.
 
 Derive the target directory path from `$ARGUMENTS`. If `$ARGUMENTS` is empty or the
@@ -32,7 +32,7 @@ Inventory the target directory:
 4. Record the feature presence/absence — this determines which metrics apply in Phase 2
 5. **Persona staleness check** (apply if persona system is present):
    - For each persona load directive found in command files, check whether the referenced `persona.md` file exists at the stated path. If missing: flag as a broken reference — "Warning: phase N loads `<path>` which does not exist. This phase will run without a persona."
-   - For each persona file that does exist, check its `soul.md` for an `## Origin` section. If the Origin indicates this is a parent that has been speciated (i.e., child personas exist in sibling directories with this one named as their Origin), note it: "Note: `<persona>` has been speciated into `<children>`. Consider whether the phase should use a more specific variant."
+   - For each persona file that does exist, check its `soul.md` for an `## Origin` section. If the Origin indicates this is a parent that has been speciated (i.e., child personas exist in sibling directories with this one named as their Origin), note it: "Note: `<persona>` has been speciated into `<children>`. If child personas exist in sibling directories, check whether one would improve fit for this phase over the parent."
    - Record any broken references and speciation notes in `research-log.md` under the audit entry. Do not block the run — these are warnings, not errors.
 
 Write a brief audit summary to `research-log.md`:

@@ -45,7 +45,7 @@ If any confirmed hypothesis used a novel pattern (not P1–P7), document it:
 **Seed candidate:** yes / no / maybe — <reasoning>
 ```
 
-Seed candidates should be promoted to the Design Patterns section in
+Promote any seed candidates to the Design Patterns section in
 `commands/phases/p3-hypothesize.md` in a future optimisation run.
 
 Append the full report to `research-log.md` under `## Final Results — <date>`.
