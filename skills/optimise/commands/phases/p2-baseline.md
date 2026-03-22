@@ -121,13 +121,41 @@ Methodology:
    - **Full fit (1.0)**: assigned persona's core trait directly matches the cognitive demand, OR the phase is a reporting/neutral phase and no persona is assigned
    - **Partial fit (0.5)**: persona's traits are adjacent but not optimal (e.g., strategist on a measurement phase), OR a persona is assigned to a neutral phase but does not obviously conflict
    - **Mismatch (0.0)**: persona's traits actively work against the phase's purpose (e.g., critic on a generative brainstorm), OR a high-value phase has no persona and a clear one exists
-3. Also check persona depth: for each persona file that is loaded, does it define at minimum — name, core trait/cognitive style, what it emphasises, what it de-emphasises, tone? A persona file missing two or more of these fields is functionally decorative and scores partial.
+3. Also check persona depth using the M15 Richness Rubric: a persona scoring <71% (i.e., missing both Unique Talent and Failure Mode) is functionally decorative regardless of its other fields — its phase assignment scores partial regardless of cognitive alignment.
 PPF = sum(per_phase_scores) / total_phases_assessed
 Normalise: PPF × 100.
 
+### M15 — Persona Richness Score (PRS) [applies: persona system]
+**Apply if:** Does the workflow reference or load any persona files? (yes = apply, no = skip)
+Methodology: For each persona used by the workflow, locate its `persona.md` and
+`soul.md` files and score against the Richness Rubric:
+
+| Field | File | Points |
+|-------|------|--------|
+| Purpose defined (1–2 sentences) | persona.md | 1 |
+| DO list with ≥3 concrete, actionable rules | persona.md | 1 |
+| DO NOT list with ≥2 concrete rules | persona.md | 1 |
+| When to summon defined | persona.md | 1 |
+| Failure Mode section present | persona.md | 2 |
+| soul.md present | soul.md | 1 |
+| Essence (1–2 sentence distillation) | soul.md | 1 |
+| Core Truths ≥3 | soul.md | 1 |
+| Opinions ≥2 | soul.md | 1 |
+| Contradictions ≥1 | soul.md | 1 |
+| Voice description present | soul.md | 1 |
+| Unique Talent section present | soul.md | 2 |
+
+Maximum: 14 points per persona.
+PRS = average(points / 14) across all personas loaded by this workflow.
+Normalise: PRS × 100.
+
+A persona missing Failure Mode or Unique Talent scores at most 10/14 (71%) regardless of
+how well other fields are filled. These are the fields that determine whether a persona
+actually shifts behaviour or is merely decorative.
+
 ### Custom Metric Discovery
 
-**This step is mandatory.** After scoring M1–M14, Pulse examines the workflow for
+**This step is mandatory.** After scoring M1–M15, Pulse examines the workflow for
 quality dimensions not captured by any seed metric.
 
 Ask: *What could go wrong in this specific workflow that no seed metric would catch?*

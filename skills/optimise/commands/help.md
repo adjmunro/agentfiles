@@ -33,6 +33,7 @@ Display this table, then the patterns table, then the stats summary. Nothing els
 | M12 · IFS | Information Freshness Score | 2× | Cached artefacts present | 90–100 | Whether inter-session artefacts have TTL policies before re-use |
 | M13 · ITE | Instruction Token Efficiency | 1× | All workflows | 80–100 | What fraction of tokens are load-bearing vs. filler/padding |
 | M14 · PPF | Persona-Phase Fit Score | 1× | Persona system present | 80–100 | Whether each phase's assigned persona matches its cognitive demand, and whether unassigned phases should have one |
+| M15 · PRS | Persona Richness Score | 1× | Persona system present | 85–100 | How complete and differentiated the persona files themselves are — do they define Unique Talent and Failure Mode? |
 
 ### Design Patterns
 
@@ -46,6 +47,7 @@ Display this table, then the patterns table, then the stats summary. Nothing els
 | P6 | Symmetric Outcome Thresholds | ACC ↑ | Any workflow with multi-tier outcome classification |
 | P7 | Binary Applicability Gates | IAR ↓, ACC ↑ | Any workflow with conditional or optional steps |
 | P8 | Persona Rotation | PPF ↑ | Any workflow where a phase's persona is a poor fit, missing, or untested |
+| P9 | Persona Speciation | PRS ↑, PPF ↑ | Any workflow where personas are thin (missing Unique Talent or Failure Mode) or where a cognitive demand has no matching persona |
 
 ### Stats at a Glance
 
@@ -425,6 +427,30 @@ Find the section below that best matches the argument. Display only that section
 
 ---
 
+### Persona Speciation (P9)
+*Also matches: P9, speciate, speciation, distil, distillation, fork, evolve, new persona, unique talent, failure mode*
+
+**Problem it solves:** Personas that are well-structured on paper but don't define a Unique Talent or Failure Mode behave like generic labels — they name a role but don't change output. Separately, workflows sometimes need a cognitive mode that no existing persona covers.
+
+**How it works:** Two mechanisms:
+
+*Speciation* — diverge an existing persona along one dimension (temporal scope, adversarial intensity, domain depth, output type) to create a focused variant that outperforms the generalist in its niche. Each speciated persona gets a new name and character, not a version number. Parent/child relationship is recorded in the child's `soul.md` Origin section.
+
+*Distillation* — read a run log or retrospective where a persona was active. Extract behaviors that consistently produced measurably better outputs but aren't in the persona's DO rules. Crystallize them as concrete new rules. Prune rules that were never exercised. Deepen soul fields that the run revealed but the file doesn't capture. This is evidence-based sharpening, not guesswork.
+
+Both are executed via `/personas evolve` — the command handles scoring, recommendation briefs, and file creation.
+
+**Targets:** Persona Richness Score (↑), Persona-Phase Fit Score (↑)
+
+**When to apply:**
+- Persona Richness Score < 85 on any persona (missing Unique Talent or Failure Mode)
+- A phase's cognitive demand has no matching persona in the library (gap-fill)
+- A persona has been used in multiple runs but hasn't been updated based on what worked
+
+**Typical gain:** First application on a library that lacks Unique Talent/Failure Mode across the board: expect +20–30pp on Persona Richness Score. Distillation gains are harder to predict but tend to produce more consistent per-phase output quality on subsequent runs.
+
+---
+
 ### Persona Rotation (P8)
 *Also matches: P8, persona, rotation, fit, alternative, invent, cognitive, style, reassign*
 
@@ -469,6 +495,33 @@ Find the section below that best matches the argument. Display only that section
 **Note on tokenisation encoding:** A related but separate concern is how efficiently the text itself tokenises given the model's vocabulary (e.g. certain markdown symbols, CamelCase, or special characters produce more tokens per visible character than plain prose). This is worth tracking as a moonshot custom metric on targets where raw token cost is critical, but requires running an actual tokeniser and is too tooling-dependent to be a seed metric.
 
 **How to improve:** Audit for the padding categories above. Replace preamble phrases with direct imperatives ("Record X if Y" instead of "Please make sure to always record X when Y occurs"). Remove decorative dividers that add no navigational value. Convert narrative description paragraphs into explicit DO / DO NOT rules.
+
+**Stats:** New metric — no historical data yet.
+
+---
+
+### Persona Richness Score (M15 · PRS)
+*Also matches: M15, PRS, richness, persona, talent, failure mode, distil, depth, soul*
+
+**Measures:** How complete and differentiated the persona files are for every persona loaded by the workflow — specifically whether they define a Unique Talent (the cognitive superpower that makes them irreplaceable) and a Failure Mode (when they cause harm).
+
+**Intent:** A persona without a Unique Talent is generic — it names a role but does not change behaviour. A persona without a Failure Mode gets applied to phases where it actively makes things worse (a critic on a brainstorming phase, a builder on a planning phase). The richness score surfaces personas that are merely decorative, so the optimise loop can propose sharpening them through distillation or creating better-fit alternatives through speciation.
+
+**Applies when:** The workflow references or loads any persona files.
+
+**Weight:** 1×
+
+**Healthy range:** 85–100 (at least 12/14 rubric points per persona). A score below 71% means Unique Talent and Failure Mode are both missing — the persona is structurally decorative regardless of its other content.
+
+**Richness Rubric (14 points per persona):**
+- Purpose defined (1pt), DO ≥3 rules (1pt), DO NOT ≥2 rules (1pt), When to summon (1pt): these form the functional skeleton
+- **Failure Mode** (2pt): when not to use this persona — prevents misapplication
+- soul.md present (1pt), Essence (1pt), Core Truths ≥3 (1pt), Opinions ≥2 (1pt), Contradictions ≥1 (1pt), Voice (1pt): these form the character layer
+- **Unique Talent** (2pt): the specific cognitive superpower — must be narrow and non-generic
+
+**Risk at low scores:** Personas are invoked but produce no measurable difference in output quality over no persona at all. Phases calling for analytical rigor get decorated with an "analytics" label but not with analytical constraints. Personas are assigned to harmful phases because no one documented when not to use them.
+
+**How to improve:** Run `/personas evolve audit` to get a per-persona score breakdown and specific missing fields. Then `/personas evolve distil <name>` to sharpen existing personas using evidence from real runs, or `/personas evolve speciate <name>` to create a more potent narrower variant.
 
 **Stats:** New metric — no historical data yet.
 

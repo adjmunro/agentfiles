@@ -65,6 +65,17 @@ on existing assignments and to adding personas to phases that are currently unas
 but would benefit from a specific cognitive style.
 Targets: PPF (↑)
 
+#### P9 — Persona Speciation
+For workflows where personas score below 85 on Persona Richness (missing Unique
+Talent, Failure Mode, or other rubric fields), or where the Phase-Phase Fit audit
+reveals a cognitive demand no existing persona covers: run `/personas evolve` to
+create differentiated variants or fill the gap. Speciation produces new, named
+personas that are narrower and more potent than their parents — not renamed versions
+of existing archetypes. Distillation sharpens existing personas using evidence from
+real runs: observed behaviors that consistently produced better outputs are crystallized
+as new DO rules; thin soul fields are deepened using patterns the run revealed.
+Targets: PRS (↑), PPF (↑)
+
 For each hypothesis:
 
 ```
