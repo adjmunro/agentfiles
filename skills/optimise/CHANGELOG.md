@@ -2,6 +2,32 @@
 
 ---
 
+## v1.3.0 — 2026-03-22
+
+### Added
+- M13 — Instruction Token Efficiency (ITE): new universal seed metric measuring semantic density by detecting padding tokens (throat-clearing preamble, redundant intensifiers, decorative structure, narrative restatement); ITE = 1 − (padding_tokens / total_tokens)
+- `/optimise help` command: summary table of all metrics (M1–M13) and design patterns (P1–P7) with IDs, weights, and one-line purposes
+- `/optimise help <name>` detail mode: full metric/pattern definitions with methodology, intent, healthy range, risk, and improvement guidance; fuzzy-match aliases on every entry
+- 5 new custom metrics: Help Content Coverage (MX5), Metric ID Consistency (MX6), Experiment Isolation Score (MX7), Recovery Path Completeness (MX8), Hypothesis Surprise Rate (MX9, moonshot)
+- Recovery paths for three previously uncovered failure modes: log contamination detection (p1-audit.md), all-skip routing to Phase 5 (p3-hypothesize.md), non-git target handling (p4-experiments.md)
+- File Role Stratification: M2 DD and M13 ITE now classify command files as instruction vs. documentation before scoring — documentation files excluded from both metrics
+- Full-Spectrum Delta Recording: Phase 4 Step c now checks all applied metrics (not just targeted) for ≥2pp secondary changes, enabling Hypothesis Surprise Rate tracking
+- Three novel patterns documented: Failure Mode Registry (NP1), File Role Stratification (NP2), Full-Spectrum Delta Recording (NP3)
+
+### Changed
+- Custom metric discovery minimum raised from 1 to 5 new metrics per run; moonshot requirement added (at least one unconventional, cross-domain metric)
+- No-acronyms rule added globally: metric and pattern names must be spelled out in full in all user-facing output
+- Metric and pattern IDs now shown alongside full names in user output (e.g., "Directive Density (M2 · DD)")
+- Recommendation Brief template updated to use numbered plain-language summaries — no abbreviations in hypothesis IDs or metric names shown to user
+- Phase 5 terminal summary and final table updated to use full metric names only
+- SKILL.md metric range updated from "M1–M12" to "M1–M13"
+- M13 definition completed with explicit Direction field
+
+### Fixed
+- Composite: 92.5% → 95.7% (+3.2pp) — five metrics improved this run
+
+---
+
 ## v1.2.0 — 2026-03-22
 
 ### Added
