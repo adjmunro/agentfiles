@@ -26,6 +26,10 @@ Summon one or more personas and hold a freeform conversation with them. Each per
 | `adversarial` | Rook (Adversary) | `../adversarial/` |
 | `synthesis` | Loom (Synthesist) | `../synthesis/` |
 | `temporal` | Arc (Sequencer) | `../temporal/` |
+| `interrogator` | Sable (Interrogator) | `../interrogator/` |
+| `debugger` | Trace (Debugger) | `../debugger/` |
+| `architect` | Vault (Architect) | `../architect/` |
+| `verifier` | Lens (Verifier) | `../verifier/` |
 
 ## Setup
 
