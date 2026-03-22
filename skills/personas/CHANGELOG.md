@@ -1,6 +1,6 @@
 # Personas Changelog
 
-## 1.4.0 — gstack Gap Fill (2026-03-22)
+## v1.4.0 - 2026-03-22 - gstack Gap Fill
 
 **4 new personas distilled from gstack specialist roles. Fills demand validation, systematic debugging, pre-implementation architecture review, and live verification cognitive gaps.**
 
@@ -11,7 +11,7 @@
 
 ---
 
-## 1.3.0 — Optimise Run 3 (2026-03-22)
+## v1.3.0 - 2026-03-22 - Optimise Run 3
 
 **Opening composite: 92.6% → final: 95.1% (+2.5pp). All 4 hypotheses confirmed.**
 
@@ -25,7 +25,7 @@
 
 ---
 
-## 1.2.0 — Optimise Run 2 (2026-03-22)
+## v1.2.0 - 2026-03-22 - Optimise Run 2
 
 **Composite: 88.1% → 94.4% (+6.3pp). All 3 hypotheses confirmed.**
 
@@ -38,7 +38,7 @@
 
 ---
 
-## 1.1.0 — Optimise Run 1 (2026-03-22)
+## v1.1.0 - 2026-03-22 - Optimise Run 1
 
 **Composite: 82.0% → 89.3% (+7.3pp). All 4 hypotheses confirmed.**
 
@@ -52,7 +52,7 @@
 
 ---
 
-## 1.0.0 — The First Faces (2026-03-22)
+## v1.0.0 - 2026-03-22 - The First Faces
 
 Personas extracted from the kanban skill into their own first-class skill. Skills now summon personas by path rather than borrowing from a sibling directory.
 

@@ -2,7 +2,7 @@
 
 ---
 
-## v1.7.0 — 2026-03-22
+## v1.7.0 - 2026-03-22 - Approval Gate Removal
 
 ### Added
 - Loop support: `/optimise N <path>` runs the full 5-phase cycle N times; `/optimise auto <path>` loops until the composite score exceeds 95% using `(confirmed + 0.5 × partial) / total × 100`; default (no specifier) remains a single run
@@ -20,7 +20,7 @@
 
 ---
 
-## v1.6.0 — 2026-03-22
+## v1.6.0 - 2026-03-22 - Pattern Library Expansion
 
 ### Added
 - P12 (Content Synchronisation Audit), P13 (Corrective-Pattern Applicability Classification), P14 (Pre-Experiment Dependency Scan) added to `p3-hypothesize.md` Design Patterns library
@@ -39,7 +39,7 @@
 
 ---
 
-## v1.5.0 — 2026-03-22
+## v1.5.0 - 2026-03-22 - Dependency Scan Addition
 
 ### Added
 - 5 new custom metrics: Help Content Currency (MX15), Pattern Experimental Validation Rate (MX16), Research Log Navigability Score (MX17), Hypothesis Recurrence Rate (MX18), Metric Definition Cross-File Consistency (MX19, moonshot 2×)
@@ -59,7 +59,7 @@
 
 ---
 
-## v1.4.0 — 2026-03-22
+## v1.4.0 - 2026-03-22 - Persona Experiment Framework
 
 ### Added
 - M14 — Persona-Phase Fit Score (PPF): new seed metric measuring whether phases have appropriately matched personas; applies when persona system is present; includes persona staleness check (missing files score 0.0, speciated parents score 0.5)
@@ -84,7 +84,7 @@
 
 ---
 
-## v1.3.0 — 2026-03-22
+## v1.3.0 - 2026-03-22 - Help Command Addition
 
 ### Added
 - M13 — Instruction Token Efficiency (ITE): new universal seed metric measuring semantic density by detecting padding tokens (throat-clearing preamble, redundant intensifiers, decorative structure, narrative restatement); ITE = 1 − (padding_tokens / total_tokens)
@@ -110,7 +110,7 @@
 
 ---
 
-## v1.2.0 — 2026-03-22
+## v1.2.0 - 2026-03-22 - Phase Split
 
 ### Added
 - Phase file split: `commands/optimise.md` replaced by orchestrator + `commands/phases/p1-p5.md` — per-phase context load drops from ~2,500t to ~700-1,000t (M10 CLE 75 → 95)
@@ -126,7 +126,7 @@
 
 ---
 
-## v1.1.0 — 2026-03-22
+## v1.1.0 - 2026-03-22 - TTL Policy Addition
 
 ### Added
 - 3-tier TTL policy for `research-log.md` with target-path validation (H3)
@@ -145,7 +145,7 @@
 
 ---
 
-## v1.0.0 — 2026-03-22
+## v1.0.0 - 2026-03-22 - Initial Release
 
 ### Added
 - Initial release

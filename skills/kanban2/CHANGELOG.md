@@ -4,7 +4,7 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
-## 2.1.0 — The Audit Gate (2026-03-22)
+## v2.1.0 - 2026-03-22 - Review Command Launch
 
 Review command lands for kanban2. Examiner + Critic dual-persona pipeline, 95% threshold, evidence-mapped ACs, and full PASS/FAIL routing adapted to the subject-centric directory structure.
 
@@ -14,7 +14,7 @@ Review command lands for kanban2. Examiner + Critic dual-persona pipeline, 95% t
 - FAIL: moves ticket back to `05-in-progress/`, increments `consecutive_failures`, same-error escalation after 2–3 identical gaps
 - Persona references updated to `../../kanban/personas/examiner.md` and `../../kanban/personas/critic.md`
 
-## 2.0.0 — The New Order (2026-03-22)
+## v2.0.0 - 2026-03-22 - Subject-Centric Restructure
 
 Kanban2 reimagines the work loop for the new subject-centric directory structure. Breaking change: tickets now live in `YYYY-MM-DD-{subject}/04-todo/` (not v1's `02-todo/{subject}/`), stage numbers shift from `03-in-progress` to `05-in-progress`, and the skill never touches plan-layer files. Same rock-solid orchestration and per-unit commit discipline as v1, adapted for the fresh architecture.
 
@@ -26,13 +26,13 @@ Kanban2 reimagines the work loop for the new subject-centric directory structure
 - Persona identification retained: commands identify active persona (Vela, Arden, Finn, Kira, Echo, Vale) in all transcripts
 - Shared persona files: references `../../kanban/personas/` rather than duplicating
 
-## 1.2.3 — Right Format (2026-03-21)
+## v1.2.3 - 2026-03-21 - Right Format
 
 The directory structure diagram in SKILL.md now shows the correct `YYYY-MM-DD-<subject>/` date format instead of the old short-form date prefix.
 
 - Updated the directory structure date prefix to `YYYY-MM-DD-<subject>/` in the SKILL.md directory structure diagram
 
-## 1.2.2 — Both Doors (2026-03-21)
+## v1.2.2 - 2026-03-21 - Both Doors
 
 SKILL.md now documents both PR bypass conditions side by side. A first-time reader can understand when the PR step is skipped, how the trunk-branch protection check works, and what happens when that check fails.
 
@@ -41,7 +41,7 @@ SKILL.md now documents both PR bypass conditions side by side. A first-time read
 - Trunk bypass documents the fixed branch list, `gh api` protection query, and best-effort caveat
 - Feature branches explicitly called out as never subject to the trunk check
 
-## 1.2.1 — Branch Aware (2026-03-21)
+## v1.2.1 - 2026-03-21 - Branch Aware
 
 The PR command now checks whether you're on a trunk branch before opening a draft PR. Protected trunks proceed normally; unprotected trunks skip the PR step and route directly to cleanup with an audit-trail commit. If the protection check fails entirely, the command stops and asks rather than assuming.
 
@@ -49,7 +49,7 @@ The PR command now checks whether you're on a trunk branch before opening a draf
 - Queries `gh api repos/{owner}/{repo}/branches/{branch}/protection` to determine protection status
 - Three-way outcome: protected → normal flow; unprotected → skip with audit commit; check failed → stop and ask user
 
-## 1.2.0 — Speak First (2026-03-21)
+## v1.2.0 - 2026-03-21 - Speak First
 
 Capture starts with your thoughts, not a form. Phase 4 opens with a single framing line and waits for you to write freely before asking any questions. The agent reads what you wrote, then asks targeted clarifying questions informed by what you actually said — no templates, no front-loaded structure.
 
@@ -59,7 +59,7 @@ Capture starts with your thoughts, not a form. Phase 4 opens with a single frami
 - Each question is preceded by the agent's interpretation, recommendation, and reasoning in natural prose
 - Question topics (implementation choices, edge cases, constraints, acceptance signals) remain unchanged
 
-## 1.1.4 — The Handoff Shortcut (2026-03-21)
+## v1.1.4 - 2026-03-21 - The Handoff Shortcut
 
 Capture, plan, and todo now guide you to your next step instead of stopping abruptly. Handoff prompts let you stay in flow — move straight to planning, capture something else, or jump to work. You're always steering, never stuck waiting for the next command.
 
@@ -68,7 +68,7 @@ Capture, plan, and todo now guide you to your next step instead of stopping abru
 - Added whitelist to `todo.md` to filter captured subjects before breaking them into tickets (skip unrelated or completed items)
 - Handoff prompts only show on clean completion: no unresolved gaps, successful commit, ready to move forward
 
-## 1.1.3 — The Right Question (2026-03-21)
+## v1.1.3 - 2026-03-21 - The Right Question
 
 ACs should answer "how do I know it's done?" — not "how should it be built?". Added a new rule to `todo.md` that explicitly calls out over-specification: don't put file names, paths, or structural choices in ACs unless they're externally observable constraints. If location or naming matters, it belongs in the plan's Constraints section.
 
@@ -76,7 +76,7 @@ ACs should answer "how do I know it's done?" — not "how should it be built?". 
 - Includes a before/after table with concrete examples
 - Notes the escape hatch: if a name/path genuinely matters, put it in the plan as a Constraint
 
-## 1.1.2 — The Handoff (2026-03-21)
+## v1.1.2 - 2026-03-21 - The Handoff
 
 Capture now asks what you want to do next instead of just stopping. After a clean run, you get one prompt: enter planning mode, capture something else, or do something else entirely. The (Recommended) label steers you toward planning without forcing it.
 
@@ -86,14 +86,14 @@ Capture now asks what you want to do next instead of just stopping. After a clea
 - Freeform input is not written back to the input file unless the agent judges it as capture content and the user confirms
 - Old Phase 9 (Report) renumbered to Phase 10
 
-## 1.1.1 — The Hint (2026-03-21)
+## v1.1.1 - 2026-03-21 - The Hint
 
 Added `argument-hint` to the kanban skill's top-level SKILL.md, making all nine subcommands discoverable from the `/kanban` entry point. The hint lists each command in pipeline order so users can see what's available without running the command blind.
 
 - `SKILL.md` now includes `argument-hint: "capture | plan | todo | work | review | pr | cleanup | next | init"` in frontmatter
 - Hint format is pipe-separated and ordered by stage in the pipeline for easy visual scanning
 
-## 1.1.0 — The Full Roster (2026-03-21)
+## v1.1.0 - 2026-03-21 - The Full Roster
 
 The 5 extended personas are now wired into the commands that need them. Keeper challenges strategy during planning, Artisan reviews design evidence in review, Helm runs the pre-flight checklist before PR promotion, Ward guides Work Log quality during implementation, and Pulse generates metrics on archive.
 
@@ -103,14 +103,14 @@ The 5 extended personas are now wired into the commands that need them. Keeper c
 - `work.md` — Ward (Documentation) perspective injected into Phase 6 Work Log guidance
 - `cleanup.md` — Pulse (Analytics) generates subject-level metrics in Reporting
 
-## 1.0.7 — The Personalities (2026-03-21)
+## v1.0.7 - 2026-03-21 - The Personalities
 
 The personas got richer. Same roles, same rules — but now each one has a distinct voice, habits, and a characteristic way of being wrong or right. Enough personality to know who's speaking without the name tag.
 
 - Expanded Voice sections across all 11 personas with distinct tones, quirks, and characteristic phrases
 - Nothing that changes how they work — just how they feel to work with
 
-## 1.0.6 — The Extended Roster (2026-03-21)
+## v1.0.6 - 2026-03-21 - The Extended Roster
 
 Five new specialist personas join the team, covering the gaps between capture and archive: product strategy, design quality, release safety, documentation health, and team analytics.
 
@@ -120,7 +120,7 @@ Five new specialist personas join the team, covering the gaps between capture an
 - Ward (Documentation) — keeps docs honest; cross-references diffs, updates stale references
 - Pulse (Analytics) — velocity, test health, bottlenecks, and retrospective summaries
 
-## 1.0.5 — The Characters (2026-03-21)
+## v1.0.5 - 2026-03-21 - The Characters
 
 The six specialist roles now have names and live in their own files. Vela (Scribe), Arden (Critic), Finn (Scout), Kira (Builder), Echo (Examiner), Vale (Advocate) — each with their own identity, voice, and cross-command rules. Commands reference their persona files directly, so personality and duties can be updated in one place.
 
@@ -129,7 +129,7 @@ The six specialist roles now have names and live in their own files. Vela (Scrib
 - Command files updated to load their active persona(s) and identify by name in transcripts
 - Command-specific DO/DO NOT items remain in command files; universal rules live in personas
 
-## 1.0.4 — The Rename (2026-03-21)
+## v1.0.4 - 2026-03-21 - The Rename
 
 Three cosmetic-but-important clarifications: the review stage is now `in-review` everywhere (was `local-review`), the state machine in SKILL.md uses real directory names and correctly models the PR feedback loop, and subject placeholders in naming examples now use `<subject>` notation to make clear they're parameters.
 
@@ -137,7 +137,7 @@ Three cosmetic-but-important clarifications: the review stage is now `in-review`
 - Fixed state machine: FAIL routes to `03-in-progress` (not `02-todo`); PR feedback creates new `02-todo` tickets (not a separate stage)
 - Subject placeholders in file/path patterns now use `<subject>` notation (e.g. `input-<subject>.md`)
 
-## 1.0.3 — The Audit Gap (2026-03-21)
+## v1.0.3 - 2026-03-21 - The Audit Gap
 
 Four coverage gaps found by auditing the implementation against the original plan. All fixed — the audit now passes at ≥95%.
 
@@ -146,7 +146,7 @@ Four coverage gaps found by auditing the implementation against the original pla
 - Made Scout's low-tier model mapping explicit in `todo.md` Phase 1 (was implicit, now states haiku/fast)
 - Added `Critic in this phase — DO NOT` constraint blocks to `todo.md` Phase 4 and `cleanup.md` Phase 1
 
-## 1.0.2 — The House Rules (2026-03-21)
+## v1.0.2 - 2026-03-21 - The House Rules
 
 Conventional commits, no force push, and scoped versioning are now codified. The kanban skill won't bump its own version for commits that only touch other parts of the repo. Root-level AGENTS.md added so every agent working in this repo knows the rules from the start.
 
@@ -156,7 +156,7 @@ Conventional commits, no force push, and scoped versioning are now codified. The
 - Fixed `VERSION.md` upstream URL (was pointing to non-existent `actions/version.md` path)
 - Version bumps now only required when `skills/kanban/` files are part of the commit
 
-## 1.0.1 — The Corrections (2026-03-21)
+## v1.0.1 - 2026-03-21 - The Corrections
 
 Three correctness fixes caught by post-implementation review. Nothing structural — just three wrong values that would have caused real bugs.
 
@@ -164,7 +164,7 @@ Three correctness fixes caught by post-implementation review. Nothing structural
 - Fixed `next.md`: dependency satisfaction now requires `status: done` in frontmatter, not just file presence in the target directory
 - Fixed `next.md`: removed reference to non-existent `06-blocked/` stage directory — tickets skip back to `02-todo/` instead
 
-## 1.0.0 — The Full Pipeline (2026-03-21)
+## v1.0.0 - 2026-03-21 - The Full Pipeline
 
 The whole system is live. Every stage from raw idea to merged PR now has a command behind it — capture, plan, ticket breakdown, implementation, local review, PR advocacy, orchestration, and archive. The kanban skill is no longer a sketch; it's a complete workflow.
 
@@ -173,7 +173,7 @@ The whole system is live. Every stage from raw idea to merged PR now has a comma
 - Session boundary enforcement: capture/plan sessions and work sessions are hard-separated
 - State machine documented with full PASS/FAIL routing and non-GitHub fallback paths
 
-## 0.5.0 — The Examiner and Critic (2026-03-21)
+## v0.5.0 - 2026-03-21 - The Examiner and Critic
 
 Local review is now a first-class stage. The `/kanban-review` command maps every acceptance criterion to file-level evidence, runs all applicable test suites, scores pass/fail, and routes the ticket — all without touching a line of source code.
 
@@ -184,7 +184,7 @@ Local review is now a first-class stage. The `/kanban-review` command maps every
 - FAIL path: appends prioritised issue list, clears timestamps, increments `consecutive_failures`, returns ticket to `03-in-progress/`
 - Same-error escalation fires a desktop notification and prominent terminal block when the identical gap recurs 2–3 times unchanged
 
-## 0.4.0 — The Builder Arrives (2026-03-21)
+## v0.4.0 - 2026-03-21 - The Builder Arrives
 
 The `work` command lands. Claim a ticket, implement it with rigorous WHY-comments and per-unit commits, then hand it off to local review — all in one self-contained agent session.
 
@@ -194,7 +194,7 @@ The `work` command lands. Claim a ticket, implement it with rigorous WHY-comment
 - Out-of-scope work discovered during implementation spawns new tickets rather than bloating the current one
 - Subagent tier selection driven by ticket `effort` field (low/medium/high → haiku/sonnet/opus)
 
-## 0.3.0 — The Ticket Writer (2026-03-21)
+## v0.3.0 - 2026-03-21 - The Ticket Writer
 
 The kanban skill can now break a verified plan into actionable tickets. Scout researches the codebase first, then the Critic checks that every plan requirement got covered before calling it done.
 
@@ -204,7 +204,7 @@ The kanban skill can now break a verified plan into actionable tickets. Scout re
 - User confirms the full ticket list before any files are written
 - Critic audit gate enforces 95% plan coverage and auto-fixes gaps with new tickets
 
-## 0.2.0 — The Planner (2026-03-21)
+## v0.2.0 - 2026-03-21 - The Planner
 
 The planning command is here. `/kanban-plan` reads your captured input, interviews you on the gaps, drafts a structured plan, and runs a critic audit gate — auto-fixing any coverage holes before signing off.
 
@@ -214,7 +214,7 @@ The planning command is here. `/kanban-plan` reads your captured input, intervie
 - Two-commit workflow: draft commit after plan is approved, audit commit after gate passes
 - Session boundary check prevents running plan while a work session is active for the same subject
 
-## 0.1.0 — The Foundation (2026-03-21)
+## v0.1.0 - 2026-03-21 - The Foundation
 
 The skeleton is up. You can initialise a kanban board and capture raw ideas into structured input files. Nothing moves tickets yet — that comes next.
 

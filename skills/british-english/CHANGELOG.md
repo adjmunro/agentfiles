@@ -1,4 +1,4 @@
-## v1.1.0 — 2026-03-22
+## v1.1.0 - 2026-03-22 - Source File Support
 
 ### Added
 - Source file support: `.py`, `.js`, `.ts`, `.tsx`, `.swift`, `.kt`, `.java`, `.go`,
@@ -8,7 +8,7 @@
 - Doc-tag awareness: `@param`, `@returns`, etc. are never altered; only the
   prose description text after the tag is in scope
 
-## v1.0.0 — 2026-03-22
+## v1.0.0 - 2026-03-22 - Initial Release
 
 ### Added
 - Initial release

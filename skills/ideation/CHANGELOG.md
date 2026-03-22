@@ -4,7 +4,7 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
-## 1.0.0 — The First Draft (2026-03-22)
+## v1.0.0 - 2026-03-22 - Initial Release
 
 The ideation skill launches with a seamless 9-step loop that collapses capture, research, interview, planning, and ticket creation into one continuous workflow. Users capture ideas, get intelligent recommendations informed by codebase research, build plans collaboratively, and exit with a ready-to-work backlog — all without breaking context.
 
