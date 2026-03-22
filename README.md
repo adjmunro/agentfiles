@@ -32,13 +32,7 @@ From any git repository, run:
 zsh <(curl -sSL https://raw.githubusercontent.com/adjmunro/agentfiles/main/scripts/bootstrap.sh)
 ```
 
-This downloads the `/install` skill into `.claude/commands/install/`. Then:
-
-```
-/install all
-```
-
-To install specific components only:
+This downloads the `/install` skill into `.agents/skills/install/` (or `.claude/skills/install/`). Then run `/install all` for standard setup, or pick components individually:
 
 ```
 /install kanban
@@ -57,7 +51,13 @@ No curl access? Paste this into any agent:
 
 ```
 Fetch https://raw.githubusercontent.com/adjmunro/agentfiles/main/scripts/bootstrap.sh
-and execute it in the current directory. Then run /install all.
+and execute it in the current directory to install the /install skill.
+
+Then inspect the project and run /install for each appropriate component:
+- kanban, symlinks, bash-guard, readme-hook, title-hook, sign-hook,
+  british-english-hook — suitable for most projects
+- gradle-idea — only if a root build.gradle or build.gradle.kts exists
+Skip any component that does not make sense for this project's stack.
 ```
 
 ---
