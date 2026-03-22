@@ -168,22 +168,55 @@ Methodology: For each artifact that is read after being written in a prior sessi
 check whether there is an explicit TTL policy or freshness check before use.
 IFS = artifacts_with_freshness_policy / total_inter-session_artifacts.
 
+### Custom Metric Discovery
+
+**This step is mandatory.** After scoring M1–M12, Pulse examines the workflow for
+quality dimensions not captured by any seed metric.
+
+Ask: *What could go wrong in this specific workflow that no seed metric would catch?*
+
+For each gap found, define a custom metric:
+
+```markdown
+### MX<N> — <Name> [custom]
+**Measures:** <what quality dimension>
+**Why seeds miss it:** <which M1-M12 gap this fills>
+**Methodology:** <exact counting or scoring method>
+**Direction:** ↑ higher / ↓ lower is better
+**Weight:** <1× or 2× — use 2× if this dimension is critical to the workflow's purpose>
+**Normalization:** <formula>
+```
+
+Heuristics for finding custom metrics:
+- What does this workflow *produce*? Does any seed measure output quality? If not, define one.
+- What is the most common failure mode for this *type* of workflow? Is it measured?
+- Are there cross-file consistency requirements (naming, schema, version alignment)? Measure them.
+- Is there a "trust chain" — files that depend on other files being correct? Measure completeness.
+- Does the workflow have escape hatches / fallback paths? Are they tested?
+
+**Minimum:** propose at least 1 custom metric per run. If you genuinely cannot find a gap,
+state why explicitly — do not silently skip.
+
+Write custom metric definitions to `research-log.md` under `## Custom Metrics — <date>`.
+Custom metrics persist and are re-applied on future runs of `/optimize` on the same target.
+
 ### Composite Calculation
 
 ```
-Applied metrics: <list>
-Skipped metrics: <list with reasons>
+Seed metrics applied: <list>
+Seed metrics skipped: <list with reasons>
+Custom metrics: <list>
 
-| Metric | Raw | Normalized | Weight | Weighted |
-|--------|-----|-----------|--------|----------|
-| ...    |     |           |        |          |
-| TOTAL  |     |           | <N>×   | <sum> / (<N>×100) |
+| Metric | Source | Raw | Normalized | Weight | Weighted |
+|--------|--------|-----|-----------|--------|----------|
+| ...    | seed / custom |  |  |  |  |
+| TOTAL  |        |     |           | <N>×   | <sum> / (<N>×100) |
 
 Composite: <sum> / (<N> × 100) × 100 = <X>%
 ```
 
 Write the full baseline table to `research-log.md` under `## Baseline — <date>`.
-Also note the 3 weakest metrics and the 3 strongest.
+Note the 3 weakest metrics (candidates for Phase 3 hypotheses) and the 3 strongest.
 
 ---
 
@@ -193,18 +226,34 @@ Also note the 3 weakest metrics and the 3 strongest.
 
 Re-read `research-log.md` (Intent Anchor). Focus on the baseline section.
 
-Based on the 3 weakest metrics, form 3–5 hypotheses. For each:
+Based on the weakest metrics (seed and custom), form 3–5 hypotheses.
+
+**The seed patterns (P1–P5) are starting points, not constraints.** If the workflow
+has a problem that no seed pattern addresses, invent the fix. Novel hypotheses are
+expected and valuable — they may become patterns for future runs.
+
+For each hypothesis:
 
 ```
 ### H<N> — <short name>
 **Problem observed:** <what the metric score reveals about the workflow>
 **Change proposed:** <specific, actionable change to one or more files>
-**Targets:** <metric IDs and predicted direction>
+**Targets:** <metric IDs and predicted direction — include custom metrics>
 **Predicted improvement:** <estimated delta in normalized score>
-**Pattern applied:** <P1–P5 if applicable, or "novel">
+**Pattern applied:** <P1–P5 if applicable, or "novel — <name the new pattern>">
 **Risk level:** low / medium / high
-**Risk note:** <what could go wrong>
+**Risk note:** <what could go wrong; what to check if disconfirmed>
 ```
+
+When forming novel hypotheses, ask:
+- Is there a structural change (split, merge, reorder) that would improve a custom metric?
+- Is there a workflow assumption that is never validated? Add a validation step.
+- Is there output that is produced but never verified? Add a verification gate.
+- Is there a pattern in *what fails* vs. *what succeeds* in this workflow?
+
+If a confirmed novel hypothesis generalises (would help other workflows of the same
+type), note it in `research-log.md` under `## Novel Patterns Discovered`. These
+candidates can be proposed for inclusion in the seed library.
 
 Format these as a **Recommendation Brief** — do not ask open-ended questions. State
 each recommendation with its evidence and predicted outcome, then ask for a binary
@@ -319,6 +368,25 @@ Then write three lists:
 
 **What remains to improve:**
 - <metric>: still at <score> — <suggested next hypothesis if any>
+
+### Novel Pattern Candidates
+
+If any confirmed hypothesis used a novel pattern (not P1–P5), document it:
+
+```markdown
+## Novel Patterns Discovered — <date>
+
+### NP<N> — <Pattern Name>
+**Discovered in:** <target workflow>
+**Problem it solved:** <description>
+**Implementation:** <brief description of the change>
+**Metrics it improved:** <list>
+**Generalises to:** <what other workflow types would benefit>
+**Seed candidate:** yes / no / maybe — <reasoning>
+```
+
+Seed candidates should be noted for potential inclusion in `skills/optimize/SKILL.md`
+Design Patterns section in a future version.
 
 Append the full report to `research-log.md` under `## Final Results — <date>`.
 

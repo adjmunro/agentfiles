@@ -26,10 +26,17 @@ so it can be reused on any target.
                                                [Phase 5: Report]
 ```
 
-## The 12 Metrics
+## Metrics
 
-Metrics are divided into two categories. Universal metrics apply to virtually any
-workflow. Workflow-specific metrics only apply when the target uses certain features.
+The metric library is **not a fixed checklist**. M1–M12 are a seed library extracted
+from the kanban/ideation/personas study — they have track records and defined
+measurement methods. The skill applies applicable seeds, skips irrelevant ones, and
+**always discovers new metrics** tailored to the specific workflow being optimized.
+
+Every optimization run should produce at least 1–2 custom metrics. If a workflow has
+a quality dimension that no seed metric captures, that gap is itself a finding.
+
+### Seed Metrics — Universal
 
 ### Universal Metrics
 
@@ -42,7 +49,7 @@ workflow. Workflow-specific metrics only apply when the target uses certain feat
 | M8 | Human Touchpoint Count (HTC) | ↓ lower | 2× | max(0, 100−(count/20)×100) | # of required human interactions per full run |
 | M10 | Context Loading Efficiency (CLE) | ↑ higher | 2× | raw % | % of loaded context relevant to the current phase |
 
-### Workflow-Specific Metrics
+### Seed Metrics — Workflow-Specific
 
 Skip these with explicit rationale when the target workflow does not use the
 relevant feature. Record the skip reason in the research log.
@@ -55,6 +62,22 @@ relevant feature. Record the skip reason in the research log.
 | M9 | Context Decay Resilience (CDR) | multi-session orchestration | ↑ higher | 2× | raw % |
 | M11 | Parallelization Safety Score (PSS) | parallel/concurrent execution | ↑ higher | 2× | partial-credit % |
 | M12 | Information Freshness Score (IFS) | cached or persisted artifacts | ↑ higher | 2× | raw % |
+
+### Custom Metrics — Discovered Per-Run
+
+After applying seed metrics, Pulse derives additional metrics specific to the target
+workflow. Custom metrics follow the same format: name, direction, weight, normalization
+method, measurement methodology. They are included in the composite alongside seeds.
+
+Examples of custom metrics discovered in practice:
+- **Output Format Compliance** — for doc generators: % of outputs matching the required schema
+- **Branch Coverage Completeness** — for test suites: % of code paths exercised by tests
+- **Link Rot Rate** — for documentation: % of cross-references pointing to files that exist
+- **Escape Hatch Frequency** — for agent skills: % of phases with explicit fallback paths
+- **Naming Consistency** — for code repos: % of identifiers following declared conventions
+
+Custom metrics are recorded in `research-log.md` under `## Custom Metrics` with their
+full definition. They persist across optimization runs on the same workflow.
 
 ### Composite Scoring Formula
 
