@@ -112,7 +112,7 @@ Also preserve any loose docs at the subject root matching these patterns (they m
 
 Move the entire subject folder to the archive directory.
 
-**Archive path:** `.kanban/.archive/YYYY-MM-DD-{subject}/`
+**Archive path:** `.kanban/.archive/{subject}/`
 
 - `.kanban/.archive/` is a hidden dot-directory. Create it if it does not exist:
   ```bash
@@ -121,19 +121,19 @@ Move the entire subject folder to the archive directory.
 
 - Move the subject folder:
   ```bash
-  mv .kanban/{subject}/ .kanban/.archive/YYYY-MM-DD-{subject}/
+  mv .kanban/{subject}/ .kanban/.archive/{subject}/
   ```
 
-Use today's date in `YYYY-MM-DD` format for the archive prefix (e.g., `2026-03-22-260321-my-feature`).
+The `{subject}` variable already contains the `YYYY-MM-DD-` date prefix (e.g., `2026-03-21-my-feature`). Do not prepend today's date again.
 
 **Verify the archive before confirming success:**
 
-Check that `.kanban/.archive/YYYY-MM-DD-{subject}/08-done/` exists and contains the expected ticket files. If the move failed or `08-done/` is missing, STOP and report the error.
+Check that `.kanban/.archive/{subject}/08-done/` exists and contains the expected ticket files. If the move failed or `08-done/` is missing, STOP and report the error.
 
 **Final state inside the archived folder (expected):**
 
 ```
-.kanban/.archive/YYYY-MM-DD-{subject}/
+.kanban/.archive/{subject}/
 ├── 08-done/          ← all completed tickets
 ├── 00-assets/        ← preserved (even if empty with .gitkeep)
 └── [loose docs]      ← 00-input-*, 01-research-*, 02-plan-* (if present)
@@ -155,7 +155,7 @@ kanban(cleanup): archive {subject}
 
 Example:
 ```bash
-git add -A .kanban/.archive/YYYY-MM-DD-{subject}/
+git add -A .kanban/.archive/{subject}/
 git add -u .kanban/{subject}/
 git commit -m "kanban(cleanup): archive {subject}"
 ```
@@ -171,7 +171,7 @@ After the commit, proceed to Phase 6.
 After a successful archive, report:
 
 - **Archived subject:** `{subject}`
-- **Archive path:** `.kanban/.archive/YYYY-MM-DD-{subject}/`
+- **Archive path:** `.kanban/.archive/{subject}/`
 - **Tickets completed:** N total
 
 **Metrics (derive from ticket frontmatter and git log):**

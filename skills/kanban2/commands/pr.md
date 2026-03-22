@@ -89,7 +89,7 @@ All bypass conditions cleared. Continue to Phase 3.
 
 **Gather PR content:**
 
-1. Read `.kanban/YYYY-MM-DD-{subject}/01-plan/plan-{subject}.md`.
+1. Read `.kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md`.
    **Before loading, apply its staleness policy:** LOAD WITH CAVEAT (TTL: 7 days). Check its `created_at` frontmatter field (or file mtime as fallback).
    - If age ≤ 7 days: load normally.
    - If age > 7 days: load, but note in the PR body:
@@ -114,7 +114,7 @@ All bypass conditions cleared. Continue to Phase 3.
 - [ ] No tickets remain in 04-todo through 06-in-review
 
 ## Plan
-See: .kanban/YYYY-MM-DD-{subject}/01-plan/plan-{subject}.md
+See: .kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md
 ```
 
 **Create the PR** using the GitHub CLI:

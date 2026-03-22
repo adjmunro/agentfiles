@@ -1,5 +1,5 @@
 ---
-id: kanban
+id: kanban2
 argument-hint: "init | work | review | pr | cleanup | next"
 ---
 
@@ -115,11 +115,11 @@ Kanban2 is a fresh implementation adapted for the new directory structure. Key d
   - `03-refinement/` directory
   - These belong to ideation; kanban2 begins work only after tickets are promoted to `04-todo/`
 - **Archive path**: Finished work moves to `.kanban/.archive/YYYY-MM-DD-{subject}/`
-- **Shared personas**: Commands reference `../../kanban/personas/` (shared from v1, never duplicated)
+- **Shared personas**: Commands reference `../../personas/` (shared, never duplicated)
 
 ## Personas
 
-See `skills/personas/SKILL.md` for the full roster. All personas are shared from `skills/kanban/personas/`. Each command file lists its active persona(s) and the phases they govern.
+See `skills/personas/SKILL.md` for the full roster. All personas are shared from `skills/personas/`. Each command file lists its active persona(s) and the phases they govern.
 
 ## Command Details
 
