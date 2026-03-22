@@ -126,6 +126,7 @@ Methodology:
    - **Mismatch (0.0)**: persona's traits actively work against the phase's purpose (e.g., critic on a generative brainstorm), OR a high-value phase has no persona and a clear one exists, OR the persona file is missing
 4. Also check persona depth using the M15 Richness Rubric: a persona scoring <71% (i.e., missing both Unique Talent and Failure Mode) is functionally decorative regardless of its other fields — its phase assignment scores partial regardless of cognitive alignment.
 PPF = sum(per_phase_scores) / total_phases_assessed
+Direction: ↑ higher is better (full cognitive fit for all phases = 100).
 Normalise: PPF × 100.
 
 ### M15 — Persona Richness Score (PRS) [applies: persona system]
@@ -150,6 +151,7 @@ Methodology: For each persona used by the workflow, locate its `persona.md` and
 
 Maximum: 14 points per persona.
 PRS = average(points / 14) across all personas loaded by this workflow.
+Direction: ↑ higher is better (all rubric fields filled = 100; missing Unique Talent + Failure Mode = ≤71).
 Normalise: PRS × 100.
 
 A persona missing Failure Mode or Unique Talent scores at most 10/14 (71%) regardless of
