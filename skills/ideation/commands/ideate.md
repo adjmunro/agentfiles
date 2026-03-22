@@ -16,7 +16,7 @@ This command is the orchestrator voice only. It does not adopt phase personas di
 - Ask the user at step 6 (validate) and step 9 (hard stop) — these are the only two user decision points after subject setup
 - Commit after each phase completes (the phase file handles its own commit; confirm it ran)
 - Loop back to Phase 2 (capture) when the user chooses "Add more" at step 6
-- Pass `from-ideation-handoff` as an argument token when handing off to kanban after step 9 promotion
+- Pass `from-ideation-handoff` as an argument token when handing off to implement after step 9 promotion
 
 ## DO NOT
 
@@ -154,7 +154,7 @@ Dispatch as subagent with:
 - Plan file: `.kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md`
 - Output directory: `.kanban/YYYY-MM-DD-{subject}/03-refinement/`
 
-**Important**: tickets are written to `03-refinement/` only. No tickets go to `04-todo/` until step 9 explicitly promotes them. This keeps the ideation loop safe — the user can still abandon without affecting the kanban work queue.
+**Important**: tickets are written to `03-refinement/` only. No tickets go to `04-todo/` until step 9 explicitly promotes them. This keeps the ideation loop safe — the user can still abandon without affecting the implement work queue.
 
 Wait for tickets and the ticket audit to complete.
 
@@ -172,8 +172,8 @@ Options:
 
 **If option 1 (Add to backlog)**:
 1. Move all ticket files from `.kanban/YYYY-MM-DD-{subject}/03-refinement/` to `.kanban/YYYY-MM-DD-{subject}/04-todo/` (create `04-todo/` if it does not exist).
-2. Report: "Subject `YYYY-MM-DD-{subject}` is now in backlog. Pick it up with `/kanban from-ideation-handoff`."
-3. The `from-ideation-handoff` token signals to kanban that this is a sanctioned boundary crossing from ideation.
+2. Report: "Subject `YYYY-MM-DD-{subject}` is now in backlog. Pick it up with `/implement from-ideation-handoff`."
+3. The `from-ideation-handoff` token signals to implement that this is a sanctioned boundary crossing from ideation.
 4. Stop.
 
 **If option 2 (Abandon)**:
@@ -191,4 +191,4 @@ Options:
 - Abandon requires the exact subject slug typed by the user — a simple "yes" or "no" is insufficient and must be rejected.
 - Loop-back is append-only: `capture.md` appends a new session block; prior content in `00-input-{subject}.md` is immutable.
 - All phase files are internal (not user-facing). Only `ideate.md` is the `/ideate` command.
-- The `from-ideation-handoff` token is passed to kanban at step 9 promotion to whitelist the sanctioned boundary crossing.
+- The `from-ideation-handoff` token is passed to implement at step 9 promotion to whitelist the sanctioned boundary crossing.

@@ -35,6 +35,6 @@ After the commit succeeds, promote all tickets from `03-refinement/` to `04-todo
    ```
 3. Report the ticket IDs now available in `04-todo/`.
 
-This makes the tickets immediately available to `kanban2 work`. The refinement directory remains (now empty) as a record of where tickets originated.
+This makes the tickets immediately available to `implement work`. The refinement directory remains (now empty) as a record of where tickets originated.
 
 → Done. Return to orchestrator and report results.

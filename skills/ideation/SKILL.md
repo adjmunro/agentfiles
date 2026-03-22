@@ -2,9 +2,9 @@
 
 > **User-facing command**: `/ideate`
 > **Skill location**: `skills/ideation/`
-> **Persona references**: `../../kanban/personas/`
+> **Persona references**: `../../personas/`
 
-The ideation skill collapses five traditionally separate phases into one seamless loop: capture, research, interview, plan, and ticket creation. A user brings a raw idea, the skill conducts intelligent research first, asks targeted questions informed by what already exists, builds a plan collaboratively, and exits with a ready-to-work backlog in the kanban2 work queue.
+The ideation skill collapses five traditionally separate phases into one seamless loop: capture, research, interview, plan, and ticket creation. A user brings a raw idea, the skill conducts intelligent research first, asks targeted questions informed by what already exists, builds a plan collaboratively, and exits with a ready-to-work backlog in the implement work queue.
 
 ---
 
@@ -49,10 +49,10 @@ Each subject lives in a directory named `YYYY-MM-DD-{subject}/` inside `.kanban/
 │   │
 │   ├── 04-todo/                            ← ready for kanban2 (step 9 promotion)
 │   │   └── (tickets moved here after promotion)
-│   ├── 05-in-progress/                     ← kanban2 work phase
-│   ├── 06-in-review/                       ← kanban2 review phase
-│   ├── 07-pull-request/                    ← kanban2 PR phase
-│   └── 08-done/                            ← kanban2 archive (completion signal)
+│   ├── 05-in-progress/                     ← implement work phase
+│   ├── 06-in-review/                       ← implement review phase
+│   ├── 07-pull-request/                    ← implement PR phase
+│   └── 08-done/                            ← implement archive (completion signal)
 │
 └── YYYY-MM-DD-another-idea/
     └── (same structure)
@@ -134,47 +134,47 @@ The ideation skill operates as a deterministic state machine with six stable sta
                     ┌──────────────┐    ┌─────────────┐
                     │ Promote to   │    │ Delete all  │
                     │ 04-todo/     │    │ subject     │
-                    │ (kanban2 ready)│    │ files       │
+                    │ (implement ready)│    │ files       │
                     └──────────────┘    └─────────────┘
                           │                  │
                           ▼                  ▼
                       ┌─────────────────────────┐
                       │  END                    │
-                      │  (ready for kanban2 or  │
+                      │  (ready for implement or │
                       │   idea abandoned)       │
                       └─────────────────────────┘
 ```
 
 ---
 
-## Integration with kanban2
+## Integration with implement
 
-Once ideation finishes a subject and promotes tickets to `04-todo/`, the subject becomes available to kanban2. Kanban2 never touches:
+Once ideation finishes a subject and promotes tickets to `04-todo/`, the subject becomes available to implement. The implement skill never touches:
 - `00-input-{subject}.md`
 - `01-research-{subject}.md`
 - `02-plan-{subject}.md`
 - `00-assets/`
 - `03-refinement/`
 
-Kanban2 owns `04-todo/` through `08-done/`, implementing and reviewing tickets without re-planning. If a ticket requires planning changes, it spawns a new ideation session, not a kanban2 loop-back.
+The implement skill owns `04-todo/` through `08-done/`, implementing and reviewing tickets without re-planning. If a ticket requires planning changes, it spawns a new ideation session, not an implement loop-back.
 
 ---
 
 ## Boundary Passthrough
 
-When ideation hands off to kanban2 (or vice versa), arguments are used to whitelist sanctioned crossings. For example, `from-ideation-handoff` confirms that a boundary crossing is intentional and expected.
+When ideation hands off to implement (or vice versa), arguments are used to whitelist sanctioned crossings. For example, `from-ideation-handoff` confirms that a boundary crossing is intentional and expected.
 
 ---
 
 ## Session Design
 
-Ideation sessions are **planning sessions**, separate from work sessions (kanban2). Within a single ideation session, users stay in flow through all 9 steps. Between steps, the skill commits progress and preserves state in the directory structure and ticket files.
+Ideation sessions are **planning sessions**, separate from work sessions (implement). Within a single ideation session, users stay in flow through all 9 steps. Between steps, the skill commits progress and preserves state in the directory structure and ticket files.
 
 ---
 
 ## Version and Status
 
 **Current version**: 1.0.0 (See `VERSION.md`)
-**Independent lifecycle**: Ideation versioning is separate from kanban v1 and kanban2.
+**Independent lifecycle**: Ideation versioning is separate from the implement skill.
 
 For version history, see `CHANGELOG.md`.

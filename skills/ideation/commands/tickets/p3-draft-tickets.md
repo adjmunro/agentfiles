@@ -37,9 +37,9 @@ For each logical unit of work:
 
 ### Ticket Frontmatter Schema
 
-> See `../../kanban2/commands/_shared.md § Ticket Frontmatter Schema` when you need field definitions.
+> See `../../implement/commands/_shared.md § Ticket Frontmatter Schema` when you need field definitions.
 
-Note: for ideation tickets, the `id` field uses the shorter form `{subject}/TASK-NNN` and `plan` points to `../02-plan-{subject}.md` rather than the kanban2 path.
+Note: for ideation tickets, the `id` field uses the shorter form `{subject}/TASK-NNN` and `plan` points to `../02-plan-{subject}.md` rather than the implement path.
 
 ### Ticket Body Structure
 

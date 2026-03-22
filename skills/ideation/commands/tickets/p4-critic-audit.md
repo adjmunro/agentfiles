@@ -7,7 +7,7 @@ Activate **Arden (Critic)**. Audit ticket coverage against plan requirements.
 ### Scoring
 
 - **Full** — requirement is directly addressed by a ticket's AC with a verifiable command or observable state
-  > ✗ Vague AC that yields Partial: "the kanban skill works" / ✓ Concrete AC that yields Full: "`/kanban work` exits without error and moves ticket to `05-in-progress/`"
+  > ✗ Vague AC that yields Partial: "the implement skill works" / ✓ Concrete AC that yields Full: "`/implement work` exits without error and moves ticket to `05-in-progress/`"
 - **Partial** — requirement is mentioned in a ticket's context or `plan_items` but the AC doesn't fully verify it
   > ✗ Vague: "ticket references the requirement but has no testable AC" / ✓ Fix: strengthen the AC to include a command with expected output
 - **Missing** — no ticket addresses the requirement

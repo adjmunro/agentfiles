@@ -15,18 +15,18 @@ agentfiles/
 └── skills/           # Self-contained skills — each has AGENTS.md, CHANGELOG.md, VERSION.md
     ├── british-english/
     ├── ideation/
-    ├── kanban2/
+    ├── implement/
     ├── optimise/
     └── personas/
 ```
 
 ## Skills
 
-### `/kanban` (kanban2)
+### `/implement`
 
-Subject-centric variant of kanban. Organises work under `YYYY-MM-DD-{subject}/` directories with internal stage folders. Designed for parallel work on multiple subjects with cleaner separation.
+Subject-centric implementation skill. Organises work under `YYYY-MM-DD-{subject}/` directories with internal stage folders. Picks up tickets from `04-todo/` and routes them through implementation, review, PR, and archive.
 
-**Commands:** `init`, `work`, `review`, `pr`, `cleanup`, `next`
+**Commands:** `work`, `review`, `pr`, `cleanup`, `next`
 
 ### `/ideate`
 
@@ -83,6 +83,7 @@ Standalone command files that work without a skill context:
 
 | Command | Purpose |
 |---------|---------|
+| `/init` | Create a new `.kanban/YYYY-MM-DD-{subject}/` directory with all stage folders |
 | `/interview` | Interview the user to expand a rough spec into a detailed one |
 | `/implement` | Implement a spec or ticket and commit often |
 | `/next` | Identify the next PRD to implement, audit it, and loop through review until it passes |

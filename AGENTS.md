@@ -16,10 +16,10 @@ chore(scope): short description
 
 The commit body should be generated — describe what changed, why, and any non-obvious side effects. Keep the subject line under 72 characters.
 
-Common scopes: `kanban`, `commands`, `hooks`, `skills`, `config`
+Common scopes: `implement`, `commands`, `hooks`, `skills`, `config`
 
 Examples:
-- `feat(kanban): add pr command with GitHub and manual fallback paths`
+- `feat(implement): add pr command with GitHub and manual fallback paths`
 - `fix(commands): correct audit.md status field reference`
 - `chore(config): update AGENTS.md symlinks at repo root`
 
@@ -32,7 +32,7 @@ agentfiles/
 ├── commands/         # Standalone agent command files
 ├── hooks/            # Shell hooks for agent tooling
 └── skills/
-    └── kanban2/      # The implement skill — subject-centric pipeline from capture to archive
+    └── implement/    # The implement skill — subject-centric pipeline from capture to archive
 ```
 
 Each skill under `skills/` is self-contained: it has its own `AGENTS.md`, `CHANGELOG.md`, `VERSION.md`, and a `commands/` subdirectory with the actual skill logic.
