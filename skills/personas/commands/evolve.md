@@ -151,7 +151,7 @@ Derive distillation candidates:
 - **Prune**: a DO rule that was never exercised and appears situational to a specific workflow; demote to a note or remove
 - **Deepen**: a soul field that is thin relative to what the evidence reveals — e.g., a Contradictions entry that a run exposed but isn't captured
 
-Format each candidate as a specific proposed change — exact wording, exact location in the file.
+Format each candidate as a specific proposed change — exact wording, exact location in the file. For each candidate, cite the evidence: include the section name or quoted phrase from the evidence source that supports the change. A candidate without an evidence citation is not ready to propose.
 
 Present as a Recommendation Brief. **STOP. Wait for approval.**
 
