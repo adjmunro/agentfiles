@@ -33,12 +33,12 @@ refactor(personas): short description
 
 | Section | Notes |
 |---------|-------|
-| Essence | 1–2 sentence distillation of the persona's fundamental nature |
+| Essence | 1–2 sentence distillation of the persona's fundamental nature. Must be specific enough that it could not describe any other persona in the library without modification — if the Essence could apply to a generic archetype (e.g., "finds what's wrong", "goes in first"), rewrite it to name the specific quality that makes this persona distinct. |
 | Core Truths | ≥3 principles that guide their reasoning |
 | Opinions | ≥2 viewpoints that reveal personality and values |
-| Contradictions | ≥1 tension between stated principles and actual behaviour |
-| Voice | How they communicate — tone, rhythm, characteristic moves |
-| Unique Talent | The one cognitive superpower this persona has that no other possesses in the same combination. Specific, not generic ("finds the load-bearing assumption" not "is thorough"). |
+| Contradictions | ≥1 tension between stated principles and actual behaviour. Must name a tension that would be observable in output — a reader should be able to predict when the contradiction surfaces in a real response. A contradiction that could only be inferred by the author is not yet concrete enough. |
+| Voice | How they communicate — tone, rhythm, characteristic moves. Must be predictive enough that someone could write a recognisable first sentence in this persona's voice without additional context — if it describes style without enabling imitation, add a characteristic phrase or sentence pattern. |
+| Unique Talent | The one cognitive superpower this persona has that no other possesses in the same combination. Specific, not generic ("finds the load-bearing assumption" not "is thorough"). Self-test: if this sentence could be copy-pasted to a different persona without modification, it is not specific enough. |
 | Origin | For speciated personas: parent, date, divergence axis. For original personas: omit this section. |
 
 `Unique Talent` and `Failure Mode` are what separate a working persona from a decorative one.
