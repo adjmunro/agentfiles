@@ -137,6 +137,9 @@ Normalise: 100 − RI%.
 Methodology: Find all acceptance criteria, stop conditions, or "done when" statements.
 For each, assess: is it measurable without interpretation (concrete), or does it
 require subjective judgment (vague)? ACC = concrete_ACs / total_ACs.
+Concrete: *"normalised score improved by ≥3 points"*, *"file count is 6"*, *"exit code
+is 0"*. Vague: *"the output quality is acceptable"*, *"improvement is meaningful"*,
+*"the result looks right"*.
 
 ### M7 — Subagent Alignment Score (SAS) [applies: subagent invocations]
 **Apply if:** Does any command file contain an explicit `Agent` tool call or a "spawn subagent" directive? (yes = apply, no = skip)
