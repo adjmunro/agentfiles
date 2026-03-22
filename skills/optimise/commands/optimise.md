@@ -102,6 +102,7 @@ result. For metrics that do not apply based on the Phase 1 feature inventory, wr
 "SKIP — <reason>" and do not score them.
 
 ### M1 — Intent-to-Output Traceability (IOT) [applies: multi-phase pipeline]
+**Apply if:** Does the workflow define two or more sequential phases where each phase produces an artifact consumed by the next? (yes = apply, no = skip)
 Methodology: For each phase in each command file, count whether the phase explicitly
 re-reads or references an artifact produced by a prior phase (plan file, input file,
 log entry, etc.). IOT = phases_with_explicit_prior_artifact_read / total_phases.
@@ -118,6 +119,7 @@ these as ambiguous. IAR = ambiguous_instructions / total_instructions.
 Normalise: 100 − IAR%.
 
 ### M4 — Wiring Completeness Score (WCS) [applies: persona system]
+**Apply if:** Does the workflow reference or load any persona.md files? (yes = apply, no = skip)
 Methodology: List all persona files that exist. For each persona, check whether it is
 explicitly loaded in at least one command that performs the work it is suited for.
 WCS = wired_personas / total_personas.
@@ -133,6 +135,7 @@ For each, assess: is it measurable without interpretation (concrete), or does it
 require subjective judgment (vague)? ACC = concrete_ACs / total_ACs.
 
 ### M7 — Subagent Alignment Score (SAS) [applies: subagent invocations]
+**Apply if:** Does any command file contain an explicit `Agent` tool call or a "spawn subagent" directive? (yes = apply, no = skip)
 Methodology: For each subagent invocation, check whether the task delegated is
 appropriate for a subagent (isolated, parallelisable, no shared mutable state without
 explicit guards). SAS = appropriate_invocations / total_invocations.
@@ -143,6 +146,7 @@ input or approval (not counting the initial invocation). HTC = count of touchpoi
 Normalise: max(0, 100 − (HTC / 20) × 100).
 
 ### M9 — Context Decay Resilience (CDR) [applies: multi-session orchestration]
+**Apply if:** Does any phase block include a `STOP`, `PAUSE`, or session-boundary instruction where a new agent session may begin? (yes = apply, no = skip)
 Methodology: For each session boundary (points where a new agent session begins),
 check whether the command explicitly re-reads the original intent artifact before
 proceeding. CDR = session_transitions_with_reanchor / total_session_transitions.
@@ -153,12 +157,14 @@ estimate what percentage of those tokens are actually relevant to the work of th
 phase. CLE = relevant_tokens_loaded / total_tokens_loaded (averaged across phases).
 
 ### M11 — Parallelisation Safety Score (PSS) [applies: parallel execution]
+**Apply if:** Does any command file instruct the agent to run two or more tasks concurrently, or does it use worktree/parallel phase blocks? (yes = apply, no = skip)
 Methodology: For each mutation (write, move, delete) that could occur in a parallel
 context, check whether it has: (a) explicit guard against concurrent access, and
 (b) a defined release mechanism. Full credit = both guards; partial = one guard.
 PSS = (full_credit + 0.5 × partial_credit) / total_parallel_mutations.
 
 ### M12 — Information Freshness Score (IFS) [applies: cached artifacts]
+**Apply if:** Does the workflow write an artifact in one phase and read it again in a later phase (or later session)? (yes = apply, no = skip)
 Methodology: For each artifact that is read after being written in a prior session,
 check whether there is an explicit TTL policy or freshness check before use.
 IFS = artifacts_with_freshness_policy / total_inter-session_artifacts.
