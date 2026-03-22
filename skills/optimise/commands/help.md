@@ -48,6 +48,8 @@ Display this table, then the patterns table, then the stats summary. Nothing els
 | P7 | Binary Applicability Gates | IAR ↓, ACC ↑ | Any workflow with conditional or optional steps |
 | P8 | Persona Rotation | PPF ↑ | Any workflow where a phase's persona is a poor fit, missing, or untested |
 | P9 | Persona Speciation | PRS ↑, PPF ↑ | Any workflow where personas are thin (missing Unique Talent or Failure Mode) or where a cognitive demand has no matching persona |
+| P10 | Failure Mode Registry | RPC ↑ | Any workflow with multiple conditional branches or error states |
+| P11 | File Role Stratification | DD ↑, ITE ↑ | Any workflow that mixes agent-instruction files with human-reference files in the same directory |
 
 ### Stats at a Glance
 
@@ -468,6 +470,43 @@ Both are executed via `/personas evolve` — the command handles scoring, recomm
 **Targets:** Persona-Phase Fit Score (↑)
 
 **Typical gain:** Likely varies significantly by target. On workflows where personas are currently decorative (name-only, or loaded without matching style), expect +20–40pp. On well-designed persona systems, Persona Rotation may confirm the existing assignments are near-optimal, which is also valuable evidence.
+
+---
+
+### Failure Mode Registry (P10)
+*Also matches: P10, failure mode, failure mode registry, recovery, recovery path, error state, branch, fallback*
+
+**Problem it solves:** Workflows with multiple conditional branches have implicit failure modes — situations where the agent has no prescribed next action. Without explicit recovery instructions, the agent improvises or halts, producing inconsistent results. The failure modes are usually known to the workflow designer but never written down, so each agent that encounters them is starting from scratch.
+
+**How it works:** Enumerate all failure modes for the workflow. A failure mode is any state where a phase can produce an output that the next phase cannot proceed on: invalid target path, missing file, stale log, all branches skipped, confirmed disconfirmation, external command unavailable. For each failure mode, verify that the phase file contains an explicit recovery instruction — a prescribed next action the agent should take. Add recovery paths wherever they are missing.
+
+**When to apply:**
+- Multi-phase pipelines where some phases have conditional routing
+- Data ingestion workflows where input validation can fail
+- Deployment scripts with rollback conditions
+- Any workflow where phases can produce distinct error states
+
+**Targets:** Recovery Path Completeness (↑)
+
+**Typical gain:** First application on a workflow with implicit failure modes: expect +20–40pp on Recovery Path Completeness. Effort is proportional to the number of conditional branches in the workflow.
+
+---
+
+### File Role Stratification (P11)
+*Also matches: P11, file role, stratification, instruction file, documentation file, reference file, help file, human reference*
+
+**Problem it solves:** Workflows that mix agent-instruction files (command files with imperative verbs, phase logic, DO/DO NOT rules) and human-reference files (help content, explanatory prose, reference tables) in the same directory produce misleading Directive Density and Instruction Token Efficiency scores. Documentation tokens dilute both metrics, making instruction quality appear lower than it is and masking genuine instruction padding.
+
+**How it works:** Before scoring Directive Density (M2) and Instruction Token Efficiency (M13), classify each file by primary audience: *instruction file* (primary audience is an agent — contains phase logic, directives, DO/DO NOT rules) or *documentation file* (primary audience is a human — contains help content, reference tables, explanatory prose). Score only instruction files for both metrics. Record the classification in Phase 2 output so it can be re-applied consistently across runs.
+
+**When to apply:**
+- Any workflow directory that contains both command files and help/reference files
+- Skills that have grown a help.md or reference guide alongside their agent command files
+- When Directive Density or Instruction Token Efficiency scores seem unusually low despite well-written instructions
+
+**Targets:** Directive Density (↑), Instruction Token Efficiency (↑)
+
+**Typical gain:** On workflows with 1 documentation file among 5–6 instruction files: +5pp on Directive Density, +9pp on Instruction Token Efficiency. Gain scales with the proportion of documentation tokens in the corpus.
 
 ---
 
