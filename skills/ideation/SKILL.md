@@ -47,7 +47,7 @@ Each subject lives in a directory named `YYYY-MM-DD-{subject}/` inside `.kanban/
 │   │   ├── TASK-002-my-feature.md
 │   │   └── ...
 │   │
-│   ├── 04-todo/                            ← ready for kanban2 (step 9 promotion)
+│   ├── 04-todo/                            ← ready for implement (step 9 promotion)
 │   │   └── (tickets moved here after promotion)
 │   ├── 05-in-progress/                     ← implement work phase
 │   ├── 06-in-review/                       ← implement review phase
