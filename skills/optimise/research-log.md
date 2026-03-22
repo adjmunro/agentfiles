@@ -107,6 +107,110 @@ Strongest: M1 IOT (100), M9 CDR (100), M8 HTC (95)
 
 ---
 
+## Results — 2026-03-22 (optimise skill self-run)
+
+### H1 — Strip SKILL.md Duplication
+**Pre-change:** M5 RI 66, M10 CLE 48
+**Post-change:** M5 RI 90, M10 CLE 57
+**Delta:** M5 +24pp, M10 +9pp
+**Result:** confirmed
+**Notes:** ~700 tokens of duplicated metric tables, formula, and pattern descriptions removed from SKILL.md. Replaced with a single pointer to commands/optimise.md.
+
+### H2 — Phase-Scoped Persona Loading
+**Pre-change:** M10 CLE 57, MX1 SAF 75
+**Post-change:** M10 CLE 74, MX1 SAF 100
+**Delta:** M10 +17pp, MX1 +25pp
+**Result:** confirmed
+**Notes:** Top-level preload block removed. Persona loads moved inside Phase 2, 3, 4 headers respectively. P3 Progressive Disclosure now self-applied by the skill.
+
+### H3 — TTL Policy for research-log.md
+**Pre-change:** M12 IFS 0
+**Post-change:** M12 IFS 100
+**Delta:** M12 +100pp
+**Result:** confirmed
+**Notes:** 3-tier policy (Tier A: mismatched target → archive; Tier B: >7 days → caveat; Tier C: fresh → use as-is) added to Phase 1 intent anchor. Phase 4 re-read updated with a stop-guard for stale/mismatched logs.
+
+### H4 — Symmetrical Experiment Outcome Thresholds
+**Pre-change:** M6 ACC 75
+**Post-change:** M6 ACC 88
+**Delta:** M6 +13pp
+**Result:** confirmed
+**Notes:** Replaced vague "no meaningful improvement" with concrete floor: <1pp on all targets AND composite ≤0. Partial threshold: ≥1pp but <3pp on ≥1 metric, or net-positive composite below confirmed floor.
+
+### H5 — Binary Applicability Tests
+**Pre-change:** M3 IAR 88, M6 ACC 88
+**Post-change:** M3 IAR 93, M6 ACC 94
+**Delta:** M3 +5pp, M6 +6pp
+**Result:** confirmed
+**Notes:** One binary yes/no test question added before each of M1, M4, M7, M9, M11, M12. Eliminates interpretive variance in skip/apply decisions.
+
+---
+
+## Experiment Summary
+- Confirmed: H1, H2, H3, H4, H5
+- Partial: none
+- Disconfirmed: none
+
+---
+
+## Final Results — 2026-03-22 (optimise skill self-run)
+
+| Metric | Baseline | Post | Delta | Status |
+|--------|----------|------|-------|--------|
+| M1 IOT | 100 | 100 | — | — |
+| M2 DD | 100 | 100 | — | — |
+| M3 IAR | 88 | 93 | +5pp | ↑ |
+| M4 WCS | 100 | 100 | — | — |
+| M5 RI | 66 | 90 | +24pp | ↑ |
+| M6 ACC | 75 | 94 | +19pp | ↑ |
+| M8 HTC | 95 | 95 | — | — |
+| M9 CDR | 100 | 100 | — | — |
+| M10 CLE | 48 | 74 | +26pp | ↑ |
+| M12 IFS | 0 | 100 | +100pp | ↑ |
+| MX1 SAF | 75 | 100 | +25pp | ↑ |
+| MX2 MMC | 83 | 91 | +8pp | ↑ |
+| **Composite** | **74.9%** | **94.7%** | **+19.8pp** | |
+
+### What improved and why
+
+- **M12 IFS**: +100pp — 3-tier TTL policy added to intent anchor; first metric to have target-path validation, preventing silent use of wrong-target logs (H3)
+- **M10 CLE**: +26pp — SKILL.md deduplication (H1) removed ~700 redundant tokens; persona preload removal (H2) eliminated ~600 tokens loaded before any work. Combined: startup context reduced ~55%
+- **MX1 SAF**: +25pp — Both P2 (TTL) and P3 (Progressive Disclosure) now applied by the skill itself; self-application fidelity went from 3/4 to 4/4 applicable patterns
+- **M5 RI**: +24pp — Full metric library, composite formula, and design patterns no longer duplicated in SKILL.md; single-source truth in commands/optimise.md (H1)
+- **M6 ACC**: +19pp — Combined effect of H4 (concrete Partial/Disconfirmed thresholds) and H5 (binary applicability tests)
+- **M3 IAR**: +5pp — Binary applicability tests replaced 6 judgment-call conditions with unambiguous questions (H5)
+- **MX2 MMC**: +8pp — Binary tests are themselves complete methodology statements; metric definitions are more fully specified post-H5
+
+### What was dropped and why
+
+Nothing dropped. All 5 hypotheses confirmed.
+
+### What remains to improve
+
+- **M6 ACC**: 94 — the remaining ~6% is one advisory note ("*can be* proposed for inclusion") that is intentionally non-mandatory; further concretisation would over-constrain the pattern discovery process
+- **M10 CLE**: 74 — ceiling ~85%; remaining gap is DO/DO NOT rules loaded at startup which correctly apply to all phases; cannot be phase-scoped without restructuring the command entirely
+- **MX2 MMC**: 91 — M6 ACC methodology itself has a subjective element ("measurable without interpretation") that could be tightened with concrete examples
+
+---
+
+## Novel Patterns Discovered — 2026-03-22
+
+### NP1 — Symmetric Outcome Thresholds
+**Discovered in:** optimise skill (self-run)
+**Problem it solved:** Confirmed threshold was concrete (≥3pp) but Disconfirmed used "no meaningful improvement" — creating a gap where agents would classify ambiguous results inconsistently.
+**Implementation:** Define numeric thresholds for all three outcomes, not just the positive case. Use the confirmed floor as the anchor and define partial/disconfirmed relative to it.
+**Metrics it improved:** M6 ACC (+13pp)
+**Generalises to:** Any workflow with multi-tier outcome classification (pass/warn/fail, high/medium/low, etc.)
+**Seed candidate:** yes — complements P4 (Recommendation Brief) by ensuring the human approval gate has unambiguous result semantics
+
+### NP2 — Binary Applicability Gates
+**Discovered in:** optimise skill (self-run)
+**Problem it solved:** Feature-presence conditions for conditional metrics ("applies when: X present") required interpretive judgment; different agents reached different skip/apply decisions for the same workflow.
+**Implementation:** For each conditional item, replace the vague feature label with a single yes/no question whose answer is deterministically derivable from an earlier phase's output.
+**Metrics it improved:** M3 IAR (+5pp), M6 ACC (+6pp)
+**Generalises to:** Any workflow with conditional instructions, optional phases, or branching logic based on detected features
+**Seed candidate:** yes — widely applicable; proposed as P6 (Binary Decision Gates)
+
 **Branch:** research/skill-optimisation
 **Subjects:** ideation v1.0.0, kanban2 v2.1.0, personas v1.0.0
 **Date:** 2026-03-22

@@ -27,7 +27,8 @@ so it can be reused on any target.
 ```
 
 Full metric library (M1–M12), composite scoring formula, custom metric discovery
-process, and design patterns (P1–P5): see `commands/optimise.md`.
+process, and design patterns (P1–P5+): see `commands/optimise.md`. Novel patterns
+discovered per run are recorded in `research-log.md` and may be proposed as seeds.
 
 ## Versioning
 
