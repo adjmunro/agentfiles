@@ -106,8 +106,8 @@ Analyse the persona for natural divergence axes — dimensions along which two s
 
 Propose 2–3 variants. Each variant must:
 - Have a genuinely new name and character — not "Arden v2" but a new persona who happens to share lineage
-- Have a clearly narrower niche than the parent
-- Be demonstrably better than the parent in its niche
+- Have a clearly narrower niche than the parent — targets a specific cognitive demand from the taxonomy table; the parent persona's Purpose sentence must span ≥2 distinct cognitive modes for this to apply
+- Be demonstrably better than the parent in its niche — outperforms the parent on ≥2 of 3 quality markers defined at hypothesis time, OR covers a cognitive mode the parent's Purpose explicitly does not mention
 - Have a Failure Mode that differs from the parent's
 
 Present as a Recommendation Brief — one entry per proposed variant. Include: new name, niche, what it inherits from parent, what diverges, one-sentence soul essence.
@@ -143,7 +143,7 @@ Scan the evidence for traces of this persona's activity:
 - Phases or sections where the persona was active (look for the persona's name in headings, notes, or attribution)
 - Outputs that were measurably good (confirmed experiments, evidence-backed conclusions, well-scored phases)
 - Instructions that were followed exactly vs. those that were adapted or ignored
-- Behaviors that appeared in the output but are not captured in any DO rule — emergent patterns that consistently produced good results
+- Behaviors that appeared in the output but are not captured in any DO rule — emergent patterns that appear in the evidence source at least twice, associated with outputs that scored confirmed (≥3pp improvement) or received explicit positive attribution
 
 Derive distillation candidates:
 - **Sharpen**: a DO rule that is too vague and could be made more concrete (e.g., "be thorough" → "check every file listed in the Phase 1 audit before claiming coverage is complete")
@@ -166,7 +166,7 @@ First, check whether any existing persona covers ≥80% of the described cogniti
 If the need is genuinely unmet, define the new persona:
 
 1. **Name the cognitive demand** — what is the one thing this persona does that no existing persona does?
-2. **Choose a name and character seed** — the name should suggest the role obliquely, not literally (Arden ≠ "Audit-Bot"; Pulse ≠ "Metrics-Agent")
+2. **Choose a name and character seed** — the persona name must not contain the role word verbatim (e.g., Audit-Bot is disallowed if the role is auditor; Metrics-Agent is disallowed if the role is analyst); names drawn from archetypes, mythology, or nature are preferred
 3. **Draft the persona** using the AGENTS.md spec. Mandatory fields for a new persona:
    - Purpose, DO (≥4 rules), DO NOT (≥3 rules), When to summon, Failure Mode
    - Essence, Core Truths (≥3), Opinions (≥2), Contradictions (≥2), Voice, Unique Talent, Origin
