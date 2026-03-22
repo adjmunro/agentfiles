@@ -40,7 +40,11 @@ argument-hint: "<path-to-target-workflow-directory>"
 
 **Persona: none (neutral observer)**
 
-Re-read `research-log.md` in the target directory if it exists (Intent Anchor).
+If `research-log.md` exists in the target directory, apply the 3-tier TTL policy before reading it (Intent Anchor):
+- **Tier A — Regenerate**: the log's `**Target:**` header does not match `$ARGUMENTS` path → archive the existing log to `research-log-archived-<date>.md`, start a fresh log.
+- **Tier B — Load-with-caveat**: target matches AND log date is >7 days old → load but flag to the user: "Warning: research-log.md is from <date> — scores may be stale."
+- **Tier C — Use as-is**: target matches AND log is ≤7 days old → read and proceed.
+If `research-log.md` does not exist, proceed without reading.
 
 Derive the target directory path from `$ARGUMENTS`. If `$ARGUMENTS` is empty or the
 path does not exist, stop and print:
@@ -275,7 +279,7 @@ Write the full hypothesis list to `research-log.md` under `## Experiments — <d
 
 **Persona: Arden (Critic)** — load `../../personas/critic/persona.md` now. Identify as Arden in all Phase 4 output.
 
-Re-read `research-log.md` (Intent Anchor). Confirm which hypotheses were approved.
+Re-read `research-log.md` (Intent Anchor — Tier C only: if target path mismatches or log is >7 days old, stop and alert the user before proceeding). Confirm which hypotheses were approved.
 
 If inside a git repo, check out a new branch:
 
