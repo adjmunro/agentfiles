@@ -107,6 +107,103 @@ Strongest: M1 IOT (100), M9 CDR (100), M8 HTC (95)
 
 ---
 
+## Audit — 2026-03-22 (run 2)
+
+**Target:** `/Users/adjmunro/Developer/agentfiles/.claude/skills/optimise`
+**Files:** 6 total (1 command, 5 support) — unchanged from run 1
+**Token estimate:** ~3,900 tokens (command grew ~250t, SKILL.md shrank ~700t vs original)
+
+Feature inventory unchanged from run 1.
+
+---
+
+## Custom Metrics — 2026-03-22 (run 2)
+
+### MX3 — Pattern Library Promotion Rate (PPR) [custom]
+**Measures:** % of novel patterns confirmed in prior runs and marked as seed candidates that have been integrated into the design patterns section of commands/optimise.md.
+**Why seeds miss it:** No seed tracks whether the self-improvement discovery loop feeds back into the pattern library.
+**Methodology:** Count entries in research-log.md with `**Seed candidate:** yes`. Count how many appear as named patterns (P6+) in commands/optimise.md. PPR = promoted / total_candidates.
+**Direction:** ↑ higher
+**Weight:** 2×
+**Normalisation:** raw %
+
+### MX4 — Persona Load Resilience (PLR) [custom]
+**Measures:** % of phase-scoped persona load directives that include a fallback for when the persona file is not found.
+**Why seeds miss it:** No seed measures graceful degradation of phase-scoped persona loading in different repo layouts.
+**Methodology:** Count persona load directives in commands/optimise.md. Count those with an explicit "if not found, proceed without" fallback. PLR = directives_with_fallback / total_directives.
+**Direction:** ↑ higher
+**Weight:** 1×
+**Normalisation:** raw %
+
+---
+
+## Baseline — 2026-03-22 (run 2)
+
+Seed metrics skipped: M7 SAS (no subagent invocations), M11 PSS (no parallel execution)
+Custom metrics re-applied: MX1 SAF, MX2 MMC
+Custom metrics new: MX3 PPR, MX4 PLR
+
+| Metric | Source | Raw | Normalised | Weight | Weighted |
+|--------|--------|-----|-----------|--------|---------|
+| M1 IOT | seed | 100% | 100 | 2× | 200 |
+| M2 DD | seed | 2.9/100t | 100 | 1× | 100 |
+| M3 IAR | seed | 7% | 93 | 1× | 93 |
+| M4 WCS | seed | 100% | 100 | 1× | 100 |
+| M5 RI | seed | 9% | 91 | 1× | 91 |
+| M6 ACC | seed | 86% | 86 | 2× | 172 |
+| M8 HTC | seed | 1 pt | 95 | 2× | 190 |
+| M9 CDR | seed | 100% | 100 | 2× | 200 |
+| M10 CLE | seed | 75% | 75 | 2× | 150 |
+| M12 IFS | seed | 100% | 100 | 2× | 200 |
+| MX1 SAF | custom | 100% | 100 | 2× | 200 |
+| MX2 MMC | custom | 83% | 83 | 1× | 83 |
+| MX3 PPR | custom | 0% | 0 | 2× | 0 |
+| MX4 PLR | custom | 0% | 0 | 1× | 0 |
+| **TOTAL** | | | | **22×** | **1779 / 2200** |
+
+**Baseline Composite (Run 2): 80.9%**
+
+> Apparent drop from run-1's 94.7% is caused by two new custom metrics (MX3 PPR, MX4 PLR) both scoring 0 with 3× combined weight. The skill did not regress — these gaps were not previously measured.
+
+Weakest: MX3 PPR (0), MX4 PLR (0), M10 CLE (75)
+Strongest: M1 IOT (100), M9 CDR (100), M12 IFS (100)
+
+---
+
+## Experiments — 2026-03-22 (run 2)
+
+### H6 — Promote NP1 and NP2 to Pattern Library
+**Problem:** MX3 PPR = 0. Two seed-candidate patterns (NP1 Symmetric Outcome Thresholds, NP2 Binary Applicability Gates) are in research-log.md but not in commands/optimise.md.
+**Change:** Add P6 and P7 to commands/optimise.md Design Patterns section; update Phase 3 reference from "P1–P5" to "P1–P7".
+**Targets:** MX3 PPR 0 → 100
+**Status:** pending
+
+### H7 — Persona Load Fallback
+**Problem:** MX4 PLR = 0. Three phase persona load directives have no fallback for missing files.
+**Change:** Add "if not found, proceed without persona" fallback to each of the 3 phase persona load directives.
+**Targets:** MX4 PLR 0 → 100
+**Status:** pending
+
+### H8 — Define Scope Qualifier for M3
+**Problem:** MX2 MMC = 83. M3 methodology references "scope qualifier" but doesn't define it — measurement variance between agents.
+**Change:** Append inline examples to M3 methodology defining scoped vs. unscoped modals.
+**Targets:** MX2 MMC 83 → 92+
+**Status:** pending
+
+### H9 — Add Concrete Examples to M6 ACC Methodology
+**Problem:** MX2 MMC = 83. M6 uses "measurable without interpretation" as its criterion, which is itself interpretive.
+**Change:** Append two inline examples to M6 methodology (concrete vs. vague).
+**Targets:** MX2 MMC 83 → 92+, M6 ACC 86 → 90+
+**Status:** pending
+
+### H10 — Split Command File into Per-Phase Files
+**Problem:** M10 CLE = 75. Single-file structure requires loading all phase instructions as context even when only one phase is active.
+**Change:** Extract phases to commands/phases/p1-p5.md files; orchestrator loads only the current phase.
+**Targets:** M10 CLE 75 → 88+
+**Status:** pending
+
+---
+
 ## Results — 2026-03-22 (optimise skill self-run)
 
 ### H1 — Strip SKILL.md Duplication
