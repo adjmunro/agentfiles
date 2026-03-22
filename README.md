@@ -12,6 +12,7 @@ agentfiles/
 ├── resources.md      # Curated external repos and tools for inspiration
 ├── commands/         # Standalone agent command files (root-level, not skill-scoped)
 ├── hooks/            # Shell hooks for agent tooling
+├── scripts/          # Reusable shell scripts installed to ~/.local/bin/
 └── skills/           # Self-contained skills — each has AGENTS.md, CHANGELOG.md, VERSION.md
     ├── british-english/
     ├── ideation/
@@ -99,6 +100,21 @@ Standalone command files that work without a skill context:
 | `/next` | Identify the next PRD to implement, audit it, and loop through review until it passes |
 | `/review` | Audit implemented code against a PRD to confirm all requirements are satisfied |
 | `/audit` | Audit any target, emphasising preservation of intent and reasoning |
+| `/install-sign-hook` | Install the batch commit-signing pre-push hook into any git repo |
+
+## Scripts
+
+Reusable shell scripts that live in `scripts/` and are installed to `~/.local/bin/` by their corresponding agent commands.
+
+| Script | Installed as | Purpose |
+|--------|--------------|---------|
+| `scripts/sign-branch.sh` | `git-sign-branch` | Batch-sign unsigned commits on the current branch before push |
+
+### `git-sign-branch`
+
+Signs all unsigned commits authored by the current git user since the most recent commit they authored that already carries a GPG signature. Falls back to the remote tracking branch merge-base if no prior signed commit exists. Commits by other authors are left untouched.
+
+Install into any repo with `/install-sign-hook`. Once installed, `git push` automatically signs pending commits — no extra steps needed.
 
 ## Hooks
 
