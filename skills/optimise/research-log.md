@@ -942,9 +942,26 @@ Post weighted sum: 2,775 / 2,900 = 95.7%.
 **Risk level:** medium
 **Risk note:** Distillation quality depends on whether the research-log contains rich enough behavioural evidence. If run logs are sparse on persona-specific observations, the distilled fields may be generic. Spot-check quality marker 1 is the guard against this.
 
+**Pre-change:** PRS 71 (10/14 per persona × 3), PEC 0 (0/3 distilled)
+**Post-change:** PRS 100 (14/14 per persona × 3), PEC 100 (3/3 distilled)
+**Delta:** PRS +29pp, PEC +100pp
+**Result:** confirmed
+**Spot-check task:** Applied distilled Pulse to score ITE for p3-hypothesize.md before and after H16 additions (P10/P11 ~130 tokens), citing specific token counts and padding sources.
+**Spot-check output (new persona):** Distilled Pulse cited exact token counts (2,096t baseline, +130t post-H16), identified the 180-token source of ITE inefficiency (narrative openers in P1–P9 Design Patterns), applied ITE formula explicitly, and noted net effect was +0.5pp for this file. Pre-distillation persona had no instruction to cite token counts or detect measurement artefacts.
+**Marker scores:** [pass / pass / pass]
+**Spot-check score:** 3/3
+**Baseline (old persona or prior run):** Estimated 1–2/3 (no artefact-detection or count-citing instructions in pre-distillation file)
+**Secondary deltas:** PPF stable at 100 (depth-check threshold <71%; all personas now at 100%). ITE for p3-hypothesize.md +0.5pp (incidental, within rounding noise).
+**Notes:** First persona distillation in the optimise skill's history. All Unique Talent sections cite specific run numbers and hypothesis IDs from this log; all Failure Mode sections name observable warning signs. Four runs of evidence was sufficient — behavioural traces were clearly attributable to each persona.
+
 ---
 
+## Experiment Summary (run 4)
+- Confirmed: H16, H17, H18, H19
+- Partial: none
+- Disconfirmed: none
 
+---
 
 ### NP1 — Failure Mode Registry
 **Discovered in:** skills/optimise
