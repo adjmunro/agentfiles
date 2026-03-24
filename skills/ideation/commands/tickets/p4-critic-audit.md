@@ -25,6 +25,21 @@ Build a coverage table:
 |---|-------------|-----------|--------|-------|
 | 1 | Req text    | TASK-001  | Full   |       |
 
+### Dependency Graph Audit (mandatory — run after the coverage audit passes)
+
+After the coverage audit reaches 95%, verify dependency completeness:
+
+For each ticket in `03-refinement/`, check whether its work logically presupposes any other ticket's output. If a ticket's implementation requires output from another ticket that is not listed in its `depends_on` field, add the missing dependency edge.
+
+Build a brief dependency chain summary:
+
+```
+TASK-001 → TASK-002 → TASK-003
+TASK-001 → TASK-004
+```
+
+This is the implementation order — verify it is consistent with the plan's requirement ordering. If any missing dependency edges are found, update the affected ticket files and note each correction in the audit block under Fixes Applied.
+
 ### Auto-Fix (if score < 95%)
 
 If the score falls below 95%, auto-fix immediately — **never ask permission**:

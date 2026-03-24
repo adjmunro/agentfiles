@@ -2,7 +2,7 @@
 
 > **Part of the ideation skill.** Handles version reporting and update checks.
 
-**Current version**: 1.1.0
+**Current version**: 1.2.0
 
 ## Responding to Version Requests
 

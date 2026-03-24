@@ -67,6 +67,12 @@ Do not proceed.
 
 **Active persona: Keeper (Strategist)**
 
+**Re-entry guard:** Before drafting, check whether `02-plan-{subject}.md` already exists.
+
+- If it exists **and** contains an audit section (a line matching `- Full: \d+, Partial:` or a heading `## Audit:`) → the plan is complete. Skip Phase 2 entirely and advance to Phase 3 (Critic Audit Gate).
+- If it exists **without** an audit section → this indicates a partial write (draft exists but was not fully audited). Overwrite is safe — proceed with drafting.
+- If it does not exist → proceed normally.
+
 Using all session blocks from `00-input-{subject}.md`, draft `02-plan-{subject}.md` with exactly this structure:
 
 ```markdown
@@ -172,9 +178,17 @@ Append the following structured block to `02-plan-{subject}.md`. Do not overwrit
 - [Describe each auto-fix made, or "None — all items were Full on first pass"]
 ```
 
-Replace `PASS` with `FAIL` only if the audit score is still below 95% after all fixes are applied. A FAIL result means the auto-fix step did not fully resolve all gaps — diagnose and fix before committing.
+Replace `PASS` with `FAIL` only if the audit score is still below 95% after all fixes are applied. A FAIL result means the auto-fix step did not fully resolve all gaps.
 
-**STOP:** If the audit result is FAIL after fixes, diagnose which items remain unresolvable and report to the user before proceeding.
+**STOP (FAIL):** If the audit score is still below 95% after all auto-fixes are applied, present to the user:
+
+> ⚠ Plan audit failed — N items could not be auto-resolved: [list items by number and description]. Choose:
+> (a) Accept the plan with known gaps marked `[UNRESOLVED]` and continue to Step 6, or
+> (b) Return to capture to provide more information.
+
+Wait for the user's choice.
+- If (a): mark each unresolved item in `02-plan-{subject}.md` with `[UNRESOLVED]` and continue to Phase 4 (git commit).
+- If (b): loop back to Phase 2 of `ideate.md` (capture) so the user can provide additional information before the plan is reattempted.
 
 ---
 

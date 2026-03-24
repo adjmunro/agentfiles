@@ -51,7 +51,7 @@ After resolving the subject slug and before announcing start, check for a partia
 5. If `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md` exists with substantive content → this is a **loop-back iteration**. Note this for Phase 2 — `capture.md` will append a new session block rather than create a fresh file. Announce: "Resuming ideation for `YYYY-MM-DD-{subject}`. Beginning capture (loop-back — step 1 of 9)."
 6. Otherwise → this is a **fresh first run**. Announce: "Starting ideation for `YYYY-MM-DD-{subject}`. Beginning capture (step 1 of 9)."
 
-Substantive content means: file exists, is not empty, and contains more than stub headings or placeholder text.
+Substantive content means: file exists, size > 0 bytes, and contains at least one non-heading line (a line that does not start with `#`). A file with only headings or an empty body does not qualify.
 
 ---
 

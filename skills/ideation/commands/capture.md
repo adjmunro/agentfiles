@@ -52,7 +52,7 @@ Construct the subject directory path from the argument or context:
 **Check for existing input file:**
 
 - If `00-input-{subject}.md` does **not exist** (or is a stub with empty sections only) → this is a **first run**. Continue to Phase 2.
-- If `00-input-{subject}.md` **exists with substantive content** → this is a **loop-back iteration**. Append a new session block in Phase 4. Prior sessions are immutable — do not touch them.
+- If `00-input-{subject}.md` **exists with substantive content** (file size > 0 bytes and contains at least one non-heading line — a line that does not start with `#`) → this is a **loop-back iteration**. Append a new session block in Phase 4. Prior sessions are immutable — do not touch them.
 
 ---
 
@@ -132,13 +132,11 @@ Write the file using the file-write tool. NEVER overwrite prior session content 
 
 ## Phase 5 — Critic Pass
 
-Before committing, adopt the **Critic** role. Silently scan the captured material for:
+Before committing, adopt the **Critic** role.
 
-- Unstated assumptions (things the user assumed you already knew)
-- Missing constraints (what happens at boundary cases?)
-- Acceptance signals not yet defined (how will the user know the work is done?)
-- Contradictions between sections
-- Ambiguous terms that could be interpreted multiple ways
+**Verbatim fidelity check (mandatory — run before the gap audit):** Compare the key phrases, decisions, and named entities in `00-input-{subject}.md` against the user's raw message in this session. Spot-check 3–5 distinctive phrases, decisions, or named items and confirm they appear verbatim in the written file. If any are paraphrased, correct them now before proceeding to the gap audit.
+
+Then silently scan the captured material for:
 
 If meaningful gaps are found, ask one final targeted question round — keep it to the minimum set that would close the gaps. Transcribe any new answers per Phase 4 rules (verbatim, append-only).
 

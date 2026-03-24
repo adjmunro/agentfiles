@@ -4,6 +4,20 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v1.2.0 - 2026-03-25 - Idempotency and Contract Enforcement
+
+Optimise run 2 — composite 79.7% → 84.0% (+4.3pp). All 5 hypotheses confirmed.
+
+- **Verbatim fidelity check** (`capture.md`): mandatory 3–5 phrase spot-check added to Phase 5 (Critic Pass) before the gap audit. Verbatim Contract Enforcement Coverage 50→100 [H6]
+- **Dependency graph audit** (`tickets/p4-critic-audit.md`): explicit dependency-completeness verification sub-step added after coverage audit. Ticket Dependency Completeness 60→90 [H7]
+- **Phase re-entry guards** (`plan.md`, `interview.md`): plan-draft guard prevents destructive overwrite of a complete plan; interview timestamp-uniqueness guard prevents duplicate Interview blocks. Phase Idempotency Coverage 61.1→83.3 [H8]
+- **Concrete plan FAIL recovery** (`plan.md`): dead-end FAIL condition replaced with 2-option recovery flow (accept with `[UNRESOLVED]` markers or loop back to capture). Failure Recovery Coverage 92.9→100 [H9]
+- **Concrete "substantive content" threshold** (`ideate.md`, `capture.md`, `tickets/p1-load-plan.md`): "stub headings or placeholder text" replaced with machine-checkable non-heading-line proxy; audit-section pattern made explicit. AC Concreteness 86.8→92.0 [H10]
+- 5 new custom metrics defined: Ticket Dependency Completeness, Phase Idempotency Coverage, Verbatim Contract Enforcement Coverage, Persona Load Order Consistency, Audit Gate Symmetry
+- Novel patterns documented: NP3 (Structural Contract Verification), NP4 (Phase Crash-Recovery Guard)
+
+---
+
 ## v1.1.0 - 2026-03-25 - Resilience and Traceability
 
 Optimise run 1 — composite 69.3% → 84.3% (+15.0pp). All 5 hypotheses confirmed.

@@ -155,6 +155,10 @@ Parse the user's reply and apply their amendments to the recommendation set:
 - Inline overrides → record the user's stated preference verbatim
 - UNCERTAIN items answered → record which option the user chose
 
+**Idempotency guard:** Before appending, check whether an `## Interview` block with today's date already exists in `00-input-{subject}.md`. If one exists for this session:
+- If its content is identical to the current response (exact re-run) → skip the append; the block is already recorded.
+- If the content differs (updated user response) → append with a timestamp suffix `-v2` (e.g., `## Interview 20260322-14:30-v2`).
+
 Append the complete brief and the user's response to `00-input-{subject}.md` as a new block. Never overwrite any existing content.
 
 **Block format:**
