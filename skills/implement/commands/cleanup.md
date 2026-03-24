@@ -133,10 +133,16 @@ Check that `.kanban/.archive/{subject}/08-done/` exists and contains the expecte
 
 ```
 .kanban/.archive/{subject}/
-├── 08-done/          ← all completed tickets
-├── 00-assets/        ← preserved (even if empty with .gitkeep)
-└── [loose docs]      ← 00-input-*, 01-research-*, 02-plan-* (if present)
+├── 08-done/              ← all completed tickets
+├── 00-assets/            ← preserved (even if empty with .gitkeep)
+├── 00-quality-{subject}.md  ← quality envelope (req 1.4 — must survive to archive)
+└── [loose docs]          ← 00-input-*, 01-research-*, 02-plan-* (if present)
 ```
+
+<!-- WHY 00-quality-{subject}.md is named here: the mv command carries the whole subject folder
+     so the file moves automatically, but naming it explicitly ensures no cleanup step accidentally
+     removes it and satisfies req 1.4 which requires the envelope to survive to .archive/.
+     Removing this note would make it easy to "helpfully" delete the file thinking it's orphaned. -->
 
 After the move, the subject is no longer live — it is archived. The original `.kanban/{subject}/` directory will no longer exist.
 
@@ -161,9 +167,9 @@ After the commit, proceed to Phase 6.
 
 ---
 
-## Phase 6 — Reporting
+## Phase 6 — Reporting and Quality Envelope
 
-**You are now Pulse.** Report the archive facts, then the metrics. Keep the metrics honest — one sprint isn't a trend, but it's still a data point worth naming.
+**You are now Pulse.** Report the archive facts, metrics, and then write the quality envelope signals. Keep the metrics honest — one sprint isn't a trend, but it's still a data point worth naming.
 
 After a successful archive, report:
 
@@ -179,3 +185,118 @@ After a successful archive, report:
 - **Any ticket stuck 3+ times:** list by ID if applicable
 
 One sentence on what the numbers suggest — not a conclusion, a question worth asking next time.
+
+---
+
+### Phase 6a — Plan Drift Measurement
+
+<!-- WHY this runs after the archive move (not before): git diff uses HEAD and the archived path,
+     so the plan file must already be at .kanban/.archive/{subject}/02-plan-{subject}.md for the
+     diff to resolve correctly. Running before the move would compare the live path, which may
+     differ from the archived path once cleanup commits remove staged files. Satisfies req 3.1. -->
+
+After reporting the summary metrics above, measure how much the plan file drifted from its creation to the archive commit.
+
+**Step 1 — Find the first commit that created the plan file (req 3.2):**
+
+```bash
+git log --follow --diff-filter=A --format="%H %ai" -- .kanban/{subject}/02-plan-{subject}.md
+```
+
+This returns the commit SHA and date of the first commit that introduced the plan file. Take the first (oldest) result.
+
+- If git is not available or the command fails: skip Steps 2–4 and write `Plan drift: unavailable (no git history)` in the envelope. Proceed to Phase 6b.
+- If the command returns no output (plan file was never committed independently): write `Plan drift: unavailable (no git history)` and proceed to Phase 6b.
+
+**Step 2 — Measure the diff against the archived copy (req 3.2):**
+
+```bash
+git diff {first_commit} HEAD -- .kanban/.archive/{subject}/02-plan-{subject}.md
+```
+
+Count lines added (`+` prefix) and lines removed (`-` prefix) in the diff output. Exclude any block that begins with `## Audit` — this is the audit block appended at the end of every plan and should not count as drift.
+
+<!-- WHY exclude the audit block: the audit block is always appended at plan→ticket transition time,
+     so it represents refinement process overhead, not genuine plan volatility. Including it would
+     inflate drift classification for every subject regardless of actual planning stability. -->
+
+**Step 3 — Classify drift magnitude (req 3.3):**
+
+| Lines changed (added + removed, excluding audit block) | Magnitude |
+|--------------------------------------------------------|-----------|
+| 0                                                       | None      |
+| 1–10                                                    | Minor     |
+| 11–30                                                   | Moderate  |
+| 31+                                                     | Significant |
+
+<!-- WHY these thresholds: None = plan was followed exactly (ideal); Minor = normal clarification;
+     Moderate = meaningful re-scoping during execution; Significant = plan was substantially
+     rewritten, suggesting the ideation phase underspecified or the work revealed major unknowns.
+     These feed MX-OQ3 (Plan Stability Rate) in the optimise skill. -->
+
+**Step 4 — Append Plan Drift section to quality envelope (req 3.4):**
+
+Append to `.kanban/.archive/{subject}/00-quality-{subject}.md`. If the file does not exist, create it. This is an append-only write — never overwrite existing content.
+
+```markdown
+## Plan Drift
+
+First plan commit: {SHA} ({date})
+Archive commit: {current HEAD SHA} ({date})
+Lines added: {N} | Lines removed: {N}
+Magnitude: None / Minor / Moderate / Significant
+```
+
+If git was unavailable or no creation commit was found, write instead:
+
+```markdown
+## Plan Drift
+
+Plan drift: unavailable (no git history)
+```
+
+---
+
+### Phase 6b — Subject Summary
+
+<!-- WHY this runs last: Subject Summary is the final aggregate of all quality signals accumulated
+     throughout the subject's lifecycle. It must be written after Plan Drift (Phase 6a) so the
+     drift data is already present. It reads Interview Signals, Work Sessions, PR Responses, and
+     Plan Drift sections from the envelope and distils them into one block. Satisfies req 1.2. -->
+
+After writing the Plan Drift section, append a `## Subject Summary` block to `.kanban/.archive/{subject}/00-quality-{subject}.md`.
+
+Read the quality envelope file and extract counts from each section:
+
+- From `## Interview Signals`: total approved, overridden, rejected counts (sum across all Interview Signals entries if multiple exist)
+- From `## Work Sessions`: count of "yes", "partially", "no" rated sessions
+- From `## PR Responses`: count of total `### Response` entries across all tickets
+- From `## Plan Drift`: the Magnitude value
+
+Append this block:
+
+```markdown
+## Subject Summary
+
+Generated: {ISO timestamp}
+
+| Signal | Value |
+|--------|-------|
+| Interview acceptance | {N approved} / {N total recommendations} ({N}%) |
+| Interview overrides | {N} |
+| Interview rejections | {N} |
+| Session satisfaction | {N yes} / {N rated} ({N}%) |
+| PR rework cycles | {N total response entries} across {N tickets} |
+| Plan drift | {Magnitude} ({N added} / {N removed} lines) |
+
+<!-- Sections with no data are shown as "—" (not recorded or phase was skipped) -->
+```
+
+If a section is absent from the envelope (e.g. the subject skipped the interview phase), write `—` for those fields rather than omitting the row.
+
+After appending the Subject Summary, stage and commit the updated quality envelope:
+
+```bash
+git add .kanban/.archive/{subject}/00-quality-{subject}.md
+git commit -m "kanban(cleanup): append quality envelope summary for {subject}"
+```
