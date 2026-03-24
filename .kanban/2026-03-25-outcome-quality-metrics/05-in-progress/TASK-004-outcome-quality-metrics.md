@@ -43,3 +43,28 @@ The rating must not block the ticket move — the move completes first, the prom
 - Grep for `skip` or `do not re-prompt` in `skills/implement/commands/work/p8-move-to-review.md` returns at least one match (escape hatch documented)
 
 <!-- Everything below this line is append-only and chronological -->
+
+## Work Log — 2026-03-24T12:10Z
+
+Implemented plan §4 session-close rating by editing `skills/implement/commands/work/p8-move-to-review.md`.
+
+**What was done:**
+
+Added a `## Session-Close Rating` section to p8 positioned after the existing ticket-move and git-commit steps. The section instructs the agent to issue a single `AskUserQuestion` with four options: yes / partially / no / skip.
+
+**WHY each decision:**
+
+- Positioned after the ticket-move commit (Req 4.4): the move-first ordering is enforced at the file structure level — any agent reading top-to-bottom completes the move before reaching the rating prompt. No explicit synchronisation logic is needed.
+- Create-if-not-exists (Req 4.2, plan §1.3): the quality envelope may not exist when a session concludes (e.g. if the interview phase was skipped). Instructions direct creation of the file and heading on first write.
+- Append-only constraint (plan §1): the instruction explicitly states "never overwrite or reorder existing entries" and commits the envelope as a staged write, not an in-place replacement.
+- Silent skip (Req 4.3): catch-all phrasing ("does not exactly match yes / partially / no") avoids ambiguity about capitalisation or whitespace variants. No re-prompt is explicit.
+- Summary line `(valid responses: yes / partially / no / skip)` added to the response-handling header — this places all four options on one line, satisfying the AC grep for `yes.*partially.*no.*skip` without requiring the code block lines to be joined.
+
+**ACs verified:**
+
+- AC 1: `how did this session go` — 1 match (line 30 of p8)
+- AC 2: `yes.*partially.*no.*skip` — 1 match (response handling header line)
+- AC 3: `Work Sessions` — 4 matches in p8
+- AC 4: `00-quality` — 1 match in p8
+- AC 5: prompt section appears after ticket-move and lock-cleanup steps — confirmed by file position
+- AC 6: `skip` and `do not re-prompt` — both present (5 combined matches)
