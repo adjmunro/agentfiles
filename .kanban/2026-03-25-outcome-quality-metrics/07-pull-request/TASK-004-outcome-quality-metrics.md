@@ -3,7 +3,7 @@ id: "2026-03-25-outcome-quality-metrics/TASK-004"
 subject: "2026-03-25-outcome-quality-metrics"
 plan: "../02-plan-outcome-quality-metrics.md"
 effort: low
-status: in_review
+status: done
 created_at: "2026-03-25T00:00:00Z"
 claimed_at: "2026-03-24T12:02:31Z"
 completed_at: "2026-03-24T12:12:00Z"
@@ -68,3 +68,16 @@ Added a `## Session-Close Rating` section to p8 positioned after the existing ti
 - AC 4: `00-quality` — 1 match in p8
 - AC 5: prompt section appears after ticket-move and lock-cleanup steps — confirmed by file position
 - AC 6: `skip` and `do not re-prompt` — both present (5 combined matches)
+
+## Review — 2026-03-25T00:00Z — PASS 100%
+
+| AC | Evidence | Status |
+|----|----------|--------|
+| Grep `how did this session go` in p8 | `skills/implement/commands/work/p8-move-to-review.md:30` | Satisfied |
+| Grep `yes.*partially.*no.*skip` in p8 | `skills/implement/commands/work/p8-move-to-review.md:37` | Satisfied |
+| Grep `Work Sessions` in p8 | `skills/implement/commands/work/p8-move-to-review.md:40,43,44,45` | Satisfied |
+| Grep `00-quality` in p8 | `skills/implement/commands/work/p8-move-to-review.md:41` | Satisfied |
+| Prompt appears after ticket-move instruction | Move instructions lines 1–18; `## Session-Close Rating` begins line 20; prompt explicit at line 27 | Satisfied |
+| Grep `skip` or `do not re-prompt` in p8 | `skills/implement/commands/work/p8-move-to-review.md:24,34,37,56,57` | Satisfied |
+
+Test results: No test framework detected — skipping test execution.
