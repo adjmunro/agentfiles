@@ -152,6 +152,7 @@ If inside a git repo:
 
 1. Stage only the input file and assets directory (if newly created).
 2. Commit with the message: `kanban(capture): capture raw input for {subject}`
+   Body: one line stating whether this was a first run or loop-back iteration, and any named assets captured (or "no assets" if none).
 
 If not inside a git repo: skip this phase silently.
 

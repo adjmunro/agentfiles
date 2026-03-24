@@ -156,6 +156,8 @@ After all fixes are applied, recalculate the score. All items must reach Full st
 
 ### Step F — Append Audit Block
 
+**Idempotency guard:** Before appending, check whether a line matching `## Audit: input → plan` already exists in `02-plan-{subject}.md`. If it does → the audit block is already recorded. Skip the append and proceed to Phase 4.
+
 Append the following structured block to `02-plan-{subject}.md`. Do not overwrite any existing content — this is always appended.
 
 ```markdown
@@ -199,6 +201,7 @@ Check whether the project is inside a git repository. Use `Bash` with `git rev-p
 If inside a git repo:
 1. Stage `02-plan-{subject}.md`.
 2. Commit with the message: `kanban(plan): draft plan for {subject}`
+   Body: audit score, total requirement count, and a one-line note if any items needed auto-fixing (or "all items Full on first pass" if not).
 
 If not inside a git repo: skip this phase silently.
 

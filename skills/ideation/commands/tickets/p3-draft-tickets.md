@@ -27,7 +27,7 @@ TASK-001 is ALWAYS the TDD red phase. No exceptions.
 For each logical unit of work:
 
 - One ticket per self-contained unit completable in a single agent session
-- Small enough for a low-effort model to implement without ambiguity
+- Completable in a single focused agent session — typically modifies 1–5 existing files, creates 0–3 new files, and requires decisions within a single concern. If a ticket spans multiple unrelated concerns (e.g. simultaneously touching authentication, database schema, and API layer), split it.
 - Use Scout's dependency findings to set `depends_on` in frontmatter
 
 **Effort tiers:**
@@ -118,5 +118,9 @@ TASK-002-{subject}.md
 ```
 
 Where `{subject}` is the short slug portion of the parent directory name (strip the `YYYY-MM-DD-` date prefix).
+
+### Idempotency Guard
+
+Before creating each ticket file, check whether the target path (e.g. `03-refinement/TASK-001-{subject}.md`) already exists. If it does **and** contains both a `## Context` section and an `## Acceptance Criteria` section → skip creation for that ticket (it is already complete). If it exists but is missing one or both sections → overwrite is safe (partial write).
 
 → Next: Read `tickets/p4-critic-audit.md` and execute it. (The final git commit happens in p5, after the audit passes.)

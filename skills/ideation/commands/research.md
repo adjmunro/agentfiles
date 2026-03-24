@@ -152,6 +152,7 @@ If inside a git repo:
 
 1. Stage only `01-research-{subject}.md`.
 2. Commit with the message: `kanban(research): snapshot research for {subject}`
+   Body: 2–3 lines summarising key findings — primary tech patterns, any hazards or blockers identified, and the recommended approach.
 
 If not inside a git repo, skip this phase silently.
 

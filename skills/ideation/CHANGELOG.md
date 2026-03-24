@@ -4,6 +4,21 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v1.3.0 - 2026-03-25 - Documentation Sync and Git History
+
+Optimise run 3 — composite 77.0% → 85.9% (+8.9pp). All 5 hypotheses confirmed.
+
+- **Commit body instructions** (all command files): each phase-level commit now specifies a body with phase-specific outcome details (first-run/loop-back status, key findings, approval ratios, audit scores). Commit Message Body Completeness 15→86 [H11]
+- **Scout dependency heuristics** (`tickets/p2-scout-research.md`): vague "note dependencies" replaced with concrete trigger condition, dependency-type examples (schema/API/file/config), output format, and coverage mandate. Scout Dependency Detection Strength 15→88 [H12]
+- **SKILL.md state machine updated** (`SKILL.md`): entry routing table added; 5-state resume logic, step-6 abandon path, and plan-audit FAIL branch all now reflected in the diagram. Version reference corrected to 1.2.0→1.3.0. State Machine Fidelity 60→90 [H13]
+- **TESTING.md expanded** (`TESTING.md`): 4 missing scenarios added — abandon at step 6, resume after research, resume after interview, and plan audit FAIL recovery. Scenario Coverage 55→85 [H13]
+- **Ticket-sizing concreteness** (`tickets/p3-draft-tickets.md`): "small enough without ambiguity" replaced with a concrete session-scope proxy (1–5 files, 0–3 new files, single-concern). AC Concreteness 92→97 [H14]
+- **Remaining idempotency guards** (`plan.md`, `p3-draft-tickets.md`, `p4-critic-audit.md`, `p5-commit.md`): audit-append, ticket-file creation, ticket-audit-append, and git-mv promotion all now check for existing state before acting. Phase Idempotency Coverage 83.3→94.4 [H15]
+- 5 new custom metrics defined: TESTING.md Scenario Coverage, SKILL.md State Machine Fidelity, Commit Message Body Completeness, Exit Path Completeness, Scout Dependency Detection Strength
+- Novel patterns documented: NP5 (Commit Convention Propagation), NP6 (Dependency Heuristic Injection)
+
+---
+
 ## v1.2.0 - 2026-03-25 - Idempotency and Contract Enforcement
 
 Optimise run 2 — composite 79.7% → 84.0% (+4.3pp). All 5 hypotheses confirmed.

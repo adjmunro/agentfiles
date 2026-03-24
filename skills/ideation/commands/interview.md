@@ -257,6 +257,7 @@ If inside a git repo:
 1. Stage `00-input-{subject}.md`.
 2. Stage `00-quality-{subject}.md` (created or updated in Phase 4b). If the file does not exist for any reason, skip staging it but note the omission in the Phase 7 report.
 3. Commit both files together with the message: `kanban(interview): record recommendation brief for {subject}`
+   Body: number of recommendations presented, breakdown of Approved / Overridden / Rejected items.
 
 If not inside a git repo: skip this phase silently.
 

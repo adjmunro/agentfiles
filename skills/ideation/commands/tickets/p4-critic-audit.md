@@ -51,6 +51,8 @@ If the score falls below 95%, auto-fix immediately — **never ask permission**:
 
 ### Audit Block
 
+**Idempotency guard:** Before appending, check whether a line matching `## Audit: plan → tickets` already exists in `02-plan-{subject}.md`. If it does → the audit block is already recorded. Skip the append and proceed to p5-commit.md.
+
 Append this block to the plan file (`02-plan-{subject}.md`):
 
 ```markdown
@@ -74,6 +76,7 @@ Git commit after audit passes:
 ```
 kanban(tickets): audit verified {subject}
 ```
+Body: coverage score, total requirement count, and a note of any tickets auto-created or ACs strengthened during the fix pass (or "no fixes required" if all requirements were Full on first pass).
 
 ### Key Rules Summary
 

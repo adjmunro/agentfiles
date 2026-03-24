@@ -64,12 +64,36 @@ Each subject lives in a directory named `YYYY-MM-DD-{subject}/` inside `.kanban/
 
 The ideation skill operates as a deterministic state machine with six stable states (waiting for user action) and transient phases (internal work).
 
+### Entry Routing
+
+When `/ideate` is invoked with an existing subject, the orchestrator checks artifact presence in reverse order (most advanced state first) and routes accordingly:
+
+| Condition | Routes to |
+|-----------|-----------|
+| Tickets exist in `03-refinement/` with substantive content | Step 9 (hard stop gate) |
+| `02-plan-{subject}.md` exists with substantive content | Step 6 (validate with user) |
+| `00-input-{subject}.md` contains an `## Interview` block | Step 4 (write plan) |
+| `01-research-{subject}.md` exists with substantive content | Step 3 (interview) |
+| `00-input-{subject}.md` exists with substantive content | Step 1 (capture — loop-back append) |
+| No artefacts exist | Step 1 (capture — fresh run) |
+
+Substantive content: file exists, size > 0 bytes, and contains at least one non-heading line.
+
+### Flow Diagram
+
 ```
-      ┌─────────────────────────────────────────────┐
-      │  START: /ideate invoked                      │
-      └───────────────┬─────────────────────────────┘
+      ┌──────────────────────────────────────────────┐
+      │  START: /ideate invoked                       │
+      └───────────────┬──────────────────────────────┘
                       │
                       ▼
+        ┌─────────────────────────────────┐
+        │  Entry Routing (see table above)│
+        │  Check artifact presence and    │
+        │  route to correct step          │
+        └──────┬──────────────────────────┘
+               │ Fresh run or loop-back
+               ▼
             ┌─────────────────────┐
             │  Step 1: Capture    │
             │  Write input, assets│
@@ -94,55 +118,59 @@ The ideation skill operates as a deterministic state machine with six stable sta
             └─────────┬───────────┘
                       │
                       ▼
-            ┌─────────────────────┐
-            │  Step 5: Audit Plan │
-            │  95% threshold,     │
-            │  auto-fix gaps      │
-            └─────────┬───────────┘
-                      │
-                      ▼
+            ┌─────────────────────────────┐
+            │  Step 5: Audit Plan         │
+            │  95% threshold, auto-fix    │
+            └──┬──────────────────────────┘
+               │ PASS                  FAIL (< 95% after auto-fix)
+               │                          │
+               │                          ▼
+               │             ┌──────────────────────────────┐
+               │             │  User choice:                │
+               │             │  (a) Accept with [UNRESOLVED]│
+               │             │  (b) Loop back to capture    │
+               │             └──────────────────────────────┘
+               │
+               ▼
         ┌─────────────────────────────────────┐
         │  Step 6: Validate with User         │
         │  Satisfied? Add more? Abandon?      │
-        └─┬───────────────────────────────┬───┘
-          │ Add more                      │ Satisfied
-          │                               │
-          └──► [Loop back to Step 1]      │
-                                          │
-                                          ▼
-                        ┌─────────────────────────┐
-                        │  Step 7: Write Tickets  │
-                        │  03-refinement/ drafts  │
-                        └────────┬────────────────┘
-                                 │
-                                 ▼
-                        ┌─────────────────────────┐
-                        │  Step 8: Audit Tickets  │
-                        │  95% threshold,         │
-                        │  auto-fix gaps          │
-                        └────────┬────────────────┘
-                                 │
-                                 ▼
-                        ┌─────────────────────────┐
-                        │  Step 9: Hard Stop      │
-                        │  Backlog or Abandon?    │
-                        └─┬──────────────────┬────┘
-                          │                  │
-                   Backlog │                  │ Abandon
-                          │                  │
-                          ▼                  ▼
-                    ┌──────────────┐    ┌─────────────┐
-                    │ Promote to   │    │ Delete all  │
-                    │ 04-todo/     │    │ subject     │
-                    │ (implement ready)│    │ files       │
-                    └──────────────┘    └─────────────┘
-                          │                  │
-                          ▼                  ▼
-                      ┌─────────────────────────┐
-                      │  END                    │
-                      │  (ready for implement or │
-                      │   idea abandoned)       │
-                      └─────────────────────────┘
+        └─┬──────────────────┬──────────────┬─┘
+          │ Add more         │ Satisfied    │ Abandon
+          │                  │              │
+          └──► [Loop to      │              ▼
+               Step 1]       │   Slug confirm → Delete → END
+                             │
+                             ▼
+                    ┌────────────────────────┐
+                    │  Step 7: Write Tickets │
+                    │  03-refinement/ drafts │
+                    └────────┬───────────────┘
+                             │
+                             ▼
+                    ┌────────────────────────┐
+                    │  Step 8: Audit Tickets │
+                    │  95% threshold,        │
+                    │  auto-fix gaps         │
+                    └────────┬───────────────┘
+                             │
+                             ▼
+                    ┌────────────────────────┐
+                    │  Step 9: Hard Stop     │
+                    │  Backlog or Abandon?   │
+                    └──┬─────────────────┬───┘
+                       │                 │
+                Backlog │                 │ Abandon
+                       │                 │
+                       ▼                 ▼
+               ┌─────────────┐   Slug confirm → Delete → END
+               │ Promote to  │
+               │ 04-todo/    │
+               │ (implement) │
+               └──────┬──────┘
+                      │
+                      ▼
+                    END
 ```
 
 ---
@@ -174,7 +202,7 @@ Ideation sessions are **planning sessions**, separate from work sessions (implem
 
 ## Version and Status
 
-**Current version**: 1.0.0 (See `VERSION.md`)
+**Current version**: 1.2.0 (See `VERSION.md`)
 **Independent lifecycle**: Ideation versioning is separate from the implement skill.
 
 For version history, see `CHANGELOG.md`.
