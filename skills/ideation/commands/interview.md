@@ -183,6 +183,46 @@ Use the current date and time for the block header (e.g. `## Interview 20260322-
 
 ---
 
+## Phase 4b — Interview Acceptance Classification
+
+<!-- WHY this phase exists: plan §2 (Interview Acceptance Tracking) requires each recommendation item
+     to be classified so the optimise skill can measure whether recommendations are actually trusted.
+     Without this signal, structural metrics have no outcome counterpart. Satisfies Req 2.1–2.4. -->
+
+After appending the interview block to `00-input-{subject}.md`, classify each recommendation item
+(numbered and lettered) using the following heuristics, applied to the user's verbatim response.
+
+**Classification rules (Req 2.1–2.2):**
+
+- **Approved** — the user accepted or extended the recommendation without pushback. Indicators: "approve all", the item number listed without a change, or the user adds detail that builds on the recommendation.
+- **Overridden** — the user chose a different option without backtracking. Indicators: "change N to X", "instead use X" (where the redirect is neutral or constructive rather than dismissive), or the user selects an UNCERTAIN alternative without signalling dissatisfaction.
+- **Rejected** — the user pushed back and redirected away from the recommendation. Backtrack phrases that signal Rejected: "Actually,", "don't do that", "no,", "I don't want", "instead [something entirely different from the recommendation]", explicit dismissal. When ambiguous, prefer **Overridden** over Rejected — false negatives are less harmful than false positives.
+
+Apply the classification per-item. Record the user's verbatim redirect text for any Overridden or Rejected item (this is the "User's direction" column).
+
+**Append an `## Interview Signals` block to `00-quality-{subject}.md`** (Req 2.3):
+
+- The quality envelope file path is: `.kanban/{YYYY-MM-DD-subject}/00-quality-{subject}.md`
+- Create the file if it does not exist — write the block as the initial content. If the file already exists, append the new block after all existing content. Never overwrite existing content. (Req 1.1, 1.3)
+
+**Block format to append:**
+
+```markdown
+## Interview Signals — YYYYMMDD-HH:MM
+
+| Item | Decision area | Status | User's direction |
+|------|---------------|--------|-----------------|
+| 1    | {area}        | Approved / Overridden / Rejected | {verbatim redirect if Rejected or Overridden, else —} |
+| 2    | {area}        | Approved | — |
+| ?A   | {area}        | Overridden | {user's chosen option} |
+
+Summary: {N} approved, {N} overridden, {N} rejected of {total} recommendations.
+```
+
+Use the same timestamp as the `## Interview` block written to `00-input-{subject}.md`.
+
+---
+
 ## Phase 5 — Critic Pass
 
 Acting as **Arden (Critic)**, audit the brief before it is sent (this pass also runs silently as the pre-check in Phase 3).
@@ -201,11 +241,16 @@ If any item fails, revise the affected recommendations and re-run the check. Do 
 
 ## Phase 6 — Git Commit
 
+<!-- WHY both files are committed together: plan §2.4 requires the quality envelope to be committed
+     alongside the interview input file so the two records are always in sync. Separating the commits
+     would leave a window where the envelope is absent from the history. Satisfies Req 2.4. -->
+
 Check whether the project is inside a git repository. Use `Bash` with `git rev-parse --is-inside-work-tree`.
 
 If inside a git repo:
-1. Stage only `00-input-{subject}.md`.
-2. Commit with the message: `kanban(interview): record recommendation brief for {subject}`
+1. Stage `00-input-{subject}.md`.
+2. Stage `00-quality-{subject}.md` (created or updated in Phase 4b). If the file does not exist for any reason, skip staging it but note the omission in the Phase 7 report.
+3. Commit both files together with the message: `kanban(interview): record recommendation brief for {subject}`
 
 If not inside a git repo: skip this phase silently.
 
