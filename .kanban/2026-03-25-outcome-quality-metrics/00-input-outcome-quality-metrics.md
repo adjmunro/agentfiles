@@ -25,3 +25,25 @@ None.
 [Critic asked: where is the line between "adding detail to a recommendation" (neutral) and "rejecting and doing something else" (negative signal)?]
 
 the agent will have to decide. i'll depend on whether the user extends one of the agent's suggestions or backtracks and changes the direction. e.g. Actually, ... or 'don't do that, instead' etc
+
+## Interview 20260325-00:00
+
+**Recommendation Brief**
+
+| # | Decision | Recommendation | Confidence | Status |
+|---|---|---|---|---|
+| 1 | Quality envelope location | New `00-quality-{subject}.md` per subject, alongside input/research/plan | HIGH | Approved |
+| 2 | Optimise integration | Custom MX metrics in `p2-baseline.md` targeting `.kanban/.archive/*/00-quality-*.md` | HIGH | Approved |
+| 3 | Rejection heuristics | Detect backtrack phrases in interview Phase 4; classify as Approved / Overridden / Rejected | HIGH | Approved |
+| ?A | Session-close rating | Agent-prompted at end of each work session | UNCERTAIN | Resolved: agent-prompted with ignore/escape hatch |
+| ?B | Delivery scope | Full system as one subject | UNCERTAIN | Resolved: full system |
+
+**User Response (verbatim):**
+> agent prompted with ignore/escape hatch. full system. approve all
+
+**Resolved Decisions:**
+- Quality envelope: `00-quality-{subject}.md` per subject, append-only, written by interview / cleanup / work phases
+- Optimise: new MX metrics in custom discovery section of `p2-baseline.md`; read from archived quality envelopes
+- Rejection detection: backtrack-phrase heuristics in interview.md Phase 4 (Approved / Overridden / Rejected)
+- Session-close rating: agent-prompted at end of work session (p8-move-to-review); user can dismiss/skip with a single keystroke or "skip"
+- Scope: implement the full system in this subject — quality envelope file type, interview tracking, cleanup persistence, work session rating, optimise MX metrics
