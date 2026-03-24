@@ -206,6 +206,121 @@ Label the moonshot metric `[custom, moonshot]` so it is easy to identify.
 Write custom metric definitions to `research-log.md` under `## Custom Metrics — <date>`.
 Custom metrics persist and are re-applied on future runs of `/optimise` on the same target.
 
+### Pre-Defined MX Outcome Metrics (MX-OQ series)
+
+<!-- WHY these metrics exist: M1–M15 measure workflow instruction quality (coverage, clarity,
+     persona fit) but none measure whether the workflow produces good outcomes. The MX-OQ
+     series adds an outcome-signal layer by reading quality envelopes accumulated across
+     archived subjects. They feed the Phase 3 hypothesis step for causal attribution.
+     Satisfies plan §6 (Req 6.1–6.8) and TASK-006. -->
+
+The following MX-OQ metrics are pre-defined and must be evaluated during custom metric
+discovery for any workflow that produces `.kanban/` subjects. They read from quality
+envelope files at `.kanban/.archive/*/00-quality-*.md`. Each metric:
+
+- Skips with an explicit reason if the applicable data does not exist
+- Notes "insufficient sample — treat as directional only" if fewer than 3 archived subjects
+  have relevant data
+- Is advisory only — these metrics inform optimise hypotheses but do not gate anything
+
+These metrics are designed to feed the hypothesis phase (Phase 3) for causal attribution.
+When reviewing MX-OQ results alongside M1–M15, form hypotheses about which structural
+factors correlate with outcome degradation — e.g. whether a particular persona produces
+lower acceptance rates, or whether plan instability correlates with poor session
+satisfaction. No automated attribution is required; the causal analysis is the
+responsibility of the optimise hypothesis phase.
+
+#### MX-OQ1 — Interview Acceptance Rate [custom]
+
+<!-- WHY weight 2×: directly measures whether the workflow's recommendations are trusted by
+     users; low acceptance signals a calibration or communication failure in the interview
+     phase that no structural metric would catch. -->
+
+**Applies when:** `.kanban/.archive/` contains at least one `00-quality-*.md` file with
+an `## Interview Signals` section.
+**Skip condition:** If no such files exist, write "SKIP — no Interview Signals data in
+`.kanban/.archive/*/00-quality-*.md`."
+**Methodology:** Across all archived quality envelopes, sum approved, overridden, and
+rejected counts from each `## Interview Signals` block. Acceptance Rate = approved /
+(approved + rejected). Overrides are excluded from the ratio — they represent valid
+alternatives, not failures.
+**Direction:** ↑ higher is better
+**Normalisation:** rate × 100
+**Weight:** 2×
+
+#### MX-OQ2 — First-Pass Review Rate [custom]
+
+<!-- WHY weight 2×: directly measures implementation quality at review time; a low
+     first-pass rate means rework cycles are the norm, which compounds across the
+     subject's lifetime. No seed metric captures this. -->
+
+**Applies when:** `.kanban/.archive/` contains at least one archived subject with ticket
+files in `08-done/` that have `consecutive_failures` frontmatter.
+**Skip condition:** If no archived `08-done/` tickets with `consecutive_failures` exist,
+write "SKIP — no archived done-tickets with consecutive_failures data found."
+**Methodology:** Across all archived tickets in `.kanban/.archive/*/08-done/`, count
+tickets where `consecutive_failures = 0` (passed first review). Rate = zero-failure
+tickets / total archived tickets.
+**Direction:** ↑ higher is better
+**Normalisation:** rate × 100
+**Weight:** 2×
+
+#### MX-OQ3 — Plan Stability Rate [custom]
+
+<!-- WHY weight 1×: plan stability is a leading indicator of requirement clarity and
+     interview quality; frequent moderate/significant drift suggests the plan phase is
+     under-constrained, but the causal chain is indirect enough that this carries less
+     weight than direct outcome signals. -->
+
+**Applies when:** `.kanban/.archive/` contains at least one `00-quality-*.md` with a
+`## Plan Drift` section.
+**Skip condition:** If no `## Plan Drift` data exists, write "SKIP — no Plan Drift
+sections found in `.kanban/.archive/*/00-quality-*.md`."
+**Methodology:** Across all archived quality envelopes with drift data, count subjects
+where drift magnitude is "None" or "Minor". Rate = stable subjects / total subjects
+with drift data.
+**Direction:** ↑ higher is better
+**Normalisation:** rate × 100
+**Weight:** 1×
+
+#### MX-OQ4 — Session Satisfaction Rate [custom]
+
+<!-- WHY weight 1×: session ratings are self-reported and subjective, making this a
+     softer signal than review or acceptance data, but still useful for surfacing
+     systemic friction that no structural metric captures. -->
+
+**Applies when:** `.kanban/.archive/` contains at least one `00-quality-*.md` with a
+`## Work Sessions` section containing at least one rated session entry.
+**Skip condition:** If no rated session data exists, write "SKIP — no rated Work
+Sessions found in `.kanban/.archive/*/00-quality-*.md`."
+**Methodology:** Across all rated sessions in all archived quality envelopes, count
+"yes" ratings. Rate = yes / (yes + partially + no). Skipped sessions (entries absent
+or recorded as skip) are excluded entirely.
+**Direction:** ↑ higher is better
+**Normalisation:** rate × 100
+**Weight:** 1×
+
+#### MX-OQ5 — PR Critique Rate [custom]
+
+<!-- WHY weight 2×: rework cycles are a direct cost — each PR rejection adds latency
+     and re-implementation effort. Weight 2× because this is as close to a measurable
+     quality failure as this workflow produces. Inverted for composite because lower
+     rework is better. -->
+
+**Applies when:** `.kanban/.archive/` contains at least one `00-quality-*.md` with a
+`## PR Responses` section.
+**Skip condition:** If no `## PR Responses` data exists, write "SKIP — no PR Responses
+sections found in `.kanban/.archive/*/00-quality-*.md`."
+**Methodology:** Across all archived quality envelopes, sum total PR response events
+(count of `### Response` entries in all `## PR Responses` sections). Divide by the
+total number of archived tickets (from `.kanban/.archive/*/08-done/`) to get average
+rework cycles per ticket.
+**Direction:** ↓ lower is better (fewer rework cycles = cleaner initial implementation)
+**Normalisation (for composite):** score = max(0, 100 − (rate × 50)), where rate is
+average rework cycles per ticket. Cap at 2 cycles for normalisation — a rate of 2+
+cycles per ticket maps to 0%.
+**Weight:** 2×
+
 ### Composite Calculation
 
 ```
