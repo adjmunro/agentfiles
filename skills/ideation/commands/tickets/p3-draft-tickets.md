@@ -37,9 +37,38 @@ For each logical unit of work:
 
 ### Ticket Frontmatter Schema
 
-> See `../../../implement/commands/_shared.md § Ticket Frontmatter Schema` when you need field definitions.
+Use exactly these fields. Do not add or remove fields.
 
-Note: for ideation tickets, the `id` field uses the shorter form `{subject}/TASK-NNN` and `plan` points to `../02-plan-{subject}.md` rather than the implement path.
+```yaml
+---
+id: "YYYY-MM-DD-{subject}/TASK-NNN"
+subject: "YYYY-MM-DD-{subject}"
+plan: "../02-plan-{subject}.md"
+effort: low | medium | high
+status: todo | in_progress | in_review | done
+created_at: "ISO8601"
+claimed_at: ~
+completed_at: ~
+stale_after_hours: 4
+depends_on:
+  - "TASK-001"
+spawned_tickets: []
+plan_items:
+  - "Req 2.1 — description"
+acceptance_criteria:
+  - "Verifiable command or observable output"
+consecutive_failures: 0
+---
+```
+
+Field notes:
+- `id` — `YYYY-MM-DD-{subject}/TASK-NNN` where NNN is zero-padded (001, 002, ...)
+- `plan` — points to `../02-plan-{subject}.md` relative to the ticket file
+- `plan_items` — list every plan requirement this ticket addresses
+- `depends_on` — omit or leave empty if this ticket has no dependencies
+- `acceptance_criteria` — must be empirically verifiable commands or observable states
+
+> Cross-reference: `skills/implement/commands/_shared.md § Ticket Frontmatter Schema` uses the same fields. If the implement skill's schema diverges, keep this definition authoritative for ideation-created tickets.
 
 ### Ticket Body Structure
 
