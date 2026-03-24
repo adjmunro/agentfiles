@@ -134,9 +134,16 @@ Write the file using the file-write tool. NEVER overwrite prior session content 
 
 Before committing, adopt the **Critic** role.
 
+<!-- WHY verbatim check exists: H6 (run 2) found agents paraphrasing captured text, which corrupted the plan audit trail downstream. The spot-check prevents silent verbatim drift before the gap audit runs. -->
 **Verbatim fidelity check (mandatory — run before the gap audit):** Compare the key phrases, decisions, and named entities in `00-input-{subject}.md` against the user's raw message in this session. Spot-check 3–5 distinctive phrases, decisions, or named items and confirm they appear verbatim in the written file. If any are paraphrased, correct them now before proceeding to the gap audit.
 
 Then silently scan the captured material for:
+
+- **Unstated assumptions** — things the user assumes but did not say (technology choices, team context, existing infrastructure)
+- **Missing constraints** — limits not mentioned but likely relevant (performance requirements, platform restrictions, compatibility targets)
+- **Acceptance signals** — how will success be known? Is there any observable outcome or test that would confirm the work is done?
+- **Contradictions** — inconsistencies between stated goals, constraints, or out-of-scope items
+- **Ambiguous terms** — words or phrases with multiple plausible interpretations that would affect implementation
 
 If meaningful gaps are found, ask one final targeted question round — keep it to the minimum set that would close the gaps. Transcribe any new answers per Phase 4 rules (verbatim, append-only).
 

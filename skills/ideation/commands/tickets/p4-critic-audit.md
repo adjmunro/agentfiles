@@ -25,6 +25,7 @@ Build a coverage table:
 |---|-------------|-----------|--------|-------|
 | 1 | Req text    | TASK-001  | Full   |       |
 
+<!-- WHY dependency graph audit exists: H7 (run 2) found that coverage audits passed (all requirements mapped to tickets) while dependency edges were missing. Without explicit ordering, implementation attempts could fail because a dependent ticket was started before its upstream was complete. -->
 ### Dependency Graph Audit (mandatory — run after the coverage audit passes)
 
 After the coverage audit reaches 95%, verify dependency completeness:

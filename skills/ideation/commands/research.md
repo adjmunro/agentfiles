@@ -169,3 +169,5 @@ Report to the user:
 - Any WebFetch failures and the URLs that were skipped
 
 Keep the report concise. The user must be able to confirm research completed and know what gaps, if any, exist before the interview begins.
+
+→ Next: Run `ideation/commands/interview.md` to form research-informed recommendations.

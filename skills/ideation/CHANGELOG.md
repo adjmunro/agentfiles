@@ -4,6 +4,20 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v1.4.0 - 2026-03-25 - Gap Restoration and Test Coverage
+
+Optimise run 4 — composite 84.0% → 88.0% (+4.0pp within run; +1.9pp net vs. run 3 after metric dilution). All 5 hypotheses confirmed.
+
+- **Critic Pass gap categories restored** (`capture.md`): Phase 5 "silently scan for:" was missing its category list — a critical operational defect. Five categories restored (unstated assumptions, missing constraints, acceptance signals, contradictions, ambiguous terms). WHY comment added citing H6 rationale. Critic Pass Criteria Completeness 75→100, IOT 98→100 [H16]
+- **SKILL.md version corrected** (`SKILL.md`): version field read "1.2.0" despite skill being at v1.3.0 post-run-3. CHANGELOG claimed H13 fixed this but did not. Corrected to "1.3.0". Documentation Version Accuracy 67→100, State Machine Fidelity 90→95 [H17]
+- **Three resume-path scenarios added** (`TESTING.md`): Entry Routing table defines 5 non-fresh routing states; only 2 had test scenarios. Added resume-after-plan→Step 6, resume-with-tickets→Step 9, and resume-with-input-only→loop-back. TESTING.md Resume Path Coverage 40→100, Scenario Coverage 85→100 [H18]
+- **Next-step instruction added to research.md report** (`commands/research.md`): Phase 6 described what to confirm but never named the next command. "→ Next: Run `ideation/commands/interview.md`" appended. Phase Exit Next-Step Coverage 80→100 [H19]
+- **WHY traceability comments added to 5 instructions** (`capture.md`, `plan.md`, `interview.md`, `tickets/p4-critic-audit.md`, `tickets/p2-scout-research.md`): capture verbatim check (H6), plan re-entry guard (H8), interview idempotency guard (H8), dependency graph audit (H7), dependency detection block (H12). Hypothesis Traceability Coverage 80→88 [H20]
+- 5 new custom metrics defined: Critic Pass Criteria Completeness, Documentation Version Accuracy, TESTING.md Resume Path Coverage, Phase Exit Next-Step Coverage, Commit Body Item Count Adequacy
+- Novel patterns documented: NP7 (State-Machine-to-Test Bijection), NP8 (WHY Comment Traceability Anchors)
+
+---
+
 ## v1.3.0 - 2026-03-25 - Documentation Sync and Git History
 
 Optimise run 3 — composite 77.0% → 85.9% (+8.9pp). All 5 hypotheses confirmed.

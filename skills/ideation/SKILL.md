@@ -202,7 +202,7 @@ Ideation sessions are **planning sessions**, separate from work sessions (implem
 
 ## Version and Status
 
-**Current version**: 1.2.0 (See `VERSION.md`)
+**Current version**: 1.3.0 (See `VERSION.md`)
 **Independent lifecycle**: Ideation versioning is separate from the implement skill.
 
 For version history, see `CHANGELOG.md`.

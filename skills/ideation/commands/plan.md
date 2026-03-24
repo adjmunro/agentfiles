@@ -67,6 +67,7 @@ Do not proceed.
 
 **Active persona: Keeper (Strategist)**
 
+<!-- WHY re-entry guard exists: H8 (run 2) found that looping back to add more input after a plan was already drafted would overwrite the complete plan, destroying the audit record. The guard detects a completed plan and skips straight to Phase 3 (critic audit). -->
 **Re-entry guard:** Before drafting, check whether `02-plan-{subject}.md` already exists.
 
 - If it exists **and** contains an audit section (a line matching `- Full: \d+, Partial:` or a heading `## Audit:`) → the plan is complete. Skip Phase 2 entirely and advance to Phase 3 (Critic Audit Gate).

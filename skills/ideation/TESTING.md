@@ -31,6 +31,9 @@ Spin up a fresh git repository in `/tmp/ideation-test/` and drive the full 9-ste
 | Abandon at step 6 | At step 6 validation, choose "Abandon this subject"; then enter the exact subject slug | All subject files deleted; no tickets remain; confirmation mismatch cancels without deletion | Untested |
 | Resume after research — route to interview | `.kanban/` exists with `00-input-*.md` AND `01-research-*.md` but no interview block | Skill detects research-complete state, routes to step 3 (interview) rather than step 1 or 2 | Untested |
 | Resume after interview — route to plan | `.kanban/` exists with `00-input-*.md` containing an `## Interview` block but no `02-plan-*.md` | Skill detects interview-complete state, routes to step 4 (write plan) rather than restarting | Untested |
+| Resume after plan — route to validate | `.kanban/` exists with `02-plan-{subject}.md` containing a completed audit section | Skill detects plan-complete state, routes to step 6 (validate with user) without re-drafting the plan | Untested |
+| Resume with tickets — route to hard stop | `.kanban/` exists with ticket files in `03-refinement/` with substantive content | Skill detects tickets-drafted state, routes to step 9 (hard stop gate) without re-running the ticket workflow | Untested |
+| Resume with input only — loop-back capture | `.kanban/` exists with `00-input-*.md` containing substantive content but no `01-research-*.md` and no Interview block | Skill detects input-only state, routes to step 1 (capture) in loop-back mode — appends a new session block rather than overwriting | Untested |
 | Plan audit FAIL — user recovery | Force a plan audit failure (> 5% of items Missing after auto-fix) | Skill presents the 2-option recovery: user can accept plan with `[UNRESOLVED]` markers or loop back to capture | Untested |
 
 ## Command Coverage

@@ -155,6 +155,7 @@ Parse the user's reply and apply their amendments to the recommendation set:
 - Inline overrides → record the user's stated preference verbatim
 - UNCERTAIN items answered → record which option the user chose
 
+<!-- WHY idempotency guard exists: H8 (run 2) found that context restores or re-runs would append a duplicate Interview block, making the input file ambiguous about how many interview rounds occurred. The timestamp-uniqueness check prevents silent duplication. -->
 **Idempotency guard:** Before appending, check whether an `## Interview` block with today's date already exists in `00-input-{subject}.md`. If one exists for this session:
 - If its content is identical to the current response (exact re-run) → skip the append; the block is already recorded.
 - If the content differs (updated user response) → append with a timestamp suffix `-v2` (e.g., `## Interview 20260322-14:30-v2`).
