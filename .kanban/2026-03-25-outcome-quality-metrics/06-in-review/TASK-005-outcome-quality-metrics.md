@@ -3,10 +3,10 @@ id: "2026-03-25-outcome-quality-metrics/TASK-005"
 subject: "2026-03-25-outcome-quality-metrics"
 plan: "../02-plan-outcome-quality-metrics.md"
 effort: low
-status: in_progress
+status: in_review
 created_at: "2026-03-25T00:00:00Z"
 claimed_at: "2026-03-24T12:02:37Z"
-completed_at: ~
+completed_at: "2026-03-24T12:02:37Z"
 stale_after_hours: 4
 depends_on:
   - "TASK-001"
