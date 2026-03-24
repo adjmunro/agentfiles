@@ -40,9 +40,18 @@ Resolve the subject slug from `$ARGUMENTS`:
 
 Invoke `commands/init.md` with the derived subject slug to create the subject scaffold. This creates `.kanban/YYYY-MM-DD-{subject}/` with all stage directories. If the directory already exists, `init.md` handles reinitialisation safely — only missing directories are added.
 
-**Check for loop-back**: If `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md` exists with substantive content, this is a loop-back iteration. Note this for Phase 2 — `capture.md` will append a new session block rather than create a fresh file.
+**State detection and resume routing:**
 
-Announce to the user: "Starting ideation for `YYYY-MM-DD-{subject}`. Beginning capture (step 1 of 9)."
+After resolving the subject slug and before announcing start, check for a partially-completed subject by testing artifact presence in order (most advanced state first):
+
+1. If `.kanban/YYYY-MM-DD-{subject}/03-refinement/` contains at least one ticket file with substantive content → **resume at step 9 (hard stop gate)**. Announce: "Resuming ideation for `YYYY-MM-DD-{subject}` — tickets are drafted. Advancing to step 9 (hard stop gate)." Skip Phases 2–7 and jump directly to Phase 8.
+2. If `.kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md` exists with substantive content → **resume at step 6 (validate)**. Announce: "Resuming ideation for `YYYY-MM-DD-{subject}` — plan is complete. Advancing to step 6 (validate with user)." Skip Phases 2–5 and jump directly to Phase 6.
+3. If `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md` contains an `## Interview` block (any date) → **resume at step 4 (plan)**. Announce: "Resuming ideation for `YYYY-MM-DD-{subject}` — interview is recorded. Advancing to step 4 (plan)." Skip Phases 2–4 and jump directly to Phase 5.
+4. If `.kanban/YYYY-MM-DD-{subject}/01-research-{subject}.md` exists with substantive content → **resume at step 3 (interview)**. Announce: "Resuming ideation for `YYYY-MM-DD-{subject}` — research is complete. Advancing to step 3 (interview)." Skip Phases 2–3 and jump directly to Phase 4.
+5. If `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md` exists with substantive content → this is a **loop-back iteration**. Note this for Phase 2 — `capture.md` will append a new session block rather than create a fresh file. Announce: "Resuming ideation for `YYYY-MM-DD-{subject}`. Beginning capture (loop-back — step 1 of 9)."
+6. Otherwise → this is a **fresh first run**. Announce: "Starting ideation for `YYYY-MM-DD-{subject}`. Beginning capture (step 1 of 9)."
+
+Substantive content means: file exists, is not empty, and contains more than stub headings or placeholder text.
 
 ---
 
@@ -64,9 +73,8 @@ Wait for capture to complete before proceeding. Capture ends when `00-input-{sub
 
 ## Phase 3 — Step 2: Research
 
-<!-- INTENT ANCHOR — verify subject before dispatch -->
-<!-- Read: .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md -->
-<!-- Confirm: subject slug matches $ARGUMENTS (or derived slug from Phase 1). File must exist. Do not dispatch if missing. -->
+Re-read `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md` now to anchor context before dispatching.
+Confirm: subject slug matches $ARGUMENTS (or derived slug from Phase 1). File must exist — do not dispatch if missing.
 
 Invoke `research.md` for this subject. Research runs automatically — do not ask the user for input before or during research.
 
@@ -82,9 +90,8 @@ Announce: "Research complete. Beginning interview (step 3 of 9)."
 
 ## Phase 4 — Step 3: Interview
 
-<!-- INTENT ANCHOR — verify subject before dispatch -->
-<!-- Read: .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md -->
-<!-- Confirm: subject slug is current (matches Phase 1 resolution). File must exist and contain substantive content. Do not dispatch if missing. -->
+Re-read `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md` now to anchor context before dispatching.
+Confirm: subject slug is current (matches Phase 1 resolution). File must exist and contain substantive content — do not dispatch if missing.
 
 Invoke `interview.md` for this subject.
 
@@ -100,9 +107,8 @@ Wait for the interview to complete (user has reviewed and approved/amended the r
 
 ## Phase 5 — Steps 4–5: Plan + Audit
 
-<!-- INTENT ANCHOR — verify subject before dispatch -->
-<!-- Read: .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md -->
-<!-- Confirm: subject slug is current (matches Phase 1 resolution). File must exist and contain at least one interview block. Do not dispatch if missing. -->
+Re-read `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md` now to anchor context before dispatching.
+Confirm: subject slug is current (matches Phase 1 resolution). File must exist and contain at least one interview block — do not dispatch if missing.
 
 Invoke `plan.md` for this subject. The plan phase writes the plan and runs the internal audit — both steps 4 and 5 are handled by a single phase file.
 
@@ -118,6 +124,8 @@ Wait for the plan (and its audit) to complete before proceeding to step 6.
 ---
 
 ## Phase 6 — Step 6: Validate with User
+
+Re-read `.kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md` now to anchor context before presenting to the user.
 
 Ask the user using `AskUserQuestion` (max 4 options):
 
@@ -142,9 +150,8 @@ Options:
 
 ## Phase 7 — Steps 7–8: Tickets + Audit
 
-<!-- INTENT ANCHOR — verify subject before dispatch -->
-<!-- Read: .kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md -->
-<!-- Confirm: subject slug is current (matches Phase 1 resolution). Plan file must exist and contain an audit section. Do not dispatch if missing. -->
+Re-read `.kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md` now to anchor context before dispatching.
+Confirm: subject slug is current (matches Phase 1 resolution). Plan file must exist and contain an audit section — do not dispatch if missing.
 
 Invoke `tickets.md` for this subject. The tickets phase writes all ticket files into `03-refinement/` and runs the internal ticket audit — both steps 7 and 8 are handled by a single phase file.
 
@@ -161,6 +168,8 @@ Wait for tickets and the ticket audit to complete.
 ---
 
 ## Phase 8 — Step 9: Hard Stop Gate
+
+Re-read `.kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md` now to anchor context before the final decision.
 
 This is the final decision point. Ask the user using `AskUserQuestion` (max 2 options):
 
