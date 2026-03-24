@@ -211,3 +211,46 @@ If the quality envelope does not yet have a `## PR Responses` section, create it
 - §5.7 → §6.8: explicit statement that MX-OQ metrics feed the optimise hypothesis phase for causal attribution. Item 8 was Partial on first pass.
 - §5 (PR Response Tracking) added: `review/p5-fail.md` logs each rework cycle to `## PR Responses` in the quality envelope. Item 13 moved from Out of Scope to a tracked requirement.
 - §6.6 (MX-OQ5 — PR Critique Rate) added: average rework cycles per ticket, weight 2×, ↓ lower is better, inverted for composite scoring.
+
+---
+
+## Audit: plan → tickets — PASS
+**Date**: 2026-03-25T00:00:00Z  **Threshold**: 95%
+
+| # | Requirement | Ticket(s) | Status | Notes |
+|---|-------------|-----------|--------|-------|
+| 1.1 | `00-quality-{subject}.md` file type, append-only | TASK-002 | Full | |
+| 1.2 | Five schema sections | TASK-002, 003, 004, 005 | Full | Each section's writing phase covered |
+| 1.3 | Created on first write by interview.md; append-only thereafter | TASK-002 | Full | AC for create-if-not-exist added after fix |
+| 1.4 | Survives to archive | TASK-003 | Full | |
+| 2.1 | Classify Approved / Overridden / Rejected | TASK-002 | Full | |
+| 2.2 | Rejection heuristics via backtrack phrases | TASK-002 | Full | |
+| 2.3 | Append Interview Signals block | TASK-002 | Full | |
+| 2.4 | Commit with interview files | TASK-002 | Full | |
+| 3.1 | Measure in cleanup.md Phase 6 after archive | TASK-003 | Full | |
+| 3.2 | git log first commit + git diff | TASK-003 | Full | |
+| 3.3 | Classify None / Minor / Moderate / Significant | TASK-003 | Full | |
+| 3.4 | Append Plan Drift section | TASK-003 | Full | |
+| 4.1 | Prompt in p8-move-to-review.md after ticket move | TASK-004 | Full | |
+| 4.2 | Append Work Sessions entry on yes/partially/no | TASK-004 | Full | |
+| 4.3 | Skip on skip or non-matching | TASK-004 | Full | |
+| 4.4 | Ticket move completes before prompt | TASK-004 | Full | |
+| 5.1 | Append in p5-fail.md after consecutive_failures increment | TASK-005 | Full | |
+| 5.2 | Cycle number = consecutive_failures after increment | TASK-005 | Full | |
+| 5.3 | Create quality envelope if not exists | TASK-005 | Full | |
+| 6.1 | Add to p2-baseline.md custom metric discovery section | TASK-006 | Full | |
+| 6.2 | MX-OQ1 Interview Acceptance Rate (2×) | TASK-006 | Full | |
+| 6.3 | MX-OQ2 First-Pass Review Rate (2×) | TASK-006 | Full | |
+| 6.4 | MX-OQ3 Plan Stability Rate (1×) | TASK-006 | Full | |
+| 6.5 | MX-OQ4 Session Satisfaction Rate (1×) | TASK-006 | Full | |
+| 6.6 | MX-OQ5 PR Critique Rate (2×) | TASK-006 | Full | |
+| 6.7 | All metrics skip gracefully; sparse data noted | TASK-006 | Full | |
+| 6.8 | Feed optimise hypothesis phase for causal attribution | TASK-006 | Full | AC for hypothesis/causal note added after fix |
+
+- Full: 27, Partial: 0, Missing: 0 — Total: 27
+- Score: 27 / 27 × 100 = **100%**
+
+### Fixes Applied
+
+- TASK-002: added AC verifying `create.*if.*not exist` in `interview.md` (req 1.3 was Partial — create-on-first-write behaviour not verified)
+- TASK-006: added AC verifying `hypothesis` or `causal` in `p2-baseline.md` (req 6.8 was Partial — causal attribution note not verified)
