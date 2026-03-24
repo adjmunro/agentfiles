@@ -8,10 +8,11 @@ All current optimise metrics measure the quality of workflow instructions — co
 
 1.1 Create a new file type `00-quality-{subject}.md` that lives at the subject root alongside `00-input-`, `01-research-`, and `02-plan-`. It is append-only and written by multiple phases across ideation and implement.
 
-1.2 The file schema has four top-level sections, each populated by a different phase:
+1.2 The file schema has five top-level sections, each populated by a different phase:
 - `## Interview Signals` — written by `interview.md` after the brief is responded to
 - `## Plan Drift` — written by `cleanup.md` Phase 6 using git diff
 - `## Work Sessions` — written by `work/p8-move-to-review.md` after each session
+- `## PR Responses` — written by `review/p5-fail.md` each time a ticket is returned for rework
 - `## Subject Summary` — written by `cleanup.md` Phase 6 as the final aggregate
 
 1.3 The file is created on first write (by interview.md). Subsequent phases append to their section. If a section has no data (e.g. the user skipped all session ratings), the heading is present but empty.
@@ -92,41 +93,64 @@ If the quality envelope does not yet have a `## Work Sessions` section, create i
 
 4.4 The rating prompt must not block the ticket move — the ticket is already in `06-in-review/` before the prompt appears. The escape always works.
 
-### 5. Optimise Outcome Metrics (MX series)
+### 5. PR Response Tracking
 
-5.1 Add the following custom metric definitions to `skills/optimise/commands/phases/p2-baseline.md` under the Custom Metric Discovery section. These are pre-defined MX metrics — they should be evaluated during custom metric discovery for any workflow that produces `.kanban/` subjects.
+5.1 In `review/p5-fail.md`, after incrementing `consecutive_failures` and before any escalation checks, append a `## PR Responses` entry to `00-quality-{subject}.md` (create the file if it does not exist):
 
-5.2 **MX-OQ1 — Interview Acceptance Rate**
+```markdown
+## PR Responses
+
+### Response — YYYYMMDD-HH:MM — TASK-NNN — Cycle {N}
+Criteria: {comma-separated list of failed review criteria or section names from the review score}
+```
+
+If the quality envelope does not yet have a `## PR Responses` section, create it. If it does, append under the existing heading.
+
+5.2 The cycle number corresponds to the value of `consecutive_failures` at the time of logging (after increment). Each entry represents one round of rework triggered by reviewer critique.
+
+5.3 If the quality envelope file does not exist at log time (e.g. the subject skipped the interview phase), create it with only the `## PR Responses` heading and append the entry.
+
+### 6. Optimise Outcome Metrics (MX series)
+
+6.1 Add the following custom metric definitions to `skills/optimise/commands/phases/p2-baseline.md` under the Custom Metric Discovery section. These are pre-defined MX metrics — they should be evaluated during custom metric discovery for any workflow that produces `.kanban/` subjects.
+
+6.2 **MX-OQ1 — Interview Acceptance Rate**
 - Applies when: `.kanban/.archive/` contains at least one `00-quality-*.md` file with an `## Interview Signals` section
 - Methodology: across all archived quality envelopes, sum approved + overridden + rejected counts. Acceptance Rate = approved / (approved + rejected). Overrides are excluded from the ratio (they represent valid alternatives, not failures).
 - Direction: ↑ higher is better
 - Normalise: rate × 100
 - Weight: 2× (directly measures whether recommendations are trusted)
 
-5.3 **MX-OQ2 — First-Pass Review Rate**
+6.3 **MX-OQ2 — First-Pass Review Rate**
 - Applies when: `.kanban/.archive/` contains at least one archived subject with ticket files in `08-done/` that have `consecutive_failures` frontmatter
 - Methodology: across all archived tickets, count tickets where `consecutive_failures = 0` (passed first review). Rate = zero-failure tickets / total tickets.
 - Direction: ↑ higher is better
 - Normalise: rate × 100
 - Weight: 2× (directly measures implementation quality)
 
-5.4 **MX-OQ3 — Plan Stability Rate**
+6.4 **MX-OQ3 — Plan Stability Rate**
 - Applies when: `.kanban/.archive/` contains at least one `00-quality-*.md` with a `## Plan Drift` section
 - Methodology: across all archived quality envelopes with drift data, count subjects where magnitude is "None" or "Minor". Rate = stable subjects / total subjects with drift data.
 - Direction: ↑ higher is better
 - Normalise: rate × 100
 - Weight: 1×
 
-5.5 **MX-OQ4 — Session Satisfaction Rate**
+6.5 **MX-OQ4 — Session Satisfaction Rate**
 - Applies when: `.kanban/.archive/` contains at least one `00-quality-*.md` with a `## Work Sessions` section containing at least one rated session
 - Methodology: across all rated sessions in all archived quality envelopes, count "yes" ratings. Rate = yes / (yes + partially + no). Skipped sessions are excluded.
 - Direction: ↑ higher is better
 - Normalise: rate × 100
 - Weight: 1×
 
-5.6 All four metrics skip with an explicit reason if the applicable data does not exist. Sparse data (fewer than 3 archived subjects) should be noted as "insufficient sample — treat as directional only".
+6.6 **MX-OQ5 — PR Critique Rate**
+- Applies when: `.kanban/.archive/` contains at least one `00-quality-*.md` with a `## PR Responses` section
+- Methodology: across all archived quality envelopes, sum total PR response events (count of `### Response` entries in all `## PR Responses` sections). Divide by total archived tickets to get average rework cycles per ticket.
+- Direction: ↓ lower is better (fewer rework cycles = cleaner initial implementation). For composite scoring, invert: score = max(0, 100 − (rate × 50)), where rate is average rework cycles per ticket (capped at 2 for normalisation — 2+ cycles per ticket = 0%).
+- Weight: 2× (directly measures implementation quality at review time)
 
-5.7 The MX-OQ metrics are designed to feed the optimise hypothesis phase for causal attribution. When optimise reviews these metrics alongside structural metrics (M1–M15), it should form hypotheses about which factors correlate with outcome degradation — e.g., whether a particular persona produces lower acceptance rates, or whether plan instability correlates with poor session satisfaction. No automated attribution is required; the correlation analysis is the responsibility of the optimise hypothesis phase (Phase 3 of `optimise.md`).
+6.7 All five metrics skip with an explicit reason if the applicable data does not exist. Sparse data (fewer than 3 archived subjects) should be noted as "insufficient sample — treat as directional only".
+
+6.8 The MX-OQ metrics are designed to feed the optimise hypothesis phase for causal attribution. When optimise reviews these metrics alongside structural metrics (M1–M15), it should form hypotheses about which factors correlate with outcome degradation — e.g., whether a particular persona produces lower acceptance rates, or whether plan instability correlates with poor session satisfaction. No automated attribution is required; the correlation analysis is the responsibility of the optimise hypothesis phase (Phase 3 of `optimise.md`).
 
 ## Constraints
 
@@ -140,7 +164,7 @@ If the quality envelope does not yet have a `## Work Sessions` section, create i
 
 - Retroactive quality envelopes for subjects already archived before this system exists
 - Automated test failure counting (requires instrumenting the test runner per-project)
-- PR comment validity scoring (requires human judgment per comment)
+- PR comment validity scoring (subjective per-comment assessment of whether a comment was valid); MX-OQ5 uses rework event count as a tractable proxy
 - Alerting, dashboards, or cross-subject trend reporting beyond what optimise provides
 - Quality envelopes for skills other than ideation and implement (could be a future extension)
 - Enforcement or gating based on outcome scores
@@ -158,29 +182,32 @@ If the quality envelope does not yet have a `## Work Sessions` section, create i
 | 3 | Reject = pushback + redirect | Full | §2.1, §2.2 |
 | 4 | Adding detail to recommendation = Approved | Full | §2.2 "extends or accepts" |
 | 5 | Plan drift tracking | Full | §3 Plan Drift Measurement |
-| 6 | Visible to optimise | Full | §5 MX metrics |
+| 6 | Visible to optimise | Full | §6 MX metrics |
 | 7 | Judge accuracy of output / quality | Full | Intent |
-| 8 | Identify which factors cause quality degradation | Full | §5.7 added — causal attribution via optimise hypothesis phase |
-| 9 | Record failures, feed into optimisation loop | Full | §5, §1 quality envelope |
+| 8 | Identify which factors cause quality degradation | Full | §6.8 — causal attribution via optimise hypothesis phase |
+| 9 | Record failures, feed into optimisation loop | Full | §6, §1 quality envelope |
 | 10 | Current metrics structural — need outcome signals | Full | Intent |
-| 11 | Deterministic improvement measurement | Full | §5.1–5.6 |
+| 11 | Deterministic improvement measurement | Full | §6.1–6.7 |
 | 12 | Test failure count | Full | Out of Scope — explicitly deferred |
-| 13 | Valid PR comments raised | Full | Out of Scope — explicitly deferred |
+| 13 | Valid PR comments raised | Full | §5 PR Response Tracking + MX-OQ5 |
 | 14 | Session-close rating | Full | §4 |
 | 15 | Rejection via backtrack phrases | Full | §2.2 |
 | 16 | Agent decides via extend vs backtrack | Full | §2.2 |
 | 17 | `00-quality-{subject}.md` location | Full | §1.1 |
-| 18 | MX metrics in `p2-baseline.md` | Full | §5.1 |
+| 18 | MX metrics in `p2-baseline.md` | Full | §6.1 |
 | 19 | Rejection heuristics in interview Phase 4 | Full | §2.2, §2.3 |
 | 20 | Agent-prompted with escape hatch | Full | §4.1, §4.3 |
-| 21 | Full system in one subject | Full | Requirements §1–5 cover all areas |
+| 21 | Full system in one subject | Full | Requirements §1–6 cover all areas |
 | 22 | Append-only, written by multiple phases | Full | §1.1, §1.2, §1.3 |
 | 23 | Skip with single word or non-matching response | Full | §4.3 |
 | 24 | Kanban-scoped despite general aspiration | Full | Out of Scope §5 |
+| 25 | PR response tracking (changes in response to critique) | Full | §5 PR Response Tracking + MX-OQ5 |
 
-- Full: 24, Partial: 0, Missing: 0 — Total: 24
-- Score: 24 / 24 × 100 = 100%
+- Full: 25, Partial: 0, Missing: 0 — Total: 25
+- Score: 25 / 25 × 100 = 100%
 
 ### Fixes Applied
 
-- §5.7 added: explicit statement that MX-OQ metrics feed the optimise hypothesis phase for causal attribution (identifying whether specific personas, phases, or recommendation patterns correlate with outcome degradation). Item 8 was Partial on first pass — the causal link existed implicitly but was not called out.
+- §5.7 → §6.8: explicit statement that MX-OQ metrics feed the optimise hypothesis phase for causal attribution. Item 8 was Partial on first pass.
+- §5 (PR Response Tracking) added: `review/p5-fail.md` logs each rework cycle to `## PR Responses` in the quality envelope. Item 13 moved from Out of Scope to a tracked requirement.
+- §6.6 (MX-OQ5 — PR Critique Rate) added: average rework cycles per ticket, weight 2×, ↓ lower is better, inverted for composite scoring.
