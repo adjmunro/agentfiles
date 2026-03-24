@@ -4,6 +4,18 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v1.1.0 - 2026-03-25 - Resilience and Traceability
+
+Optimise run 1 — composite 69.3% → 84.3% (+15.0pp). All 5 hypotheses confirmed.
+
+- **Resume state routing** (`ideate.md`): re-entry into a partially-completed subject now routes deterministically to the correct step based on artifact presence. All 5 mid-session states handled (tickets drafted → plan done → interview recorded → research done → input exists).
+- **Inline ticket schema** (`tickets/p3-draft-tickets.md`): full frontmatter schema inlined; hard dependency on `skills/implement/commands/_shared.md` eliminated. Ideation now fully self-contained.
+- **Active intent anchors** (`ideate.md`): 5 passive HTML comment anchors converted to executed re-read directives at all orchestrator phase transitions (Phases 3–8). Context decay resilience now 100%.
+- **Interview item tagging** (`plan.md`): `[INTERVIEW]` source tagging added to plan critic audit. Source column distinguishes interview decisions from raw capture items. `[INTERVIEW GAP]` escalation for unresolved interview items.
+- **Staleness policies consolidated** (`capture.md`, `interview.md`, `research.md`, `plan.md`): `00-quality-*.md` policy added to `interview.md` (NO TTL). `00-input-*.md` policy made authoritative in `capture.md`; consuming files now carry short cross-references only. All 4 inter-session artifacts have complete, consistent TTL policies.
+
+---
+
 ## v1.0.0 - 2026-03-22 - Initial Release
 
 The ideation skill launches with a seamless 9-step loop that collapses capture, research, interview, planning, and ticket creation into one continuous workflow. Users capture ideas, get intelligent recommendations informed by codebase research, build plans collaboratively, and exit with a ready-to-work backlog — all without breaking context.
