@@ -3,7 +3,7 @@ id: "2026-03-25-outcome-quality-metrics/TASK-003"
 subject: "2026-03-25-outcome-quality-metrics"
 plan: "../02-plan-outcome-quality-metrics.md"
 effort: medium
-status: in_review
+status: done
 created_at: "2026-03-25T00:00:00Z"
 claimed_at: "2026-03-24T11:52:52Z"
 completed_at: "2026-03-24T12:05:00Z"
@@ -68,3 +68,17 @@ Modified `skills/implement/commands/cleanup.md` to add plan drift measurement an
 - Commits the quality envelope separately from the archive commit (req 3.4's Step 4 + Phase 6b commit) so the audit trail clearly shows what was measured at what point.
 
 No out-of-scope work was discovered. TASK-003 ACs are fully satisfied.
+
+## Review — 2026-03-25T00:00:00Z — PASS 100%
+
+| AC | Evidence | Status |
+|----|----------|--------|
+| `Plan Drift` in cleanup.md | cleanup.md:191, 237, 242, 253 | Satisfied |
+| `git log.*02-plan` or `git diff.*02-plan` in cleanup.md | cleanup.md:203 (git log), cleanup.md:214 (git diff) | Satisfied |
+| None / Minor / Moderate / Significant all present in cleanup.md | cleanup.md:227–230 (table), 247 (template) | Satisfied |
+| `Subject Summary` in cleanup.md | cleanup.md:260, 267, 279 | Satisfied |
+| `00-quality` in cleanup.md | cleanup.md:138, 239, 267, 300 | Satisfied |
+| Graceful fallback (`unavailable.*no git history`) in cleanup.md | cleanup.md:208–209, 255 — two fallback write paths | Satisfied |
+| Archive move explicitly includes `00-quality-{subject}.md` | cleanup.md:138 — Phase 4 "Final state" diagram with WHY-comment at line 142 | Satisfied |
+
+Test results: No test framework detected — skipped.
