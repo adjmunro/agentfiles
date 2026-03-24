@@ -44,7 +44,7 @@ Locate the input file:
 .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md
 ```
 
-<!-- STALENESS POLICY: NO TTL — append-only record; age does not indicate staleness. Load without age check. -->
+<!-- STALENESS POLICY: NO TTL — see capture.md for authoritative policy. Load without age check. -->
 
 **STOP**: If `00-input-{subject}.md` does not exist, report: "No captured input found for `{subject}`. Run `/ideate` (capture step) first." Do not proceed.
 

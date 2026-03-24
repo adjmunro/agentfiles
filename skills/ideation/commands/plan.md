@@ -40,7 +40,7 @@ Construct the input path:
 .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md
 ```
 
-<!-- STALENESS POLICY: NO TTL — append-only record; age does not indicate staleness. Load without age check. -->
+<!-- STALENESS POLICY: NO TTL — see capture.md for authoritative policy. Load without age check. -->
 
 Read the file in full. This file may contain multiple session blocks:
 - Initial capture block (verbatim user input)
@@ -110,7 +110,7 @@ Write the drafted plan to:
 
 ### Step A — Enumerate Input
 
-Read `00-input-{subject}.md` in full (all session blocks). <!-- STALENESS POLICY: NO TTL — append-only record; age does not indicate staleness. Load without age check. --> Break all content into a numbered list of discrete, verifiable items. Every stated requirement, constraint, goal, contextual detail, interview question answer, and decision made during the interview is a separate item. Be granular — split compound items.
+Read `00-input-{subject}.md` in full (all session blocks). <!-- STALENESS POLICY: NO TTL — see capture.md for authoritative policy. Load without age check. --> Break all content into a numbered list of discrete, verifiable items. Every stated requirement, constraint, goal, contextual detail, interview question answer, and decision made during the interview is a separate item. Be granular — split compound items.
 
 **Interview item tagging:** After enumerating all items, identify any item that originates from an `## Interview YYYYMMDD-HH:MM` block. Tag these items with `[INTERVIEW]` in the enumeration list. These items carry higher traceability weight — a decision that was explicitly surfaced and resolved in the interview is more deliberately chosen than a raw capture item. When building the audit table in Step B, include a `Source` column to distinguish `[INTERVIEW]` items from `[CAPTURE]` items at a glance.
 

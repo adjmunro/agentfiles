@@ -112,6 +112,8 @@ Structure the captured content for writing to `00-input-{subject}.md`.
 
 All content captured in this run goes inside this block. Use the same four subsections within the block if the content warrants it, or write as a flat transcript if the session was narrowly focused.
 
+<!-- STALENESS POLICY (authoritative): 00-input-{subject}.md — NO TTL. Append-only record; age never indicates staleness. Consumers load without age check. -->
+
 **The cardinal rule — verbatim transcription**:
 
 - Zero paraphrasing

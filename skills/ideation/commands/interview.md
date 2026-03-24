@@ -202,6 +202,8 @@ Apply the classification per-item. Record the user's verbatim redirect text for 
 
 **Append an `## Interview Signals` block to `00-quality-{subject}.md`** (Req 2.3):
 
+<!-- STALENESS POLICY: NO TTL — append-only log; age does not indicate staleness. Load without age check. -->
+
 - The quality envelope file path is: `.kanban/{YYYY-MM-DD-subject}/00-quality-{subject}.md`
 - Create the file if it does not exist — write the block as the initial content. If the file already exists, append the new block after all existing content. Never overwrite existing content. (Req 1.1, 1.3)
 
