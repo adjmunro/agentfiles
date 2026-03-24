@@ -181,9 +181,16 @@ Options:
 
 **If option 1 (Add to backlog)**:
 1. Move all ticket files from `.kanban/YYYY-MM-DD-{subject}/03-refinement/` to `.kanban/YYYY-MM-DD-{subject}/04-todo/` (create `04-todo/` if it does not exist).
-2. Report: "Subject `YYYY-MM-DD-{subject}` is now in backlog. Pick it up with `/implement from-ideation-handoff`."
-3. The `from-ideation-handoff` token signals to implement that this is a sanctioned boundary crossing from ideation.
-4. Stop.
+   - Before moving each file, check whether it already exists in `04-todo/`. If it does → skip the move for that ticket (already promoted).
+   - Use `git mv` inside a git repo, or move the file and then `git add -A` to capture both the deletion and the addition.
+2. Stage and commit:
+   ```
+   kanban(tickets): promote N tickets to backlog for {subject}
+   ```
+   Body: number of tickets promoted, ticket IDs (e.g., "TASK-001 through TASK-005"), and destination (`04-todo/{subject}/`).
+3. Report: "Subject `YYYY-MM-DD-{subject}` is now in backlog. Pick it up with `/implement from-ideation-handoff`."
+4. The `from-ideation-handoff` token signals to implement that this is a sanctioned boundary crossing from ideation.
+5. Stop.
 
 **If option 2 (Abandon)**:
 1. Ask: "Type the exact subject slug to confirm deletion: `YYYY-MM-DD-{subject}`"

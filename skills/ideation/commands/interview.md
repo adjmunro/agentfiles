@@ -1,5 +1,5 @@
 ---
-model: claude-sonnet-4-6
+model: claude-opus-4-6
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
 argument-hint: "[YYYY-MM-DD-{subject}] — subject to interview about"
 ---

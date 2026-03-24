@@ -28,7 +28,7 @@ Read each file before proceeding. Identify by the active persona when communicat
 
 ## DO NOT
 
-- Write any ticket directly to `04-todo/` — tickets are drafted to `03-refinement/` first and promoted to `04-todo/` by Phase 5 after the audit passes
+- Write any ticket directly to `04-todo/` — tickets are drafted to `03-refinement/` first and stay there until the orchestrator promotes them at Step 9 (ideate.md Phase 8), gated by user confirmation
 - Skip or merge TASK-001 with any other ticket
 - Write vague ACs — "documentation updated" is not acceptable; "grep -c 'TODO' docs/ returns 0" is
 - Create tickets for version bumps or changelog updates — those happen automatically in commits

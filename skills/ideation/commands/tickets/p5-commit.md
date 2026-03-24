@@ -24,20 +24,10 @@ Include in the commit body:
 - NEVER use `--amend` to retrofit a commit once any files have been pushed to a remote branch.
 - DO include the count of auto-created fix tickets in the commit body if any were created during the Phase 4 auto-fix pass.
 
-## Backlog Promotion
+<!-- WHY promotion is NOT here: H21 (run 5) found that this section contradicted ideate.md Phase 7 — "no tickets go to 04-todo until step 9 explicitly promotes them." Having p5-commit.md promote immediately made the user-confirmation gate at Phase 8 semantically void. Promotion is the orchestrator's responsibility, gated by user choice. -->
 
-After the commit succeeds, promote all tickets from `03-refinement/` to `04-todo/`:
+**Note — promotion is deferred to the orchestrator.** This phase ends at the audit commit. Ticket files remain in `03-refinement/` until the user makes their choice at Step 9 (ideate.md Phase 8). Do NOT move tickets to `04-todo/` here.
 
-1. Move every `TASK-NNN-{subject}.md` file from `03-refinement/` to `04-todo/`. Create `04-todo/` if it does not exist.
-   - Before moving each file, check whether it already exists in `04-todo/`. If it does → skip the move for that ticket (already promoted).
-   - Use `git mv` inside a git repo, or move the file and then `git add -A` to capture both the deletion and the addition.
-2. Stage and commit:
-   ```
-   kanban(tickets): promote N tickets to backlog for {subject}
-   ```
-   Body: list the ticket IDs promoted (e.g., "TASK-001 through TASK-005").
-3. Report the ticket IDs now available in `04-todo/`.
+If you are invoking `tickets.md` directly without the `ideate.md` orchestrator, manually promote tickets from `03-refinement/` to `04-todo/{subject}/` after this command completes.
 
-This makes the tickets immediately available to `implement work`. The `03-refinement/` directory is left in place but empty — it serves as a breadcrumb showing where tickets were staged before promotion.
-
-→ Done. Return to orchestrator and report results.
+→ Done. Return to orchestrator (ideate.md Phase 8) for the Step 9 hard stop gate.

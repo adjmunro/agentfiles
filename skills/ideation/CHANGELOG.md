@@ -4,6 +4,20 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v1.5.0 - 2026-03-25 - Promotion Semantics and Orchestration Correctness
+
+Optimise run 5 — composite 84.6% → 89.3% (+4.7pp within run; +1.3pp net vs. run 4 after metric dilution). All 5 hypotheses confirmed.
+
+- **Backlog promotion conflict resolved** (`p5-commit.md`, `tickets.md`, `ideate.md`): `p5-commit.md` contained a "Backlog Promotion" section that promoted tickets to `04-todo/` immediately after the audit commit, directly contradicting `ideate.md` Phase 7 ("no tickets go to `04-todo/` until step 9"). This made the user confirmation gate at Phase 8 semantically void. Promotion mechanics moved to `ideate.md` Phase 8 with idempotency guard and improved body spec. WHY comment added. Promote Gate Semantics Consistency 50→100, Orchestrator-Subphase Contract Consistency 65→90 [H21]
+- **SKILL.md version corrected to 1.5.0** (`SKILL.md`): version field showed "1.3.0" despite skill being at v1.4.0 post-run-4 — same recurring pattern as H17. Corrected to "1.5.0" (reflecting this run's changes). Documentation Version Accuracy 67→100 [H22]
+- **TESTING.md Command Coverage table updated** (`TESTING.md`): table had 10 rows covering happy-path paths only; 7 scenarios added in runs 3–4 exercised 3 additional command paths (plan.md audit gate FAIL, plan.md validation abandon, ideate.md entry routing). Added 3 new rows + split existing rows into variant columns. Coverage Table Completeness 77→100 [H23]
+- **interview.md model upgraded to opus** (`commands/interview.md`): interview used `claude-sonnet-4-6` while all other complex phases used `claude-opus-4-6`. Interview is the highest-complexity phase (multi-source synthesis, calibrated confidence, tradeoff evaluation) — using a lower-capability model here had the highest quality risk. Upgraded to `claude-opus-4-6`. Model Cognitive Alignment Score 80→100 [H24]
+- **Promote commit body improved** (`commands/ideate.md`): promote commit body now specifies 3 items (count + ticket IDs + destination directory), up from 1 item. Commit Body Item Count Adequacy 86→100 [H25]
+- 5 new custom metrics defined: Orchestrator-Subphase Contract Consistency, Model Cognitive Alignment Score, TESTING.md Coverage Table Completeness, Cross-File Reference Accuracy, Promote Gate Semantics Consistency
+- Novel pattern documented: NP9 (Separation of Phase Commit from Orchestrator Side Effect)
+
+---
+
 ## v1.4.0 - 2026-03-25 - Gap Restoration and Test Coverage
 
 Optimise run 4 — composite 84.0% → 88.0% (+4.0pp within run; +1.9pp net vs. run 3 after metric dilution). All 5 hypotheses confirmed.
