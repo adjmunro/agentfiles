@@ -112,17 +112,23 @@ Write the drafted plan to:
 
 Read `00-input-{subject}.md` in full (all session blocks). <!-- STALENESS POLICY: NO TTL — append-only record; age does not indicate staleness. Load without age check. --> Break all content into a numbered list of discrete, verifiable items. Every stated requirement, constraint, goal, contextual detail, interview question answer, and decision made during the interview is a separate item. Be granular — split compound items.
 
+**Interview item tagging:** After enumerating all items, identify any item that originates from an `## Interview YYYYMMDD-HH:MM` block. Tag these items with `[INTERVIEW]` in the enumeration list. These items carry higher traceability weight — a decision that was explicitly surfaced and resolved in the interview is more deliberately chosen than a raw capture item. When building the audit table in Step B, include a `Source` column to distinguish `[INTERVIEW]` items from `[CAPTURE]` items at a glance.
+
 ### Step B — Map Input to Plan
 
 Build a table mapping each input item to the plan requirement(s) that cover it:
 
-| # | Item (from input) | Plan Section | Status | Notes |
-|---|-------------------|--------------|--------|-------|
+| # | Source | Item (from input) | Plan Section | Status | Notes |
+|---|--------|-------------------|--------------|--------|-------|
+
+- `Source` column: `[INTERVIEW]` for items from an `## Interview` block; `[CAPTURE]` for all others.
 
 Classify each item:
 - **Full** — addressed in the plan with sufficient detail to act on
 - **Partial** — mentioned but missing detail, context, or specificity
 - **Missing** — does not appear in the plan at all
+
+**Priority note:** If any `[INTERVIEW]` item is Missing or Partial after Step D fixes are applied, record it explicitly in the Fixes Applied section with the prefix `[INTERVIEW GAP]`. Interview items are the most deliberate input — silent omission here is a more serious traceability failure than for raw capture items.
 
 ### Step C — Score
 
