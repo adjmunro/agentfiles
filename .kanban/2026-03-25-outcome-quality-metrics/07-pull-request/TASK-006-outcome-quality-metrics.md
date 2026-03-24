@@ -3,7 +3,7 @@ id: "2026-03-25-outcome-quality-metrics/TASK-006"
 subject: "2026-03-25-outcome-quality-metrics"
 plan: "../02-plan-outcome-quality-metrics.md"
 effort: medium
-status: in_review
+status: done
 created_at: "2026-03-25T00:00:00Z"
 claimed_at: "2026-03-24T12:03:14Z"
 completed_at: "2026-03-24T12:03:14Z"
@@ -96,3 +96,23 @@ All nine ACs verified via Grep before commit:
 - "insufficient sample" — present in preamble
 - "00-quality" — present in applies-when and skip-condition lines for all five metrics
 - "hypothesis" and "causal" — present in preamble paragraph and MX-OQ3 WHY comment
+
+## Review — 2026-03-25T00:00Z — PASS 100%
+
+| AC | Evidence | Status |
+|----|----------|--------|
+| Grep `MX-OQ1` returns ≥1 match | `skills/optimise/commands/phases/p2-baseline.md:233` | Satisfied |
+| Grep `MX-OQ2` returns ≥1 match | `skills/optimise/commands/phases/p2-baseline.md:251` | Satisfied |
+| Grep `MX-OQ3` returns ≥1 match | `skills/optimise/commands/phases/p2-baseline.md:268` | Satisfied |
+| Grep `MX-OQ4` returns ≥1 match | `skills/optimise/commands/phases/p2-baseline.md:286` | Satisfied |
+| Grep `MX-OQ5` returns ≥1 match | `skills/optimise/commands/phases/p2-baseline.md:303` | Satisfied |
+| Grep `Interview Acceptance Rate` returns ≥1 match | `skills/optimise/commands/phases/p2-baseline.md:233` | Satisfied |
+| Grep `First-Pass Review Rate` returns ≥1 match | `skills/optimise/commands/phases/p2-baseline.md:251` | Satisfied |
+| Grep `Plan Stability Rate` returns ≥1 match | `skills/optimise/commands/phases/p2-baseline.md:268` | Satisfied |
+| Grep `Session Satisfaction Rate` returns ≥1 match | `skills/optimise/commands/phases/p2-baseline.md:286` | Satisfied |
+| Grep `PR Critique Rate` returns ≥1 match | `skills/optimise/commands/phases/p2-baseline.md:303` | Satisfied |
+| Grep `insufficient sample\|sparse` returns ≥1 match | `skills/optimise/commands/phases/p2-baseline.md:222` | Satisfied |
+| Grep `00-quality` returns ≥1 match | `skills/optimise/commands/phases/p2-baseline.md:219,239,242,275,278,292,295,310,313` | Satisfied |
+| Grep `hypothesis\|causal` returns ≥1 match | `skills/optimise/commands/phases/p2-baseline.md:214,226,230,231,272` | Satisfied |
+
+Test results: No test framework detected — skipping test execution.
