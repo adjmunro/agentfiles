@@ -32,6 +32,41 @@ completed_at: ~
 
 Increment `consecutive_failures` by 1. If the field does not exist, add it with value `1`.
 
+### Step B2 — Append PR Response Entry to Quality Envelope
+
+<!-- WHY this step exists: Plan §5 (PR Response Tracking) requires every rework cycle to be
+     logged in the subject's quality envelope so that MX-OQ5 (PR Critique Rate) can measure
+     average rework cycles per ticket. Without this log, optimise has no signal for whether
+     implementation quality is improving across runs. Satisfies: Req 5.1, Req 5.2, Req 5.3. -->
+
+<!-- WHY this step is placed here (after increment, before escalation): The cycle number must
+     reflect the post-increment value of consecutive_failures (Req 5.2). The escalation check
+     that follows reads the review history — the quality envelope write must precede it so that
+     the log is always written even if the session ends during escalation handling. -->
+
+After incrementing `consecutive_failures`, append a `## PR Responses` entry to the subject's quality envelope:
+
+**File path:** `.kanban/{subject}/00-quality-{subject}.md`
+(where `{subject}` is the full `YYYY-MM-DD-{subject}` slug)
+
+**Entry format:**
+
+```markdown
+## PR Responses
+
+### Response — YYYYMMDD-HH:MM — TASK-NNN — Cycle {N}
+Criteria: {comma-separated list of failed review criteria or section names from the review score}
+```
+
+- `{N}` = the current value of `consecutive_failures` after increment (Req 5.2)
+- `Criteria` = the failed AC text or section names collected in Phase 3 scoring (e.g. `WHY-comments missing, test coverage < 80%`)
+
+**File creation fallback:** If `00-quality-{subject}.md` does not exist (e.g. the subject skipped the interview phase), create it with only the `## PR Responses` heading, then append the entry. Do not create any other sections — they are written by their respective phases. (Req 5.3)
+
+**Append-only:** Never overwrite or edit existing content in `00-quality-{subject}.md`. If the `## PR Responses` section already exists, append the new `### Response` entry under the existing heading. (Plan §1.4 — quality envelope is append-only throughout its lifecycle.)
+
+Stage `00-quality-{subject}.md` — it will be committed together with the ticket in Step D.
+
 ### Step C — Move Ticket
 
 Move the ticket file from `06-in-review/` back to `05-in-progress/`:
