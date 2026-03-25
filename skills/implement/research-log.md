@@ -533,3 +533,117 @@ Based on baseline measurement, the following experiments are queued.
 5. Plan Drift Classification — the Plan Stability outcome metric scores all "Significant" drift as unstable, but the only archived subject's drift was a deliberate plan extension; fix the measurement methodology to distinguish deliberate from structural drift.
 
 ---
+
+## Experiment Results — 2026-03-25
+
+### H1 — Commit Format Alignment
+**Pre:** Commit Format Consistency Score = 0 (p7 used `feat(scope): implement {ticket-id}`; p3 used `feat({NNN}): [what and why]`)
+**Change:** Updated `work/p7-commit.md` to use `feat({NNN}): [what and why in one line]` as the canonical implementation commit format, with examples matching p3's convention. Updated the DO rule to match.
+**Post:** Commit Format Consistency Score = 100 (one format across p3 and p7)
+**Delta:** CFCS +100 → weighted +100 (1×)
+**Result:** CONFIRMED
+**Commit:** `feat(implement): align p7 commit format with p3 convention [H1]` (4843746)
+
+---
+
+### H2 — Dependency Satisfaction Unification
+**Pre:** Dependency Definition Consistency = 50 (`work/p2` accepted `in_review`/`in_pr`/`done` in any of three directories; `next.md` required `done` only in `06-in-review/` or `07-pull-request/`)
+**Change:** Updated `work/p2-ticket-selection.md` dependency check to require `status: done` in `06-in-review/` or `07-pull-request/` only. Added explanatory note that `in_review` status is not safe — the dependency could still fail review and be returned.
+**Post:** Dependency Definition Consistency = 100 (one definition across work/p2 and next/p2)
+**Delta:** DDC +50 → weighted +50 (1×)
+**Result:** CONFIRMED
+**Commit:** `feat(implement): unify dependency satisfaction definition in work/p2 [H2]` (173c5a5)
+
+---
+
+### H3 — Stale Claim Detection Fix
+**Pre:** Schema Field Integrity = 94 (`next.md` referenced `expires_at` — absent from `_shared.md` schema, never written by work/p2 — causing in-progress subjects to be permanently skipped in auto mode)
+**Change:** Replaced the `expires_at` check in `next.md` Claimed Check with computed staleness: `stale = (now - claimed_at) > (stale_after_hours × 3600 seconds)`. Removed all `expires_at` references. Added explicit handling for absent `claimed_at` (treat as stale) and missing `stale_after_hours` (default 4h per schema).
+**Post:** Schema Field Integrity = 100 (all referenced fields exist in canonical schema)
+**Delta:** SFI +6 → weighted +12 (2×)
+**Result:** CONFIRMED
+**Commit:** `feat(implement): replace expires_at with computed staleness check in next.md [H3]` (fcde933)
+
+---
+
+### H4 — Concrete Phase Dispatch Triggers
+**Pre:** AC Concreteness = 71 (4 of 14 stop conditions used subjective/interpretive language: Phase 8 "all ACs verified", p3→p6 "implementation complete", p7 "meaningful artifact", p5 "out-of-scope work discovered")
+**Change:** Updated `work.md` Phase Dispatch Table with deterministic "Active when" conditions for all four vague triggers. Updated `work/p3-implementation.md` routing line to specify "each item has a corresponding code change or verified implementation". All 4 vague conditions replaced.
+**Post:** AC Concreteness = 100 (14/14 stop conditions are concrete and checkable)
+**Delta:** ACC +29 → weighted +29 (1×) *(prediction was +22 for 3/4 fixed; all 4 were addressed)*
+**Result:** CONFIRMED — exceeded predicted improvement
+**Commit:** `feat(implement): replace vague phase dispatch triggers with concrete conditions [H4]` (0489f6d)
+
+---
+
+### H5 — Plan Drift Classification
+**Pre:** Plan Stability Rate = 0 (1 archived subject with "Significant" drift; methodology had no way to distinguish deliberate plan extension from structural planning gaps; scored all Significant drift as unstable)
+**Change:** Added Step 3b (drift type classification) to `cleanup.md` Phase 6a, between Step 3 (magnitude) and Step 4 (write to envelope). Three types: `expected` (deliberate extension, lines added only), `structural` (requirements changed, lines removed/rewritten), `undocumented` (ambiguous Moderate/Significant). Updated Plan Drift template and Subject Summary row to include `drift_type`. Updated MX-OQ3 methodology in this file to score only `structural` and `undocumented` as unstable.
+**Post:** Plan Stability Rate = 100 (archived subject's drift reclassified as `expected` — 256 lines added, 0 removed — consistent with planned extension during active session)
+**Delta:** MX-OQ3 +100 → weighted +100 (1×)
+**Result:** CONFIRMED
+**Commit:** `feat(implement): add drift_type classification to plan drift recording [H5]` (5b3a2f1)
+
+---
+
+## Experiment Summary
+
+- **Confirmed:** H1, H2, H3, H4, H5
+- **Partial:** none
+- **Disconfirmed:** none
+
+---
+
+## Final Results — 2026-03-25
+
+| Metric | Baseline | Post | Delta | Status |
+|--------|----------|------|-------|--------|
+| Intent-to-Output Traceability | 91 | 91 | 0 | — |
+| Directive Density | 100 | 100 | 0 | — |
+| Instruction Ambiguity Rate | 99 | 99 | 0 | — |
+| Wiring Completeness Score | 100 | 100 | 0 | — |
+| Redundancy Index | 99 | 99 | 0 | — |
+| AC Concreteness | 71 | 100 | +29 | ↑ |
+| Subagent Alignment Score | 100 | 100 | 0 | — |
+| Human Touchpoint Count | 95 | 95 | 0 | — |
+| Context Decay Resilience | 100 | 100 | 0 | — |
+| Context Loading Efficiency | 82 | 82 | 0 | — |
+| Information Freshness Score | 100 | 100 | 0 | — |
+| Instruction Token Efficiency | 95 | 95 | 0 | — |
+| Persona-Phase Fit Score | 83 | 83 | 0 | — |
+| Persona Richness Score | 100 | 100 | 0 | — |
+| Commit Format Consistency Score | 0 | 100 | +100 | ↑ |
+| Dependency Definition Consistency | 50 | 100 | +50 | ↑ |
+| Schema Field Integrity | 94 | 100 | +6 | ↑ |
+| Quality Envelope Signal Coverage | 100 | 100 | 0 | — |
+| Claim Lifecycle Completeness | 100 | 100 | 0 | — |
+| First-Pass Review Rate | 100 | 100 | 0 | — |
+| Plan Stability Rate | 0 | 100 | +100 | ↑ |
+| PR Critique Rate | 100 | 100 | 0 | — |
+| **Composite** | **86.7%** | **97.8%** | **+11.1 pp** | |
+
+**What improved and why:**
+- Commit Format Consistency Score: +100 — p7's template was a legacy stub that predated p3's WHY-comments requirement; aligning to p3's format eliminates ambiguity about what the commit message must contain
+- Dependency Definition Consistency: +50 — work/p2 accepted dependencies still in review, allowing work to start on a ticket whose blocker could still fail; stricter criterion applied uniformly prevents that class of wasted work
+- Schema Field Integrity: +6 — `expires_at` was a phantom field that caused auto-mode to permanently skip subjects with any in-progress tickets; replacing with computed staleness restores the stale detection path that `work/p2` already relies on
+- AC Concreteness: +29 — four phase dispatch triggers used subjective language ("complete", "meaningful artifact"); replacing with checkable conditions (file:line evidence, log section exists) removes interpretation gaps between agents and across sessions
+- Plan Stability Rate: +100 — the measurement methodology had no way to distinguish planned scope extension from structural planning gaps; adding drift_type classification corrects a false-positive that made the workflow appear less stable than it is
+
+**What was dropped and why:**
+- None — all five hypotheses were confirmed with no reversions
+
+**What remains to improve:**
+- Context Loading Efficiency: still at 82 — `next.md`, `pr.md`, and `cleanup.md` are monolithic (all phases inline); splitting into phase files would match the work/review progressive disclosure pattern but requires restructuring three orchestrators — scope for a future run
+- Persona-Phase Fit Score: still at 83 — Kira (Builder) handles several mechanical phases (session check, ticket selection, stale detection) where a more administrative persona would be a tighter fit; low risk, moderate gain
+
+---
+
+## Novel Patterns Discovered — 2026-03-25
+
+### NP1 — Cross-File Commit Contract Alignment
+**Discovered in:** skills/implement/
+**Problem it solved:** Two phase files in the same pipeline prescribed different formats for the same commit type. Because commit format is enforced by convention rather than tooling, divergent prescriptions silently allow non-WHY commits in production sessions.
+**Implementation:** Identify all commit format prescriptions across instruction files. Pick one as canonical (the most specific, highest-constraint definition). Update all other files to reference or reproduce the canonical format.
+**Metrics it improved:** Commit Format Consistency Score (0→100)
+**Generalises to:** Any multi-file workflow where a single action (commit, log entry, field write) is described in more than one instruction file — the contract must be identical everywhere it appears.
+**Seed candidate:** yes — pipeline-spanning definitional consistency is a recurring failure mode in distributed instruction sets

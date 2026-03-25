@@ -4,6 +4,18 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v3.1.0 — Optimise Run 1 (2026-03-25)
+
+Five targeted consistency and correctness fixes from the first optimise pass. Composite instruction quality score: 86.7% → 97.8% (+11.1 pp).
+
+- **Commit format unified** — `work/p7-commit.md` now uses the same `feat({NNN}): [what and why]` format as `work/p3-implementation.md`; the old `feat(scope): implement {ticket-id}` stub is removed
+- **Dependency satisfaction unified** — `work/p2-ticket-selection.md` now requires `status: done` in `06-in-review/` or `07-pull-request/`, matching `next.md`'s stricter criterion; accepting `in_review` could allow work to start on a ticket whose blocker still might fail
+- **Stale claim detection fixed** — `next.md` Claimed Check replaced phantom `expires_at` field (never in schema, never written) with computed staleness from `claimed_at + stale_after_hours`; previously caused auto mode to permanently skip subjects with any in-progress tickets
+- **Phase dispatch triggers concretised** — all four vague "Active when" conditions in `work.md` and `work/p3-implementation.md` replaced with deterministic, checkable criteria (file:line evidence recorded, log section exists, specific mutation types)
+- **Plan drift classification added** — `cleanup.md` Phase 6a now classifies drift as `expected` / `structural` / `undocumented`; Plan Stability Rate now distinguishes deliberate scope extension from genuine planning gaps
+
+---
+
 ## v3.0.0 — The Big Rename (2026-03-22)
 
 Skill renamed from kanban2 to implement; user command renamed from `/kanban` to `/implement`; `init` command extracted to the shared `commands/init.md` at repo root so it is callable by any skill.
