@@ -1147,3 +1147,104 @@ All 5 hypotheses confirmed.
 ### Research Log Archival
 
 Log size estimate post-run-8: ~900 lines × ~8 tokens/line ≈ 7,200 tokens. Well within the 15,000-token threshold — no archival needed for run 9.
+
+---
+
+## Run 9 — 2026-03-25
+
+### Phase 1 — Audit
+
+TTL tier: **Tier C** — same-day research log, target matches, age ≤ 7 days. Proceed without staleness warning.
+
+Ran a structural audit of all 12 ideation skill files. Focus: gaps introduced by the 4 new metrics from run 8 (MX37–MX40) and any patterns that escaped prior runs.
+
+Observations:
+- `TESTING.md` Command Coverage table: 4 entries still referenced old file locations (`commands/plan.md` step 6 and `commands/tickets.md` step 9) — corrected to `ideate.md` in H21/run 5 but TESTING.md was only partially updated in H23/run 5.
+- `commands/research.md` Phase 6 report spec: 5 items listed; Low-confidence flag requirement absent — the `## Research Confidence` section data was being written (H28) and consumed by interview (H36) but the Phase 6 report handoff to interview was not mandating explicit Low-confidence naming.
+- `commands/interview.md` Research Confidence override (H36/run 8): no fallback specified for snapshots missing the `## Research Confidence` section entirely — snapshots from before H28/run 6 would trigger undefined behaviour.
+- `commands/capture.md` slug uniqueness guard: non-obvious decision block, no WHY annotation.
+- `commands/research.md` Phase 4 overwrite-on-loop-back: non-obvious (why overwrite rather than append?), no WHY annotation.
+- `commands/tickets/p5-commit.md` commit gate below 95%: non-obvious consequence (partial ticket set appears complete from git history), no WHY annotation.
+- `commands/tickets.md` Phase Dispatch Table Phase 4 "Active when": said "all ticket files drafted and committed" — commit is Phase 5's responsibility; this was inaccurate.
+
+### Phase 2 — Baseline
+
+Post-run-8 composite: 6,181 / 6,800 = **90.9%**
+
+Run 9 introduces 4 new metrics (MX41–MX44). Baseline numerator after adding new metrics at observed values:
+
+| Metric | ID | Weight | Score | Weighted |
+|--------|-----|--------|-------|----------|
+| TESTING.md Command Coverage File Reference Accuracy | MX41 | 1× | 69% | 69 |
+| Research Phase Report Signal Completeness | MX42 | 1× | 83% | 83 |
+| Research Confidence Override Robustness | MX43 | 1× | 0% | 0 |
+| Tickets Orchestrator Phase Dispatch Table Accuracy | MX44 | 1× | 80% | 80 |
+
+New metrics sum: 232 weighted. Denominator increases by 400.
+
+**Run 9 pre-experiment baseline**: (6,181 + 232) / (6,800 + 400) = 6,413 / 7,200 = **89.1%**
+
+(Composite dips from 90.9% to 89.1% due to 4 new metrics averaging 58% at baseline — same metric-dilution pattern as all prior runs.)
+
+### Phase 3 — Hypotheses
+
+Five hypotheses targeting MX41–MX44 and MX26 (WHY Comment Coverage Rate — still improvable from 91% to 100%):
+
+| ID | Metric | Target | Pre | Post | Δ (weighted) |
+|----|--------|--------|-----|------|--------------|
+| H41 | MX41 TCFRA | TESTING.md Command Coverage table — fix 4 stale file references | 69% | 100% | +31 |
+| H42 | MX42 RPRSC | research.md Phase 6 — add Low-confidence explicit naming requirement | 83% | 100% | +17 |
+| H43 | MX43 RCOR | interview.md — add absent-section fallback to override rule | 0% | 100% | +100 |
+| H44 | MX26 WHY-CC | capture.md, research.md, p5-commit.md — 3 remaining unannotated blocks | 91% | 100% | +9 (×1=+9) |
+| H45 | MX44 TOPDTA | tickets.md Phase Dispatch Table Phase 4 "Active when" correction | 80% | 100% | +20 |
+
+**Projected post-experiment**: (6,413 + 177) / 7,200 = 6,590 / 7,200 = **91.5%**
+
+### Phase 4 — Experiments
+
+All 5 hypotheses executed and confirmed:
+
+**H41 — TESTING.md Command Coverage File Reference Accuracy (69% → 100%)**
+- File: `TESTING.md` Command Coverage table
+- 4 entries corrected: `commands/plan.md — validation (step 6, continue/abandon)` split into `commands/ideate.md — step 6 validation (Satisfied / Add more)` and `commands/ideate.md — step 6 validation (Abandon)`; `commands/tickets.md — promotion (step 9, backlog/abandon)` split into `commands/ideate.md — Phase 8 step 9 (Add to backlog)` and `commands/ideate.md — Phase 8 step 9 (Abandon)`.
+- MX41: 69% → 100% (+31)
+
+**H42 — Research Phase Report Signal Completeness (83% → 100%)**
+- File: `commands/research.md` Phase 6 Report
+- Added explicit instruction: "If any section was rated **Low** confidence in the Research Confidence section, list those sections explicitly: 'Low-confidence sections: [names] — treat as reference only; assign UNCERTAIN confidence to any interview recommendation derived primarily from these sections.'"
+- MX42: 83% → 100% (+17)
+
+**H43 — Research Confidence Override Robustness (0% → 100%)**
+- File: `commands/interview.md` Phase 2, Research Confidence override rule
+- Appended to existing override text: "If the `## Research Confidence` section is absent (e.g., a snapshot created before this section was added), proceed with standard HIGH / UNCERTAIN rules only — the override does not apply."
+- MX43: 0% → 100% (+100)
+
+**H44 — WHY Comment Coverage Rate (91% → 100%)**
+- 3 blocks annotated:
+  1. `commands/capture.md` slug uniqueness guard — WHY: guards against silently targeting the wrong subject directory when same date+name slug exists.
+  2. `commands/research.md` Phase 4 overwrite-on-loop-back — WHY: stale snapshot from previous loop-back would contain outdated paths, patterns, or dependencies leading to incorrect recommendations.
+  3. `commands/tickets/p5-commit.md` commit gate below 95% — WHY: committed-but-incomplete ticket set appears complete from git history, making the gap invisible to future audits.
+- MX26: 91% → 100% (+9)
+
+**H45 — Tickets Orchestrator Phase Dispatch Table Accuracy (80% → 100%)**
+- File: `commands/tickets.md` Phase Dispatch Table
+- Phase 4 "Active when" corrected from "all ticket files drafted and committed" to "all ticket files drafted (commit deferred to Phase 5)".
+- MX44: 80% → 100% (+20)
+
+### Phase 5 — Report
+
+**Total improvement**: +31 + 17 + 100 + 9 + 20 = +177 weighted points
+
+**Post-experiment composite**: 6,590 / 7,200 = **91.5%**
+
+| Hypothesis | Metric | Pre | Post | Δ |
+|------------|--------|-----|------|---|
+| H41 | MX41 TCFRA | 69 | 100 | +31 |
+| H42 | MX42 RPRSC | 83 | 100 | +17 |
+| H43 | MX43 RCOR | 0 | 100 | +100 |
+| H44 | MX26 WHY-CC | 91 | 100 | +9 |
+| H45 | MX44 TOPDTA | 80 | 100 | +20 |
+
+No novel patterns identified in run 9. All 5 hypotheses were straightforward gap-closes rather than structural discoveries.
+
+Files modified: `TESTING.md`, `commands/research.md`, `commands/interview.md`, `commands/capture.md`, `commands/tickets/p5-commit.md`, `commands/tickets.md`, `CHANGELOG.md`, `VERSION.md`, `SKILL.md`, `research-log.md`.

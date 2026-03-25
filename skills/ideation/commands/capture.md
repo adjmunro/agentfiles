@@ -47,6 +47,7 @@ Construct the subject directory path from the argument or context:
 
 **Slugify rules**: lowercase only, spaces → hyphens, strip all characters except alphanumerics and hyphens. Date prefix: `YYYY-MM-DD` from today's date. Final subject name: `YYYY-MM-DD-{subject-slug}`.
 
+<!-- WHY slug uniqueness guard exists: guards against silently targeting the wrong subject directory when a subject with the same date+name is already in progress. Without this check, a second ideation session on the same day with the same topic slug would write to the existing subject's directory, potentially overwriting in-progress work. Mirrors the guard in ideate.md Phase 1. -->
 **Slug uniqueness guard:** After deriving the slug, check whether `.kanban/YYYY-MM-DD-{subject-slug}/` already exists. If it does and this is a first run (not a loop-back), append `-2` to the slug and check again. Continue incrementing (`-3`, `-4`, …) until a unique slug is found. Log which slug was chosen: "Subject directory already existed — using `YYYY-MM-DD-{subject-slug}` instead." Skip this guard if `$ARGUMENTS` explicitly named the slug (the caller intended to target that directory).
 
 **Check for existing input file:**

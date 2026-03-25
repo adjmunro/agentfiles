@@ -98,7 +98,7 @@ For each remaining decision point, form one recommendation with all four fields:
 **Confidence rules:**
 - `HIGH`: The research snapshot or input file provides direct evidence (an existing pattern, an explicit constraint, a documented dependency).
 - `UNCERTAIN`: No clear evidence exists. The decision is genuinely open and requires the user's preference. UNCERTAIN items become targeted binary questions in the brief (X or Y), not open prompts.
-- **Research Confidence override:** Before finalising confidence levels, check the `## Research Confidence` section in `01-research-{subject}.md` (written by Scout). For any recommendation derived primarily from a section rated **Low**, override its confidence to `UNCERTAIN` — regardless of other evidence. A Low-confidence section is primarily inference or general knowledge; treat it as if no codebase evidence exists for that area.
+- **Research Confidence override:** Before finalising confidence levels, check the `## Research Confidence` section in `01-research-{subject}.md` (written by Scout). For any recommendation derived primarily from a section rated **Low**, override its confidence to `UNCERTAIN` — regardless of other evidence. A Low-confidence section is primarily inference or general knowledge; treat it as if no codebase evidence exists for that area. If the `## Research Confidence` section is absent (e.g., a snapshot created before this section was added), proceed with standard HIGH / UNCERTAIN rules only — the override does not apply.
 
 **Volume constraint:** Minimum 3 items, maximum 7. If you identify more than 7, rank by implementation impact and keep the top 7.
 

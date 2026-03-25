@@ -18,6 +18,7 @@ Include in the commit body:
 
 ## DO / DO NOT
 
+<!-- WHY commit gate is locked below 95%: committing a partial ticket set could allow the implement skill to claim tickets before all coverage gaps are resolved. A committed-but-incomplete ticket set would appear complete from the git history perspective, making the gap invisible to future audits. -->
 - NEVER commit if the audit score is below 95% — the commit gate only opens when Phase 4 passes.
 - ALWAYS stage all new and modified files before committing; do not commit a partial ticket set.
 - MUST include the audit score in the commit body — a bare ticket count is not sufficient.

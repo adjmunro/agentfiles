@@ -151,6 +151,7 @@ All seven sections are required. An empty section is acceptable; a missing secti
 
 After writing all sections, score each section's confidence tier. If any section is **Low**, flag it in the Phase 6 report for the interview phase.
 
+<!-- WHY research snapshot is always overwritten: research.md is a point-in-time snapshot, not an append-only log. Overwriting ensures the interview phase always works from current codebase state — a stale snapshot from a previous loop-back would contain outdated file paths, patterns, or dependencies that could lead to incorrect recommendations. -->
 If `01-research-{subject}.md` already exists (loop-back iteration), overwrite it. Research is always regenerated fresh — it is a snapshot, not an append-only log.
 
 ---
@@ -184,5 +185,7 @@ Report to the user:
 - Any WebFetch failures and the URLs that were skipped
 
 Keep the report concise. The user must be able to confirm research completed and know what gaps, if any, exist before the interview begins.
+
+If any section was rated **Low** confidence in the Research Confidence section, list those sections explicitly: "Low-confidence sections: [names] — treat as reference only; assign UNCERTAIN confidence to any interview recommendation derived primarily from these sections."
 
 → Next: Run `ideation/commands/interview.md` to form research-informed recommendations.

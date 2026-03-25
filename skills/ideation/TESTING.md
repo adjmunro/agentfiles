@@ -46,13 +46,13 @@ Spin up a fresh git repository in `/tmp/ideation-test/` and drive the full 9-ste
 | `commands/plan.md` — write (step 4) | Happy path, Resume mid-session |
 | `commands/plan.md` — audit gate (step 5, PASS) | Happy path |
 | `commands/plan.md` — audit gate (step 5, FAIL) | Plan audit FAIL |
-| `commands/plan.md` — validation (step 6, continue) | Loop-back, Happy path |
-| `commands/plan.md` — validation (step 6, abandon) | Abandon at step 6 |
+| `commands/ideate.md` — step 6 validation (Satisfied / Add more) | Loop-back, Happy path |
+| `commands/ideate.md` — step 6 validation (Abandon) | Abandon at step 6 |
 | `commands/ideate.md` — entry routing | Resume after research, Resume after interview, Resume after plan, Resume with tickets, Resume with input only |
 | `commands/tickets.md` — write (step 7) | Happy path |
 | `commands/tickets.md` — audit gate (step 8) | Ticket audit gate — auto-fix |
-| `commands/tickets.md` — promotion (step 9, backlog) | Happy path |
-| `commands/tickets.md` — promotion (step 9, abandon) | Abandon at step 9 |
+| `commands/ideate.md` — Phase 8 step 9 (Add to backlog) | Happy path |
+| `commands/ideate.md` — Phase 8 step 9 (Abandon) | Abandon at step 9 |
 
 ## Known Issues
 

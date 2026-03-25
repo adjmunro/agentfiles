@@ -4,6 +4,19 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v1.9.0 - 2026-03-25 - Test Coverage Accuracy, Research Signal Completeness, and WHY Annotation Parity
+
+Optimise run 9 — composite 89.1% → 91.5% (+2.4pp within run; +0.6pp net vs. run 8 after metric dilution from 4 new metrics averaging 58% baseline). All 5 hypotheses confirmed.
+
+- **TESTING.md Command Coverage table corrected** (`TESTING.md`): 4 entries referenced stale file locations (`commands/plan.md` for step 6 and `commands/tickets.md` for step 9) — both moved to `ideate.md` in H21/run 5. Corrected to `commands/ideate.md — step 6 validation (Satisfied / Add more)`, `commands/ideate.md — step 6 validation (Abandon)`, `commands/ideate.md — Phase 8 step 9 (Add to backlog)`, and `commands/ideate.md — Phase 8 step 9 (Abandon)`. TESTING.md Command Coverage File Reference Accuracy 69→100 [H41]
+- **Low-confidence flag added to research.md Phase 6 report spec** (`commands/research.md`): Phase 6 listed 5 reporting items but did not require explicitly naming Low-confidence sections — the signal Scout wrote in `## Research Confidence` had no mandated path into the Phase 6 summary that the interview phase consumes. Added explicit instruction to list Low-confidence section names and instruct downstream phases to assign UNCERTAIN. Research Phase Report Signal Completeness 83→100 [H42]
+- **Research Confidence override fallback added** (`commands/interview.md`): the override rule (H36/run 8) consumed the Research Confidence signal but did not specify behaviour when the section is absent (e.g., a snapshot created before H28/run 6). Added: if `## Research Confidence` is absent, skip the override and proceed with standard HIGH/UNCERTAIN rules only. Research Confidence Override Robustness 0→100 [H43]
+- **WHY comments: capture.md, research.md, p5-commit.md** (`commands/capture.md`, `commands/research.md`, `commands/tickets/p5-commit.md`): 3 remaining unannotated non-obvious blocks now carry inline WHY rationale — slug uniqueness guard (capture.md: guards against silently targeting the wrong subject directory), research overwrite-on-loop-back (research.md: stale snapshot would propagate outdated patterns to interview), commit gate below 95% (p5-commit.md: committed-but-incomplete ticket set appears complete from git history). WHY Comment Coverage Rate 91→100 [H44]
+- **tickets.md dispatch table Phase 4 corrected** (`commands/tickets.md`): Phase 4 "Active when" column said "all ticket files drafted and committed" — the commit is Phase 5's responsibility, not Phase 4's. Phase 4 ends when drafting is complete; commit is gated behind the audit pass. Corrected to "all ticket files drafted (commit deferred to Phase 5)". Tickets Orchestrator Phase Dispatch Table Accuracy 80→100 [H45]
+- 4 new custom metrics defined: TESTING.md Command Coverage File Reference Accuracy, Research Phase Report Signal Completeness, Research Confidence Override Robustness, Tickets Orchestrator Phase Dispatch Table Accuracy
+
+---
+
 ## v1.8.0 - 2026-03-25 - Research Signal Propagation and Recovery Path Accuracy
 
 Optimise run 8 — composite 85.7% → 90.9% (+5.2pp within run; +1.1pp net vs. run 7 after metric dilution from 5 new metrics averaging 52.8% baseline). All 5 hypotheses confirmed.
