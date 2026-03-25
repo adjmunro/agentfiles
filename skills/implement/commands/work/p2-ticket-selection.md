@@ -7,7 +7,9 @@ Determine which ticket to implement using the following priority order:
 1. **`$ARGUMENTS` path** — if arguments contain a `YYYY-MM-DD-{subject}/TASK-NNN` pattern, locate that ticket in `.kanban/YYYY-MM-DD-{subject}/04-todo/`. Verify the file exists.
 2. **Auto-select** — list `.kanban/YYYY-MM-DD-{subject}/04-todo/` for ticket files. Select the lowest-numbered ticket whose `depends_on` are all satisfied.
 
-**Dependency check:** Read each candidate ticket's frontmatter `depends_on` list. For each listed ticket ID, confirm a file with that ID exists in `.kanban/YYYY-MM-DD-{subject}/06-in-review/`, `.kanban/YYYY-MM-DD-{subject}/07-pull-request/`, or `.kanban/YYYY-MM-DD-{subject}/08-done/` with `status: in_review`, `status: in_pr`, or `status: done`. Skip any ticket where one or more dependencies are not yet satisfied.
+**Dependency check:** Read each candidate ticket's frontmatter `depends_on` list. For each listed ticket ID, confirm a file with that ID exists in `.kanban/YYYY-MM-DD-{subject}/06-in-review/` or `.kanban/YYYY-MM-DD-{subject}/07-pull-request/` with `status: done`. Skip any ticket where one or more dependencies are not yet satisfied.
+
+A dependency is **not** considered satisfied if the ticket is still under review (`status: in_review`) — it could fail review and be returned. Only `status: done` in a post-review directory confirms the work is complete and stable.
 
 **STOP:** If no ticket files exist in `04-todo/`, print exactly:
 
