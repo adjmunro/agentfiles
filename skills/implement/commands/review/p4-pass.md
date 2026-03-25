@@ -51,6 +51,8 @@ kanban(review): PASS TASK-NNN (XX%), moving to pull-request
 
 If not inside a git repo: skip silently.
 
+**Sequence failure guard:** If any step in A–D fails (append error, frontmatter write error, move error, or commit error), stop immediately. Report which step failed and what the last successfully completed step was. Do not attempt the remaining steps — partial completion is preferable to silent inconsistency.
+
 ### Step E — All-Tickets Check
 
 List all ticket files across `05-in-progress/`, `06-in-review/`, and `07-pull-request/` for this subject.

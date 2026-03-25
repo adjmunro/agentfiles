@@ -86,6 +86,8 @@ kanban(review): FAIL TASK-NNN (XX%), returned to in-progress
 
 If not inside a git repo: skip silently.
 
+**Sequence failure guard:** If any step in A–D fails (append error, frontmatter write error, envelope append error, move error, or commit error), stop immediately. Report which step failed and what the last successfully completed step was. Do not attempt the remaining steps.
+
 ### Same-Error Escalation
 
 After each FAIL, extract the primary blocking error or gap pattern from the review record just written.

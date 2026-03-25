@@ -51,4 +51,6 @@ If inside a git repo:
 1. Stage the moved ticket file (old path deletion + new path addition).
 2. Commit with the message: `kanban(work): claim {TASK-NNN} for {YYYY-MM-DD-subject}`
 
+**Sequence failure guard:** If the lock write, ticket move, frontmatter update, or commit fails at any point, stop and report which step failed and what was last completed. Do not silently continue with a partially claimed ticket.
+
 → Next: Read `work/p4-stale-detection.md` and execute it. (Stale check runs before implementation.)
