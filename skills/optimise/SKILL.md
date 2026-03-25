@@ -18,7 +18,7 @@ so it can be reused on any target.
 
 ```
 [Phase 1: Audit] ──► [Phase 2: Baseline] ──► [Phase 3: Hypothesize]
-                                                        │ human approves
+                                                        │ self-audit
                                                         ▼
                                              [Phase 4: Experiment Loop]
                                                         │
