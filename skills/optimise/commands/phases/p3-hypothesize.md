@@ -206,8 +206,8 @@ Do not use metric abbreviations or hypothesis IDs in the brief. Refer to metrics
 
 Before proceeding to experiments, audit the hypothesis list for intent and accuracy:
 
-1. **Intent check** — does each hypothesis address a real gap in the baseline measurement, or is it speculative? Remove any hypothesis not grounded in a measured metric shortfall. Note removals in `research-log.md`.
-2. **Coverage check** — compute the projected composite score: `(confirmed_estimate + 0.5 × partial_estimate) / total_hypotheses × 100`. If this projection already clears **> 95**, the list is sufficient. If below 95 and the audit reveals uncovered gaps, add further hypotheses to close them.
+1. **Intent check** — does each hypothesis target a metric that scored below 100 in the current baseline? Remove any hypothesis targeting a metric already at 100 (no measurable gap to address). Note removals in `research-log.md`.
+2. **Coverage check** — compute the projected composite score: `(baseline_weighted_sum + sum_of_predicted_improvements) / (total_weight_units × 100) × 100`. If this projection clears **> 95**, the list is sufficient. If below 95 and the audit reveals uncovered gaps, add further hypotheses to close them. The `baseline_weighted_sum` and `total_weight_units` are in the `## Baseline` section of `research-log.md`.
 3. **Gap fill** — for any measured metric still below 80 with no hypothesis targeting it, add one now. Prefer patterns from the seed library; invent novel ones where none fit.
 
 Write the final hypothesis list (post-audit) to `research-log.md` under `## Experiments — <date>`.
