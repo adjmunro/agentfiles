@@ -128,6 +128,18 @@ Applicable to: any multi-hypothesis experiment session; any workflow optimisatio
 context where ≥2 changes are queued for concurrent application.
 Targets: EIS (↑)
 
+#### P15 — Measurement Accuracy Retrospective
+When a metric has been estimated (rather than precisely counted) for two or more
+consecutive runs at the same value, conduct a targeted re-audit to either confirm
+the estimate or correct it. Estimated scores tend to accumulate hidden errors over
+time: the scope may silently drift to include out-of-scope files, or the counting
+method may differ from the metric's definition. A precise re-audit converts a
+stable-but-unverified score into a ground-truth measurement.
+Applicable to: any workflow where one or more metrics have not been directly
+counted or measured from source files for ≥2 consecutive runs.
+Targets: RI (↑, if scope correction reveals lower redundancy), any metric where
+  persistent estimate diverges from the actual state
+
 For each hypothesis, use the appropriate template:
 
 **Standard hypothesis:**

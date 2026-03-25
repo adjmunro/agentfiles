@@ -53,6 +53,7 @@ Display this table, then the patterns table, then the stats summary. Nothing els
 | P12 | Content Synchronisation Audit | HCU ↑ | Any skill that maintains a parallel help/reference file alongside its command files |
 | P13 | Corrective-Pattern Applicability Classification | PEV ↑ | Any workflow with a pattern library that distinguishes proactive from corrective patterns |
 | P14 | Pre-Experiment Dependency Scan | EIS ↑ | Any multi-hypothesis session where ≥2 changes are queued |
+| P15 | Measurement Accuracy Retrospective | RI ↑ (any estimated metric) | Any workflow where a metric has been estimated (not counted) for ≥2 consecutive runs at the same value |
 
 ### Stats at a Glance
 
@@ -649,3 +650,54 @@ Both are executed via `/personas evolve` — the command handles scoring, recomm
 **How to improve:** Apply Persona Rotation (P8) — for each phase with a partial or mismatch score, try an alternative persona drawn from existing files or invent a new one. When inventing, write a proper persona file; do not assign a name without defining the cognitive style.
 
 **Stats:** New metric — no historical data yet.
+
+---
+
+### Measurement Accuracy Retrospective (P15)
+*Also matches: P15, retrospective, accuracy, estimated, re-audit, measurement, scope*
+
+**Purpose:** When a metric has been estimated (rather than precisely counted) for two or more consecutive runs at the same value, conduct a targeted re-audit to either confirm the estimate or correct it.
+
+**Problem it solves:** Estimated scores tend to accumulate hidden errors: the scope may silently drift to include out-of-scope files, or the counting method may differ from the metric's definition. A score that is stable but has never been directly verified is a liability — the system appears to be at a known quality level when it may not be. The Measurement Accuracy Retrospective converts a "probably correct" score into a ground-truth measurement.
+
+**How to apply:**
+1. Identify any metric that has not been directly measured from source files for ≥2 consecutive runs (look for "estimate", "approximately", or unchanged scores over multiple runs in the research-log).
+2. Re-read the metric's definition and methodology from `p2-baseline.md` to confirm scope.
+3. Count or score the metric precisely from the current source files — do not rely on the prior estimate.
+4. If the precise count differs from the estimate by ≥2pp, update the score and record the mechanism ("scope included out-of-scope file X; corrected denominator").
+5. If the precise count confirms the estimate, record that too ("precise audit confirmed estimate; no score change").
+
+**When to apply:** Any run where a metric shows the same estimated score for ≥2 consecutive runs without a direct re-measurement.
+
+**Healthy outcome:** The precise score either improves (estimate was pessimistic) or is confirmed (estimate was accurate). A score that worsens after re-measurement is a rare but important finding — it means the metric was over-estimated.
+
+**Targets:** Redundancy Index (most commonly), Instruction Ambiguity Rate, any metric with a "~" or "approximately" qualifier in the baseline notes.
+
+**Stats:** First applied in run 6 (self-optimisation). Corrected Redundancy Index from 88 to 97 by removing out-of-scope file from the scope.
+
+---
+
+### Loop Control (count mode / auto mode)
+*Also matches: loop, count, auto, iterations, N runs, loop mode, termination*
+
+**Purpose:** Run the full 5-phase optimise cycle multiple times on the same target, with automatic termination when either a count is reached or a quality threshold is met.
+
+**Invocation modes:**
+
+| Mode | Syntax | Terminates when |
+|------|--------|----------------|
+| Single run (default) | `/optimise <path>` | After Phase 5 completes |
+| Count mode | `/optimise N <path>` | After N full iterations complete |
+| Auto mode | `/optimise auto <path>` | Composite > 95%, OR Phase 3 produces zero hypotheses, OR 2 consecutive iterations with only Partial results |
+
+**How it works:**
+- Each iteration runs all 5 phases in sequence (Audit → Baseline → Hypothesise → Experiment → Report).
+- Hypothesis numbering is continuous across iterations — do not reset to H1. If run 1 ends at H5, run 2 starts at H6.
+- Confirmed changes from previous iterations must not be re-applied.
+- At the start of each iteration, `research-log.md` is re-read as the Intent Anchor before Phase 1.
+
+**When to use count mode:** When you want a fixed number of improvement passes (e.g., `/optimise 3 skills/ideation/` to run three optimisation loops on the ideation skill).
+
+**When to use auto mode:** When you want to drive the composite above 95% and let the skill decide when to stop. Use with caution on first runs — if the baseline is low, auto mode may run many iterations.
+
+**Loop termination safety:** Count mode always terminates. Auto mode has three exit conditions (score threshold, zero hypotheses, stalled-partial guard) to prevent infinite loops.

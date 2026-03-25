@@ -27,10 +27,10 @@ so it can be reused on any target.
 ```
 
 Full metric library (M1–M15), composite scoring formula, custom metric discovery
-process, and design patterns (P1–P14): see `commands/phases/p2-baseline.md` (metrics)
+process, and design patterns (P1–P15): see `commands/phases/p2-baseline.md` (metrics)
 and `commands/phases/p3-hypothesize.md` (patterns).
 Novel patterns discovered per run are recorded in `research-log.md`; once confirmed
-as seed candidates they are promoted to P12+ in `commands/phases/p3-hypothesize.md`.
+as seed candidates they are promoted to P15+ in `commands/phases/p3-hypothesize.md`.
 
 ## Versioning
 
