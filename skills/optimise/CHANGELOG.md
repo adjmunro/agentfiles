@@ -2,6 +2,26 @@
 
 ---
 
+## v1.8.0 - 2026-03-25 - Pattern Promotion, Loop Safety, and Self-Audit Correctness
+
+### Added
+- P15 (Measurement Accuracy Retrospective) added to `p3-hypothesize.md` Design Patterns library
+- P15 detail section added to `help.md`
+- Loop Control detail section added to `help.md`: documents count mode, auto mode, and default single-run with termination conditions and iteration behaviour
+- Persistent-partial termination guard added to auto mode Loop Control in `optimise.md`: stops after 2 consecutive partial-only iterations
+- 5 new custom metrics: Loop Mode Discoverability Rate (MX25), SKILL.md Diagram Freshness (MX26), Loop Termination Safety Rate (MX27, moonshot), Self-Audit Criterion Accuracy (MX28), Outcome Metric Help Coverage (MX29)
+- NP8 (Documentation Drift Correction) documented as novel pattern — seed candidate
+
+### Changed
+- SKILL.md: pattern range updated from "P1–P14" to "P1–P15"; seed candidate promotion pointer updated from "P12+" to "P15+"
+- SKILL.md loop diagram: `│ human approves` → `│ self-audit` (v1.7.0 removed the gate but diagram was not updated)
+- `p3-hypothesize.md` Self-Audit criteria: criterion 1 now concrete ("targeting a metric already at 100 = no gap"); criterion 2 formula corrected from hypothesis-success-rate to actual projected composite formula
+
+### Fixed
+- Composite: 90.2% → 96.7% (+6.5pp) — eight metrics improved this run
+
+---
+
 ## v1.7.0 - 2026-03-22 - Approval Gate Removal
 
 ### Added
