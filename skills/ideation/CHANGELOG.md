@@ -4,6 +4,21 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v1.8.0 - 2026-03-25 - Research Signal Propagation and Recovery Path Accuracy
+
+Optimise run 8 — composite 85.7% → 90.9% (+5.2pp within run; +1.1pp net vs. run 7 after metric dilution from 5 new metrics averaging 52.8% baseline). All 5 hypotheses confirmed.
+
+- **Research Confidence signal consumed** (`commands/interview.md`): H28 (run 6) added a `## Research Confidence` section to research.md so Scout could signal evidence quality. interview.md's Phase 2 confidence rules never used this signal — HIGH recommendations could still be derived from Low-confidence research sections. Added a "Research Confidence override" rule: any recommendation primarily derived from a Low-confidence research section is overridden to UNCERTAIN. Closes the producer→consumer gap that existed for 2 runs. Research Confidence Signal Consumption Rate 0→100 [H36]
+- **Ticket audit escape hatch option (b) corrected** (`commands/tickets/p4-critic-audit.md`): option (b) said "Return to plan.md to revise the plan" — this is wrong: plan.md's re-entry guard detects the existing audit section and skips redrafting. Corrected to name the actual recovery path: return to `/ideate`, select "Add more" at Step 6 to re-run the full cycle, then delete `03-refinement/` ticket files before re-running from Step 7. Ticket Audit Failure Recovery Clarity 17→100 [H37]
+- **SKILL.md Nine-Step table corrected** (`SKILL.md`): Steps 6 and 9 referenced stale file locations since H21/run 5. Step 6 ("Validate with User") now references `commands/ideate.md` (Phase 6); Step 9 ("Hard Stop Gate") now references `commands/ideate.md` (Phase 8). SKILL.md Step Reference Accuracy 78→100 [H38]
+- **STOP/WARN messages standardised** (`commands/interview.md`, `commands/plan.md`): 4 messages used old `/ideation` prefix or vague "Run capture first" text. All now reference `/ideate` with step number consistently, matching the pattern established in research.md and p1-load-plan.md. FAIL-path Stop Message Consistency 69→100 [H39]
+- **WHY comments for p4-critic-audit.md and ideate.md** (`commands/tickets/p4-critic-audit.md`, `commands/ideate.md`): 5 unannotated non-obvious blocks now carry inline WHY rationale — Reverse Traceability Check (H32/run 7), auto-fix permission prohibition, 3-pass escape hatch (H33/run 7), Audit Block idempotency guard, and ideate.md Phase 7 plan audit precondition. WHY Comment Coverage Rate 75→91 [H40]
+- **Research log archival**: runs 3–5 archived to `research-log-archive-runs3-5.md`; log trimmed from ~14,400 to ~7,200 tokens
+- 5 new custom metrics defined: SKILL.md Step Reference Accuracy, Audit Threshold Consistency Rate (100% baseline), Research Confidence Signal Consumption Rate, FAIL-path Stop Message Consistency, Ticket Audit Failure Recovery Clarity
+- Novel pattern documented: NP11 (Research Confidence Propagation — producer-consumer signal chain completeness)
+
+---
+
 ## v1.7.0 - 2026-03-25 - Ticket Audit Hardening and Traceability
 
 Optimise run 7 — composite 86.9% → 89.8% (+2.9pp within run; +1.2pp net vs. run 6 after metric dilution from 5 new metrics averaging 67.6% baseline). All 5 hypotheses confirmed.

@@ -155,6 +155,7 @@ Options:
 ## Phase 7 — Steps 7–8: Tickets + Audit
 
 Re-read `.kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md` now to anchor context before dispatching.
+<!-- WHY plan audit precondition exists: dispatching to tickets.md without a completed plan audit would create tickets against an unvalidated plan. If the plan later fails the audit, all tickets must be discarded and recreated. Requiring the audit section confirms that Steps 4–5 are complete and that the requirement set the ticket audit will test against is already at 95%+ coverage. -->
 Confirm: subject slug is current (matches Phase 1 resolution). Plan file must exist and contain an audit section — do not dispatch if missing.
 
 Invoke `tickets.md` for this subject. The tickets phase writes all ticket files into `03-refinement/` and runs the internal ticket audit — both steps 7 and 8 are handled by a single phase file.

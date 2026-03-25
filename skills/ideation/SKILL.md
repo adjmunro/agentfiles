@@ -23,10 +23,10 @@ Invoke with `/ideate` to start a new ideation session. The command orchestrates 
 | 3 | Interview | See `commands/interview.md` for full phase instructions. |
 | 4 | Write Plan | See `commands/plan.md` for full phase instructions. |
 | 5 | Audit Plan | See `commands/plan.md` (audit gate section) for full phase instructions. |
-| 6 | Validate with User | See `commands/plan.md` (validation section) for full phase instructions. |
+| 6 | Validate with User | See `commands/ideate.md` (Phase 6) for full phase instructions. |
 | 7 | Write Tickets | See `commands/tickets.md` for full phase instructions. |
 | 8 | Audit Tickets | See `commands/tickets.md` (audit gate section) for full phase instructions. |
-| 9 | Hard Stop Gate | See `commands/tickets.md` (promotion section) for full phase instructions. |
+| 9 | Hard Stop Gate | See `commands/ideate.md` (Phase 8) for full phase instructions. |
 
 ---
 
@@ -204,7 +204,7 @@ Ideation sessions are **planning sessions**, separate from work sessions (implem
 
 ## Version and Status
 
-**Current version**: 1.7.0 (See `VERSION.md`)
+**Current version**: 1.8.0 (See `VERSION.md`)
 **Independent lifecycle**: Ideation versioning is separate from the implement skill.
 
 For version history, see `CHANGELOG.md`.

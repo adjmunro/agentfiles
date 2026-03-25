@@ -59,10 +59,10 @@ Construct the input paths:
 Read both files before proceeding.
 
 - If `00-input-{subject}.md` is missing: **STOP** and print:
-  > Cannot run interview: `00-input-{subject}.md` does not exist. Run `/ideation capture` first.
+  > Cannot run interview: `00-input-{subject}.md` does not exist. Run `/ideate` (Step 1: Capture) first.
 
 - If `01-research-{subject}.md` is missing: **WARN** and continue with only the input file. Print:
-  > ⚠ Research file not found — proceeding with input only. Confidence levels will reflect the absence of codebase evidence. Run `/ideation research` first for higher-quality recommendations.
+  > ⚠ Research file not found — proceeding with input only. Confidence levels will reflect the absence of codebase evidence. Run `/ideate` (Step 2: Research) first for higher-quality recommendations.
   All UNCERTAIN items that would normally cite codebase evidence must be marked UNCERTAIN (not HIGH).
 
 ---
@@ -98,6 +98,7 @@ For each remaining decision point, form one recommendation with all four fields:
 **Confidence rules:**
 - `HIGH`: The research snapshot or input file provides direct evidence (an existing pattern, an explicit constraint, a documented dependency).
 - `UNCERTAIN`: No clear evidence exists. The decision is genuinely open and requires the user's preference. UNCERTAIN items become targeted binary questions in the brief (X or Y), not open prompts.
+- **Research Confidence override:** Before finalising confidence levels, check the `## Research Confidence` section in `01-research-{subject}.md` (written by Scout). For any recommendation derived primarily from a section rated **Low**, override its confidence to `UNCERTAIN` — regardless of other evidence. A Low-confidence section is primarily inference or general knowledge; treat it as if no codebase evidence exists for that area.
 
 **Volume constraint:** Minimum 3 items, maximum 7. If you identify more than 7, rank by implementation impact and keep the top 7.
 

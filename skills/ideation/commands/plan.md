@@ -51,13 +51,13 @@ Read ALL blocks before proceeding.
 
 **STOP:** If the file does not exist, print:
 
-> Cannot run plan: `00-input-{subject}.md` does not exist. Run capture (Step 1) first.
+> Cannot run plan: `00-input-{subject}.md` does not exist. Run `/ideate` (Step 1: Capture) first.
 
 Do not proceed.
 
 **STOP:** If the file contains no meaningful content (empty or stub only), print:
 
-> Cannot run plan: `00-input-{subject}.md` contains no input. Run capture (Step 1) first.
+> Cannot run plan: `00-input-{subject}.md` contains no input. Run `/ideate` (Step 1: Capture) first.
 
 Do not proceed.
 
