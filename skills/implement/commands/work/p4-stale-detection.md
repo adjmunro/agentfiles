@@ -13,7 +13,7 @@ If stale:
    ```
    [STALE TICKET] {subject}/{ticket-id} has been claimed for {N} hours
    (stale_after_hours: {threshold}). The session that claimed it may have
-   been interrupted. Run `/kanban work {subject}` to resume or re-claim.
+   been interrupted. Run `/implement work {subject}` to resume or re-claim.
    ```
 2. Ask the user whether to:
    - **(Recommended)** Continue — proceed with implementation as-if fresh

@@ -57,6 +57,6 @@ List all ticket files across `05-in-progress/`, `06-in-review/`, and `07-pull-re
 
 If ALL tickets for this subject are now in `07-pull-request/` (none remain in earlier stages):
 
-> "All tickets for YYYY-MM-DD-<subject> have passed in-review. Run `/kanban pr` to open the pull request."
+> "All tickets for YYYY-MM-DD-<subject> have passed in-review. Run `/implement pr` to open the pull request."
 
 → Next: Read `review/p6-report.md` and execute it.
