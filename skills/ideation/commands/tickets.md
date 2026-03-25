@@ -43,7 +43,8 @@ Read each file before proceeding. Identify by the active persona when communicat
 | 3 | `tickets/p3-draft-tickets.md` | Scout research complete |
 | 3b | `tickets/p3b-lint.md` | all ticket files drafted — per-ticket quality check before coverage audit |
 | 4 | `tickets/p4-critic-audit.md` | lint passes — all tickets have valid effort, non-empty ACs, and concrete verifiable signals |
-| 5 | `tickets/p5-commit.md` | audit passes at ≥ 95% |
+| 4b | `tickets/p4b-tighten.md` | coverage audit passes at ≥ 95% — prose tightening pass before commit |
+| 5 | `tickets/p5-commit.md` | tighten pass complete |
 
 ## Execution
 

@@ -1,8 +1,8 @@
 # Version Action
 
-> **Part of the ideation skill.** Handles version reporting and update checks.
+> **Part of the tighten skill.** Handles version reporting and update checks.
 
-**Current version**: 1.11.0
+**Current version**: 1.0.0
 
 ## Responding to Version Requests
 

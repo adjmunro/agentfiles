@@ -107,4 +107,4 @@ Body: coverage score, total requirement count, and a note of any tickets auto-cr
 | Version/changelog tickets | Never create these — they happen automatically in commits |
 | Frontmatter schema | Fixed — use exact fields from schema above |
 
-→ Next: Read `tickets/p5-commit.md` and execute it.
+→ Next: Read `tickets/p4b-tighten.md` and execute it.

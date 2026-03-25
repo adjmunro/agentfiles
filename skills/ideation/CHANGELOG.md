@@ -4,6 +4,16 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v1.11.0 - 2026-03-26 - Tighten Integration
+
+Dispatches the `/tighten` skill on `03-refinement/` tickets after the coverage audit and before the final commit.
+
+- **`tickets/p4b-tighten.md` created**: dispatches `skills/tighten/commands/tighten.md` with `--no-commit` against the subject's `03-refinement/` directory. Tighten's internal audit phase runs before returning; ideation's p5 commit covers the tightened files.
+- **`tickets/p4-critic-audit.md` updated**: `→ Next` now routes to `p4b-tighten.md` instead of directly to `p5-commit.md`.
+- **`tickets.md` updated**: Phase 4b added to dispatch table; Phase 5 "Active when" updated.
+
+---
+
 ## v1.10.0 - 2026-03-26 - Ticket Lint Gate
 
 Added a per-ticket quality lint phase (p3b) between ticket drafting and the Critic coverage audit.
