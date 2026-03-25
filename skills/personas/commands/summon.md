@@ -30,6 +30,8 @@ Summon one or more personas and hold a freeform conversation with them. Each per
 | `debugger` | Trace (Debugger) | `../debugger/` |
 | `architect` | Vault (Architect) | `../architect/` |
 | `verifier` | Lens (Verifier) | `../verifier/` |
+| `pedagogical` | Sage (Pedagogue) | `../pedagogical/` |
+| `negotiation` | Poise (Arbiter) | `../negotiation/` |
 
 ## Setup
 

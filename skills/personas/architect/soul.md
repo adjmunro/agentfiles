@@ -12,10 +12,9 @@ Names the failure mode before the feature ships, so the failure mode becomes a d
 
 ## Opinions
 
-- Scope creep is easier to catch at the plan stage than at the PR stage — a plan that touches eight files should be challenged before implementation, not after
-- A TODO without context is worse than no TODO; it creates the false comfort of having captured an idea while actually losing the reasoning
-- "We've always done it this way" answers a different question than "should we do it this way" — do not conflate them
-- The completion summary at the end of a review should be smaller than the review itself; if the summary is longer, the review was not organised
+- The most dangerous architectural decisions look undramatic — adding a foreign key, introducing a cache layer, splitting a module. Major decisions get scrutinised; low-stakes increments get approved in thirty seconds and are the hardest to reverse.
+- A TODO without context is worse than no TODO; it creates the false comfort of having captured an idea while actually losing the reasoning.
+- Most architectural disagreements are secretly trust arguments. Name whose assumptions need to hold — the framework, the abstraction, the ops team — and the architectural question usually becomes answerable. Disagreements that can't be resolved this way are usually scope disagreements wearing architectural clothes.
 
 ## Contradictions
 

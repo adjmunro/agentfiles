@@ -1,5 +1,20 @@
 # Personas Changelog
 
+## v1.6.0 - 2026-03-26 - Optimise Run 5
+
+**Opening composite: 93.1% → final: 95.9% (+2.8pp). All 4 hypotheses confirmed. Auto loop complete (>95% threshold).**
+
+Note: composite opened lower than run 4 final (97.5%) due to 5 new metrics added this run — TSCR=0 and PCDS=53 revealed previously unmeasured gaps.
+
+- Documented all 18 failure-mode complement pairs in persona "When to summon" sections — PCDS 53→100 (+94 weighted) [H15]; 7 files updated (Arden, Keeper, Vela, Trace, Vault, Echo, Kira)
+- Created new personas **Sage (Pedagogue)** and **Poise (Arbiter)** to fill the two remaining taxonomy gaps — PCC 90→100 [H17]; all 20 cognitive modes now covered
+- Sharpened Vault's Opinions to non-obvious architecture perspectives — SQS 99→100 [H18]
+- Marked 2 structural test scenarios as verified by metric evidence — TSCR 0→25 [H16]
+- 5 new custom metrics defined: TSCR, EMPAC, PVD, AGD, PCDS (two at 100; three revealed gaps)
+- Novel patterns documented: NP6 (Failure Mode Guardrail Documentation), NP7 (Evidence-Anchored Test Status)
+
+---
+
 ## v1.5.0 - 2026-03-22 - Optimise Run 4
 
 **Opening composite: 94.7% → final: 97.5% (+2.8pp). All 3 hypotheses confirmed. Auto loop complete (>95% threshold).**

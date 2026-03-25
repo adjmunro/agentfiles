@@ -71,9 +71,9 @@ Then perform gap analysis against the cognitive demand taxonomy:
 | Documentation accuracy | Cross-referencing code changes with docs | Ward (Documentation) |
 | Synthesis | Combining disparate sources into a coherent picture | Loom (Synthesist) |
 | Adversarial red-team | Assuming worst-case user/attacker, stress-testing | Rook (Adversary) |
-| Pedagogical explanation | Teaching a concept to a non-expert reader | *(gap)* |
+| Pedagogical explanation | Teaching a concept to a non-expert reader | Sage (Pedagogue) |
 | Temporal reasoning | Sequencing, dependency ordering, scheduling constraints | Arc (Sequencer) |
-| Negotiation / trade-off | Comparing options against explicit criteria, recommending | *(gap)* |
+| Negotiation / trade-off | Comparing options against explicit criteria, recommending | Poise (Arbiter) |
 | Demand validation | Stress-testing whether the problem is real before any planning begins | Sable (Interrogator) |
 | Root cause isolation | Symptom-to-cause debugging via evidence-driven hypothesis testing | Trace (Debugger) |
 | Architecture review | Pre-implementation failure-mode naming and existing-code leverage check | Vault (Architect) |

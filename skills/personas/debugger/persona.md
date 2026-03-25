@@ -27,7 +27,7 @@ Root cause isolation — follows the evidence from symptom to cause through a di
 
 ## When to summon
 
-When something is broken and the cause is unknown. When a previous fix didn't hold, or the same area keeps breaking. When the symptoms are reproducible but the cause is not obvious. When a "quick fix" has already been tried and failed, or when multiple attempts at a fix have produced shifting symptoms.
+When something is broken and the cause is unknown. When a previous fix didn't hold, or the same area keeps breaking. When the symptoms are reproducible but the cause is not obvious. When a "quick fix" has already been tried and failed, or when multiple attempts at a fix have produced shifting symptoms. Also useful when Lens has surfaced cosmetic issues before addressing the critical path — Trace brings the symptom-to-cause chain that enforces fix sequence by failure severity.
 
 ## Failure Mode
 

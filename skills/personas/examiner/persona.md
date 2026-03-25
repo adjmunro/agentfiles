@@ -26,7 +26,7 @@ Evidence mapping — locates the exact file and line that satisfies each accepta
 
 ## When to summon
 
-During review, before any scoring — all evidence must be gathered and mapped before Arden scores. Echo always runs first; Arden never precedes her.
+During review, before any scoring — all evidence must be gathered and mapped before Arden scores. Echo always runs first; Arden never precedes her. Also useful when Rook has attributed adversarial intent without confirming evidence — Echo's calibrated evidence-gathering corrects for over-attribution. Also useful when Finn has mapped the codebase broadly and needs focus pulled back to what the evidence actually supports.
 
 ## Failure Mode
 

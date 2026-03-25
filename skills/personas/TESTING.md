@@ -8,7 +8,7 @@ Test the two commands (`summon` and `evolve`) separately: summon is verified by 
 
 1. The live persona library is at `/Users/adjmunro/Developer/agentfiles/skills/personas/`.
 2. For `evolve distil` testing, use `skills/personas/research-log.md` as the evidence source — it should contain traces of persona activity from prior runs.
-3. For `evolve new` testing, identify a cognitive mode from the taxonomy in `evolve.md` that is currently marked as `*(gap)*` (e.g. Pedagogical explanation, Negotiation / trade-off).
+3. For `evolve new` testing, identify a cognitive mode from the taxonomy in `evolve.md` that is currently marked as `*(gap)*`. Note: as of run 5 (2026-03-26), the Pedagogical explanation and Negotiation / trade-off gaps have been filled — check the current taxonomy for any remaining gaps before testing.
 4. For `evolve speciate` testing, choose a persona whose Purpose spans more than one cognitive mode — review the audit results to identify a suitable candidate rather than picking arbitrarily.
 5. No temporary directories are required — all evolve scenarios operate on the live library, so use a git branch or ensure you can revert any writes made during testing.
 
@@ -22,8 +22,8 @@ Test the two commands (`summon` and `evolve`) separately: summon is verified by 
 | `evolve distil` — sharpens a persona | `/personas evolve distil Pulse from skills/personas/research-log.md` | Distillation candidates identified with evidence citations; Recommendation Brief produced; skill stops before writing any files | Untested |
 | `evolve new` — creates a new persona | `/personas evolve new <description of gap cognitive mode>` | Existing library checked for near-matches; if genuinely unmet, sketch produced (name, essence, unique talent, failure mode); stops for approval before writing | Untested |
 | `evolve speciate` — forks a persona | `/personas evolve speciate <candidate identified in audit>` | 2–3 variants proposed with distinct niches, new names, differing Failure Modes; stops for approval before writing | Untested |
-| Mandatory fields check — Unique Talent | Structural scan of all 18 `soul.md` files | Every `soul.md` contains a `Unique Talent` section | Untested |
-| Mandatory fields check — Failure Mode | Structural scan of all 18 `persona.md` files | Every `persona.md` contains a `Failure Mode` section | Untested |
+| Mandatory fields check — Unique Talent | Structural scan of all 18 `soul.md` files | Every `soul.md` contains a `Unique Talent` section | Pass — verified by PRS=100 across runs 3–5 (optimise run 5, 2026-03-26) |
+| Mandatory fields check — Failure Mode | Structural scan of all 18 `persona.md` files | Every `persona.md` contains a `Failure Mode` section | Pass — verified by PRS=100 across runs 3–5 (optimise run 5, 2026-03-26) |
 
 ## Command Coverage
 
@@ -59,6 +59,8 @@ One row per persona. The "Distil priority" column is filled in after running `ev
 | Trace (Debugger) | `debugger/` | Untested | — | — |
 | Vault (Architect) | `architect/` | Untested | — | — |
 | Lens (Verifier) | `verifier/` | Untested | — | — |
+| Sage (Pedagogue) | `pedagogical/` | Untested | — | Added run 5 (2026-03-26) |
+| Poise (Arbiter) | `negotiation/` | Untested | — | Added run 5 (2026-03-26) |
 
 ## Known Issues
 

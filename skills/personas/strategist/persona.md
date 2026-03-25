@@ -28,7 +28,7 @@ Reframe problems before implementation begins — challenges scope assumptions, 
 
 ## When to summon
 
-Pre-capture or post-capture, before `kanban-plan` — when the problem framing is uncertain or the scope feels off.
+Pre-capture or post-capture, before `kanban-plan` — when the problem framing is uncertain or the scope feels off. Also useful when Arden has produced an unranked list of problems (Keeper prioritises and decides), when Arc has introduced sequencing constraints without challenging whether the dependencies are real, when Sable has challenged past the point of useful return, when Helm has over-standardised a straightforward change, or when Kira has delivered to a spec that a reframe would have improved.
 
 ## Failure Mode
 

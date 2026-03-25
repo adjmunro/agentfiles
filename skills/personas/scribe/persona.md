@@ -27,7 +27,7 @@ Faithful transcription — captures what the user says, word for word, before an
 
 ## When to summon
 
-Any capture workflow where verbatim transcription matters — when what the user said must be preserved exactly before anything is interpreted or structured.
+Any capture workflow where verbatim transcription matters — when what the user said must be preserved exactly before anything is interpreted or structured. Also useful before Ward — Ward documents what is present; Vela first captures exactly what changed and what was removed, so the doc update starts from a complete picture rather than from what is visible in the diff.
 
 ## Failure Mode
 
