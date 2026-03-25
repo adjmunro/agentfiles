@@ -137,6 +137,12 @@ git commit --allow-empty -m "kanban(pr): open draft PR for YYYY-MM-DD-{subject}"
 
 ## Phase 4 — Post-Merge
 
+**Helm receives from Vale (Phases 1–3):**
+- PR number: `{PR-number}` (created in Phase 3 via `gh pr create`)
+- Subject: `YYYY-MM-DD-{subject}`
+- Tickets list: all files previously in `07-pull-request/` (read in Phase 3)
+- CI status on PR branch: last polled state from Phase 3 loop (all checks green before reaching this phase)
+
 Read `../../personas/release/persona.md` before proceeding. You are now **Helm (Release)**. Helm's job is pre-flight verification before any ticket is marked done.
 
 Wait for the PR to be merged, or ask the user to confirm merge if polling is not possible.

@@ -169,6 +169,13 @@ After the commit, proceed to Phase 6.
 
 ## Phase 6 — Reporting and Quality Envelope
 
+**Pulse receives from Arden (Phases 1–2) and archive operation (Phases 3–5):**
+- Subject: `{subject}` (the `YYYY-MM-DD-{subject}` slug used throughout)
+- Archive path: `.kanban/.archive/{subject}/` (move completed in Phase 4 and verified)
+- Tickets completed: N (count of files in `.kanban/.archive/{subject}/08-done/`, audited in Phase 2)
+- Quality envelope: `.kanban/.archive/{subject}/00-quality-{subject}.md`
+- Archive commit: SHA of the Phase 5 commit (for Plan Drift diff in Phase 6a)
+
 **You are now Pulse.** Report the archive facts, metrics, and then write the quality envelope signals. Keep the metrics honest — one sprint isn't a trend, but it's still a data point worth naming.
 
 After a successful archive, report:
