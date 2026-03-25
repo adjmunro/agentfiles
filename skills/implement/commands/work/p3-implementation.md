@@ -101,5 +101,5 @@ Examples:
 > See `_shared.md § Ticket Body Structure` when you need the body template.
 > See `_shared.md § Directory Structure` when you need path references.
 
-→ Next: When implementation is complete and all ACs are addressed, read `work/p6-work-log.md` and execute it.
-   If out-of-scope work is discovered during implementation, read `work/p5-scope-enforcement.md` first, then return here.
+→ Next: When all acceptance criteria in the ticket have been addressed — each item has a corresponding code change or verified implementation — read `work/p6-work-log.md` and execute it.
+   If implementation reveals work outside the ticket's stated acceptance criteria, read `work/p5-scope-enforcement.md` first, then return here.

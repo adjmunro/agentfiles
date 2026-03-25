@@ -42,10 +42,10 @@ Read `../../personas/builder/persona.md` before proceeding. You are **Kira (Buil
 | 2 | `work/p2-ticket-selection.md` | Phase 1 check passed |
 | 3 | `work/p3-implementation.md` | ticket selected and claimed |
 | 4 | `work/p4-stale-detection.md` | ticket has been claimed |
-| 5 | `work/p5-scope-enforcement.md` | out-of-scope work discovered during Phase 3 |
+| 5 | `work/p5-scope-enforcement.md` | implementation reveals work outside the ticket's stated acceptance criteria |
 | 6 | `work/p6-work-log.md` | implementation complete |
-| 7 | `work/p7-commit.md` | any phase produces a meaningful artifact |
-| 8 | `work/p8-move-to-review.md` | all ACs verified and work log appended |
+| 7 | `work/p7-commit.md` | a ticket file has been moved, source code has been modified, or a log entry has been appended to the ticket's append zone |
+| 8 | `work/p8-move-to-review.md` | all items in the ticket's `acceptance_criteria` list have file:line evidence recorded AND at least one `## Work Log` section exists below the separator |
 
 > **Execution order note:** Phase 4 (Stale Detection) runs immediately after Phase 2, before Phase 3 (Implementation). The numbering reflects logical grouping, not strict execution sequence. Actual order: 1 → 2 → 4 → 3 → 5 → 6 → 7 → 8.
 
