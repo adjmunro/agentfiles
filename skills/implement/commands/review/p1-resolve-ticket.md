@@ -21,6 +21,6 @@ Read the ticket file. Confirm its frontmatter contains:
 - ALWAYS stop and print the no-ticket message if `06-in-review/` contains no tickets; do not attempt to search other directories.
 - DO select the most recently modified ticket automatically when multiple tickets exist — do not prompt the user unless resolution is still ambiguous after applying all four priority rules.
 - NEVER modify the ticket file during this phase — resolution is read-only.
-- MUST confirm the `plan` frontmatter field is present and non-empty before proceeding to Phase 2a.
+- MUST confirm the `plan` frontmatter field is present and non-empty before proceeding to Phase 2a. If the field is absent or empty: print "Ticket has no plan reference. Add a `plan:` frontmatter field pointing to the plan file, then re-run `/implement review`." and exit.
 
 → Next: Read `review/p2a-examiner.md` and execute it.

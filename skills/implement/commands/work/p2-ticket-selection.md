@@ -33,6 +33,7 @@ In these steps, `{subject}` is the **full** `YYYY-MM-DD-{subject}` slug (e.g. `2
    stale_after_hours: {value from ticket frontmatter, default 4}
    ```
    Create `.kanban/YYYY-MM-DD-{subject}/.claims/` if it does not exist.
+   If the lock file cannot be written (permission error, disk full, or other file system failure): report the error and do not proceed — do not move the ticket without a lock.
 4. Then proceed to move the ticket to `05-in-progress/` and update its frontmatter.
 
 **Move the selected ticket** from `.kanban/YYYY-MM-DD-{subject}/04-todo/` to `.kanban/YYYY-MM-DD-{subject}/05-in-progress/`. Create the destination directory if it does not exist.

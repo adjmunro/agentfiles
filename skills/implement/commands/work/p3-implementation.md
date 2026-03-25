@@ -18,6 +18,7 @@ Before writing a single line of code, read the full ticket file from top to bott
 **Staleness policies for artifacts read in this phase:**
 - Ticket file (`05-in-progress/TASK-NNN-*.md`): NO TTL — frontmatter is updated in-place and always reflects current state. Load without age check.
 - Plan file (path from ticket's `plan` frontmatter field): LOAD WITH CAVEAT (TTL: 7 days). Check its `created_at` frontmatter field (or file mtime as fallback).
+  - If the file does not exist at the stated path: STOP. Print "Plan file not found: {path}. Verify the ticket's `plan` frontmatter field is correct, or re-run `/implement init` to regenerate it." Do not proceed.
   - If age ≤ 7 days: load normally.
   - If age > 7 days: load, but prepend this warning to any extracted content:
     ⚠ STALE (written {N} days ago): treat as reference only. Plan will not reflect current codebase state — verify requirements against existing code before implementing.

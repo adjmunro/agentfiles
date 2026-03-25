@@ -9,6 +9,7 @@
 Locate the plan file from the path referenced in the ticket's `plan` frontmatter field. If the path is relative, resolve it from the project root.
 
 **Before loading, apply its staleness policy:** LOAD WITH CAVEAT (TTL: 7 days). Check its `created_at` frontmatter field (or file mtime as fallback).
+- If the file does not exist at the stated path: STOP. Print "Plan file not found: {path}. Verify the ticket's `plan` frontmatter field or re-run `/implement init`." Do not proceed to evidence gathering.
 - If age ≤ 7 days: load normally.
 - If age > 7 days: load, but prepend this warning to any extracted content:
   ⚠ STALE (written {N} days ago): treat as reference only. Verify all requirements against the current codebase before scoring.
