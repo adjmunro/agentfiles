@@ -26,6 +26,10 @@ Build a coverage table:
 | 1 | Req text    | TASK-001  | Full   |       |
 
 <!-- WHY dependency graph audit exists: H7 (run 2) found that coverage audits passed (all requirements mapped to tickets) while dependency edges were missing. Without explicit ordering, implementation attempts could fail because a dependent ticket was started before its upstream was complete. -->
+### Reverse Traceability Check (run after coverage audit reaches 95%)
+
+For each ticket in `03-refinement/`, verify that every requirement ID listed in its `plan_items` field exists as a numbered requirement in `02-plan-{subject}.md`. If a `plan_items` entry references a non-existent requirement ID, correct it to the closest matching requirement or remove it. Record each correction in the Fixes Applied section: "Corrected TASK-NNN plan_items entry `Req X` → `Req Y` (Req X not found in plan)."
+
 ### Dependency Graph Audit (mandatory — run after the coverage audit passes)
 
 After the coverage audit reaches 95%, verify dependency completeness:
@@ -49,6 +53,13 @@ If the score falls below 95%, auto-fix immediately — **never ask permission**:
 2. For every **Partial** requirement: strengthen the relevant ticket's ACs so they are fully verifiable.
 3. Re-run the audit, update the table and score.
 4. Repeat until the threshold is met.
+
+If after **3 auto-fix passes** the score is still below 95%, stop auto-fixing and present to the user:
+
+> ⚠ Ticket audit cannot reach 95% after 3 passes. Unresolvable gaps: [list requirements by number and description].
+> Choose: (a) Accept the ticket set with unresolved items marked `[UNRESOLVED]` and proceed to p5-commit.md, or (b) Return to plan.md to revise the plan before re-running tickets.
+
+Wait for the user's choice. If (a): mark each unresolved item in the Audit Block with `[UNRESOLVED]` and continue to p5-commit.md.
 
 ### Audit Block
 

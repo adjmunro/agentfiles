@@ -4,6 +4,20 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v1.7.0 - 2026-03-25 - Ticket Audit Hardening and Traceability
+
+Optimise run 7 — composite 86.9% → 89.8% (+2.9pp within run; +1.2pp net vs. run 6 after metric dilution from 5 new metrics averaging 67.6% baseline). All 5 hypotheses confirmed.
+
+- **Ticket audit is now bidirectional** (`commands/tickets/p4-critic-audit.md`): added a "Reverse Traceability Check" step — after the forward coverage audit passes 95%, each ticket's `plan_items` entries are verified against actual requirement IDs in the plan file. Ghost requirements (plan_items referencing non-existent IDs) are corrected or removed. Borrowed from bidirectional traceability in systems engineering. Plan-Ticket Audit Coverage Bidirectionality Rate 50→100 [H32]
+- **Ticket audit has an escape hatch** (`commands/tickets/p4-critic-audit.md`): auto-fix loop now terminates gracefully after 3 passes with a user recovery prompt (accept with `[UNRESOLVED]` markers or return to plan). Matches plan.md's FAIL branch pattern. Auto-Fix Loop Escape Coverage 50→100 [H33]
+- **Phase 3 persona framing clarified** (`commands/tickets/p3-draft-tickets.md`): replaced vacuous "Activate the main implementation persona" (no such persona defined) with an explicit statement: Scout context governs ticket scope and Context sections; Arden's AC quality standards apply when writing acceptance criteria. Undefined Persona Reference Rate 91→100, Persona Activation Transition Clarity Rate 67→100 [H34]
+- **spawned_tickets lifecycle documented** (`commands/tickets/p3-draft-tickets.md`): Field Notes now explains that `spawned_tickets` starts empty at ideation and is populated by the implement skill during execution. Closes the last undocumented field in the ticket frontmatter schema. Cross-Skill Interface Documentation Rate 80→100 [H35]
+- **WHY comments added to TASK-001 and idempotency guard** (`commands/tickets/p3-draft-tickets.md`): last two identified unannotated blocks now have inline rationale. WHY Comment Coverage 69→75 [H31]
+- 5 new custom metrics defined: Undefined Persona Reference Rate, Plan-Ticket Audit Coverage Bidirectionality Rate (moonshot: bidirectional traceability), Cross-Skill Interface Documentation Rate, Persona Activation Transition Clarity Rate, Auto-Fix Loop Escape Coverage
+- Novel pattern documented: NP10 (Bidirectional Traceability Enforcement)
+
+---
+
 ## v1.6.0 - 2026-03-25 - Persona Conditions, Research Confidence, and WHY Coverage
 
 Optimise run 6 — composite 85.9% → 88.6% (+2.7pp within run; −0.7pp net vs. run 5 after metric dilution from 5 new metrics averaging 48.6% baseline). 4 hypotheses confirmed, 1 partial.

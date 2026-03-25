@@ -2,7 +2,9 @@
 <!-- Part of: tickets.md orchestrator -->
 <!-- Active when: Scout research complete (Phase 2 done) -->
 
-Activate the main implementation persona. Draft each ticket as a separate file.
+No dedicated persona is assigned to this phase. Proceed with the research context established by Finn (Scout) in Phase 2 when writing ticket scope and Context sections. Apply Arden (Critic)'s AC quality standards when writing acceptance criteria — each AC must be empirically verifiable before Arden's audit in Phase 4 will pass it.
+
+Draft each ticket as a separate file.
 
 ### Destination Directory
 
@@ -14,6 +16,7 @@ All tickets MUST be written to:
 
 **NEVER write tickets to `04-todo/`** — that directory is the Step 9 promotion gate. Tickets only move there when the user explicitly chooses "Add to backlog" at Step 9.
 
+<!-- WHY TASK-001 must always be the TDD red phase: confirms that no prior implementation exists before any ticket is claimed. A passing red phase proves the clean-slate precondition for all subsequent implementation tickets. Pattern established in run 2 (H7). -->
 ### TASK-001 — TDD Red Phase (mandatory, always first)
 
 TASK-001 is ALWAYS the TDD red phase. No exceptions.
@@ -67,6 +70,7 @@ Field notes:
 - `plan_items` — list every plan requirement this ticket addresses
 - `depends_on` — omit or leave empty if this ticket has no dependencies
 - `acceptance_criteria` — must be empirically verifiable commands or observable states
+- `spawned_tickets` — list of ticket IDs created by the implement skill during execution when a ticket's scope requires decomposition (e.g., `["YYYY-MM-DD-{subject}/TASK-006"]`). Set to `[]` at ticket creation by ideation; populated by implement when a claimed ticket spawns child work. Ideation does not modify this field after creation.
 
 > Cross-reference: `skills/implement/commands/_shared.md § Ticket Frontmatter Schema` uses the same fields. If the implement skill's schema diverges, keep this definition authoritative for ideation-created tickets.
 
@@ -119,6 +123,7 @@ TASK-002-{subject}.md
 
 Where `{subject}` is the short slug portion of the parent directory name (strip the `YYYY-MM-DD-` date prefix).
 
+<!-- WHY idempotency guard: prevents duplicate ticket creation if Phase 3 is re-entered after a crash or mid-session resume. Both the Context and Acceptance Criteria sections must be present for a ticket to be considered complete — a partial write (missing either section) is safe to overwrite. -->
 ### Idempotency Guard
 
 Before creating each ticket file, check whether the target path (e.g. `03-refinement/TASK-001-{subject}.md`) already exists. If it does **and** contains both a `## Context` section and an `## Acceptance Criteria` section → skip creation for that ticket (it is already complete). If it exists but is missing one or both sections → overwrite is safe (partial write).
