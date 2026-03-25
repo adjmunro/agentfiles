@@ -4,6 +4,16 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v1.10.0 - 2026-03-26 - Ticket Lint Gate
+
+Added a per-ticket quality lint phase (p3b) between ticket drafting and the Critic coverage audit.
+
+- **`tickets/p3b-lint.md` created**: Arden (Critic) runs 6 lint checks on every ticket in `03-refinement/` before the coverage audit — effort field set (L1), plan_items non-empty (L2), AC count / effort tier coherence (L3), AC specificity / concrete verifiable signal (L4), Context section non-empty (L5), depends_on references valid (L6). L1 and L3 are auto-fixed (effort inferred from AC count); L2, L4, L5, L6 are flagged for user resolution.
+- **`tickets/p3-draft-tickets.md` updated**: `→ Next` now routes to `p3b-lint.md` instead of directly to `p4-critic-audit.md`.
+- **`tickets.md` updated**: Phase 3b added to dispatch table; Arden listed as active in Phases 3b and 4.
+
+---
+
 ## v1.9.0 - 2026-03-25 - Test Coverage Accuracy, Research Signal Completeness, and WHY Annotation Parity
 
 Optimise run 9 — composite 89.1% → 91.5% (+2.4pp within run; +0.6pp net vs. run 8 after metric dilution from 4 new metrics averaging 58% baseline). All 5 hypotheses confirmed.

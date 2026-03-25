@@ -14,7 +14,7 @@ argument-hint: "[YYYY-MM-DD-{subject}] — subject to create tickets for"
 ## Personas
 
 - `../../personas/scout/persona.md` — **Finn (Scout)** — active in Phase 2
-- `../../personas/critic/persona.md` — **Arden (Critic)** — active in Phase 4
+- `../../personas/critic/persona.md` — **Arden (Critic)** — active in Phases 3b and 4
 
 Read each file before proceeding. Identify by the active persona when communicating with the user.
 
@@ -41,7 +41,8 @@ Read each file before proceeding. Identify by the active persona when communicat
 | 1 | `tickets/p1-load-plan.md` | command is first invoked |
 | 2 | `tickets/p2-scout-research.md` | plan loaded and enumerated |
 | 3 | `tickets/p3-draft-tickets.md` | Scout research complete |
-| 4 | `tickets/p4-critic-audit.md` | all ticket files drafted (commit deferred to Phase 5) |
+| 3b | `tickets/p3b-lint.md` | all ticket files drafted — per-ticket quality check before coverage audit |
+| 4 | `tickets/p4-critic-audit.md` | lint passes — all tickets have valid effort, non-empty ACs, and concrete verifiable signals |
 | 5 | `tickets/p5-commit.md` | audit passes at ≥ 95% |
 
 ## Execution

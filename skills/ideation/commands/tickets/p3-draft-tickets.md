@@ -128,4 +128,4 @@ Where `{subject}` is the short slug portion of the parent directory name (strip 
 
 Before creating each ticket file, check whether the target path (e.g. `03-refinement/TASK-001-{subject}.md`) already exists. If it does **and** contains both a `## Context` section and an `## Acceptance Criteria` section → skip creation for that ticket (it is already complete). If it exists but is missing one or both sections → overwrite is safe (partial write).
 
-→ Next: Read `tickets/p4-critic-audit.md` and execute it. (The final git commit happens in p5, after the audit passes.)
+→ Next: Read `tickets/p3b-lint.md` and execute it. (The final git commit happens in p5, after both the lint and coverage audit pass.)
