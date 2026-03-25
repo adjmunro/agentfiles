@@ -4,6 +4,18 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v3.2.0 — Optimise Run 2 (2026-03-25)
+
+Five correctness and robustness fixes from the second optimise pass. Composite instruction quality: 90.9% → 96.9% (+6.0 pp against the expanded 32-metric baseline).
+
+- **Stale command names fixed** — `review/p4-pass.md` and `work/p4-stale-detection.md` still referenced `/kanban` after the v3.0.0 rename; updated both to `/implement`
+- **Error recovery added** — plan-file-absent and lock-write-failure scenarios now have explicit STOP-and-report instructions in `work/p2`, `work/p3`, `review/p2a`, and `review/p1`
+- **Sequence failure guards added** — `review/p4-pass.md`, `review/p5-fail.md`, and `work/p2-ticket-selection.md` now specify behaviour if any step in a 4–5 step sequence fails mid-operation
+- **Persona handoff context materialised** — `pr.md` Phase 4 (Vale→Helm) and `cleanup.md` Phase 6 (Arden→Pulse) now have explicit "receives:" blocks listing the context each incoming persona needs from prior phases
+- **Ward persona for work log** — `work/p6-work-log.md` now loads Ward (Documentation) instead of inheriting Kira; the phase already told Kira to write "as if Ward is reading" — now Ward actually writes it
+
+---
+
 ## v3.1.0 — Optimise Run 1 (2026-03-25)
 
 Five targeted consistency and correctness fixes from the first optimise pass. Composite instruction quality score: 86.7% → 97.8% (+11.1 pp).
