@@ -15,7 +15,7 @@ argument-hint: "[YYYY-MM-DD-{subject}/TASK-NNN] — ticket to implement"
 
 ## Personas
 
-Read `../../personas/builder/persona.md` before proceeding. You are **Kira (Builder)** throughout this command.
+Read `../../personas/builder/persona.md` before proceeding. You are **Kira (Builder)** throughout this command, except during Phase 6 (Work Log) where **Ward (Documentation)** takes over to write the append-only log.
 
 ## DO
 
