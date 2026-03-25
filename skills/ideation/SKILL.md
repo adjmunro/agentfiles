@@ -139,7 +139,7 @@ Substantive content: file exists, size > 0 bytes, and contains at least one non-
           │ Add more         │ Satisfied    │ Abandon
           │                  │              │
           └──► [Loop to      │              ▼
-               Step 1]       │   Slug confirm → Delete → END
+               Step 1] †     │   Slug confirm → Delete → END
                              │
                              ▼
                     ┌────────────────────────┐
@@ -173,6 +173,8 @@ Substantive content: file exists, size > 0 bytes, and contains at least one non-
                     END
 ```
 
+† Loop-back reruns ALL steps 1–5 in sequence (capture → research → interview → plan → audit) before returning to Step 6. Each loop-back appends a new session block to `00-input-{subject}.md`; prior content is immutable.
+
 ---
 
 ## Integration with implement
@@ -202,7 +204,7 @@ Ideation sessions are **planning sessions**, separate from work sessions (implem
 
 ## Version and Status
 
-**Current version**: 1.5.0 (See `VERSION.md`)
+**Current version**: 1.6.0 (See `VERSION.md`)
 **Independent lifecycle**: Ideation versioning is separate from the implement skill.
 
 For version history, see `CHANGELOG.md`.

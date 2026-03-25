@@ -36,12 +36,15 @@ Resolve the subject slug from `$ARGUMENTS`:
 2. If `$ARGUMENTS` is `new` or empty → use `AskUserQuestion` to ask: "What is the subject name for this ideation session?" Then slugify: lowercase, spaces → hyphens, strip non-alphanumerics except hyphens, prepend today's date as `YYYY-MM-DD`.
 3. Final subject slug format: `YYYY-MM-DD-{subject-slug}`.
 
+<!-- WHY slug uniqueness guard exists: prevents silently targeting the wrong subject directory when a subject with the same date+name already exists (e.g., two ideation sessions started on the same day with the same topic). Appending -2/-3 makes the collision explicit rather than overwriting prior work. -->
 **Slug uniqueness guard:** If `.kanban/YYYY-MM-DD-{subject-slug}/` already exists and this is NOT a loop-back (i.e. `$ARGUMENTS` did not explicitly name it), append `-2` to the slug. If that also exists, try `-3`, and so on until a unique slug is found. Log which slug was chosen: "Subject directory already existed — using `YYYY-MM-DD-{subject-slug}` instead."
 
+<!-- WHY init.md is an external dependency: init.md is provided by the kanban skill (see skills/kanban/commands/). Expected behaviour: creates .kanban/YYYY-MM-DD-{subject}/ with stage directories (00-assets, 03-refinement, 04-todo, 05-in-progress, 06-in-review, 07-pull-request, 08-done). If init.md is unavailable, create this directory structure manually with Bash before proceeding. -->
 Invoke `commands/init.md` with the derived subject slug to create the subject scaffold. This creates `.kanban/YYYY-MM-DD-{subject}/` with all stage directories. If the directory already exists, `init.md` handles reinitialisation safely — only missing directories are added.
 
 **State detection and resume routing:**
 
+<!-- WHY resume routing exists: H1 (run 1) — multi-session subjects resume from the most advanced completed state rather than restarting, avoiding re-execution of work that has already been committed. Without this check, invoking /ideate on an existing subject would re-run from step 1 and could overwrite completed artifacts. -->
 After resolving the subject slug and before announcing start, check for a partially-completed subject by testing artifact presence in order (most advanced state first):
 
 1. If `.kanban/YYYY-MM-DD-{subject}/03-refinement/` contains at least one ticket file with substantive content → **resume at step 9 (hard stop gate)**. Announce: "Resuming ideation for `YYYY-MM-DD-{subject}` — tickets are drafted. Advancing to step 9 (hard stop gate)." Skip Phases 2–7 and jump directly to Phase 8.
@@ -73,6 +76,7 @@ Wait for capture to complete before proceeding. Capture ends when `00-input-{sub
 
 ## Phase 3 — Step 2: Research
 
+<!-- WHY re-read before each dispatch (active intent anchors, run 1): re-reading the primary artifact before dispatching a subagent prevents context drift across long sessions. Without this anchor, a subagent may operate on a stale in-memory copy of the intent rather than the committed file state. -->
 Re-read `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md` now to anchor context before dispatching.
 Confirm: subject slug matches $ARGUMENTS (or derived slug from Phase 1). File must exist — do not dispatch if missing.
 
@@ -181,6 +185,7 @@ Options:
 
 **If option 1 (Add to backlog)**:
 1. Move all ticket files from `.kanban/YYYY-MM-DD-{subject}/03-refinement/` to `.kanban/YYYY-MM-DD-{subject}/04-todo/` (create `04-todo/` if it does not exist).
+   <!-- WHY idempotency guard on ticket move: H21 (run 5) — guards against double-promotion if Phase 8 is re-entered after a crash mid-move. Each ticket's presence in 04-todo/ is checked before git mv to prevent a second mv attempt on an already-moved file, which would fail with a "file not found in 03-refinement" error. -->
    - Before moving each file, check whether it already exists in `04-todo/`. If it does → skip the move for that ticket (already promoted).
    - Use `git mv` inside a git repo, or move the file and then `git add -A` to capture both the deletion and the addition.
 2. Stage and commit:

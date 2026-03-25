@@ -10,7 +10,7 @@ This command uses two personas. Load both before proceeding.
 
 - Read `../../personas/strategist/persona.md` — you are **Keeper (Strategist)** during Phase 2 (Recommendation Formation) and Phase 5 (Critic Pass pre-check). Keeper reads for strategic direction: tradeoffs, longer arc, hidden constraints, failure modes.
 - Read `../../personas/critic/persona.md` — you are **Arden (Critic)** during Phase 5 (Critic Pass). Arden audits for coverage gaps: ambiguities, edge cases, scope boundaries, acceptance signals.
-- Optionally read `../../personas/designer/persona.md` — draw on Designer perspective when recommendations touch UI/UX or interaction patterns.
+- **Designer persona** — conditionally loaded in Phase 2 after reading input and research. See Phase 2 for the loading condition.
 
 Identify by the active persona when communicating with the user.
 
@@ -71,6 +71,8 @@ Read both files before proceeding.
 
 Acting as **Keeper (Strategist)**, synthesise the input and research snapshot into a set of opinionated recommendations — one per key decision point.
 
+**Designer persona — conditional load:** If any of the decision points you identify involve UI/UX, interaction design, or user-experience patterns (identifiable from the input and research already read in Phase 1), additionally load `../../personas/designer/persona.md` now, before finalising those recommendations. Draw on Designer perspective for any UI/UX-related items in the brief.
+
 **Identify decision points across these dimensions:**
 
 - **Stack / technology choices** — frameworks, libraries, languages, tooling
@@ -103,7 +105,13 @@ For each remaining decision point, form one recommendation with all four fields:
 
 ## Phase 3 — Recommendation Brief
 
-Before presenting to the user, Arden runs a silent pre-check (Phase 5 logic applied early — see Phase 5 for audit criteria). If the brief does not pass the 95% threshold, revise it before proceeding.
+Before presenting to the user, Arden runs a silent pre-check against the following 5 criteria (these are also the Phase 5 Critic Pass criteria, applied here before the user sees anything). If the brief does not pass the 95% threshold, revise it before proceeding:
+
+1. **Evidence backing** — every HIGH-confidence recommendation cites traceable evidence from the research snapshot or input file. No assertion without a source.
+2. **UNCERTAIN integrity** — no item is marked UNCERTAIN to avoid making a call when evidence is available. Conversely, no item is marked HIGH when the evidence is absent.
+3. **Resolution completeness** — every UNCERTAIN item is phrased as a targeted binary choice (X or Y), not an open-ended question.
+4. **Scope coverage** — the brief covers all decision points that materially affect implementation. No significant unknown is silently omitted.
+5. **Plan readiness** — the brief, once the user responds, gives `plan.md` enough information to proceed without a follow-up interview.
 
 Once the brief passes, present it as a **single `AskUserQuestion` call** using this exact format:
 
@@ -232,17 +240,9 @@ Use the same timestamp as the `## Interview` block written to `00-input-{subject
 
 ## Phase 5 — Critic Pass
 
-Acting as **Arden (Critic)**, audit the brief before it is sent (this pass also runs silently as the pre-check in Phase 3).
+Acting as **Arden (Critic)**, audit the brief after the user has responded and decisions are parsed (this same pass also ran silently as the pre-check in Phase 3 — see Phase 3 for the full criteria list).
 
-Arden checks the following — every item must pass at 95% confidence before the brief is considered complete:
-
-1. **Evidence backing** — every HIGH-confidence recommendation cites traceable evidence from the research snapshot or input file. No assertion without a source.
-2. **UNCERTAIN integrity** — no item is marked UNCERTAIN to avoid making a call when evidence is available. Conversely, no item is marked HIGH when the evidence is absent.
-3. **Resolution completeness** — every UNCERTAIN item is phrased as a targeted binary choice (X or Y), not an open-ended question.
-4. **Scope coverage** — the brief covers all decision points that materially affect implementation. No significant unknown is silently omitted.
-5. **Plan readiness** — the brief, once the user responds, gives `plan.md` enough information to proceed without a follow-up interview.
-
-If any item fails, revise the affected recommendations and re-run the check. Do not present the brief to the user until the 95% threshold is met.
+Apply the same 5 criteria from the Phase 3 pre-check. If any item fails, revise the affected recommendations and re-run the check. Do not finalise until the 95% threshold is met.
 
 ---
 

@@ -4,6 +4,19 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v1.6.0 - 2026-03-25 - Persona Conditions, Research Confidence, and WHY Coverage
+
+Optimise run 6 — composite 85.9% → 88.6% (+2.7pp within run; −0.7pp net vs. run 5 after metric dilution from 5 new metrics averaging 48.6% baseline). 4 hypotheses confirmed, 1 partial.
+
+- **Designer persona condition repositioned** (`commands/interview.md`): the optional designer persona load was in the Personas section, before any content was read — making the condition (does input involve UI/UX?) unevaluable at that point. Moved to Phase 2 as a conditional instruction after Phase 1 reads both input and research files. Persona Load Condition Evaluability 50→100 [H27]
+- **Research Confidence section added** (`commands/research.md`): research snapshots lacked per-section evidence quality signals. Added a required 7th section rating each section High/Medium/Low with basis; Phase 6 now flags Low-confidence sections for the interview phase to calibrate recommendation confidence. Research Snapshot Coverage Signal 63→100 [H28]
+- **Arden criteria inlined in Phase 3** (`commands/interview.md`): Phase 3 pre-check referenced "see Phase 5 for criteria" — the only content-dependency forward reference in the skill. Inlined all 5 criteria in Phase 3; Phase 5 now defers back. Instruction Forward Reference Rate 83→100 [H29]
+- **SKILL.md loop-back annotated** (`SKILL.md`): flow diagram loop-back arrow ("→ [Loop to Step 1]") did not indicate that all steps 1–5 re-execute, not just capture. Added footnote clarifying the full cycle and append-only semantics. State Machine Fidelity 90→100 [H30]
+- **WHY comment coverage extended** (`commands/ideate.md`, `commands/plan.md`): 7 non-obvious instruction blocks annotated with WHY comments (slug uniqueness guard, init.md external dependency, resume routing, re-read anchors, idempotency guard on ticket move, interview item tagging, plan audit idempotency guard). WHY Comment Coverage 47→69 [H26 — partial; tickets phase files remain]
+- 5 new custom metrics defined: WHY Comment Coverage, Persona Load Condition Evaluability, TESTING.md Scenario Status Freshness (structural constraint), Instruction Forward Reference Rate, Research Snapshot Coverage Signal
+
+---
+
 ## v1.5.0 - 2026-03-25 - Promotion Semantics and Orchestration Correctness
 
 Optimise run 5 — composite 84.6% → 89.3% (+4.7pp within run; +1.3pp net vs. run 4 after metric dilution). All 5 hypotheses confirmed.

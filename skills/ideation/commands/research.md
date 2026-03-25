@@ -132,9 +132,24 @@ created_at: YYYY-MM-DDTHH:MM:SSZ
 ## Recommended Approach
 
 [What Finn observed and recommends investigating further in the interview. Highlight the most important unknowns, tradeoffs, or decisions the interview should surface. Written in Finn's voice — cartographic, honest about the map's edges.]
+
+## Research Confidence
+
+[Rate each section on a 3-tier scale and state the basis for the rating:
+- **Project Structure**: High / Medium / Low — reason (e.g. "High — 12 relevant files found and read")
+- **Relevant Patterns**: High / Medium / Low — reason (e.g. "Low — project too new; only one relevant file, patterns inferred")
+- **Dependencies**: High / Medium / Low — reason (e.g. "Medium — main libraries identified, transitive deps not checked; 1 URL fetch failed")
+- **Hazards**: High / Medium / Low — reason (e.g. "High — tight coupling in auth layer confirmed from source")
+- **Recommended Approach**: High / Medium / Low — reason (e.g. "Medium — based on patterns found; one key unknown remains")
+
+High = substantial direct evidence from the codebase or fetched docs.
+Medium = partial evidence or inferred from conventions; findings directionally reliable.
+Low = minimal evidence; based primarily on general knowledge or absence of findings — treat as hypothesis, not fact.]
 ```
 
-All six sections are required. An empty section is acceptable; a missing section heading is not.
+All seven sections are required. An empty section is acceptable; a missing section heading is not.
+
+After writing all sections, score each section's confidence tier. If any section is **Low**, flag it in the Phase 6 report for the interview phase.
 
 If `01-research-{subject}.md` already exists (loop-back iteration), overwrite it. Research is always regenerated fresh — it is a snapshot, not an append-only log.
 

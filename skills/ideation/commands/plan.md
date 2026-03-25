@@ -119,6 +119,7 @@ Write the drafted plan to:
 
 Read `00-input-{subject}.md` in full (all session blocks). <!-- STALENESS POLICY: NO TTL — see capture.md for authoritative policy. Load without age check. --> Break all content into a numbered list of discrete, verifiable items. Every stated requirement, constraint, goal, contextual detail, interview question answer, and decision made during the interview is a separate item. Be granular — split compound items.
 
+<!-- WHY interview item tagging exists: decisions explicitly surfaced and resolved in the interview phase are more deliberately chosen than raw capture items — the user was directly asked about them. Silently omitting an [INTERVIEW] item from the plan is a more serious traceability failure than missing an incidental capture detail, because the user was already consulted. The [INTERVIEW] tag makes this distinction auditable. -->
 **Interview item tagging:** After enumerating all items, identify any item that originates from an `## Interview YYYYMMDD-HH:MM` block. Tag these items with `[INTERVIEW]` in the enumeration list. These items carry higher traceability weight — a decision that was explicitly surfaced and resolved in the interview is more deliberately chosen than a raw capture item. When building the audit table in Step B, include a `Source` column to distinguish `[INTERVIEW]` items from `[CAPTURE]` items at a glance.
 
 ### Step B — Map Input to Plan
@@ -157,6 +158,7 @@ After all fixes are applied, recalculate the score. All items must reach Full st
 
 ### Step F — Append Audit Block
 
+<!-- WHY plan audit idempotency guard exists: H15 (run 3) — prevents double-append of the audit block if plan.md is re-entered after a crash mid-write. A duplicate audit block would contain conflicting PASS/FAIL labels and confuse any downstream consumer that parses the plan file. -->
 **Idempotency guard:** Before appending, check whether a line matching `## Audit: input → plan` already exists in `02-plan-{subject}.md`. If it does → the audit block is already recorded. Skip the append and proceed to Phase 4.
 
 Append the following structured block to `02-plan-{subject}.md`. Do not overwrite any existing content — this is always appended.
