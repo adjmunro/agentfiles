@@ -2,6 +2,21 @@
 
 ---
 
+## 1.2.0 - 2026-03-27 - Optimise pass 2: anchoring, progressive loading, WIP fixes
+
+### Added
+- Phase 2 transition note — one-line summary of files written, written before entering Phase 3
+- Phase 5 gather step — explicit instruction to collect Phase 2 note, Phase 3 commit details, and Phase 4 kanban findings before assembling the report
+- WIP path: kanban scan now runs *before* RESUME.md is written so open tickets appear in "State of play"
+
+### Changed
+- Progressive persona loading — personas are now read at phase entry, not upfront; header lists them for orientation only
+- RESUME-*.md default changed to "include in WIP commit" (no .gitignore needed); removes the ambiguous two-option choice
+- Phase 3 marker updated to "Helm (Release) is active" — consistent naming with Phases 1–2
+- Helm scope note added: WIP assessment and commit authoring only; skip test coverage, CI, PR items
+
+---
+
 ## 1.1.0 - 2026-03-27 - Optimise pass: clarity, anchoring, personas
 
 ### Added
