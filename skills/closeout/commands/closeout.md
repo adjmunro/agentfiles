@@ -82,15 +82,18 @@ Scan the full conversation history (everything above this prompt) for content wo
 
 For each candidate, determine where it belongs using this priority order:
 
-1. **Relevant project file** — if there is a clear, natural home in the codebase, prefer it. It will be read by any agent working in that area, not just when memory is loaded. Do not default to `AGENTS.md` or `SKILL.md` — first glob the relevant directory and read what files actually exist. Good candidates include (but are not limited to):
+1. **Relevant project file** — if there is a clear, natural home in the codebase, prefer it. First glob the relevant directory and read what files actually exist, then pick the best fit based on the nature of the content:
+
+   **Established content** (implemented behaviour, confirmed conventions, completed decisions) — write into files that agents read as instructions:
    - A skill's `AGENTS.md` — agent behaviour rules, commit conventions, scope limits
    - A skill's `SKILL.md` — user-facing description, modes, usage notes
-   - A skill's `CHANGELOG.md` — if a decision explains a recent version bump
-   - A skill's `commands/*.md` — if the insight refines a specific phase or step
-   - A skill's `research-log-*.md` — findings from exploration that informed design
-   - A new file in the skill directory (e.g. `FUTURE.md`, `NOTES.md`) — for forward-looking ideas, deferred plans, or open questions that don't fit existing files
+   - A skill's `commands/*.md` — refinements to a specific phase or step
    - `CLAUDE.md` — project-wide conventions or instructions
-   - Any other file that already exists and is the obvious home
+
+   **Speculative or forward-looking content** (ideas, plans, experiments, deferred work, open questions) — write into files that are **not** read as live instructions. Do **not** put these into `AGENTS.md`, `SKILL.md`, `commands/*.md`, or `CLAUDE.md` — doing so would cause agents to treat unimplemented plans as current behaviour. Instead use:
+   - A skill's `research-log-*.md` — exploration findings, candidate approaches
+   - A skill's `FUTURE.md` (create if absent) — deferred plans, open questions, ideas worth revisiting
+   - Any other non-instruction file that already exists and is the obvious home
 
 2. **Memory file (fallback)** — use the memory directory only for content that has no natural project file home: user profile information, cross-project feedback, references to external systems, or project-state facts that do not belong in any instruction file.
 
