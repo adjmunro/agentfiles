@@ -6,6 +6,9 @@
 # Local settings
 .claude/settings.local.json
 
+# Runtime artifacts
+*.lock
+
 # Editor artifacts
 *.swp
 *.swo
