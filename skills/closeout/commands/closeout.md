@@ -240,7 +240,7 @@ git commit -m "$(cat <<'EOF'
 wip(<scope>): <brief description of what is in progress>
 
 Work in progress — not complete. To resume:
-  git reset --soft HEAD~1   # soft reset — changes return to working tree, nothing is lost
+  git reset --soft HEAD~1   # see RESUME file for full instructions
   cat RESUME-<timestamp>.md  # read the handoff notes, then delete the file
 
 State of play:
