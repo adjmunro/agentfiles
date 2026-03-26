@@ -1059,4 +1059,42 @@ New sum: 2908+194 = 3102 / 3200 = 96.9%
 **Implementation:** At each persona transition point, add an explicit "X receives:" block listing the specific variables, decisions, and artifact paths established by prior phases. The block should name concrete identifiers (PR number, archive path, ticket count), not narrative prose.
 **Metrics it improved:** Persona Chain Handoff Explicitness (0→100)
 **Generalises to:** Any multi-persona command where the later persona needs facts established by earlier phases — especially commands that may eventually be refactored to dispatch phases as subagents.
+
+---
+
+## Future Metric Candidates — noted 2026-03-26
+
+The following metric ideas were flagged during a post-Run-2 review. They are not yet implemented — they require inspecting actual kanban artefacts (tickets, plan files, project state) rather than instruction files alone, which means the optimise loop would need to be pointed at a live kanban directory rather than a skill directory. They are recorded here for a future run.
+
+### Output-Quality Metrics (require kanban artefact access)
+
+**MX-PC — Plan-to-Ticket Coverage**
+Does every plan item have at least one ticket that references it? Measured as: plan items with a ticket link / total plan items. Requires a canonical link field in ticket frontmatter (e.g. `plan_ref:`).
+
+**MX-AC — Acceptance Criteria Specificity**
+Are ACs written as testable, unambiguous statements? Score each AC as: vague (0) / partially specific (0.5) / fully testable (1). Average across all ACs in the ticket set.
+
+**MX-DO — Dependency Ordering Correctness**
+Are `depends_on` references topologically ordered in `04-todo/`? Measured as: tickets with all dependencies appearing earlier in filename sort order / total tickets with dependencies. Flags cycles and forward-references.
+
+**MX-EL — Effort Label Consistency**
+Do tickets labelled `effort: low/medium/high` have AC counts and scope consistent with the label? Static heuristic: low = ≤3 ACs, medium = 4–6, high = 7+. Runtime correlation (actual work session length vs label) would require execution data.
+
+**MX-GR — Ticket Grouping Coherence**
+Are related changes (same file, same subsystem, same concern) grouped into one ticket rather than fragmented across many? Heuristic: tickets that share >50% of their AC file references are candidates for consolidation.
+
+**MX-CS — Clean-State Scoping**
+Is each ticket scoped to leave the project in a buildable/passing state when complete? This cannot be measured statically — it requires post-commit CI or test-run evidence. Proxy metric: does each ticket's AC list include at least one "tests pass" or "no regressions" criterion?
+
+### Design Notes
+
+These metrics shift optimise from measuring *instruction quality* (how well the skill files are written) to measuring *output quality* (how well the planning phase performs when executed). A future run targeting these would need:
+
+1. A sample kanban directory with real tickets and plan files to score against
+2. Possibly a new optimise "mode" — `artefact mode` vs the current `instruction mode` — that applies the appropriate metric subset based on what is being targeted
+3. Ticket linting as a planning-phase gate: a check within the planning pipeline that validates ticket quality (AC specificity, dependency ordering, effort label consistency) before execution begins, rather than measuring it retrospectively
+
+### Broader Applicability Note
+
+The idea of running `/optimise` on non-skill targets (kanban artefact sets, documentation stores, API specs, test suites) requires the optimise skill to support **dynamic metric selection** — choosing which metrics are relevant to the target type. The current metric library (M1–M15 + MX series) is instruction-file-centric. A metric taxonomy by target type would allow the Phase 2 baseline to skip irrelevant metrics and add domain-appropriate ones without manual curation each run.
 **Seed candidate:** yes — implicit coupling at persona boundaries is a predictable failure mode in growing agentic systems; making coupling explicit is a prerequisite for future modularisation
