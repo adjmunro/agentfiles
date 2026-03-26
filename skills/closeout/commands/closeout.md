@@ -146,47 +146,66 @@ After all writes, re-read `MEMORY.md` and verify:
 
 Run: `git status --short`
 
-If the output is empty (working tree clean), skip to Phase 4 and note "Working tree already clean."
+If the output is empty, skip to Phase 4 and note "Working tree already clean."
 
-**Step 2 — Inspect what is uncommitted:**
+Check for secret/credential files before proceeding (`.env`, `credentials.*`, `*.key`, `*.pem`). If any are present among the changes, stop and warn the user — do not commit.
 
-Run: `git diff --stat HEAD` and `git status --short` together to understand the scope.
+**Step 2 — Assess the state of the changes:**
 
-Categorise the changes into areas (e.g. `skills/closeout`, `memory`, `hooks`, `commands`). This determines the commit scope and message.
+Run `git diff HEAD` and read the diff carefully. Classify the working tree as one of two states:
 
-**Step 3 — Stage all changes:**
+**Dirty / WIP** — the work is clearly unfinished. Signs include:
+- Partially implemented features (stubs, TODOs, missing wiring)
+- Broken or inconsistent state across related files
+- Changes that make no coherent sense without further work
+- Mix of unrelated half-done things
 
-Run: `git add -A`
+**Clean-ish / done** — the changes are coherent and complete enough to stand on their own. Signs include:
+- Each touched area forms a logical, self-contained unit
+- No obvious holes or placeholders
+- Changes could be understood by a future agent without additional context
 
-Do not selectively stage — the goal is a clean working tree. If you notice files that look like secrets or credentials (`.env`, `credentials.*`, `*.key`, `*.pem`), stop and warn the user instead of staging them.
+---
 
-**Step 4 — Compose the commit message:**
+### If dirty / WIP → single WIP commit
 
-Use conventional commits. The scope should reflect the primary area changed:
+Stage everything and make one commit with a `wip:` prefix. The commit body must include a handoff note so the next agent knows to reset before building on it.
 
-- Single area: `chore(closeout): session closeout — save memory entries`
-- Multiple areas: use the dominant area as scope, mention others in the body
+```zsh
+git add -A
+git commit -m "$(cat <<'EOF'
+wip(<scope>): <brief description of what is in progress>
 
-Body format:
+Work in progress — not complete. The next agent working in this area
+should run `git reset HEAD~1` to unstage these changes before making
+their own commits.
 
+State of play:
+- <area>: <what was done / what remains>
+- <area>: <what was done / what remains>
+
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+EOF
+)"
 ```
-Committed as part of session closeout.
 
-Areas changed:
-- skills/closeout: <brief description>
-- memory: <brief description>
-- <other area>: <brief description>
-```
+---
 
-If there is only one area and the change is self-evident, a body is optional.
+### If clean-ish / done → logical group commits
 
-**Step 5 — Commit:**
+Do not lump everything into one commit. Group the changes into small, related sets and commit them separately in a sensible order (dependencies first, then dependents; foundational changes before surface changes).
 
-Run the commit. Use a HEREDOC to pass the message cleanly:
+For each group:
+
+1. Stage only the files in that group: `git add <file> <file> ...`
+2. Compose a conventional commit message:
+   - Subject: `<type>(<scope>): <description>` — under 72 characters
+   - Body: describe what changed and why; mention any non-obvious side effects
+3. Commit using a HEREDOC:
 
 ```zsh
 git commit -m "$(cat <<'EOF'
-chore(<scope>): <subject>
+<type>(<scope>): <subject>
 
 <body>
 
@@ -195,9 +214,13 @@ EOF
 )"
 ```
 
-**Step 6 — Verify:**
+Repeat for each group. Common `type` values: `feat`, `fix`, `refactor`, `docs`, `chore`.
 
-Run `git status --short` again. If the output is empty, the tree is clean. If not, report what remains and why it was not committed (e.g. untracked files that look like build artefacts or secrets).
+---
+
+**Step 3 — Verify:**
+
+Run `git status --short`. If the output is empty, the tree is clean. If anything remains, report it and explain why it was not committed (e.g. untracked build artefacts, intentionally excluded files).
 
 ---
 
@@ -226,8 +249,8 @@ Output a brief, structured report:
   - `<file path>` — <one-line description of what was saved> _(project file / memory)_
 
 ### Git
-- <Committed / Already clean>
-  - Commit: `<subject line>` (<SHA, if available>)
+- <WIP commit / N logical commits / Already clean>
+  - `<subject line>` _(wip / type)_
   - Or: Working tree was already clean — nothing to commit.
 
 ### Open work
