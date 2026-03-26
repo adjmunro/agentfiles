@@ -98,13 +98,27 @@ For each candidate, record:
 
 If the candidate list is empty, record that explicitly and skip Phase 2.
 
+**Step 4 — Write the candidate list as a carry-forward anchor:**
+
+Before proceeding to Phase 2, write the candidate list out explicitly in this format — do not carry it only in working memory:
+
+```
+## Closeout Candidates — <date>
+| Destination path | Action | Type | Reason |
+|-----------------|--------|------|--------|
+| skills/closeout/FUTURE.md | create | project | ... |
+| memory/feedback_foo.md | create | feedback | ... |
+```
+
+If there are no candidates, write: "No candidates identified — skip Phase 2."
+
 ---
 
 ## Phase 2 — Writes (Scribe)
 
 *Scribe is active. Write precisely — these files carry context into future sessions.*
 
-Work through the candidate list from Phase 1.
+Re-read the candidate list you wrote at the end of Phase 1. Work through it row by row — do not rely on what you recall from Phase 1.
 
 ### 2a — Non-instruction project file writes
 
