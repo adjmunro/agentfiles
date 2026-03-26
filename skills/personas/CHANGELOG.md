@@ -1,5 +1,14 @@
 # Personas Changelog
 
+## v1.8.0 - 2026-03-27 - Flint (Dialectician)
+
+**New persona. Fills the argument analysis cognitive gap — 21 personas, 21 distinct taxonomy modes.**
+
+- Added **Flint (Dialectician)** (`dialectician/persona.md` + `dialectician/soul.md`) — applies a formal fallacy taxonomy (formal + informal, by category) to any input regardless of artefact type; unique cognitive function is treating reasoning structure as the primary object of analysis rather than content gaps or specification loopholes
+- Registered in SKILL.md roster, summon.md persona table, evolve.md taxonomy, and TESTING.md per-persona table
+
+---
+
 ## v1.7.0 - 2026-03-27 - Optimise Run 6
 
 **Opening composite: 95.0% → final: 96.3% (+1.3pp). All 2 hypotheses confirmed. Auto loop complete (>95% threshold).**
