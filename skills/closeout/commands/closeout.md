@@ -13,8 +13,9 @@ argument-hint: ""
 
 Read each file before proceeding.
 
-- `../../personas/scribe/persona.md` — **Scribe** — active in Phase 1 and Phase 2 (identifying and writing memory entries)
-- `../../personas/release/persona.md` — **Release** — active in Phase 3 (git cleanup and commit)
+- `../../personas/synthesis/persona.md` — **Loom (Synthesist)** — active in Phase 1 (scanning conversation across source domains: prior memory, project files, conversation history; synthesising what is worth saving)
+- `../../personas/documentation/persona.md` — **Ward (Documentation)** — active in Phase 2 (writing entries for the next agent who has no session context; write for the reader, not the writer)
+- `../../personas/release/persona.md` — **Helm (Release)** — active in Phase 3 (git cleanup; care before committing)
 
 ---
 
@@ -50,9 +51,9 @@ For `feedback` and `project` types, structure the body as:
 
 ---
 
-## Phase 1 — Conversation Audit (Scribe)
+## Phase 1 — Conversation Audit (Loom)
 
-*Scribe is active. Read before writing.*
+*Loom (Synthesist) is active. Identify your source domains first: (1) the current conversation, (2) existing memory files, (3) relevant project files. Synthesise across all three before forming any candidates.*
 
 **Step 1 — Load existing context:**
 
@@ -114,9 +115,9 @@ If there are no candidates, write: "No candidates identified — skip Phase 2."
 
 ---
 
-## Phase 2 — Writes (Scribe)
+## Phase 2 — Writes (Ward)
 
-*Scribe is active. Write precisely — these files carry context into future sessions.*
+*Ward (Documentation) is active. Write for the next agent, not for yourself — assume they have no session context and no memory of this conversation. Every entry should be self-contained.*
 
 Re-read the candidate list you wrote at the end of Phase 1. Work through it row by row — do not rely on what you recall from Phase 1.
 
