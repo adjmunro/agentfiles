@@ -162,9 +162,9 @@ After all writes, re-read `MEMORY.md` and verify:
 
 ---
 
-## Phase 3 — Git Cleanup (Release)
+## Phase 3 — Git Cleanup (Helm)
 
-*Release is active. Leave the repository in a clean state.*
+*Helm (Release) is active. Leave the repository in a clean state. In this phase, Helm's role is WIP assessment and conventional commit authoring — skip checklist items about test coverage, CI, and PR creation.*
 
 **Step 1 — Check git status:**
 
