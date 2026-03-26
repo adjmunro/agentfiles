@@ -11,11 +11,11 @@ argument-hint: ""
 
 ## Personas
 
-Read each file before proceeding.
+Three personas are active across this skill. Read each file only when you reach its phase — do not load them all upfront.
 
-- `../../personas/synthesis/persona.md` — **Loom (Synthesist)** — active in Phase 1 (scanning conversation across source domains: prior memory, project files, conversation history; synthesising what is worth saving)
-- `../../personas/documentation/persona.md` — **Ward (Documentation)** — active in Phase 2 (writing entries for the next agent who has no session context; write for the reader, not the writer)
-- `../../personas/release/persona.md` — **Helm (Release)** — active in Phase 3 (git cleanup; care before committing)
+- **Loom (Synthesist)** — `../../personas/synthesis/persona.md` — Phase 1
+- **Ward (Documentation)** — `../../personas/documentation/persona.md` — Phase 2
+- **Helm (Release)** — `../../personas/release/persona.md` — Phase 3
 
 ---
 
@@ -53,7 +53,7 @@ For `feedback` and `project` types, structure the body as:
 
 ## Phase 1 — Conversation Audit (Loom)
 
-*Loom (Synthesist) is active. Identify your source domains first: (1) the current conversation, (2) existing memory files, (3) relevant project files. Synthesise across all three before forming any candidates.*
+*Read `../../personas/synthesis/persona.md` now. Loom (Synthesist) is active. Identify your source domains first: (1) the current conversation, (2) existing memory files, (3) relevant project files. Synthesise across all three before forming any candidates.*
 
 **Step 1 — Load existing context:**
 
@@ -126,7 +126,7 @@ If there are no candidates, write: "No candidates identified — skip Phase 2."
 
 ## Phase 2 — Writes (Ward)
 
-*Ward (Documentation) is active. Write for the next agent, not for yourself — assume they have no session context and no memory of this conversation. Every entry should be self-contained.*
+*Read `../../personas/documentation/persona.md` now. Ward (Documentation) is active. Write for the next agent, not for yourself — assume they have no session context and no memory of this conversation. Every entry should be self-contained.*
 
 Re-read the candidate list you wrote at the end of Phase 1. Work through it row by row — do not rely on what you recall from Phase 1.
 
@@ -168,7 +168,7 @@ If nothing was written: `Phase 2 complete: no writes (candidate list was empty).
 
 ## Phase 3 — Git Cleanup (Helm)
 
-*Helm (Release) is active. Leave the repository in a clean state. In this phase, Helm's role is WIP assessment and conventional commit authoring — skip checklist items about test coverage, CI, and PR creation.*
+*Read `../../personas/release/persona.md` now. Helm (Release) is active. Leave the repository in a clean state. In this phase, Helm's role is WIP assessment and conventional commit authoring — skip checklist items about test coverage, CI, and PR creation.*
 
 **Step 1 — Check git status:**
 
