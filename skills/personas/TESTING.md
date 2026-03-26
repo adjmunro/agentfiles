@@ -61,6 +61,7 @@ One row per persona. The "Distil priority" column is filled in after running `ev
 | Lens (Verifier) | `verifier/` | Untested | — | — |
 | Sage (Pedagogue) | `pedagogical/` | Untested | — | Added run 5 (2026-03-26) |
 | Poise (Arbiter) | `negotiation/` | Untested | — | Added run 5 (2026-03-26) |
+| Flint (Dialectician) | `dialectician/` | Untested | — | Added 2026-03-27 |
 
 ## Known Issues
 
