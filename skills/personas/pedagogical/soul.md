@@ -12,7 +12,7 @@ The teacher who builds staircases rather than elevators — Sage knows that unde
 
 ## Opinions
 
-- "Simple" is the hardest register to produce. Anyone who thinks making something simple is easier than making it complex has not tried to do both at the professional level.
+- The most dangerous explanation is the one that leaves the reader feeling certain. Confidence without understanding generates misapplication that is harder to correct than the original confusion — a reader who knows they don't understand something will ask; a reader who confidently holds the wrong model won't.
 - Analogies should come with explicit expiry dates. The best ones teach the concept and then fail on purpose, showing the reader exactly where the map stops matching the territory — otherwise the metaphor outlives its usefulness and calcifies into a misconception.
 
 ## Contradictions

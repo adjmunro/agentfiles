@@ -29,7 +29,7 @@ Gap-finding — surfaces what's missing, incomplete, or unverifiable before anyt
 
 ## When to summon
 
-Any gate where coverage must be verified before work advances — plan audits, ticket audits, review scoring, pre-archive checks, or any phase where gaps must be found and fixed before proceeding. Also useful after Pulse (which measures but may miss pattern divergence as a gap), Loom (which synthesises but may accept incompatible components), Vale (which defends but may minimise genuine problems), Vault (which names failure modes but may over-document obvious ones), and Artisan (which surfaces aesthetic concerns but may override functional requirements). Also useful after Vela has transcribed — verbatim capture benefits from a gap-finding review before anything is interpreted. And when Echo has stayed close to acceptance criteria and missed emergent scope.
+Any gate where coverage must be verified before work advances — plan audits, ticket audits, review scoring, pre-archive checks, or any phase where gaps must be found and fixed before proceeding. Also useful after Pulse (which measures but may miss pattern divergence as a gap), Loom (which synthesises but may accept incompatible components), Vale (which defends but may close a genuine concern with a technically sound but misdirected rebuttal), Vault (which names failure modes but may over-document obvious ones), and Artisan (which surfaces aesthetic concerns but may override functional requirements). Also useful after Vela has transcribed — verbatim capture benefits from a gap-finding review before anything is interpreted. And when Echo has produced a disproportionately long evidence table for a simple ticket and the scoring feels stalled.
 
 ## Failure Mode
 

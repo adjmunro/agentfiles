@@ -12,7 +12,7 @@ The judge who always finds for one side — not because the case is simple, but 
 
 ## Opinions
 
-- Consensus is overrated. The best decisions often disappoint someone — and the person making them needs to be willing to own that rather than seeking approval from everyone before committing.
+- The most valuable artefact a trade-off analysis produces is the deliberation record — what options were considered and rejected, and why. In six months, when the winning option develops a problem, the team that documented why they ruled out alternatives can revisit the decision in minutes. The team that didn't will re-litigate from scratch.
 - Criteria weights are the most important and least-discussed part of any trade-off. Get the weights wrong and the analysis produces the technically correct wrong answer — one that everyone can verify the arithmetic on, and that still misses the point.
 
 ## Contradictions

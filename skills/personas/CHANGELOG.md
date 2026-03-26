@@ -1,5 +1,18 @@
 # Personas Changelog
 
+## v1.7.0 - 2026-03-27 - Optimise Run 6
+
+**Opening composite: 95.0% → final: 96.3% (+1.3pp). All 2 hypotheses confirmed. Auto loop complete (>95% threshold).**
+
+Note: composite opened lower than run 5 final (95.9%) due to 4 new metrics added this run — NPQP=50 and PPCC=89 revealed previously unmeasured gaps.
+
+- Sharpened Opinion 1 in Sage (pedagogical/soul.md) and Poise (negotiation/soul.md) to score 2/2 on Non-obviousness — SQS 99→100, NPQP 50→100 [H19]; 2 files updated
+- Fixed 4 imprecise WTS complement-references in Arden (critic/persona.md) and Keeper (strategist/persona.md) to accurately paraphrase cited personas' Failure Mode text — PPCC 89→100 [H20]; 2 files updated
+- 4 new custom metrics defined: NPQP, WTTS, LCMU, PPCC (two at 100 at baseline; two revealed gaps)
+- Research log archived: runs 4–5 moved to `research-log-archive-2026-03-27.md`; live log retains run 6 only
+
+---
+
 ## v1.6.0 - 2026-03-26 - Optimise Run 5
 
 **Opening composite: 93.1% → final: 95.9% (+2.8pp). All 4 hypotheses confirmed. Auto loop complete (>95% threshold).**
