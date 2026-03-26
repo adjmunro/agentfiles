@@ -3,10 +3,11 @@ allowed-tools: Read, Glob, Grep, Bash, Write, Edit
 argument-hint: ""
 ---
 
-<!-- ORCHESTRATOR: This skill closes the session cleanly. It writes insights to the most
-     relevant project file first (CLAUDE.md, SKILL.md, AGENTS.md, etc.) and falls back to
-     the memory directory only for content with no natural project home. It then stages and
-     commits all uncommitted changes. -->
+<!-- ORCHESTRATOR: This skill closes the session cleanly. It writes notes and findings to
+     non-instruction project files (research logs, FUTURE.md) or to the memory directory.
+     It does NOT touch instruction files (AGENTS.md, SKILL.md, commands/, CLAUDE.md) — those
+     are modified through deliberate implementation workflows, not session cleanup. It then
+     stages and commits all uncommitted changes. -->
 
 ## Personas
 
@@ -80,22 +81,15 @@ Scan the full conversation history (everything above this prompt) for content wo
 
 **Step 3 — Route each candidate to its destination:**
 
-For each candidate, determine where it belongs using this priority order:
+Closeout does **not** write to instruction files (`AGENTS.md`, `SKILL.md`, `commands/`, `CLAUDE.md`). Modifying those is a deliberate implementation act that belongs in a proper workflow, not in session cleanup.
 
-1. **Relevant project file** — if there is a clear, natural home in the codebase, prefer it. First glob the relevant directory and read what files actually exist, then pick the best fit based on the nature of the content:
+For each candidate, pick the first destination that fits:
 
-   **Established content** (implemented behaviour, confirmed conventions, completed decisions) — write into files that agents read as instructions:
-   - A skill's `AGENTS.md` — agent behaviour rules, commit conventions, scope limits
-   - A skill's `SKILL.md` — user-facing description, modes, usage notes
-   - A skill's `commands/*.md` — refinements to a specific phase or step
-   - `CLAUDE.md` — project-wide conventions or instructions
-
-   **Speculative or forward-looking content** (ideas, plans, experiments, deferred work, open questions) — write into files that are **not** read as live instructions. Do **not** put these into `AGENTS.md`, `SKILL.md`, `commands/*.md`, or `CLAUDE.md` — doing so would cause agents to treat unimplemented plans as current behaviour. Instead use:
+1. **Non-instruction project file** — for notes, findings, or forward-looking content that belongs near a specific skill but must not influence agent behaviour yet:
    - A skill's `research-log-*.md` — exploration findings, candidate approaches
    - A skill's `FUTURE.md` (create if absent) — deferred plans, open questions, ideas worth revisiting
-   - Any other non-instruction file that already exists and is the obvious home
 
-2. **Memory file (fallback)** — use the memory directory only for content that has no natural project file home: user profile information, cross-project feedback, references to external systems, or project-state facts that do not belong in any instruction file.
+2. **Memory file** — for content with no natural project file home: user profile information, cross-project feedback, references to external systems, or project-state facts.
 
 For each candidate, record:
 - The destination file (path, or memory type + proposed filename)
@@ -108,20 +102,19 @@ If the candidate list is empty, record that explicitly and skip Phase 2.
 
 ## Phase 2 — Writes (Scribe)
 
-*Scribe is active. Write precisely — these files are read in future conversations.*
+*Scribe is active. Write precisely — these files carry context into future sessions.*
 
-Work through the candidate list from Phase 1 in routing priority order: project files first, memory as fallback.
+Work through the candidate list from Phase 1.
 
-### 2a — Project file writes
+### 2a — Non-instruction project file writes
 
-For each candidate routed to a project file:
+For each candidate routed to a `research-log-*.md` or `FUTURE.md`:
 
-1. Read the destination file first.
-2. Identify the right location within it (e.g. a relevant section in `AGENTS.md`, or an appropriate heading in `CLAUDE.md`).
-3. Edit it to add or update the information. Do not erase existing content unless it is directly contradicted. Preserve the file's existing structure and style.
-4. Keep additions concise — a new rule or note should be one to three lines, not a paragraph.
+1. If the file exists, read it first, then append or integrate the new content.
+2. If creating `FUTURE.md`, open with a brief heading and a one-line purpose note.
+3. Keep entries dated (`YYYY-MM-DD`) so they are easy to age out later.
 
-### 2b — Memory file writes (fallback)
+### 2b — Memory file writes
 
 For each candidate routed to the memory directory:
 
