@@ -3,9 +3,10 @@ allowed-tools: Read, Glob, Grep, Bash, Write, Edit
 argument-hint: ""
 ---
 
-<!-- ORCHESTRATOR: This skill closes the session cleanly. It writes to the memory directory
-     and stages/commits changes. It must not modify source files beyond what is needed to save
-     memory entries and commit existing work. -->
+<!-- ORCHESTRATOR: This skill closes the session cleanly. It writes insights to the most
+     relevant project file first (CLAUDE.md, SKILL.md, AGENTS.md, etc.) and falls back to
+     the memory directory only for content with no natural project home. It then stages and
+     commits all uncommitted changes. -->
 
 ## Personas
 
@@ -52,52 +53,71 @@ For `feedback` and `project` types, structure the body as:
 
 *Scribe is active. Read before writing.*
 
-**Step 1 — Load existing memory:**
+**Step 1 — Load existing context:**
 
-Read `MEMORY.md` to know what is already captured. Note the file names and descriptions so you do not duplicate them.
+Read `MEMORY.md` from the memory directory to know what is already captured. Also note which project files exist that might be relevant destinations (CLAUDE.md, skill AGENTS.md files, README, etc.).
 
 **Step 2 — Review the conversation:**
 
-Scan the full conversation history (everything above this prompt) for content that belongs in persistent memory but is not yet captured. Apply the following filter — only save content that meets at least one criterion:
+Scan the full conversation history (everything above this prompt) for content worth persisting. Apply the filter — only save content that meets at least one criterion:
 
-| Criterion | Memory type |
-|-----------|-------------|
-| Something learned about the user's role, expertise, or preferences | `user` |
-| A correction the user made to your approach, or a confirmed non-obvious choice | `feedback` |
-| A decision, goal, deadline, or rationale about ongoing project work | `project` |
-| A pointer to an external resource and what it's for | `reference` |
+| Criterion | Nature |
+|-----------|--------|
+| A convention, rule, or pattern that governs how this project works | Project file candidate |
+| A decision, rationale, or constraint about a specific skill or command | Skill file candidate |
+| A correction the user made to your approach, or a confirmed non-obvious choice | Feedback |
+| Something learned about the user's role, expertise, or preferences | User |
+| A decision, goal, or deadline about ongoing project work | Project |
+| A pointer to an external resource and what it's for | Reference |
 
 **Do not save:**
 
 - Code patterns derivable by reading the codebase
 - Git history or who changed what
 - Debugging solutions already in the code
-- Anything in CLAUDE.md
 - Ephemeral task details from this session only
-- The existence of this closeout skill (it's in the codebase)
+- Anything that is already captured in the files you've read
 
-**Step 3 — Build a candidate list:**
+**Step 3 — Route each candidate to its destination:**
 
-For each candidate entry, note:
-- The memory type
-- A proposed file name (e.g. `feedback_commit_style.md`)
-- Whether it should update an existing file or create a new one
-- A one-line summary of why it's worth saving
+For each candidate, determine where it belongs using this priority order:
+
+1. **Relevant project file** — if the insight applies to a specific skill, write it into that skill's `AGENTS.md` or `SKILL.md`. If it's a project-wide convention or instruction, write it into `CLAUDE.md`. If there is a clear, natural home in the codebase, prefer it — it will be read by any agent working in that area, not just when memory is loaded.
+
+2. **Memory file (fallback)** — use the memory directory only for content that has no natural project file home: user profile information, cross-project feedback, references to external systems, or project-state facts that do not belong in any instruction file.
+
+For each candidate, record:
+- The destination file (path, or memory type + proposed filename)
+- Whether it should create a new entry or update an existing one
+- A one-line reason why it's worth saving
 
 If the candidate list is empty, record that explicitly and skip Phase 2.
 
 ---
 
-## Phase 2 — Memory Writes (Scribe)
+## Phase 2 — Writes (Scribe)
 
-*Scribe is active. Write precisely — memory files are read in future conversations.*
+*Scribe is active. Write precisely — these files are read in future conversations.*
 
-For each candidate from Phase 1:
+Work through the candidate list from Phase 1 in routing priority order: project files first, memory as fallback.
+
+### 2a — Project file writes
+
+For each candidate routed to a project file:
+
+1. Read the destination file first.
+2. Identify the right location within it (e.g. a relevant section in `AGENTS.md`, or an appropriate heading in `CLAUDE.md`).
+3. Edit it to add or update the information. Do not erase existing content unless it is directly contradicted. Preserve the file's existing structure and style.
+4. Keep additions concise — a new rule or note should be one to three lines, not a paragraph.
+
+### 2b — Memory file writes (fallback)
+
+For each candidate routed to the memory directory:
 
 **If creating a new file:**
 
-1. Write the file to the memory directory using the frontmatter format above.
-2. Add a row to `MEMORY.md` in the table: `| [filename.md](filename.md) | type | one-line description |`
+1. Write the file using the frontmatter format defined in the "Memory directory" section above.
+2. Add a row to `MEMORY.md`: `| [filename.md](filename.md) | type | one-line description |`
 
 **If updating an existing file:**
 
@@ -105,9 +125,9 @@ For each candidate from Phase 1:
 2. Edit it to incorporate the new information. Do not erase old content unless it is directly contradicted.
 3. Update the description in `MEMORY.md` if the scope has changed.
 
-Keep entries concise. A memory file should be skimmable in under 30 seconds.
+Keep memory entries concise — skimmable in under 30 seconds.
 
-After writing, re-read `MEMORY.md` and verify:
+After all writes, re-read `MEMORY.md` and verify:
 - All rows in the index point to files that exist
 - No duplicate entries
 - The table does not exceed 200 rows (truncation point)
@@ -197,9 +217,9 @@ Output a brief, structured report:
 ```
 ## Closeout — <date>
 
-### Memory
+### Saved
 - <Saved / Updated / No new entries>
-  - [filename.md] — <one-line description of what was saved>
+  - `<file path>` — <one-line description of what was saved> _(project file / memory)_
 
 ### Git
 - <Committed / Already clean>
