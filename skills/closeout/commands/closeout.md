@@ -167,18 +167,49 @@ Run `git diff HEAD` and read the diff carefully. Classify the working tree as on
 
 ---
 
-### If dirty / WIP → single WIP commit
+### If dirty / WIP → single WIP commit + RESUME.md
 
-Stage everything and make one commit with a `wip:` prefix. The commit body must include a handoff note so the next agent knows to reset before building on it.
+**Step A — Write a RESUME.md handoff file.**
+
+A single `RESUME.md` in the repo root would be clobbered if two agents close out in parallel. Use a timestamped filename instead:
+
+```
+RESUME-<YYYY-MM-DDTHH-MM>.md
+```
+
+Write it to the repo root. Content:
+
+```markdown
+# Resume — <YYYY-MM-DD HH:MM>
+
+## Branch
+<branch name>
+
+## State of play
+- <area>: <what was done>
+- <area>: <what remains to do>
+
+## Next steps
+<Concrete first action the resuming agent should take>
+
+## How to resume
+1. Run `git reset --soft HEAD~1` to restore all WIP changes to the working tree (this is a soft reset — your changes are preserved, only the commit is undone).
+2. Read this file for context, then delete it.
+3. Proceed with your own commits.
+```
+
+Add `RESUME-*.md` to `.gitignore` if not already present, so these files do not pollute the repository history. Alternatively, include it in the WIP commit and note that the resuming agent should delete it after reading — choose whichever is more appropriate given the repo's `.gitignore` conventions.
+
+**Step B — Stage everything and commit.**
 
 ```zsh
 git add -A
 git commit -m "$(cat <<'EOF'
 wip(<scope>): <brief description of what is in progress>
 
-Work in progress — not complete. The next agent working in this area
-should run `git reset HEAD~1` to unstage these changes before making
-their own commits.
+Work in progress — not complete. To resume:
+  git reset --soft HEAD~1   # soft reset — changes return to working tree, nothing is lost
+  cat RESUME-<timestamp>.md  # read the handoff notes, then delete the file
 
 State of play:
 - <area>: <what was done / what remains>
@@ -188,6 +219,8 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
 EOF
 )"
 ```
+
+> **Important:** `git reset --soft HEAD~1` undoes only the commit — all changes come back to the working tree intact. Never use `--hard`, which would permanently discard the changes.
 
 ---
 
