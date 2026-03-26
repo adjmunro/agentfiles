@@ -205,7 +205,17 @@ Apply these gates in order — stop at the first that applies:
 
 ### If dirty / WIP → single WIP commit + RESUME.md
 
-**Step A — Write a RESUME.md handoff file.**
+**Step A — Quick kanban scan.**
+
+Before writing RESUME.md, run a quick kanban scan (same as Phase 4) to capture open tickets. This ensures the RESUME includes any active work context:
+
+```zsh
+ls .kanban/*/05-in-progress/ .kanban/*/04-todo/ 2>/dev/null
+```
+
+Note any ticket filenames found — include them in RESUME.md under "State of play".
+
+**Step B — Write a RESUME.md handoff file.**
 
 A single `RESUME.md` in the repo root would be clobbered if two agents close out in parallel. Use a timestamped filename instead:
 
@@ -213,7 +223,9 @@ A single `RESUME.md` in the repo root would be clobbered if two agents close out
 RESUME-<YYYY-MM-DDTHH-MM>.md
 ```
 
-Write it to the repo root. Content:
+Write it to the repo root. **Include it in the WIP commit** (do not add to `.gitignore`) — the resuming agent finds it via `git show HEAD` or sees it in the working tree after the soft reset.
+
+Content:
 
 ```markdown
 # Resume — <YYYY-MM-DD HH:MM>
@@ -224,6 +236,7 @@ Write it to the repo root. Content:
 ## State of play
 - <area>: <what was done>
 - <area>: <what remains to do>
+- Open tickets: <ticket names, or "none">
 
 ## Next steps
 <Concrete first action the resuming agent should take>
@@ -233,8 +246,6 @@ Write it to the repo root. Content:
 2. Read this file for context, then delete it.
 3. Proceed with your own commits.
 ```
-
-Add `RESUME-*.md` to `.gitignore` if not already present, so these files do not pollute the repository history. Alternatively, include it in the WIP commit and note that the resuming agent should delete it after reading — choose whichever is more appropriate given the repo's `.gitignore` conventions.
 
 **Step B — Stage everything and commit.**
 
