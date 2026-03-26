@@ -169,16 +169,24 @@ Check for secret/credential files before proceeding (`.env`, `credentials.*`, `*
 
 Run `git diff HEAD` and read the diff carefully. Classify the working tree as one of two states:
 
-**Dirty / WIP** — the work is clearly unfinished. Signs include:
-- Partially implemented features (stubs, TODOs, missing wiring)
-- Broken or inconsistent state across related files
-- Changes that make no coherent sense without further work
-- Mix of unrelated half-done things
+Apply these gates in order — stop at the first that applies:
 
-**Clean-ish / done** — the changes are coherent and complete enough to stand on their own. Signs include:
-- Each touched area forms a logical, self-contained unit
-- No obvious holes or placeholders
-- Changes could be understood by a future agent without additional context
+1. **Automatic WIP** if any of the following are true (check via `git grep -n "TODO\|FIXME" $(git diff --name-only HEAD)`):
+   - Any changed file contains a TODO or FIXME marker
+   - Any changed file shows more deletions than additions (indicates mid-restructure)
+   - Any changed file is a stub or scaffold with no implementation body
+
+2. **Dirty / WIP** — if gate 1 does not apply but the work looks clearly unfinished:
+   - Partially implemented features without obvious next commits
+   - Broken or inconsistent state across related files
+   - Mix of unrelated half-done things
+
+3. **Clean-ish / done** — only if the above gates both clearly do not apply:
+   - Each touched area forms a logical, self-contained unit
+   - No obvious holes or placeholders
+   - Changes could be understood by a future agent without additional context
+
+> **Default:** If you are uncertain which applies, default to **WIP**. A cautious WIP commit does less damage than a premature clean-ish split.
 
 ---
 
