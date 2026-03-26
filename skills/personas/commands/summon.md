@@ -32,6 +32,7 @@ Summon one or more personas and hold a freeform conversation with them. Each per
 | `verifier` | Lens (Verifier) | `../verifier/` |
 | `pedagogical` | Sage (Pedagogue) | `../pedagogical/` |
 | `negotiation` | Poise (Arbiter) | `../negotiation/` |
+| `dialectician` | Flint (Dialectician) | `../dialectician/` |
 
 ## Setup
 

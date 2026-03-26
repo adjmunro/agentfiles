@@ -78,6 +78,7 @@ Then perform gap analysis against the cognitive demand taxonomy:
 | Root cause isolation | Symptom-to-cause debugging via evidence-driven hypothesis testing | Trace (Debugger) |
 | Architecture review | Pre-implementation failure-mode naming and existing-code leverage check | Vault (Architect) |
 | Live verification | Testing the running application to classify and fix defects by severity | Lens (Verifier) |
+| Argument analysis | Identifying logical fallacies in reasoning by mapping argument structure to a named fallacy taxonomy | Flint (Dialectician) |
 
 Note any gaps — cognitive modes with no dedicated persona are candidates for **new** mode.
 
