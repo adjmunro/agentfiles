@@ -61,7 +61,16 @@ Read `MEMORY.md` from the memory directory to know what is already captured. Als
 
 **Step 2 — Review the conversation:**
 
-Scan the full conversation history (everything above this prompt) for content worth persisting. Apply the filter — only save content that meets at least one criterion:
+Scan the full conversation history (everything above this prompt) for content worth persisting. For each candidate, apply this three-gate test — save only if all three pass:
+
+1. **Future value:** Would this help a future agent who has not read this conversation?
+2. **Not derivable:** Can it _not_ be derived by reading the current file state or git history?
+3. **Not ephemeral:** Is it relevant beyond this session only?
+
+If gate 1=yes, gate 2=no (not derivable), gate 3=no (not ephemeral) → **save.**
+If any gate fails → **do not save.**
+
+Then classify what passes all three gates against these types:
 
 | Criterion | Nature |
 |-----------|--------|
@@ -72,13 +81,13 @@ Scan the full conversation history (everything above this prompt) for content wo
 | A decision, goal, or deadline about ongoing project work | Project |
 | A pointer to an external resource and what it's for | Reference |
 
-**Do not save:**
+**Do not save** (gate 2 or 3 failures):
 
-- Code patterns derivable by reading the codebase
-- Git history or who changed what
-- Debugging solutions already in the code
-- Ephemeral task details from this session only
-- Anything that is already captured in the files you've read
+- Code patterns derivable by reading the codebase (gate 2 fails)
+- Git history or who changed what (gate 2 fails)
+- Debugging solutions already in the code (gate 2 fails)
+- Ephemeral task details from this session only (gate 3 fails)
+- Anything already captured in the files you've read (gate 1 fails)
 
 **Step 3 — Route each candidate to its destination:**
 
