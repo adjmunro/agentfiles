@@ -160,6 +160,10 @@ After all writes, re-read `MEMORY.md` and verify:
 - No duplicate entries
 - The table does not exceed 200 rows (truncation point)
 
+**Transition note — before Phase 3:** Write a one-line summary of what Phase 2 produced, e.g.:
+`Phase 2 complete: wrote skills/closeout/FUTURE.md (new), updated memory/feedback_foo.md.`
+If nothing was written: `Phase 2 complete: no writes (candidate list was empty).`
+
 ---
 
 ## Phase 3 — Git Cleanup (Helm)
@@ -303,6 +307,11 @@ If `.kanban/` does not exist or all columns are empty, note: "No open kanban tic
 ---
 
 ## Phase 5 — Status Report
+
+Before writing the report, gather from prior phases:
+- **Saved:** the Phase 2 transition note (what files were written, if any)
+- **Git:** the commit subject line(s) and SHA(s) from Phase 3, and whether WIP or clean-ish
+- **Open work:** the kanban findings from Phase 4
 
 Output a brief, structured report:
 
