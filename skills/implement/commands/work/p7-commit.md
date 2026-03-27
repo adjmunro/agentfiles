@@ -2,6 +2,8 @@
 <!-- Part of: work.md orchestrator -->
 <!-- Active when: any phase produces a meaningful artifact (claimed ticket, implementation, work log, review move) -->
 
+**Read `../../personas/ink/persona.md` and `../../personas/ink/soul.md` now. Ink (Commit Curator) is active for this phase.**
+
 After each phase that produces a meaningful artifact (claimed ticket, implementation commit, work log, review move), make a conventional commit:
 
 ```
