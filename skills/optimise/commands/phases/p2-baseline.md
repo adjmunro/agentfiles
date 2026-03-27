@@ -321,6 +321,30 @@ average rework cycles per ticket. Cap at 2 cycles for normalisation — a rate o
 cycles per ticket maps to 0%.
 **Weight:** 2×
 
+### Seed Metric Weights Reference
+
+Use this table when building the composite. All weights are fixed; do not adjust them.
+
+| Metric | Weight |
+|--------|--------|
+| Intent-to-Output Traceability (M1) | 2× |
+| Directive Density (M2) | 1× |
+| Instruction Ambiguity Rate (M3) | 1× |
+| Wiring Completeness Score (M4) | 1× |
+| Redundancy Index (M5) | 1× |
+| AC Concreteness (M6) | 2× |
+| Subagent Alignment Score (M7) | 1× |
+| Human Touchpoint Count (M8) | 2× |
+| Context Decay Resilience (M9) | 2× |
+| Context Loading Efficiency (M10) | 2× |
+| Parallelisation Safety Score (M11) | 1× |
+| Information Freshness Score (M12) | 2× |
+| Instruction Token Efficiency (M13) | 1× |
+| Persona-Phase Fit Score (M14) | 1× |
+| Persona Richness Score (M15) | 1× |
+
+Custom metrics define their own weights in their `**Weight:**` annotation. MX-OQ series weights are already annotated in their definitions above.
+
 ### Composite Calculation
 
 ```

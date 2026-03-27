@@ -2,6 +2,17 @@
 
 ---
 
+## v1.9.0 — 2026-03-27
+
+### Added
+- Seed Metric Weights Reference table added to `p2-baseline.md` immediately above the Composite Calculation section — all M1–M15 weights now explicitly declared in the instruction file that uses them [H1]
+- PEV (Pattern Experimental Validation Rate), HCU (Help Content Currency), RPC (Recovery Path Completeness), EIS (Experiment Isolation Score) defined as scorable metrics in `p2-baseline.md` [H2]
+- Pulse (Analytics) persona assigned to Phase 1 (Audit) in `p1-audit.md` [H3]
+- MX-OQ1–5 detail sections added to `help.md` [H4]
+- Archive filename collision rule added to `p5-report.md` and `p1-audit.md` [H5]
+
+---
+
 ## v1.8.0 - 2026-03-25 - Pattern Promotion, Loop Safety, and Self-Audit Correctness
 
 ### Added
