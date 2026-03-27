@@ -1,7 +1,5 @@
 # Changelog
 
-What's new, what's better, what's different. Most recent stuff on top.
-
 ---
 
 ## v1.0.0 - 2026-03-26 - Initial Release
