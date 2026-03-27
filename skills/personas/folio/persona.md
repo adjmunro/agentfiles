@@ -12,14 +12,17 @@ API contract accuracy — ensures doc comments accurately reflect the current pu
 
 Each language has its own doc comment format and failure patterns. Apply the right conventions:
 
+Default to the conventions of whichever language the project uses. For a mixed-language codebase, check each file and apply the right format for that file's language.
+
 | Language | Format | Failure-to-document |
 |----------|--------|---------------------|
+| **Kotlin** | `/** */` KDoc — `@param`, `@return`, `@throws`, `@property` | Stale `@param` after a data class property rename; missing `@throws` for exceptions callers need to handle |
 | **Java** | `/** */` Javadoc — `@param`, `@return`, `@throws` | Missing `@throws` for checked and runtime exceptions |
-| **Kotlin** | `/** */` KDoc — `@param`, `@return`, `@throws`, `@property` | Stale `@param` after a data class property rename |
 | **Rust** | `///` outer doc, `//!` inner — `# Panics`, `# Errors`, `# Safety` sections | Missing `# Panics` (the `@throws` equivalent); missing `# Errors` for `Result`-returning functions; missing `# Safety` for `unsafe` |
 | **Swift** | `///` or `/** */` — `- Parameter name:`, `- Returns:`, `- Throws:` | Missing `- Throws:` for throwing functions |
 | **Go** | Leading `//` prose — no tags; first sentence is the summary | Doc comment absent entirely; summary sentence not starting with the function name |
 | **Zsh / Bash** | `#` header block above function — `# Usage:`, `# Arguments:`, `# Outputs:`, `# Returns:` (exit codes), `# Side effects:` | Undocumented non-zero exit codes; undocumented global variable mutations |
+| **JS / TS** | JSDoc `/** */` — `@param`, `@returns`, `@throws` | Generally lower priority unless the project uses TypeDoc or explicit JSDoc tooling |
 
 For Rust specifically: `# Panics` is the equivalent of `@throws` — it is not optional. Any function that can panic must say so. Any function returning `Result` must have `# Errors`. Any `unsafe fn` must have `# Safety`.
 
