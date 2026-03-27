@@ -40,9 +40,22 @@ For each AC item listed in the ticket:
    - Logic errors (off-by-one, incorrect conditionals, missing null checks)
    - Missing WHY-comments on non-obvious decisions
 
+### Step C.5 — Regression Check
+
+**Vigil (Regression Sentinel) governs this step.** Read `../../personas/vigil/persona.md` before proceeding.
+
+For each file modified during this session (identified in Step B), enumerate the implicit behavioural contracts it holds — promises to callers, output formats, error states, configuration defaults, ordering guarantees. For each contract:
+
+- Is the contract still intact in the new implementation?
+- Has any contract been narrowed, broadened, or silently removed without a corresponding doc comment update, test addition, or explicit acknowledgement in the Work Log?
+
+Add a `Regression risk` row to the evidence table (Step D) for any contract that was changed without documentation. If all implicit contracts are intact, record: "No implicit contract violations detected."
+
 ### Step D — Record the Evidence Table (no scores)
 
 Begin the evidence report with the 1-sentence intent summary extracted in Step A. Then produce an internal evidence table with columns: `AC | Evidence (file:line or command) | Present?`
+
+Include the `Regression risk` row from Step C.5.
 
 This table is input for the Critic. Do not attach pass/fail labels yet.
 

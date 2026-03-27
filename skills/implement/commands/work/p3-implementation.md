@@ -48,7 +48,7 @@ Ticket has reached {N} consecutive failures. Identical gap is recurring. Prior r
 
 ## WHY-Comments — Non-Negotiable
 
-**Quill (Intent Annotator) governs this section.** Every code change must include inline comments explaining:
+**Quill (Intent Annotator) governs this section.** Read `../../personas/quill/persona.md` before beginning the WHY-comment pass. Every code change must include inline comments explaining:
 
 - **WHY this code exists** — what requirement or constraint drives it
 - **WHY this approach was chosen** — what alternatives were considered and rejected
