@@ -321,6 +321,94 @@ average rework cycles per ticket. Cap at 2 cycles for normalisation — a rate o
 cycles per ticket maps to 0%.
 **Weight:** 2×
 
+### Pre-Defined Custom Metrics (Pattern Target Series)
+
+<!-- WHY these metrics exist: Patterns P10, P12, P13, and P14 each name a target metric
+     that is not in M1-M15 or the MX-OQ series. Without definitions, these targets are
+     unverifiable — pattern application cannot be attributed to a measured improvement.
+     These definitions close that attribution gap. -->
+
+The following metrics are pre-defined and must be evaluated when the corresponding
+pattern has been applied to the workflow in any prior run. They read from the
+research-log.md for prior run data. If the corresponding pattern has never been applied:
+write "SKIP — pattern <P-number> has not been applied to this target."
+
+#### HCU — Help Content Currency [custom, target of P12]
+
+<!-- WHY weight 1×: measures documentation trust chain completeness; important but
+     indirectly affects run quality compared to outcome signals. -->
+
+**Applies when:** The workflow has a parallel help or reference file (e.g., `help.md`)
+alongside its instruction command files.
+**Skip condition:** If no help/reference file exists, write "SKIP — no parallel help
+file found."
+**Methodology:** Enumerate all named entries in instruction files: metrics (M1–M15 plus
+any custom metrics defined in `research-log.md`), design patterns (P1–P-max), and any
+other named rules or phases. Count how many have a corresponding detail entry in the
+help/reference file. Rate = documented / total named entries.
+**Direction:** ↑ higher is better
+**Normalisation:** rate × 100
+**Weight:** 1×
+
+---
+
+#### RPC — Recovery Path Completeness [custom, target of P10]
+
+<!-- WHY weight 1×: measures whether failure states have prescribed recovery paths;
+     important for robustness but narrower in impact than outcome signals. -->
+
+**Applies when:** The workflow has one or more conditional branches (TTL tiers, skip
+conditions, error states, loop termination cases).
+**Skip condition:** If the workflow has no conditional branches, write "SKIP — no
+conditional branches found."
+**Methodology:** Enumerate all conditional branches across all phase files. For each,
+check whether an explicit prescribed next action is stated (not "use judgment"). Count
+branches with explicit recovery / total branches. Rate = covered / total.
+**Direction:** ↑ higher is better
+**Normalisation:** rate × 100
+**Weight:** 1×
+
+---
+
+#### PEV — Pattern Experimental Validation Rate [custom, target of P13]
+
+<!-- WHY weight 1×: measures whether the pattern library is evidence-backed; relevant to
+     the workflow's own improvement loop but indirect compared to direct outcome data. -->
+
+**Applies when:** The workflow has a design pattern library (P1–P-max) and at least one
+confirmed experiment in `research-log.md`.
+**Skip condition:** If no experiment results exist in `research-log.md`, write "SKIP —
+no confirmed experiment data found."
+**Methodology:** From `research-log.md`, count patterns that were used in at least one
+confirmed hypothesis (i.e., listed in a confirmed "Pattern applied:" field). Count
+applicable patterns: all patterns whose trigger condition has been true at least once
+in the workflow's run history (corrective patterns whose condition has never fired are
+excluded per P13). Rate = validated / applicable.
+**Direction:** ↑ higher is better
+**Normalisation:** rate × 100
+**Weight:** 1×
+
+---
+
+#### EIS — Experiment Isolation Score [custom, target of P14]
+
+<!-- WHY weight 1×: measures whether experiment results are attributable; affects
+     measurement accuracy rather than directly affecting outcome quality. -->
+
+**Applies when:** The workflow has ≥2 hypotheses in any Phase 4 session.
+**Skip condition:** If no Phase 4 session has had ≥2 hypotheses, write "SKIP — no
+multi-hypothesis sessions found."
+**Methodology:** From `research-log.md`, count Phase 4 sessions with ≥2 approved
+hypotheses. For each session, check: (a) was a pre-experiment dependency scan recorded
+(Step 0 present in the log)? (b) were overlapping hypotheses noted and run sequentially
+with a re-check? Rate = sessions with full isolation protocol / sessions with ≥2
+hypotheses.
+**Direction:** ↑ higher is better
+**Normalisation:** rate × 100
+**Weight:** 1×
+
+---
+
 ### Seed Metric Weights Reference
 
 Use this table when building the composite. All weights are fixed; do not adjust them.
