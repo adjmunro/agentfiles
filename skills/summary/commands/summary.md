@@ -182,6 +182,8 @@ If no commit bodies exist and no changelog entries provide rationale, write: "No
 
 *Ward (Documentation) is active.*
 
+*Intent Anchor: Phases 1–3 complete. SCOPE_REF is established and source material has been synthesised. Scanning open work now.*
+
 Scan for in-progress and queued tickets in `.kanban/`. Check for any items in these directories:
 
 - `.kanban/*/04-todo/` — queued, not started
@@ -206,6 +208,8 @@ If tickets are found, present them as a table:
 ## Phase 5 — Output
 
 *Ward (Documentation) is active. Assemble sections in the defined order. Write for the next person reading this — assume no prior context about this branch or session.*
+
+*Intent Anchor: Phases 1–4 complete. All source material is gathered and open work is scanned. Assembling final report now.*
 
 Before finalising output, verify completion: all 5 sections must be present (Context, Changes by area, New & changed features, Why, Open work), each containing either substantive content or explicit fallback text. Verify section order matches the list above.
 
