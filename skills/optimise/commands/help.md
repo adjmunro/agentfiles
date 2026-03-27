@@ -64,7 +64,7 @@ Read `research-log.md` in the optimise skill directory and append a compact stat
 | M1 · IOT | ... | ... | ... | ... |
 
 Only include metrics that have been applied at least once. Keep it to one line per metric.
-End with: *"Run `/optimise help <name or ID>` for full detail on any metric or pattern."*
+End with: *"Run `/optimise help <name or ID>` for full detail on any metric or pattern. For workflows producing `.kanban/` subjects, outcome metrics MX-OQ1–5 are also evaluated — run `/optimise help MX-OQ1` for the full series."*
 
 ---
 
@@ -674,6 +674,103 @@ Both are executed via `/personas evolve` — the command handles scoring, recomm
 **Targets:** Redundancy Index (most commonly), Instruction Ambiguity Rate, any metric with a "~" or "approximately" qualifier in the baseline notes.
 
 **Stats:** First applied in run 6 (self-optimisation). Corrected Redundancy Index from 88 to 97 by removing out-of-scope file from the scope.
+
+---
+
+### Interview Acceptance Rate (MX-OQ1)
+*Also matches: MX-OQ1, OQ1, interview, acceptance, approved, rejected*
+
+**Measures:** The fraction of interview recommendations that users accepted (approved), excluding overrides. Tracks whether the interview phase's recommendations are calibrated to user needs.
+
+**Intent:** A low acceptance rate signals a calibration or communication failure in the interview phase — either recommendations are too conservative, too aggressive, or poorly framed. This is a direct trust signal that no structural metric would catch.
+
+**Applies when:** `.kanban/.archive/` contains at least one `00-quality-*.md` file with an `## Interview Signals` section.
+
+**Weight:** 2×
+
+**Healthy range:** 80–100 (most recommendations accepted without rejection).
+
+**Skip condition:** No archived quality envelopes with Interview Signals data.
+
+**How to improve:** Review rejected recommendations in the archive for patterns — were they consistently too broad? Too narrow? Targeting the wrong audience? Apply findings to interview phase persona or question structure.
+
+---
+
+### First-Pass Review Rate (MX-OQ2)
+*Also matches: MX-OQ2, OQ2, review, first pass, consecutive failures, rework*
+
+**Measures:** The fraction of archived tickets that passed review on the first attempt (zero consecutive failures). Tracks whether implementations are ready for review when submitted.
+
+**Intent:** A low first-pass rate means rework cycles are the norm — each failure compounds the latency and re-implementation cost of a ticket. No seed metric captures this directly.
+
+**Applies when:** `.kanban/.archive/` contains at least one archived done-ticket with `consecutive_failures` frontmatter.
+
+**Weight:** 2×
+
+**Healthy range:** 70–100.
+
+**Skip condition:** No archived done-tickets with `consecutive_failures` data.
+
+**How to improve:** Identify tickets with multiple failures — are they in a specific domain? Assigned to a specific phase? Look for patterns that predict failure, then improve the planning or review gate for that category.
+
+---
+
+### Plan Stability Rate (MX-OQ3)
+*Also matches: MX-OQ3, OQ3, plan, stability, drift, requirements*
+
+**Measures:** The fraction of archived subjects whose plan showed "None" or "Minor" drift from original scope. A leading indicator of interview quality and requirement clarity.
+
+**Intent:** Frequent plan drift suggests the interview phase under-constrained the problem — the implementing agent had to improvise mid-execution. This is an indirect signal, but repeated drift in the same area points to a systematic gap.
+
+**Applies when:** `.kanban/.archive/` contains at least one `00-quality-*.md` with a `## Plan Drift` section.
+
+**Weight:** 1×
+
+**Healthy range:** 80–100.
+
+**Skip condition:** No Plan Drift sections in archived quality envelopes.
+
+**How to improve:** For subjects with Moderate or Significant drift, read the original plan and the final implementation — where did the gap appear? Was it a missing constraint, an ambiguous requirement, or a scope expansion? Feed this back to the interview or planning phase.
+
+---
+
+### Session Satisfaction Rate (MX-OQ4)
+*Also matches: MX-OQ4, OQ4, session, satisfaction, rating, yes, partially*
+
+**Measures:** The fraction of rated work sessions marked "yes" (satisfactory). A subjective but useful proxy for systemic friction that structural metrics don't surface.
+
+**Intent:** Low session satisfaction can indicate context management problems, tool friction, or task scope issues — things that structural metrics score well but that make the session feel difficult in practice.
+
+**Applies when:** `.kanban/.archive/` contains at least one `00-quality-*.md` with a `## Work Sessions` section containing at least one rated session.
+
+**Weight:** 1×
+
+**Healthy range:** 75–100.
+
+**Skip condition:** No rated Work Sessions in archived quality envelopes.
+
+**How to improve:** Read the "partially" sessions — was there a common point where work stalled? Recurring patterns suggest a specific phase or handoff to improve.
+
+---
+
+### PR Critique Rate (MX-OQ5)
+*Also matches: MX-OQ5, OQ5, PR, review, rework, critique, response*
+
+**Measures:** Average rework cycles per archived ticket (lower is better). Tracks how often implementations need revision after submission — a direct cost signal.
+
+**Intent:** PR rework is the most measurable quality failure this workflow produces. Each revision cycle adds latency and re-implementation effort. A high rework rate means implementations are not ready when submitted, and the root cause is usually in the planning or implementation phase.
+
+**Applies when:** `.kanban/.archive/` contains at least one `00-quality-*.md` with a `## PR Responses` section.
+
+**Weight:** 2×
+
+**Healthy range:** 0–50 after normalisation (≤1 average rework cycle per ticket).
+
+**Normalisation:** score = max(0, 100 − (rate × 50)). A rate of 0 cycles → 100. A rate of 2+ cycles → 0.
+
+**Skip condition:** No PR Responses sections in archived quality envelopes.
+
+**How to improve:** Examine tickets with ≥2 revision cycles. Are they clustered in a domain? Did the review feedback reveal a missing constraint that the planning phase should have captured?
 
 ---
 
