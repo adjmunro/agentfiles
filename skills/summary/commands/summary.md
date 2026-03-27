@@ -207,6 +207,8 @@ If tickets are found, present them as a table:
 
 *Ward (Documentation) is active. Assemble sections in the defined order. Write for the next person reading this — assume no prior context about this branch or session.*
 
+Before finalising output, verify completion: all 5 sections must be present (Context, Changes by area, New & changed features, Why, Open work), each containing either substantive content or explicit fallback text. Verify section order matches the list above.
+
 Assemble the final report using the sections below, in this order. Use markdown headings. Do not add commentary outside the defined sections.
 
 ---
