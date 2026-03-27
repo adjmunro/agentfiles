@@ -59,6 +59,8 @@ Print a one-line summary:
 ## Phase 2 — Scan and Plan
 <!-- Active when: target path resolved, file list known -->
 
+Confirm the Phase 1 target summary: re-read the resolved target path, mode (live/dry-run), and eligible file count printed in Phase 1 before scanning.
+
 Read each eligible file. Identify prose regions (exclude fenced code blocks, inline code, frontmatter keys). Within prose regions, find every instance of the three rule categories below.
 
 Produce a change plan per file before applying anything.
@@ -237,6 +239,8 @@ If zero issues found: print "Audit clean — all {N} changes confirmed."
 
 ## Phase 5 — Commit
 <!-- Active when: audit complete, all suspect changes reverted -->
+
+Re-read the Phase 4 audit log. If any unresolved reverts were recorded (issues found that were not successfully reverted), STOP — do not commit. Print: "Commit blocked: Phase 4 audit has unresolved issues. Manually revert remaining changes before committing."
 
 If the target is inside a git repository:
 
