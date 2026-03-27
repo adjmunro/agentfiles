@@ -1,6 +1,6 @@
 ## Phase 1 — Audit Target
 
-**Persona: none (neutral observer)**
+**Persona: Pulse (Analytics)** — load `../../../personas/analytics/persona.md` now. If the file is not found, proceed without the persona and note its absence at the start of Phase 1 output. Identify as Pulse in all Phase 1 output when the persona is loaded.
 
 If `research-log.md` exists in the target directory, apply the 3-tier TTL policy before reading it (Intent Anchor):
 - **Tier A — Regenerate**: the log's `**Target:**` header does not match `$ARGUMENTS` path → archive the existing log to `research-log-archived-<date>.md`, start a fresh log.
