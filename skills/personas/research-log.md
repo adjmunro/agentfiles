@@ -669,6 +669,17 @@ Remaining gaps for run 8+:
 - IOT=65 — structural ceiling ~75; no new intra-phase re-reads to add
 - PIS=89 — minor wiring gaps; warrants targeted audit in run 8
 
+### Run 8 Custom Metric Candidate
+
+**PES — Persona Externalisation Score** [candidate]
+**Measures:** Whether skill phase files invoke personas via load directives rather than duplicating persona behaviour inline. Complements PPF (which detects phases with no suitable persona) by detecting phases that perform a cognitive task inline when a persona exists for that exact demand.
+**Methodology:** For each skill phase file across the connected workflow skills (implement, ideation, optimise), identify behavioural constraint blocks (DO/DO NOT style rules, persona-like instruction sets). For each block: (a) does a load directive for a matching persona precede it? (b) is the block substantively duplicating rules that already live in a persona file? Score per phase: externalised (load directive present, no inline duplication) = 1.0; inline without persona load = 0.0; load directive present but rules also duplicated inline = 0.5.
+**Gate exemption:** Phases with explicit STOP/BLOCK/gate semantics (commit gates, PR blockers, hard verification steps) are excluded from scoring — inlining rules at critical steps is preferred for stability, since persona evolution would otherwise silently change gate behaviour.
+**Tension:** Externalisation is DRY and keeps phases light; inlining is stable and immune to persona drift. PES should not penalise deliberate inlining at hard gates.
+**Direction:** ↑ higher is better
+**Weight:** 1× (informational; not critical path)
+**Note:** PPF already covers the inverse gap (phases with no persona where one would improve fit). PES covers the duplication angle PPF misses.
+
 **Auto loop threshold: composite 95.75% > 95% → loop complete.**
 
 ### Research Log Archival
