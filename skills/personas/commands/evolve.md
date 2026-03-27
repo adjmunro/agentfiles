@@ -79,6 +79,12 @@ Then perform gap analysis against the cognitive demand taxonomy:
 | Architecture review | Pre-implementation failure-mode naming and existing-code leverage check | Vault (Architect) |
 | Live verification | Testing the running application to classify and fix defects by severity | Lens (Verifier) |
 | Argument analysis | Identifying logical fallacies in reasoning by mapping argument structure to a named fallacy taxonomy | Flint (Dialectician) |
+| Commit history curation | Grouping, sequencing, and narrating code changes as coherent historical documentation for future engineers | Ink (Commit Curator) |
+| Intent annotation | Preserving the "why" behind non-obvious decisions as inline comments, carried forward through the full document chain from input to implementation | Quill (Intent Annotator) |
+| Regression detection | Enumerating implicit behavioural contracts and confirming they survive a change — including contracts never formally written down | Vigil (Regression Sentinel) |
+| API documentation accuracy | Ensuring doc comments accurately reflect the current public contract of functions and classes from the caller's perspective | Folio (API Documenter) |
+| Editorial tightening | Cutting restatements, duplicates, and hedges from comment layers so the signal-to-noise ratio of the comment layer stays trustworthy | Hone (Comment Editor) |
+| Constraint strengthening | Replacing vague justifications with specific, measurable, and consequential language so downstream agents cannot rationalise away critical constraints | Amp (Signal Sharpener) |
 
 Note any gaps — cognitive modes with no dedicated persona are candidates for **new** mode.
 
