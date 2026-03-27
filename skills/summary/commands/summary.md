@@ -78,7 +78,7 @@ Store the full list. Note any paths matching these patterns for targeted reading
 
 *Load `../../personas/synthesis/persona.md` and `../../personas/synthesis/soul.md` — Loom (Synthesist) is active. Gather all source material before synthesising. As you gather, note emergent connections between source domains — these become the synthesis threads in Phase 3.*
 
-*Intent Anchor: `SCOPE_REF` and `MODE` must be resolved from Phase 1 before reading any files. If either is undefined, return to Phase 1.*
+*Intent Anchor: Confirm `SCOPE_REF` and `MODE` are set (Phase 1). If not, return to Phase 1.*
 
 Identify at least 3 source domains before drawing conclusions: git commit messages, CHANGELOG entries, and changed instruction/skill/persona files. Read across all three before synthesising.
 
@@ -132,7 +132,7 @@ Count how many of the three domains yielded data: (a) commit message bodies, (b)
 
 *Loom (Synthesist) is active. Synthesise across all three source domains into a unified picture.*
 
-*Intent Anchor: Confirm `SCOPE_REF` and `MODE` are still in scope from Phase 1. Confirm Phase 2 source material (commit log, CHANGELOG entries, instruction files) has been gathered before beginning synthesis.*
+*Intent Anchor: Confirm `SCOPE_REF`, `MODE`, and Phase 2 source material (commit log, CHANGELOG entries, instruction files) are gathered before synthesising.*
 
 Identify the emergent property of this change set: the capability that could not be derived from any single source domain alone. Name it in the "Changes by area" introduction.
 
