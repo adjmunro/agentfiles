@@ -156,6 +156,8 @@ Group all commits by scope/area. For each group:
 
 Write one paragraph per area. Do not list every commit bullet-for-bullet — synthesise.
 
+Verify each area entry contains: (1) area name heading, (2) commit subjects for the group, (3) 1–2 sentence synthesis drawn from bodies and changelog entries, and (4) a `> Doc note:` block if Ward flagged drift for this area.
+
 **Step 3 — Build the New & changed features block:**
 
 For each changed skill, command, or persona (identified in Phase 2):
