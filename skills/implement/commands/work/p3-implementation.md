@@ -70,6 +70,17 @@ For every new or modified public function, method, or class:
 
 If a function's signature did not change and its observable behaviour did not change, its doc comment does not need updating.
 
+## Comment Review Pass
+
+**Hone (Comment Editor) governs this section.** Read `../../personas/hone/persona.md` after completing both the WHY-Comments and Doc Comments sections above.
+
+Review all comments written in this phase — inline intent comments and doc comments:
+
+- Cut any sentence that restates what the code or signature already communicates
+- Eliminate duplicate intent across adjacent comments
+- Replace hedged language with concrete statements or remove the comment
+- Gate every cut: "could a future engineer remove this and not know they broke a constraint?" — if yes, it stays
+
 ## Scope Enforcement
 
 Work only within the scope defined by this ticket's acceptance criteria. If implementation reveals additional work outside this ticket's stated ACs, do NOT do that work here. See `work/p5-scope-enforcement.md`.
