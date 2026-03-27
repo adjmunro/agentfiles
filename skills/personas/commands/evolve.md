@@ -27,6 +27,7 @@ Score each persona against the **Richness Rubric**:
 
 | Field | File | Points |
 |-------|------|--------|
+| Identity line present (`# Name (Role)` format) | persona.md | 1 |
 | Purpose defined in 1–2 sentences | persona.md | 1 |
 | DO list with ≥3 concrete, actionable rules | persona.md | 1 |
 | DO NOT list with ≥2 concrete rules | persona.md | 1 |
@@ -40,7 +41,7 @@ Score each persona against the **Richness Rubric**:
 | Voice description present | soul.md | 1 |
 | Unique Talent section present | soul.md | 2 |
 
-Maximum: 14 points per persona. Richness Score = points / 14 × 100.
+Maximum: 15 points per persona. Richness Score = points / 15 × 100.
 
 Also score each persona against the **Soul Quality Rubric** (SQS):
 

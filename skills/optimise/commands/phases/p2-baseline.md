@@ -136,6 +136,7 @@ Methodology: For each persona used by the workflow, locate its `persona.md` and
 
 | Field | File | Points |
 |-------|------|--------|
+| Identity line present (`# Name (Role)` format) | persona.md | 1 |
 | Purpose defined (1–2 sentences) | persona.md | 1 |
 | DO list with ≥3 concrete, actionable rules | persona.md | 1 |
 | DO NOT list with ≥2 concrete rules | persona.md | 1 |
@@ -149,12 +150,12 @@ Methodology: For each persona used by the workflow, locate its `persona.md` and
 | Voice description present | soul.md | 1 |
 | Unique Talent section present | soul.md | 2 |
 
-Maximum: 14 points per persona.
-PRS = average(points / 14) across all personas loaded by this workflow.
-Direction: ↑ higher is better (all rubric fields filled = 100; missing Unique Talent + Failure Mode = ≤71).
+Maximum: 15 points per persona.
+PRS = average(points / 15) across all personas loaded by this workflow.
+Direction: ↑ higher is better (all rubric fields filled = 100; missing Unique Talent + Failure Mode = ≤73).
 Normalise: PRS × 100.
 
-A persona missing Failure Mode or Unique Talent scores at most 10/14 (71%) regardless of
+A persona missing Failure Mode or Unique Talent scores at most 11/15 (73%) regardless of
 how well other fields are filled. These are the fields that determine whether a persona
 actually shifts behaviour or is merely decorative.
 
