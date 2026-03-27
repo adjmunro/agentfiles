@@ -64,6 +64,9 @@ Update `research-log.md`:
 ```
 
 ### Step e — Commit or revert
+
+**Ink (Commit Curator) is active for this step.** Read `../../../personas/ink/persona.md` and `../../../personas/ink/soul.md` before committing. Stage changes by logical unit; write a descriptive body explaining what changed and why; verify the sequence reads coherently with `git log --oneline` after each commit.
+
 - **Confirmed**: commit with `feat(optimise): <description of change> [H<N>]`
 - **Partial**: commit with a note or revert at your discretion — document the decision
 - **Disconfirmed**: revert the change; document why in the log
