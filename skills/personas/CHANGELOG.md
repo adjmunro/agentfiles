@@ -1,5 +1,36 @@
 # Personas Changelog
 
+## v1.10.0 - 2026-03-27 - Optimise Run 8
+
+**Opening composite: 95.1% (corrected) → final: 95.9% (+0.8pp). All 4 hypotheses confirmed. Auto loop complete (>95% threshold).**
+
+Note: opening composite corrected from 94.8% to 95.1% after full CPVS measurement revealed the directional baseline was too pessimistic (78 estimated vs 93 actual).
+
+- Added Identity line (`# Name (Role)` format) as first row in Richness Rubric in `commands/evolve.md`; updated maximum from 14→15 and formula accordingly — SRCA 92→100 [H25]; also propagated to `skills/optimise/commands/phases/p2-baseline.md` M15 rubric
+- Wired Quill into `skills/implement/commands/work/p3-implementation.md` with explicit `Read` directive — the only pipeline persona in that file lacking one [H26]
+- Added Vigil-governed Step C.5 (Regression Check) to `skills/implement/commands/review/p2a-examiner.md` — PIS 89→100, PES 80→87 [H26]
+- Reordered Hone's Voice section in `hone/soul.md` to lead with its distinctive output descriptor, removing structural overlap with Amp — CPVS 93→100 [H27]
+- Re-measured FMCS at all 27 personas: converted 3 partial pairs (Echo/Hone, Helm/Poise, Trace/Sable) to full complements — FMCS 86→96 [H28]; measurement only, no file changes
+- 5 new custom metrics defined: CABA, PES, SMRC, WTCQ, CPVS
+- Novel patterns documented: NP8 (Pipeline Persona Phase Wiring Audit), NP9 (Cross-Library Voice Fingerprinting Audit)
+- Research log archived: runs 6–7 moved to `research-log-archive-2026-03-27b.md`; live log retains run 8 only
+
+---
+
+## v1.9.0 - 2026-03-27 - Optimise Run 7
+
+**Opening composite: 92.9% → final: 95.75% (+2.9pp). All 4 hypotheses confirmed. Auto loop complete (>95% threshold).**
+
+Note: composite opened lower than run 6 final (96.3%) due to 7 new personas introducing metric drops in WCS, WTTS, LCMU, SQS, NPQP, and PVD.
+
+- Added 6 new personas (Ink, Quill, Vigil, Folio, Hone, Amp) to `commands/summon.md` Persona Roster — WCS 78→100 [H21]
+- Added 6 new personas to `TESTING.md` per-persona table; fixed stale "18 personas" header references to "27" — WTTS 78→100 [H22]
+- Added 6 pipeline-persona cognitive modes to `commands/evolve.md` taxonomy (commit curation, intent annotation, regression detection, API documentation accuracy, editorial tightening, constraint strengthening) — LCMU 70→100, CTC 78→100 [H23]
+- Sharpened Opinion 1 for 5 personas (Ink, Quill, Vigil, Folio, Hone) to counter-intuitive non-obvious positions — SQS 98→100, NPQP 29→100 [H24]; 5 files updated
+- 5 new custom metrics defined: PIS (2×), CTC, SIC, PDR, FMCAL
+
+---
+
 ## v1.8.0 - 2026-03-27 - Flint (Dialectician)
 
 **New persona. Fills the argument analysis cognitive gap — 21 personas, 21 distinct taxonomy modes.**

@@ -2,6 +2,13 @@
 
 ---
 
+## v1.9.1 — 2026-03-27
+
+### Changed
+- M15 Persona Richness Score rubric in `p2-baseline.md`: added Identity line row (`# Name (Role)` format), updated maximum from 14→15, updated PRS formula to divide by 15, updated incomplete-persona thresholds from ≤71 (10/14) to ≤73 (11/15) — aligns with SRCA gap-close in skills/personas run 8 [H25]
+
+---
+
 ## v1.9.0 — 2026-03-27
 
 ### Added
