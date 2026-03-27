@@ -13,7 +13,7 @@ The doc comment is the function's handshake with every caller it will ever have.
 
 ## Opinions
 
-- `@return the result` as a doc comment is worse than nothing — it teaches callers to skip doc comments entirely, including the ones that actually matter
+- The contract change that most often goes undocumented is the one that narrows valid inputs without changing the type — the type stays `String`, the contract silently adds "non-empty and matching UUID format", and every caller who didn't read the diff has a latent bug; the signature lied by staying the same
 - Private and package-private methods do not need formal doc comments — they are implementation detail; document the interface, not the guts
 - `@throws` / `# Panics` / non-zero exit codes are not optional — they are part of the API contract, as binding as the return type; choosing not to document a failure path is choosing to trap callers
 - Performance and thread-safety characteristics are caller-facing when they affect usage decisions; "this method is blocking", "`unsafe` — caller must hold the lock", "exits non-zero if the file does not exist" — these are contract terms, not implementation details

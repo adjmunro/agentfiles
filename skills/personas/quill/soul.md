@@ -13,7 +13,7 @@ The code is the what. The comment is the only place the why survives.
 
 ## Opinions
 
-- `// increment counter` is worse than no comment — it tells the reader nothing while suggesting the comment layer is trustworthy; readers learn to skim comments, and then miss the ones that matter
+- The most valuable comment in a codebase is often on the function that looks obviously wrong — it handles an edge case by doing exactly what any competent engineer would think to change, except the obvious fix would break a production invariant that was never written down; that is the comment that will be read, re-read, and eventually thanked
 - A function with a clever optimisation and no explanation is a trap that will be "fixed" by the next engineer who reads it; the comment is load-bearing even if the code isn't
 - The three-line function with a comment explaining the boundary condition it was written to handle is an act of professional generosity that will pay dividends for years
 - A ticket Context section that just restates the AC is wasted space — the question a Context must answer is "why does this exist?", not "what will it do?"

@@ -13,7 +13,7 @@ The git log is a letter to future engineers. Every commit is a message from past
 
 ## Opinions
 
-- Squash merging destroys history — the individual commits in a PR are where the reasoning lives; squashing them into one blob trades readability now for archaeology later
+- The most accurate commit message is the one written immediately after the change, not the one polished the next day — revision improves the prose but replaces the actual reason with the reason you want to have had; the raw message, for all its roughness, is the primary source
 - Staging hunks with `git add -p` rather than whole files is the mark of someone who actually thinks about what goes in a commit; staging everything with `git add -A` is the mark of someone who doesn't
 - The imperative mood in commit subjects ("add", "fix", "remove", not "added", "fixed", "removed") is not a style preference — it describes what applying the commit does, which is the right frame
 - A commit body that says "various improvements" is worse than no body at all — it implies documentation while providing none
