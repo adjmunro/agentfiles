@@ -2,7 +2,7 @@
 
 ## Strategy
 
-Test the two commands (`summon` and `evolve`) separately: summon is verified by loading a persona and checking that its DO rules shape the output of a defined task; evolve is verified in each mode (audit, distil, speciate, new) using the live persona library. Mandatory-field coverage is checked with a structural scan of all 18 personas before any command is run.
+Test the two commands (`summon` and `evolve`) separately: summon is verified by loading a persona and checking that its DO rules shape the output of a defined task; evolve is verified in each mode (audit, distil, speciate, new) using the live persona library. Mandatory-field coverage is checked with a structural scan of all 27 personas before any command is run.
 
 ## Environment Setup
 
@@ -22,8 +22,8 @@ Test the two commands (`summon` and `evolve`) separately: summon is verified by 
 | `evolve distil` — sharpens a persona | `/personas evolve distil Pulse from skills/personas/research-log.md` | Distillation candidates identified with evidence citations; Recommendation Brief produced; skill stops before writing any files | Untested |
 | `evolve new` — creates a new persona | `/personas evolve new <description of gap cognitive mode>` | Existing library checked for near-matches; if genuinely unmet, sketch produced (name, essence, unique talent, failure mode); stops for approval before writing | Untested |
 | `evolve speciate` — forks a persona | `/personas evolve speciate <candidate identified in audit>` | 2–3 variants proposed with distinct niches, new names, differing Failure Modes; stops for approval before writing | Untested |
-| Mandatory fields check — Unique Talent | Structural scan of all 18 `soul.md` files | Every `soul.md` contains a `Unique Talent` section | Pass — verified by PRS=100 across runs 3–5 (optimise run 5, 2026-03-26) |
-| Mandatory fields check — Failure Mode | Structural scan of all 18 `persona.md` files | Every `persona.md` contains a `Failure Mode` section | Pass — verified by PRS=100 across runs 3–5 (optimise run 5, 2026-03-26) |
+| Mandatory fields check — Unique Talent | Structural scan of all 27 `soul.md` files | Every `soul.md` contains a `Unique Talent` section | Pass — verified by PRS=100 across runs 3–7 (optimise run 7, 2026-03-27) |
+| Mandatory fields check — Failure Mode | Structural scan of all 27 `persona.md` files | Every `persona.md` contains a `Failure Mode` section | Pass — verified by PRS=100 across runs 3–7 (optimise run 7, 2026-03-27) |
 
 ## Command Coverage
 
@@ -62,6 +62,12 @@ One row per persona. The "Distil priority" column is filled in after running `ev
 | Sage (Pedagogue) | `pedagogical/` | Untested | — | Added run 5 (2026-03-26) |
 | Poise (Arbiter) | `negotiation/` | Untested | — | Added run 5 (2026-03-26) |
 | Flint (Dialectician) | `dialectician/` | Untested | — | Added 2026-03-27 |
+| Ink (Commit Curator) | `ink/` | Untested | — | Added 2026-03-27 |
+| Quill (Intent Annotator) | `quill/` | Untested | — | Added 2026-03-27 |
+| Vigil (Regression Sentinel) | `vigil/` | Untested | — | Added 2026-03-27 |
+| Folio (API Documenter) | `folio/` | Untested | — | Added 2026-03-27 |
+| Hone (Comment Editor) | `hone/` | Untested | — | Added 2026-03-27 |
+| Amp (Signal Sharpener) | `amp/` | Untested | — | Added 2026-03-27 |
 
 ## Known Issues
 
