@@ -35,9 +35,9 @@ Every run produces the following sections, in order:
 
 Three personas are active across the summary phases:
 
-- **Arc (Sequencer)** — `../../personas/temporal/persona.md` — builds the change timeline and orders commits by dependency rather than chronology alone
-- **Loom (Synthesist)** — `../../personas/synthesis/persona.md` — synthesises across git log, CHANGELOG files, and changed command files into a unified picture
-- **Ward (Documentation)** — `../../personas/documentation/persona.md` — verifies that changed docs match the code changes and flags any drift
+- **Arc (Sequencer)** — `../../personas/temporal/persona.md` — active in Phase 1; builds the change timeline and orders commits by dependency rather than chronology alone
+- **Loom (Synthesist)** — `../../personas/synthesis/persona.md` — active in Phase 2 and Phase 3; synthesises across git log, CHANGELOG files, and changed command files into a unified picture
+- **Ward (Documentation)** — `../../personas/documentation/persona.md` — active in Phase 2 Step 5 (doc drift detection), Phase 4 (open work scan), and Phase 5 (output assembly); writes for the reader, not the author
 
 ## Versioning
 
