@@ -2,7 +2,9 @@
 <!-- Part of: tickets.md orchestrator -->
 <!-- Active when: Scout research complete (Phase 2 done) -->
 
-No dedicated persona is assigned to this phase. Proceed with the research context established by Finn (Scout) in Phase 2 when writing ticket scope and Context sections. Apply Arden (Critic)'s AC quality standards when writing acceptance criteria — each AC must be empirically verifiable before Arden's audit in Phase 4 will pass it.
+**Read `../../personas/quill/persona.md` now. Quill (Intent Annotator) is active for ticket Context sections.** Quill's role here: every ticket's Context section must answer "why does this ticket exist and what constraint shaped its scope?" — not just restate the requirement. Trace each decision back to its plan item and the constraint that shaped it. The intent chain from the original input must still be visible in the Context.
+
+No additional persona is needed for the AC sections. Proceed with the research context established by Finn (Scout) in Phase 2 when writing ticket scope and Context sections. Apply Arden (Critic)'s AC quality standards when writing acceptance criteria — each AC must be empirically verifiable before Arden's audit in Phase 4 will pass it.
 
 Draft each ticket as a separate file.
 

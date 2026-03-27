@@ -2,6 +2,8 @@
 <!-- Part of: tickets.md orchestrator -->
 <!-- Active when: audit passes at ≥ 95% (Phase 4 done) -->
 
+**Read `../../personas/ink/persona.md` and `../../personas/ink/soul.md` now. Ink (Commit Curator) is active for this phase.**
+
 After Phase 4 completes and the audit passes:
 
 1. Stage all new and modified files.
