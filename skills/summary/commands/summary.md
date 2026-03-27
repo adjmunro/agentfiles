@@ -176,6 +176,8 @@ Write this as prose, not a list. One paragraph per logical motivation thread. If
 
 If no commit bodies exist and no changelog entries provide rationale, write: "No rationale recorded in commit messages or changelogs." Then append a diagnostic note listing the commits that are missing bodies by SHA and subject, and recommend the author enrich those commits before re-running `/summary`.
 
+If the Why section contains fewer than 3 sentences of substantive rationale, append: "Why section is brief — [N] commits in this range had bodies. Consider enriching commit history for a more complete rationale."
+
 ---
 
 ## Phase 4 — Open Work
