@@ -44,7 +44,7 @@ If `$ARGUMENTS` is a ref-like token that cannot be resolved (git returns an erro
 
 **Step 1 — Resolve SCOPE_REF:**
 
-- If mode is `pr` or arguments are empty: run `git merge-base HEAD $(git rev-parse --abbrev-ref HEAD@{upstream} 2>/dev/null || git log --oneline | tail -1 | awk '{print $1}')` to find the branch parent. If upstream tracking is available use it; otherwise fall back to the first commit on the current branch. Store the resulting SHA as `SCOPE_REF`.
+- If mode is `pr` or arguments are empty: first check for detached HEAD with `git rev-parse --abbrev-ref HEAD`. If the result is `HEAD` (detached), fall back to: `git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null`. If neither branch exists, abort with: "Cannot determine branch parent in detached HEAD state. Provide an explicit ref with `/summary <ref>`." Otherwise, run `git merge-base HEAD $(git rev-parse --abbrev-ref HEAD@{upstream} 2>/dev/null || git log --oneline | tail -1 | awk '{print $1}')` to find the branch parent. If upstream tracking is available use it; otherwise fall back to the first commit on the current branch. Store the resulting SHA as `SCOPE_REF`.
 - If mode is `trunk`: run `git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null` to find the divergence point. Store as `SCOPE_REF`.
 - If `$ARGUMENTS` is any other token: validate it with `git rev-parse --verify <token>`. Store as `SCOPE_REF` if valid; abort with a clear error if not.
 
