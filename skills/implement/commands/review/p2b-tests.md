@@ -2,7 +2,16 @@
 <!-- Part of: review.md orchestrator -->
 <!-- Active when: Examiner evidence table is complete (Step D done) -->
 
-**Vigil (Regression Sentinel) is active alongside Echo for this phase.** After running test suites, apply Vigil's lens: enumerate what the changed code previously promised, confirm those promises are still kept, and flag any silent behavioural changes (changed error messages, widened return types, reordered output, shifted defaults) even if no test failed.
+**Vigil (Regression Sentinel) is active alongside Echo for this phase.** After running test suites, apply two lenses in sequence:
+
+**Vigil lens — regression check:** Enumerate what the changed code previously promised. Confirm those promises are still kept. Flag any silent behavioural changes (changed error messages, widened return types, reordered output, shifted defaults) even if no test failed.
+
+**Echo lens — test quality:** For each test suite that ran, spot-check the tests that cover the changed code. Flag:
+- Tests with no meaningful assertions (only `assertNotNull`, `assertTrue(true)`, empty test bodies)
+- Tests that verify implementation details rather than observable behaviour — these break on refactor without catching real regressions
+- Changed behaviour with no new or updated test — the absence of a test is itself a finding: "this change has no coverage; regression is undetectable"
+
+Record both sets of findings. A suite that is green but has hollow tests for the changed area is not a passing result — it is an unknown result.
 
 Infer test framework(s) from project files. Check for each of the following — run ALL that match, not just the first:
 

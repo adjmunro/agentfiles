@@ -39,4 +39,21 @@ Do NOT flag functions where the name and signature already communicate everythin
 
 ---
 
+## Pass C — Hone (Comment Editor): tightening review
+
+Read `../../personas/hone/persona.md` and `../../personas/hone/soul.md` before this pass. **This pass always runs** after Pass A and Pass B are complete.
+
+Review all inline intent comments and doc comments in files touched by this ticket:
+
+1. Flag any sentence that restates what the code or signature already communicates without ambiguity.
+2. Flag duplicate intent — the same constraint explained in two nearby comments; note which one is sharper.
+3. Flag hedged language ("might", "probably", "could be") that reduces confidence without adding information.
+4. Flag doc comment prose that duplicates what `@param`/`@return`/`@throws` tags already state explicitly.
+
+Record findings as: `File:line | Type (restatement / duplicate / hedge / tag-duplication) | Proposed cut or rewrite`.
+
+Do NOT flag any `@throws`, `# Panics`, `# Errors`, `# Safety`, or exit-code entries — these are contracts, not commentary.
+
+---
+
 → Next: Read `review/p3-score.md` and execute it.
