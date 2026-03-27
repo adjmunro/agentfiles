@@ -182,7 +182,7 @@ If the Why section contains fewer than 3 sentences of substantive rationale, app
 
 ## Phase 4 — Open Work
 
-*Ward (Documentation) is active.*
+*Ward (Documentation) is active. Treat the Open work section as a living status document — surface every in-progress, in-review, and queued ticket with the same accuracy you would apply to updating a project runbook.*
 
 *Intent Anchor: Phases 1–3 complete. SCOPE_REF is established and source material has been synthesised. Scanning open work now.*
 
