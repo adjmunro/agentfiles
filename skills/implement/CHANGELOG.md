@@ -4,6 +4,23 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v3.3.0 — Persona pipeline expansion (2026-03-27)
+
+Six new and updated personas wired into the implementation and review cycle, forming a structured comment and quality pipeline.
+
+- **Ink (Commit Curator)** wired into `work/p7-commit.md` — all implementation commits now go through Ink's commit hygiene lens
+- **Quill (Intent Annotator)** wired into `work/p3-implementation.md` (WHY-Comments) and `work/p6-work-log.md` — ensures the "why" is attributed to upstream plan items, not just described
+- **Amp (Signal Sharpener)** wired into `work/p3-implementation.md` and `work/p6-work-log.md` — strengthens constraints for downstream agents; vague justifications become specific and consequential
+- **Folio (API Documenter)** wired into `work/p3-implementation.md` (Doc Comments) and `review/p2c-documentation.md` (Pass B, always-on) — keeps doc comments accurate and caller-focused; Kotlin/Java/Rust/Swift/Go/Bash conventions
+- **Hone (Comment Editor)** wired into `work/p3-implementation.md` (Comment Review Pass) and `review/p2c-documentation.md` (Pass C, always-on) — cuts restatements, duplicate intent, hedged language
+- **Vigil (Regression Sentinel)** wired into `review/p2b-tests.md` and `pr.md` (Phase 2b, pre-PR) — flags silent regressions and hollow tests; blocks PR if unintentional behaviour changes are found
+- **Test quality lens** added to `review/p2b-tests.md` — green suite with hollow tests is an unknown result, not a passing one
+- `review/p2c-documentation.md` restructured into three passes: Ward (AC-driven), Folio (always-on doc audit), Hone (always-on tightening)
+
+Comment pipeline in `p3-implementation.md`: Quill (write why) → Folio (write doc comments) → Hone (tighten) → Amp (strengthen signal)
+
+---
+
 ## v3.2.0 — Optimise Run 2 (2026-03-25)
 
 Five correctness and robustness fixes from the second optimise pass. Composite instruction quality: 90.9% → 96.9% (+6.0 pp against the expanded 32-metric baseline).

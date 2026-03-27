@@ -2,7 +2,7 @@
 
 > **Part of the implement skill.** Handles version reporting and update checks.
 
-**Current version**: 3.2.0
+**Current version**: 3.3.0
 
 **Upstream**: https://raw.githubusercontent.com/adjmunro/agentfiles/main/skills/implement/VERSION.md
 

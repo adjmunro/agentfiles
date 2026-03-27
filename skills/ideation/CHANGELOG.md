@@ -4,6 +4,15 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v1.12.0 - 2026-03-27 - Persona pipeline for ticket Context sections
+
+Wired Quill, Amp, and Hone into `tickets/p3-draft-tickets.md` and Ink into `tickets/p5-commit.md`.
+
+- **`p3-draft-tickets.md`**: Quill (Intent Annotator) ensures Context sections trace decisions to their upstream plan item; Amp (Signal Sharpener) ensures constraints carry their consequences for the downstream implement agent; Hone (Comment Editor) tightens the result — cutting restatements, duplicates, and hedges
+- **`p5-commit.md`**: Ink (Commit Curator) now active for the post-audit commit — load directive added with soul.md
+
+---
+
 ## v1.11.0 - 2026-03-26 - Tighten Integration
 
 Dispatches the `/tighten` skill on `03-refinement/` tickets after the coverage audit and before the final commit.
