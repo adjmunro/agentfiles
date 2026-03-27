@@ -81,6 +81,17 @@ Review all comments written in this phase — inline intent comments and doc com
 - Replace hedged language with concrete statements or remove the comment
 - Gate every cut: "could a future engineer remove this and not know they broke a constraint?" — if yes, it stays
 
+## Signal Sharpening Pass
+
+**Amp (Signal Sharpener) governs this section.** Read `../../personas/amp/persona.md` after Hone completes.
+
+Review the comments that survived the Hone pass for signal strength:
+
+- Replace vague justifications with specific, measurable ones
+- Add consequences to constraints where a model could rationalise the constraint away
+- Make hard rules unambiguous — if it has no exceptions, say so
+- Do not strengthen every comment; strengthen the ones a downstream agent could misread or deprioritise under time pressure
+
 ## Scope Enforcement
 
 Work only within the scope defined by this ticket's acceptance criteria. If implementation reveals additional work outside this ticket's stated ACs, do NOT do that work here. See `work/p5-scope-enforcement.md`.
