@@ -104,6 +104,9 @@ These add no information. Delete them or compress to the shorter form.
 | "actually " as filler (not contrastive "actually, X is Y") | Delete "actually " |
 | "etc." at the end of a list | Remove; expand the list if the omission loses meaning |
 | "and so on" at the end of a list | Remove; expand the list if the omission loses meaning |
+| "going forward" / "moving forward" | Delete (temporal hedge with no informational content) |
+| "to be clear," / "to be precise," at sentence start | Delete phrase |
+| "at this stage" / "at this step" | → "now" |
 
 ---
 
@@ -124,6 +127,10 @@ Transform hedged or conditional language into clear directives. **Only apply in 
 | "it is possible to {verb}" | → "{verb}" |
 | passive voice "X is {verbed} by Y" where Y is the acting agent | → "Y {verbs} X" |
 | "perform {noun}" / "carry out {noun}" | → verb form ("perform validation" → "validate", "carry out a check" → "check") |
+| "it is recommended to {verb}" (instruction context) | → "{verb}" |
+| "it is advised to {verb}" (instruction context) | → "{verb}" |
+| "consider {verb-ing}" (instruction context only — not exploratory or descriptive prose) | → "{verb}" |
+| "you might want to {verb}" (instruction context) | → "{verb}" |
 
 ---
 
@@ -210,9 +217,9 @@ Read `.tighten-audit.tmp` from the target directory root (written by Phase 3). U
 
 Re-read every modified file. For each, verify:
 
-1. **No instruction weakened**: every rule, constraint, or directive present before is still present after — or is now expressed more strongly. Flag any rule that appears to have been softened or removed.
+1. **No instruction weakened**: every rule, constraint, or directive present before is still present after — or is now expressed more strongly. Flag any rule that appears to have been softened or removed. *(Operationally: each DO and DO NOT rule present before the edit must still be present after, with equal or stronger language; any NEVER/ALWAYS/STOP that was downgraded to softer wording is a weakening.)*
 
-2. **No information lost**: facts, examples, table rows, and named identifiers present before are still present after. Filler deletions must not have accidentally taken load-bearing content with them.
+2. **No information lost**: facts, examples, table rows, and named identifiers present before are still present after. Filler deletions must not have accidentally taken load-bearing content with them. *(Operationally: each named example, table row, quantitative threshold, and identifier present before must be present after; filler deletions that remove a surrounding clause but preserve the load-bearing content are not information loss.)*
 
 3. **No meaning changed**: the "should" → "must" strengthening was only applied in instruction contexts. Scan for any "must" in a conditional clause ("if X must occur") — these are likely incorrect upgrades; revert them.
 
