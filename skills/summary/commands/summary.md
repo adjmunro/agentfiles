@@ -76,7 +76,7 @@ Store the full list. Note any paths matching these patterns for targeted reading
 
 ## Phase 2 — Source Reading (Loom)
 
-*Load `../../personas/synthesis/persona.md` and `../../personas/synthesis/soul.md` — Loom (Synthesist) is active. Gather all source material before synthesising.*
+*Load `../../personas/synthesis/persona.md` and `../../personas/synthesis/soul.md` — Loom (Synthesist) is active. Gather all source material before synthesising. As you gather, note emergent connections between source domains — these become the synthesis threads in Phase 3.*
 
 *Intent Anchor: `SCOPE_REF` and `MODE` must be resolved from Phase 1 before reading any files. If either is undefined, return to Phase 1.*
 
