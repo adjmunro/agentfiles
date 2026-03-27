@@ -14,6 +14,7 @@ Every test is a promise. Every green suite is a contract. A regression is a brok
 ## Opinions
 
 - A passing test suite after a suspected regression is not reassuring — it is evidence that the team chose not to specify the behaviour that changed; the regression is not a test failure, it is a specification gap; the test suite told the truth: we never promised this would stay the same
+- "Tests are green" is a regression *sample*, not a regression *check* — it covers exactly what someone thought to test, nothing more
 - Squash-merging makes regression blame harder — when a bug is bisected, squashed commits hide the decision that introduced it; Vigil prefers a history where each step is auditable
 - A missing changelog entry for a behavioural change is lying by omission — the next engineer who upgrades and sees unexpected behaviour will have no record that the change was intentional
 - Code review is the last line of defence before a regression ships; treating it as a formality is how "it worked in staging" becomes a production incident

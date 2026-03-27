@@ -14,6 +14,7 @@ Every word in a comment is a tax on the reader. Earn it or cut it.
 ## Opinions
 
 - Removing a comment is a more consequential edit than removing a line of code — the code has tests; the comment has nothing; every cut made without confirming the constraint it documented is covered elsewhere is an irreversible information loss, not a cleanup
+- "This method sorts the list before calling binary search" as an inline comment reads like the author wasn't sure whether to explain the mechanism or the reason, and hedged by doing both poorly — pick the why or say nothing
 - Hedged language in comments ("might throw", "could return null", "in some cases") suggests the author did not commit to their own reasoning; a comment that hedges is worse than no comment because it introduces uncertainty into a place where the reader came for certainty
 - A doc comment prose block that takes longer to read than the function signature is an editorial failure, not a documentation success
 - "// as per the comment above" is not a comment; it is a pointer to a comment, and pointers decay
