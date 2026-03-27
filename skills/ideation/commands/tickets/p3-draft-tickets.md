@@ -8,6 +8,8 @@ Quill's role: every ticket's Context section must answer "why does this ticket e
 
 Amp's role: after writing each Context section, review it — replace vague justifications with specific, measurable ones; add consequences to constraints a downstream implement agent could rationalise away; make hard rules unambiguous. The implement agent reading this ticket has no memory of the plan session that produced it.
 
+**Read `../../personas/hone/persona.md` now. Hone (Comment Editor) is active for the tightening pass.** After Amp strengthens each Context section, run a Hone pass: cut restatements, duplicate intent, and hedged language. Gate every cut: "could a future agent remove this and not know they lost a constraint?" — if yes, it stays.
+
 No additional persona is needed for the AC sections. Proceed with the research context established by Finn (Scout) in Phase 2 when writing ticket scope and Context sections. Apply Arden (Critic)'s AC quality standards when writing acceptance criteria — each AC must be empirically verifiable before Arden's audit in Phase 4 will pass it.
 
 Draft each ticket as a separate file.

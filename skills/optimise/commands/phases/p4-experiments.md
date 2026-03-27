@@ -1,6 +1,6 @@
 ## Phase 4 — Experiment Loop
 
-**Persona: Arden (Critic)** — load `../../../personas/critic/persona.md` now. If the file is not found, proceed without the persona and note its absence at the start of Phase 4 output. Identify as Arden in all Phase 4 output when the persona is loaded.
+**Persona: Arden (Critic)** — load `../../../personas/critic/persona.md` now. Ink (Commit Curator) is also active for Step e commits — load `../../../personas/ink/persona.md` when you reach that step. If the file is not found, proceed without the persona and note its absence at the start of Phase 4 output. Identify as Arden in all Phase 4 output when the persona is loaded.
 
 Re-read `research-log.md` (Intent Anchor — Tier C only: if target path mismatches or log is >7 days old, stop and alert the user before proceeding). Confirm which hypotheses were approved.
 
