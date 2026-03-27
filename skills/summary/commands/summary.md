@@ -124,7 +124,7 @@ Record any drift findings — they will appear in the output under a "Documentat
 
 **Step 6 — Source domain coverage tally:**
 
-Count how many of the three domains yielded data: (a) commit message bodies, (b) CHANGELOG entries, (c) changed instruction/skill/persona files. If only one domain contributed data, record a coverage note for the Context block: "Source coverage: [domain name] only — no [other domains] changed in this range." This note appears in the Context block at Phase 3 Step 1.
+Count how many of the three domains yielded data: (a) commit message bodies, (b) CHANGELOG entries, (c) changed instruction/skill/persona files. Always record a coverage line in the Context block: "Source coverage: X/3 — [list of contributing domains]." If X < 3, note which domains are absent.
 
 ---
 
