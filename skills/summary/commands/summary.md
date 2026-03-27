@@ -154,7 +154,7 @@ Group all commits by scope/area. For each group:
 3. Write a 1–2 sentence synthesis of the group's intent — drawn from commit bodies and changelog entries, not just subject lines
 4. If Ward flagged documentation drift for this area, include a `> Doc note:` block beneath the synthesis
 
-Aim for one paragraph per area. Do not list every commit bullet-for-bullet — synthesise.
+Write one paragraph per area. Do not list every commit bullet-for-bullet — synthesise.
 
 **Step 3 — Build the New & changed features block:**
 
@@ -164,7 +164,7 @@ Write a brief entry with two parts:
 - **What it does now**: one sentence describing the current capability
 - **How to use it**: the invocation syntax or trigger condition, taken directly from the file
 
-If the file was not changed enough to alter usage (e.g. only a doc fix), note "Usage unchanged — documentation updated."
+If the file's invocation syntax or trigger condition did not change, note "Usage unchanged — documentation updated."
 
 **Step 4 — Build the Why block:**
 
@@ -264,7 +264,7 @@ When `MODE` is `pr`, append a final section after Open work:
 ## Review checklist
 ```
 
-Populate it with 3–5 targeted items derived from the actual changes — not a generic checklist. Each item should be a specific thing a reviewer should verify, based on what was changed. Examples:
+Populate it with 3–5 targeted items derived from the actual changes — not a generic checklist. Each item must be a specific verification step derived from the actual changes. Examples:
 
 - "Check that the new `trunk` mode resolves the correct merge-base when upstream is not configured"
 - "Verify CHANGELOG entry matches the implementation in `commands/summary.md`"
