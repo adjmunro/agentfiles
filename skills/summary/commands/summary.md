@@ -272,5 +272,5 @@ Do not include generic items such as "check for typos" or "verify tests pass" un
 | `$ARGUMENTS` ref cannot be resolved | Abort with: "Cannot resolve ref `<token>`. Check the ref exists and is reachable from HEAD." |
 | Git is not available or not a repo | Abort with: "Not inside a git repository. `/summary` requires git." |
 | No commits in range | Report: "No commits between `<SCOPE_REF>` and HEAD. Nothing to summarise." |
-| No files changed in range | Report the Context block only, then: "No files were changed in this range." |
+| No files changed in range | Output all 5 sections. Context block as normal. Changes by area: "No file changes detected in this range." New & changed features: "No skill, command, or persona files changed in this range." Why: "No commit bodies or changelog entries — no rationale to record." Open work: scan `.kanban/` as normal. |
 | `.kanban/` does not exist | In the Open work section, write: "No `.kanban/` directory found." |
