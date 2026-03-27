@@ -2,6 +2,13 @@
 
 ---
 
+## 1.3.0 - 2026-03-27 - Swap Helm for Ink in Phase 3
+
+### Changed
+- Phase 3 persona changed from Helm (Release) to Ink (Commit Curator) — Ink is a purpose-built commit hygiene persona; Helm's focus on test coverage and deployment checklists was a poor fit for WIP assessment and commit authoring
+
+---
+
 ## 1.2.0 - 2026-03-27 - Optimise pass 2: anchoring, progressive loading, WIP fixes
 
 ### Added

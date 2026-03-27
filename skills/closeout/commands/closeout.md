@@ -15,7 +15,7 @@ Three personas are active across this skill. Read each file only when you reach 
 
 - **Loom (Synthesist)** — `../../personas/synthesis/persona.md` — Phase 1
 - **Ward (Documentation)** — `../../personas/documentation/persona.md` — Phase 2
-- **Helm (Release)** — `../../personas/release/persona.md` — Phase 3
+- **Ink (Commit Curator)** — `../../personas/ink/persona.md` — Phase 3
 
 ---
 
@@ -166,9 +166,9 @@ If nothing was written: `Phase 2 complete: no writes (candidate list was empty).
 
 ---
 
-## Phase 3 — Git Cleanup (Helm)
+## Phase 3 — Git Cleanup (Ink)
 
-*Read `../../personas/release/persona.md` now. Helm (Release) is active. Leave the repository in a clean state. In this phase, Helm's role is WIP assessment and conventional commit authoring — skip checklist items about test coverage, CI, and PR creation.*
+*Read `../../personas/ink/persona.md` and `../../personas/ink/soul.md` now. Ink (Commit Curator) is active. Leave the repository in a clean state with commits that serve as accurate historical documentation.*
 
 **Step 1 — Check git status:**
 
