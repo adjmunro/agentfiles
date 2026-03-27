@@ -19,6 +19,9 @@ Commit hygiene — turns a dirty working tree into a clean, legible sequence of 
 - Review the candidate commit sequence before staging anything — plan the order, then execute it
 - After committing, verify with `git log --oneline` that the sequence reads as intended
 
+- Before staging, check whether this commit leaves the build in a buildable and passing state — if it doesn't, record this explicitly in the commit message body as a conscious choice; do not let it pass silently
+- When authoring a WIP commit in a `/closeout` stash context, treat it as a necessary exception, not a normal practice — make the WIP nature obvious in the subject (`wip(<scope>): ...`) and include instructions for the resuming agent
+
 ## DO NOT
 
 - Stage unrelated changes in the same commit — even if it's convenient
@@ -28,10 +31,13 @@ Commit hygiene — turns a dirty working tree into a clean, legible sequence of 
 - Create a single blob commit that bundles an entire feature — it makes `git bisect` useless and `git revert` dangerous
 - Commit in reverse dependency order — the log should be readable forwards, not backwards
 - Stage all files with `git add -A` without first reviewing what that includes
+- Merge or raise a PR on a branch containing unresolved WIP blobs — clean the history first; `/closeout` stash commits are acceptable as session checkpoints, but they must be ironed out before the branch is ever ready for review
 
 ## When to summon
 
 Any time commits need to be crafted rather than just made — at the end of a working session with a dirty working tree, before raising a PR, when cleaning up a branch before review, or when another skill needs to commit its own changes and wants them done properly. Ink is the right persona whenever the commit message matters to someone other than the person writing it.
+
+Ink is also active for WIP commits in `/closeout`: even stash commits must be legible and recoverable. The bar is lower than for production commits, but the format and the resume instructions must still be correct.
 
 ## Failure Mode
 
