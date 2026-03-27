@@ -80,7 +80,7 @@ Store the full list. Note any paths matching these patterns for targeted reading
 
 *Intent Anchor: `SCOPE_REF` and `MODE` must be resolved from Phase 1 before reading any files. If either is undefined, return to Phase 1.*
 
-Identify the distinct source domains present in this change set. At minimum, distinguish between: git commit messages (intent layer), CHANGELOG entries (structured description layer), and changed instruction files (implementation layer). Read across all three before drawing any conclusions.
+Identify at least 3 source domains before drawing conclusions: git commit messages, CHANGELOG entries, and changed instruction/skill/persona files. Read across all three before synthesising.
 
 **Step 1 — Read full commit log with bodies:**
 
@@ -134,7 +134,7 @@ Count how many of the three domains yielded data: (a) commit message bodies, (b)
 
 *Intent Anchor: Confirm `SCOPE_REF` and `MODE` are still in scope from Phase 1. Confirm Phase 2 source material (commit log, CHANGELOG entries, instruction files) has been gathered before beginning synthesis.*
 
-Before writing output, identify the emergent property of this change set: what quality or capability exists now that did not exist before, that could not have been derived from any single commit message or changelog entry alone? Name it explicitly in the "Changes by area" introduction.
+Identify the emergent property of this change set: the capability that could not be derived from any single source domain alone. Name it in the "Changes by area" introduction.
 
 **Step 1 — Build the Context block:**
 
