@@ -195,12 +195,16 @@ Applied {total changes} edits across {file count} files.
 Estimated token reduction: -{N} tokens.
 ```
 
+Write the removed content log to `.tighten-audit.tmp` in the target directory root — one entry per line: `{file}:{line}: DELETED "{text}"`. Skip this step in dry-run mode (no changes were applied).
+
 → Next: Read Phase 4 and execute it.
 
 ---
 
 ## Phase 4 — Audit
 <!-- Active when: all files written -->
+
+Read `.tighten-audit.tmp` from the target directory root (written by Phase 3). Use it when verifying criterion 2 (no information lost) — it lists every deletion made by Phase 3. If the file is absent (no deletions were made, or the session was interrupted), proceed and note the limitation in the audit log.
 
 Re-read every modified file. For each, verify:
 
@@ -259,6 +263,8 @@ If not inside a git repository, skip this phase and note it in the report.
 ---
 
 ## Final Report
+
+Delete `.tighten-audit.tmp` if it exists in the target directory (cleanup for both normal and `--no-commit` paths).
 
 ```
 Tighten complete.
