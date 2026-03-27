@@ -85,6 +85,22 @@ All bypass conditions cleared. Continue to Phase 3.
 
 ---
 
+## Phase 2b — Pre-PR Regression Check (Vigil)
+
+Read `../../personas/vigil/persona.md` and `../../personas/vigil/soul.md` now. **Vigil (Regression Sentinel) is active for this phase.**
+
+Before opening the PR, run a final regression sweep across all tickets in `07-pull-request/`:
+
+1. Run the full test suite (infer from project files — see `review/p2b-tests.md` for the framework detection table). All suites must be green before proceeding.
+2. For each ticket, enumerate the externally visible behaviours that the implementation changed. Confirm each change was explicitly in the ticket's ACs — any behaviour change not in the ACs is a potential unintended regression.
+3. Flag any silent behavioural changes detected during development that were not in the ACs: changed error messages, shifted defaults, reordered output, widened types.
+
+If any test is failing or any unintentional behaviour change is found, STOP. Do not open the PR. Report the specific finding and wait for the user.
+
+If all checks pass: "Pre-PR regression check passed — proceeding to open PR."
+
+---
+
 ## Phase 3 — Open PR
 
 **Gather PR content:**
