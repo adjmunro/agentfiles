@@ -166,7 +166,7 @@ Pull rationale from:
 
 Write this as prose, not a list. One paragraph per logical motivation thread. If multiple commits share the same rationale, consolidate.
 
-If no commit bodies exist and no changelog entries provide rationale, write: "No rationale recorded in commit messages or changelogs."
+If no commit bodies exist and no changelog entries provide rationale, write: "No rationale recorded in commit messages or changelogs." Then append a diagnostic note listing the commits that are missing bodies by SHA and subject, and recommend the author enrich those commits before re-running `/summary`.
 
 ---
 
