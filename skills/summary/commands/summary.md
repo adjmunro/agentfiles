@@ -40,7 +40,7 @@ If `$ARGUMENTS` is a ref-like token that cannot be resolved (git returns an erro
 
 ## Phase 1 — Ref Resolution (Arc)
 
-*Load `../../personas/temporal/persona.md` — Arc (Sequencer) is active. Establish the temporal boundary before reading any files.*
+*Load `../../personas/temporal/persona.md` and `../../personas/temporal/soul.md` — Arc (Sequencer) is active. Establish the temporal boundary before reading any files.*
 
 **Step 1 — Resolve SCOPE_REF:**
 
@@ -76,7 +76,7 @@ Store the full list. Note any paths matching these patterns for targeted reading
 
 ## Phase 2 — Source Reading (Loom)
 
-*Load `../../personas/synthesis/persona.md` — Loom (Synthesist) is active. Gather all source material before synthesising.*
+*Load `../../personas/synthesis/persona.md` and `../../personas/synthesis/soul.md` — Loom (Synthesist) is active. Gather all source material before synthesising.*
 
 *Intent Anchor: `SCOPE_REF` and `MODE` must be resolved from Phase 1 before reading any files. If either is undefined, return to Phase 1.*
 
@@ -114,7 +114,7 @@ For each changed `persona.md` in the list, read the Purpose and DO sections. Not
 
 **Step 5 — Check for documentation drift (Ward):**
 
-*Load `../../personas/documentation/persona.md` — Ward (Documentation) is active for this step.*
+*Load `../../personas/documentation/persona.md` and `../../personas/documentation/soul.md` — Ward (Documentation) is active for this step.*
 
 For each changed SKILL.md, AGENTS.md, or README file, cross-reference against the commit subjects that touched it. If a commit claims to add a feature but the documentation does not reflect it, flag it as drift. If a commit body references a file path that does not exist in the changed-files list, flag it as a potential stale reference.
 
