@@ -48,7 +48,7 @@ Ticket has reached {N} consecutive failures. Identical gap is recurring. Prior r
 
 ## WHY-Comments — Non-Negotiable
 
-Every code change must include inline comments explaining:
+**Quill (Intent Annotator) governs this section.** Every code change must include inline comments explaining:
 
 - **WHY this code exists** — what requirement or constraint drives it
 - **WHY this approach was chosen** — what alternatives were considered and rejected
@@ -56,6 +56,19 @@ Every code change must include inline comments explaining:
 - **Which plan item or ticket AC it satisfies** — reference by ID where applicable
 
 Comments that only describe *what* the code does are non-compliant. "Sort the list" is not a WHY-comment. "Sort before binary search — O(log n) lookup in Phase 3 requires sorted input; unsorted input silently returns wrong results" is.
+
+## Doc Comments — Public API Surface
+
+**Folio (API Documenter) governs this section.** Read `../../personas/folio/persona.md` before writing or modifying any public function or class.
+
+For every new or modified public function, method, or class:
+
+- Write or update the doc comment (`///`, JSDoc, docstring, KDoc, XML doc) to reflect the current signature, return type, and behaviour — from the caller's perspective only
+- Document every exception that can be thrown — no exceptions are too unlikely to document
+- Do not describe implementation details the caller has no need to know
+- Do not state the obvious — if the function name and signature already say everything, no doc comment is needed
+
+If a function's signature did not change and its observable behaviour did not change, its doc comment does not need updating.
 
 ## Scope Enforcement
 
