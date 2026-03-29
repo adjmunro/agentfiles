@@ -1,7 +1,7 @@
 ---
 model: claude-sonnet-4-6
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch, WebSearch, Agent
-argument-hint: "<PR-number | #PR-number | PR-URL>"
+argument-hint: "<PR-number>"
 ---
 
 <!-- Phase dispatcher. Contains only boot logic and phase dispatch.
@@ -16,22 +16,17 @@ Read each file before the phase in which it is active:
 
 - `../../personas/examiner/persona.md` — **Echo (Examiner)** — active in Phase 2 (investigation) and Phase 3 (impact mapping)
 - `../../personas/adversarial/persona.md` — **Rook (Adversary)** — active in Phase 2 security pass
-- `../../personas/builder/persona.md` — **Kira (Builder)** — active in Phase 4 (remediation), only when changes are needed
+- `../../personas/ink/persona.md` — **Ink (Commit Curator)** — active in Phase 4 (all commits)
 - `../../personas/critic/persona.md` — **Arden (Critic)** — active in Phase 5 (verdict)
 
 Identify by the active persona when communicating with the user. Switch personas at phase boundaries as declared.
 
 ## Input Normalisation
 
-The argument may arrive in any of these forms:
+The argument is a bare PR number (e.g., `1509`). Hash-prefixed (`#1509`) and full
+GitHub URLs are also accepted as fallbacks — strip the prefix and extract the number.
 
-| Input form | Example |
-|---|---|
-| Bare number | `1509` |
-| Hash-prefixed | `#1509` |
-| Full GitHub URL | `https://github.com/owner/repo/pull/1509` |
-
-Strip `#` and URL prefix; extract the numeric PR identifier and, if present in the URL, the `owner/repo` slug. If no repo is specified in the argument, use the current repository (infer from `git remote get-url origin`).
+Always infer `owner/repo` from the current repository: `git remote get-url origin`.
 
 ## DO
 

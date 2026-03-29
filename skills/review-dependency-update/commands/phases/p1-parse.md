@@ -4,14 +4,17 @@
 
 ## Step A — Resolve the Repository
 
-If the argument contains a full GitHub URL, extract `owner/repo` from the path.
-If no repo was specified, run:
+The argument is a bare PR number. Run:
 
 ```
 git remote get-url origin
 ```
 
-Parse the SSH or HTTPS remote URL to derive `owner/repo`.
+Parse the SSH (`git@github.com:owner/repo.git`) or HTTPS
+(`https://github.com/owner/repo.git`) remote URL to derive `owner/repo`.
+
+If the argument is hash-prefixed (`#1509`) or a full GitHub URL, strip the prefix
+to extract the number and, if present in the URL, override the inferred `owner/repo`.
 
 ## Step B — Fetch PR Metadata
 
@@ -79,5 +82,13 @@ Date: <created-at>
 ```
 
 Print the brief to the user.
+
+## Step F — Rename the Session
+
+Rename the current Claude Code session to reflect the PR being reviewed:
+
+```
+/rename PR #<number> - <PR title>
+```
 
 → Next: Read `phases/p2-investigate.md` and execute it for the first dependency in the list.

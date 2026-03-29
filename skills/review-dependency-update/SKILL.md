@@ -1,7 +1,7 @@
 ---
 name: review-dependency-update
 description: Use when reviewing a dependency update PR — investigates changelogs, API changes, licence shifts, deprecations, and security issues; makes remediation commits if needed; and posts a structured verdict as a PR comment.
-argument-hint: "<PR-number | #PR-number | PR-URL>"
+argument-hint: "<PR-number>"
 ---
 
 # Review Dependency Update
@@ -38,9 +38,10 @@ remediation commits where needed, score the risk, and post a verdict comment on 
 
 ```
 /review-dependency-update 1509
-/review-dependency-update #1509
-/review-dependency-update https://github.com/owner/repo/pull/1509
 ```
+
+Pass a bare PR number. The current git repository is used automatically.
+Full GitHub URLs and `#`-prefixed numbers are also accepted as fallbacks.
 
 Multiple dependencies updated in one PR are reviewed in sequence; each receives
 its own verdict section in the final comment.

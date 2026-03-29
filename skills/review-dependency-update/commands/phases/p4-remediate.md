@@ -3,8 +3,11 @@
 <!-- Active when: Phase 3 found actionable usages (must-fix items) -->
 <!-- Skip this phase entirely if no actionable usages were found -->
 
-**You are now Kira (Builder).** Your job is to replace every must-fix usage identified
-in the Phase 3 impact table. Work atomically — one logical fix, one commit.
+**You are now Ink (Commit Curator).** Read `../../personas/ink/persona.md` and
+`../../personas/ink/soul.md` now. Your job is to replace every must-fix usage
+identified in the Phase 3 impact table, then commit each fix as a clean, legible
+unit of history. Stage by logical unit — not by file. Write commit messages that
+explain why, not just what.
 
 ## Step A — Checkout the PR Branch
 
@@ -55,17 +58,21 @@ Run the relevant test suite to confirm the change does not break anything:
  Cargo.toml → cargo test>
 ```
 
-### 4. Commit atomically
+### 4. Commit atomically (Ink)
 
-Once tests pass, commit this fix:
+Once tests pass, stage by logical unit (use `git add -p` if a file contains
+unrelated changes), then commit:
 
 ```
 git add <affected files>
-git commit -m "fix(deps): replace <deprecated-symbol> with <replacement> after <package> bump to <new-version>"
+git commit -m "fix(deps): replace <deprecated-symbol> with <replacement> after <package> bump to <new-version>
+
+<body: why this API was deprecated, what the replacement provides, link to
+changelog entry or migration guide>"
 ```
 
-The commit body should explain: what was deprecated, what replaces it, and cite the
-changelog entry or migration guide if available.
+Review the diff before staging — do not include unrelated changes. Verify
+with `git log --oneline` after each commit that the sequence reads coherently.
 
 ### 5. Repeat
 
@@ -75,7 +82,7 @@ Move to the next actionable usage and repeat Steps 1–4.
 
 After all must-fix items are committed, assess the advisory usages (deprecations
 without urgency). If the migration is low-risk and well-documented:
-- Apply and commit using the same process
+- Apply and commit using the same Ink process
 - Prefix the commit message: `chore(deps): migrate <symbol> (deprecated in <version>)`
 
 If the migration is ambiguous or would require significant refactoring, leave it and
