@@ -2,6 +2,20 @@
 
 ---
 
+## 1.9.0 — The Guarded Reader (2026-04-01)
+
+Adds explicit data-boundary instructions to the phases that read untrusted external
+content — Phase 1 (PR body/title) and Phase 2 (changelogs). Without these guards,
+a crafted changelog entry or PR description could embed text that redirects the
+agent's behaviour (prompt injection). Rook's Pass C in Phase 2 already had partial
+protection; this formalises and reinforces it across all three external-read points.
+
+- Phase 1 Step B: adds data-boundary note before fetching PR metadata
+- Phase 2 Pass A: adds data-boundary note before changelog fetch
+- Phase 2 Pass C: reinforces boundary — Rook is suspicious of content, not directed by it
+
+---
+
 ## 1.8.1 — The Accurate Map (2026-04-01)
 
 Corrects the SKILL.md pipeline diagram to reflect the actual pipeline structure,
