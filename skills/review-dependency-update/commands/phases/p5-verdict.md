@@ -35,6 +35,10 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 | No changelog found — manual review incomplete | +2 |
 | Multi-version span (≥3 intermediate versions skipped) | +1 |
 | All actionable usages fully remediated (zero skipped must-fix items) | −1 (floor 0) |
+| CI was failing at Phase 1; all failures now resolved by Phase 4 | 0 (no extra penalty) |
+| CI was failing at Phase 1; failures remain unresolved (non-environment) | +4 |
+| CI was failing at Phase 1; failures remain unresolved (test environment issue only) | +1 |
+| CI was passing at Phase 1 (or no CI configured) | 0 |
 
 > **Note on "Multi-version span":** Apply this signal when the upgrade traverses three
 > or more intermediate versions (i.e., old → new spans at least two releases not
@@ -69,6 +73,13 @@ Calculate the total score and state which signals contributed. Then assign the t
 | Medium | APPROVE WITH CONDITIONS | Downgrade to APPROVE if all deprecations fully remediated |
 | High | REQUEST CHANGES | Upgrade to APPROVE WITH CONDITIONS if breaking changes fully remediated |
 | Critical | BLOCK | No override without explicit human decision |
+
+> **CI hard block:** Regardless of tier, if CI is still failing with one or more
+> unresolved failures that are **not** categorised as "Test environment issue", the
+> verdict must be **REQUEST CHANGES** at minimum. A failing CI with unresolved
+> API break, Migration required, Deprecation became removal, or Other failures cannot
+> receive APPROVE or APPROVE WITH CONDITIONS. State the CI block reason explicitly
+> in the verdict block.
 
 ## Step B — Form the Verdict
 
@@ -115,6 +126,11 @@ and whether any signals originated from intermediate releases rather than the fi
 
 #### Changes Made
 <list of commits with hashes, or "No changes required">
+
+#### CI Status
+<"All checks passed" | "CI was failing; all failures resolved by Phase 4 remediation" |
+"CI is still failing: <list of unresolved jobs with category and root cause>" |
+"No CI configured">
 
 #### Warnings / Follow-up Required
 <advisory items, skipped migrations, or "None">

@@ -22,6 +22,32 @@ gh pr checkout <PR-number> --repo <owner/repo>
 
 Confirm you are on the correct branch before making any changes.
 
+## Step A.1 — Incorporate CI Failures into the Must-Fix List
+
+Before working through the Phase 3 impact table, check the session brief for CI
+triage results written by Phase 1 Step G.
+
+Read `/tmp/dep-review-<PR-number>-session-brief.md` (or the in-prompt CI Status
+section if the file is unavailable).
+
+For each CI failure categorised as **API break**, **Deprecation became removal**,
+or **Migration required**:
+- Add it to the must-fix list for this phase, treating it with the same priority
+  as a Phase 3 actionable usage
+- Record the source as "CI failure" in the Remediation Summary (Step E)
+- Use the root-cause summary from the CI triage table to guide the fix
+
+For each CI failure categorised as **Test environment issue**:
+- Record it in the Remediation Summary under "Skipped (advisory)"
+- Do not attempt to fix it — it is not caused by the dependency change
+
+For each CI failure categorised as **Other**:
+- Record it in the Remediation Summary under "Skipped (requires manual attention)"
+- Flag it explicitly so the Phase 5 verdict can account for it
+
+If there are no CI failures (Phase 1 Step G recorded "All checks passed"), continue
+directly to Step B.
+
 ## Step B — Fix Each Actionable Usage
 
 Work through the must-fix items from the Phase 3 impact table in order. For each:
@@ -106,6 +132,22 @@ Run the full test suite once more after all commits:
 
 Record the result: total tests, passing, failing, skipped.
 
+## Step D.1 — CI Re-check (if CI was failing at Phase 1)
+
+If Phase 1 Step G recorded any CI failures, wait for CI to re-run on the new commits
+(or trigger it manually if required by the project). Then fetch the updated check status:
+
+```
+gh pr checks <PR-number> --repo <owner/repo>
+```
+
+Record the updated result for each previously failing job:
+- **Now passing** — record as resolved in the Remediation Summary
+- **Still failing** — record as unresolved; this blocks the Phase 5 verdict from
+  approving unless the failure is categorised as "Test environment issue"
+- **Not yet complete (pending)** — note as pending; Phase 5 must wait or proceed
+  with a conditional verdict
+
 ## Step E — Write the Remediation Summary
 
 ```
@@ -120,8 +162,16 @@ Record the result: total tests, passing, failing, skipped.
 ### Test Results
 - Suite: <name> — <N>/<N> passing
 
+### CI Status After Remediation
+| Job | Before | After | Notes |
+|---|---|---|---|
+| <job-name> | fail | pass | Fixed by commit <hash> |
+| <job-name> | fail | fail | Unresolved — requires manual attention |
+| (if no CI failures were recorded in Phase 1, write: "CI was passing at Phase 1 — no re-check required.") | | | |
+
 ### Skipped (requires manual attention)
 - `removedClass` at lib/bar.py:17 — no replacement available; architectural decision needed
+- CI job `<name>` — categorised as "Other"; root cause: <summary>
 ```
 
 → Next: Read `phases/p5-verdict.md` and execute it.

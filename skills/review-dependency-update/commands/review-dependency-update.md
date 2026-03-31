@@ -49,6 +49,9 @@ Always infer `owner/repo` from the current repository: `git remote get-url origi
 ```
 [Phase 1: Parse & Fetch]
         │
+        ├── Step G: Fetch CI check status
+        │           ├── All pass → note in brief, continue
+        │           └── Failures → triage, classify, append to brief
         ▼
 [Phase 1b: Split Commits?] ← Ink — skip if already atomic; produces manifest
         │
@@ -59,12 +62,15 @@ Always infer `owner/repo` from the current repository: `git remote get-url origi
                                                               │ (all P2-3 done)
                                                               ▼
                                               [Phase 4: Sequential Remediation]
+                                              Step A.1: merge CI failures into must-fix list
                                               bump-A → bump-B → bump-N (one at a time)
+                                              Step D.1: re-check CI after commits
                                                               │
                                                               ▼
                                               [Parallel Resume] ─── agent-1 ──► [Phase 5 → 6]
                                                               ├── agent-2 ──► [Phase 5 → 6]
                                                               └── agent-N ──► [Phase 5 → 6]
+                                              (Phase 5: CI hard block if failures unresolved)
 ```
 
 Phases 2–3 (read-only investigation) run in parallel across all bumps.

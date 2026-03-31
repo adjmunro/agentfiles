@@ -2,6 +2,45 @@
 
 ---
 
+## 2.4.0 — The CI Gatekeeper (2026-04-01)
+
+Adds CI status checking and failure triage to the pipeline. Previously, the skill
+reviewed changelog, API changes, and codebase impact but had no visibility into
+whether the dependency update's own CI was passing. A PR could receive an APPROVE
+verdict while build or test failures caused by the version bump were silently ignored.
+This release closes that gap by fetching CI status in Phase 1, triaging failures by
+category, feeding actionable failures into Phase 4 remediation, and enforcing a hard
+block in Phase 5 for unresolved non-environment failures.
+
+- Phase 1 Step G: new step — fetches CI/check status via `gh pr checks` after writing
+  the session brief; if all checks pass, notes it in the brief and continues; if any
+  checks are failing or pending, fetches logs for each failing job (`gh run view
+  --log-failed`) and classifies each failure into one of five categories: API break,
+  Migration required, Test environment issue, Deprecation became removal, or Other;
+  appends a structured CI Status section to the session brief with a triage table and
+  routing notes; data-boundary guard applied to CI log content
+- Phase 4 Step A.1: new step — reads CI triage from the session brief before working
+  through the Phase 3 impact table; API break, Deprecation became removal, and
+  Migration required failures are added to the must-fix list; Test environment issue
+  failures are recorded as advisory; Other failures are flagged for manual attention
+- Phase 4 Step D.1: new step — after all commits, re-fetches `gh pr checks` to
+  determine whether previously failing jobs now pass; records each job as resolved or
+  unresolved; unresolved non-environment failures propagate to Phase 5 as blocking
+- Phase 4 Step E (Remediation Summary): extended with a CI Status After Remediation
+  table showing before/after state for each previously failing job
+- Phase 5 Step A scoring matrix: four new CI signals — all failures resolved (0 extra
+  penalty), unresolved non-environment failures (+4), unresolved environment-only
+  failures (+1), CI passing or not configured (0)
+- Phase 5 CI hard block: new override rule — regardless of tier, any unresolved
+  non-environment CI failure forces the verdict to REQUEST CHANGES at minimum; APPROVE
+  and APPROVE WITH CONDITIONS are blocked
+- Phase 5 Step C verdict block: new CI Status field added between Security and
+  Warnings / Follow-up Required
+- Orchestrator pipeline diagram: updated to show Step G branch, Step A.1 merge, Step
+  D.1 re-check, and Phase 5 CI hard block annotation
+
+---
+
 ## 2.3.0 — The Full Span (2026-04-01)
 
 Adds multi-version span awareness across Phases 1, 2, and 5. Previously, when a
