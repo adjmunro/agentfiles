@@ -74,7 +74,7 @@ For each entry, classify and record:
 | **Breaking changes** | API removals, renamed symbols, changed signatures, altered defaults |
 | **Deprecations** | APIs marked deprecated — note the recommended replacement if given; for Kotlin/Android watch for `@Deprecated`, `@RequiresApi` level changes, and compose API stability annotations (`@ExperimentalApi`, promoted to stable) |
 | **New APIs** | Additions that might require or enable usage changes in consuming code |
-| **Bug fixes** | Fixes relevant to usage patterns (e.g., corrected return values, error types) |
+| **Bug fixes** | Fixes where the affected API or type is imported or called in this codebase (Phase 3 will confirm); fixes for incorrect return values, changed error types, or altered exception behaviour |
 | **Behaviour changes** | Anything that alters observable output without a signature change |
 | **Security advisories** | CVE IDs, vulnerability descriptions, affected versions |
 | **Licence changes** | Any change to the licence, dual-licensing, or CLA requirements |

@@ -2,6 +2,17 @@
 
 ---
 
+## 1.7.0 — The Concrete Gate (2026-03-31)
+
+Replaces two subjective acceptance criteria with concrete, binary-testable conditions.
+Agents executing Phase 4 and Phase 2 no longer need to exercise judgment on whether
+a migration is "low-risk" or a bug fix is "relevant".
+
+- Phase 4 Step C: replaces "low-risk and well-documented" with three concrete binary conditions — documented replacement with code example/guide, ≤3 call sites or all structurally identical, no observable behaviour change
+- Phase 2 Pass B: replaces "relevant to our usage" for bug fixes with a concrete codebase-presence check — record if the affected API or type is imported or called in this codebase (Phase 3 confirms)
+
+---
+
 ## 1.6.0 — The Calibrated Scorer (2026-03-31)
 
 Improves the Phase 5 risk scoring matrix by adding a differentiated signal for

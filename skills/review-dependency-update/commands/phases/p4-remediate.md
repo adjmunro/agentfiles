@@ -84,12 +84,15 @@ Move to the next actionable usage and repeat Steps 1–4.
 ## Step C — Advisory Migrations (optional)
 
 After all must-fix items are committed, assess the advisory usages (deprecations
-without urgency). If the migration is low-risk and well-documented:
+without urgency). Apply the migration if ALL of the following are true:
+- The replacement API is documented in the changelog with a code example or migration guide
+- The total number of call sites is ≤3, OR all call sites are structurally identical (copy-paste)
+- The migration does not alter the observable behaviour of the surrounding code
+
+If any of these conditions is false, leave it and note it in the Phase 5 verdict
+for the reviewer's attention. If the conditions are met:
 - Apply and commit using the same Ink process
 - Prefix the commit message: `chore(deps): migrate <symbol> (deprecated in <version>)`
-
-If the migration is ambiguous or would require significant refactoring, leave it and
-note it in the Phase 5 verdict for the reviewer's attention.
 
 ## Step D — Final Test Run
 
