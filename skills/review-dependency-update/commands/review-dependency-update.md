@@ -135,7 +135,9 @@ run Phases 5–6 for each bump. Each agent receives the same prompt as Wave 1 pl
 > Execute Phases 5 and 6 only. Post your own PR comment at the end.
 
 **If the Agent tool is not available** — run Phases 2–6 fully sequentially for each
-entry in the manifest, in order. The serialisation requirement is automatically satisfied.
+entry in the manifest, in order. (Phase 4's one-bump-at-a-time sequencing requirement
+is automatically satisfied by this serialisation — no additional sequencing step is
+needed.)
 
 ## Execution
 

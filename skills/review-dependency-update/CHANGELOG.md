@@ -2,6 +2,18 @@
 
 ---
 
+## 1.9.1 — The Explicit Fallback (2026-04-01)
+
+Clarifies the Wave 3 non-parallel fallback instruction to explicitly note that Phase
+4's one-bump-at-a-time sequencing constraint is automatically satisfied by sequential
+execution. Previously this invariant was implicit, which could cause confusion for
+agents trying to determine whether additional ordering logic was needed.
+
+- Orchestrator Wave 3 fallback: adds parenthetical clarifying Phase 4 sequencing
+  is automatically satisfied by serialisation
+
+---
+
 ## 1.9.0 — The Guarded Reader (2026-04-01)
 
 Adds explicit data-boundary instructions to the phases that read untrusted external
