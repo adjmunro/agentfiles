@@ -2,6 +2,48 @@
 
 ---
 
+## 2.2.0 — The Lockfile Lens (2026-04-01)
+
+Adds explicit transitive dependency analysis to Phase 1. The agent now diffs the
+lockfile (all recognised formats) to surface transitive major-version bumps and
+newly-introduced transitive packages before investigation begins. Results are
+appended to the session brief for downstream Phase 2 agents. Patch-only transitive
+bumps are intentionally excluded to avoid noise.
+
+- Phase 1 Step D.1: diffs lockfile between base and head branch; flags transitive
+  major-version bumps and newly-introduced transitive packages; appends findings
+  to session brief; graceful fallback when no lockfile is present in the PR
+
+---
+
+## 2.1.0 — The Supply-Chain Auditor (2026-04-01)
+
+Substantially expands Phase 2's security red-team pass (Rook) to cover three new
+supply-chain dimensions that were previously absent: source commit inspection,
+git tag signing verification, and ecosystem-specific artifact signing. Together
+these additions close the gap between a changelog-and-diff review and a
+professional SLSA-aligned dependency security audit.
+
+- Phase 2 Pass C.1 — Source Commit Inspection: lists commits between old and new
+  tag via the GitHub compare API; scans for anomalous patterns (newly added network
+  calls, eval/exec, unexpected binary files, obfuscation markers); checks
+  tag-to-tarball integrity per ecosystem (npm provenance, Maven PGP `.asc`,
+  PyPI Sigstore attestations, Cargo `Cargo.lock` SHA-256, Gradle
+  `verification-metadata.xml`); explicit fallback for non-public packages
+- Phase 2 Pass C.2 — Git Tag Signing: checks whether the new version's git tag is
+  GPG/SSH-signed via GitHub API (`verification` field) and local `git verify-tag`;
+  four-case classification ladder including signing-regression detection (previously
+  signed → now unsigned = Confirmed concern); advisory note for packages that have
+  never signed
+- Phase 2 Pass C.3 — Named Concerns: renumbers and extends the existing concern list
+  to eight items, adding concerns 7 (registry signing regression) and 8 (tag signing
+  regression) to surface Pass C.1/C.2 findings in the final report table
+- Phase 2 Pass D — Investigation Report template: extended Security Red-Team section
+  with structured tables for Pass C.1 (source commit + integrity) and Pass C.2 (tag
+  signing) findings alongside the existing Pass C.3 named-concern table
+
+---
+
 ## 1.9.2 — The Final Gate (2026-04-01)
 
 Replaces the last subjective acceptance criterion in Phase 4 with a concrete binary
