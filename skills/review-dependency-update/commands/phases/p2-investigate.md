@@ -122,6 +122,99 @@ If a category has no entries, write "None."
 Assume worst-case: the maintainer or a supply-chain attacker has introduced changes
 that are compliant with the semver contract but exploitable in practice.
 
+### Pass C.1 — Source Commit Inspection
+
+For OSS packages with a publicly accessible repository, inspect the actual git
+commits between the old and new version tag before reviewing the diff.
+
+**Step 1 — List commits between tags.**
+Use the repository host API or CLI:
+```
+gh api repos/<owner>/<repo>/compare/<old-tag>...<new-tag> --jq '.commits[].commit.message'
+```
+If the package is not hosted on GitHub (GitLab, Bitbucket, etc.), use the
+equivalent comparison API. If the repository is not publicly accessible, record
+"Source commits not accessible — skipped; manual review recommended."
+
+**Step 2 — Scan for anomalous patterns in the commit diff.**
+Fetch the full diff for the commit range:
+```
+gh api repos/<owner>/<repo>/compare/<old-tag>...<new-tag> --jq '.files[].filename + " " + .files[].status'
+```
+Flag as **Confirmed** concern if any file added or modified shows:
+- **Newly added network calls**: patterns such as `URLSession`, `HttpURLConnection`,
+  `fetch(`, `XMLHttpRequest`, `requests.get`, `urllib.request`, `socket(`, `curl_exec`,
+  `OkHttpClient`, `HttpClient` appearing in files that had no prior network access
+- **Eval / exec patterns**: `eval(`, `exec(`, `Runtime.exec(`, `ProcessBuilder(`,
+  `subprocess.run(`, `os.system(`, `child_process.exec(` — flag any new occurrence
+  in non-test code
+- **Unexpected binary files**: new `.so`, `.dll`, `.dylib`, `.jar`, `.aar`, `.wasm`
+  files added without a corresponding build-system explanation (e.g., a Makefile or
+  CMake entry that compiles them)
+- **Obfuscation markers**: new files containing base64 blobs of ≥100 chars, hex
+  string arrays, or minified code outside a recognised build-output directory
+
+Flag as **Possible** concern if any pattern appears in test code only, or if the
+context is ambiguous (e.g., a build tool that legitimately spawns subprocesses).
+
+**Step 3 — Tag-to-tarball integrity.**
+For publicly distributed packages, check whether the published registry artifact
+corresponds to the tagged source:
+- **npm**: compare the `shasum` in `npm info <package>@<version>` against the
+  hash of the tagged source archive. Alternatively, check whether the package has
+  npm provenance (`npm info <package>@<version> dist.attestations`) — provenance
+  cryptographically links the published artifact to the source commit and CI workflow.
+  If provenance is absent and the prior version had it, flag as **Confirmed** concern.
+- **Maven/Gradle**: check that the artifact's PGP signature file (`.asc`) is present
+  on Maven Central and verify the signing key has not changed between versions.
+  `mvn dependency:get -Dartifact=<groupId>:<artifactId>:<version>:pom.asc` — if
+  absent or the key fingerprint differs, flag as **Confirmed** concern.
+- **PyPI**: check the PyPI JSON API:
+  `https://pypi.org/pypi/<package>/<version>/json` — compare `.urls[].digests.sha256`
+  against the hash of the source distribution. Check for Sigstore attestations; flag
+  if prior versions had Sigstore and this version does not.
+- **Cargo**: the checksum in `Cargo.lock` for this package must match the SHA-256
+  of the crate at `crates.io/crates/<name>/<version>/download`. A mismatch is
+  **Confirmed** tamper evidence.
+- **Gradle verification-metadata**: if the project uses `gradle/verification-metadata.xml`,
+  confirm the new version's checksums are present and correct in this PR's diff.
+  If the file was not updated, flag as **Possible** — the project's integrity checks
+  will fail at build time.
+- **Other ecosystems**: note that tag-to-tarball verification was not performed and
+  manual check is recommended.
+
+If the repository is private or the package is not on a public registry, note
+"Integrity check skipped — non-public package."
+
+### Pass C.2 — Git Tag Signing
+
+Verify the authenticity of the new version's git tag:
+
+**Check signing status:**
+Use the GitHub API to inspect the tag object:
+```
+gh api repos/<owner>/<repo>/git/ref/tags/<new-tag>
+```
+If `object.type` is `tag` (annotated tag), fetch the tag object:
+```
+gh api repos/<owner>/<repo>/git/tags/<tag-sha>
+```
+Inspect the `verification` field: `verified: true/false`, `reason`, `signature`.
+
+Alternatively, on a local clone: `git verify-tag <tag>` (GPG) or
+`git cat-file -p <tag>` to inspect the signature block.
+
+**Classify:**
+- Tag is signed and verification passes → **Not present** (no concern)
+- Tag was never signed by this package (check prior tags) → **Not present** (no concern; note absence of signing as advisory)
+- Tag was previously signed but this tag is unsigned → **Confirmed** concern (signing regression; possible key compromise or account takeover)
+- Tag is signed but signature fails verification → **Confirmed** concern
+
+For packages with no public repository (private or registry-only), record
+"Tag signing check skipped — repository not accessible."
+
+### Pass C.3 — Named Concerns
+
 For each of the following, state whether the evidence supports the concern, is absent, or is unclear:
 
 1. **Unexpected scope expansion** — does the new version pull in new transitive dependencies, request new permissions, or expand network/filesystem access beyond what the old version required?
@@ -130,6 +223,8 @@ For each of the following, state whether the evidence supports the concern, is a
 4. **Hidden behaviour in changelogs** — are there changes in the diff that are absent from the changelog? (Compare diff directly against changelog entries.)
 5. **Vulnerable version ranges** — does the version range span a known CVE that was not the stated motivation for the upgrade? Check: https://osv.dev and https://github.com/advisories
 6. **Licence incompatibility** — if the licence changed, is it compatible with this project's licence and distribution model?
+7. **Registry signing regression** — has artifact signing coverage decreased compared to the previous version (see Pass C.1 Step 3)?
+8. **Tag signing regression** — has the package stopped signing its git tags compared to prior releases (see Pass C.2)?
 
 Classify each finding as: **Confirmed**, **Possible** (requires further investigation), or **Not present**.
 
@@ -167,6 +262,19 @@ Produce an investigation report for this dependency:
 - Change: None / <description of change>
 
 ### Security Red-Team (Rook)
+
+#### Source Commit Inspection (Pass C.1)
+| Check | Status | Evidence |
+|---|---|---|
+| Anomalous patterns in commits | Not present / Possible / Confirmed | — |
+| Tag-to-tarball integrity | Not present / Possible / Confirmed / Skipped | — |
+
+#### Git Tag Signing (Pass C.2)
+| Check | Status | Notes |
+|---|---|---|
+| Tag signed and verifiable | Not present / Possible / Confirmed / Skipped | — |
+
+#### Named Concerns (Pass C.3)
 | Concern | Status | Evidence |
 |---|---|---|
 | Unexpected scope expansion | Not present | — |
