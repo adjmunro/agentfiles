@@ -54,49 +54,63 @@ Always infer `owner/repo` from the current repository: `git remote get-url origi
         │           └── Failures → triage, classify, append to brief
         ▼
 [Phase 1b: Split Commits?] ← Ink — skip if already atomic; produces manifest
-        │
+        │   Step I: create one isolated branch per alias from base branch
+        │           dep-review/<PR-number>/<alias> ← cherry-pick alias commit
         ▼
-[Parallel Dispatch] ─── agent-1: bump-A ──► [Phase 2 → 3]  ─┐
-                    ├── agent-2: bump-B ──► [Phase 2 → 3]  ─┤
-                    └── agent-N: bump-N ──► [Phase 2 → 3]  ─┘
-                                                              │ (all P2-3 done)
-                                                              ▼
-                                              [Phase 4: Sequential Remediation]
+[Wave 1: Parallel Investigation] ─── agent-1: bump-A ──► [Phase 2 → 3] on isolated branch  ─┐
+                                 ├── agent-2: bump-B ──► [Phase 2 → 3] on isolated branch  ─┤
+                                 └── agent-N: bump-N ──► [Phase 2 → 3] on isolated branch  ─┘
+                                                                                               │ (all P2-3 done)
+                                                                                               ▼
+                                              [Wave 2: Sequential Remediation]
+                                              Each agent works on its own isolated branch:
                                               Step A.1: merge CI failures into must-fix list
                                               bump-A → bump-B → bump-N (one at a time)
                                               Step D.1: re-check CI after commits
+                                              Step F: force-push isolated branch
                                                               │
                                                               ▼
-                                              [Parallel Resume] ─── agent-1 ──► [Phase 5 → 6]
-                                                              ├── agent-2 ──► [Phase 5 → 6]
-                                                              └── agent-N ──► [Phase 5 → 6]
+                                              [Wave 3: Parallel Verdict and Comment] ─── agent-1 ──► [Phase 5 → 6] on isolated branch
+                                                              ├── agent-2 ──► [Phase 5 → 6] on isolated branch
+                                                              └── agent-N ──► [Phase 5 → 6] on isolated branch
                                               (Phase 5: CI hard block if failures unresolved)
                                                               │ (all P5-6 done)
                                                               ▼
-                                              [Phase 7: Orchestrator Summary Comment]
-                                              Single consolidated comment posted by orchestrator
+                                              [Wave 4: Consolidation — Orchestrator]
+                                              Phase 8: merge verified isolated branches → consolidated branch
+                                              Full integration test suite on consolidated branch
+                                              Bisect on failure to identify regression introducer
+                                              Force-push consolidated branch → PR head branch
+                                              Clean up isolated branches
+                                                              │
+                                                              ▼
+                                              [Wave 5: Summary — Orchestrator]
+                                              Phase 7: single consolidated PR comment
 ```
 
-Phases 2–3 (read-only investigation) run in parallel across all bumps.
-**Phase 4 (remediation commits) runs sequentially** — git operations are not concurrency-safe.
+Phases 2–3 (read-only investigation) run in parallel, each on its own isolated branch.
+**Phase 4 (remediation commits) runs sequentially** — git operations are not concurrency-safe — but each agent operates only on its own isolated branch, eliminating cross-contamination.
 Phases 5–6 (verdict and comment) resume in parallel after all Phase 4 work is done.
+**Phase 8 (consolidation) runs once, orchestrator-only**, merging all verified isolated branches and replacing the PR head branch.
 
 ## Phase Dispatch Table
 
 | Phase | File | Concurrency | Active when |
 |---|---|---|---|
 | 1 | `phases/p1-parse.md` | Sequential | command is first invoked |
-| 1b | `phases/p1b-split-commits.md` | Sequential | Phase 1 complete; always runs as a check |
-| — | **Wave 1 Dispatch** | — | Phase 1b manifest produced |
-| 2 | `phases/p2-investigate.md` | **Parallel** | per-agent: investigate this bump |
+| 1b | `phases/p1b-split-commits.md` | Sequential | Phase 1 complete; always runs as a check; creates isolated branches |
+| — | **Wave 1: Parallel Investigation** | — | Phase 1b isolated branches created |
+| 2 | `phases/p2-investigate.md` | **Parallel** | per-agent: investigate this bump on isolated branch |
 | 3 | `phases/p3-impact.md` | **Parallel** | per-agent: Phase 2 complete |
-| — | **Wave 2: Remediation** | — | All Wave 1 agents complete |
-| 4 | `phases/p4-remediate.md` | **Sequential** | Phase 3 found actionable usages; one bump at a time |
-| — | **Wave 3 Dispatch** | — | All Phase 4 work committed |
+| — | **Wave 2: Sequential Remediation** | — | All Wave 1 agents complete |
+| 4 | `phases/p4-remediate.md` | **Sequential** | Phase 3 found actionable usages; one bump at a time on isolated branch |
+| — | **Wave 3: Parallel Verdict and Comment** | — | All Phase 4 work committed |
 | 5 | `phases/p5-verdict.md` | **Parallel** | per-agent: Phase 4 complete (or skipped) |
 | 6 | `phases/p6-comment.md` | **Parallel** | per-agent: Phase 5 verdict written |
-| — | **Wave 4: Summary** | — | All Wave 3 agents complete |
-| 7 | `phases/p7-summary.md` | **Sequential (orchestrator)** | all Phase 6 comments posted |
+| — | **Wave 4: Consolidation** | — | All Wave 3 agents complete |
+| 8 | `phases/p8-consolidate.md` | **Sequential (orchestrator)** | all Phase 6 comments posted; merges isolated branches, replaces PR head |
+| — | **Wave 5: Summary** | — | Phase 8 consolidation complete |
+| 7 | `phases/p7-summary.md` | **Sequential (orchestrator)** | Phase 8 complete; posts final PR comment |
 
 ## Parallel Dispatch
 
@@ -117,6 +131,9 @@ message. Each agent receives this prompt:
 > Your bump: alias `<alias>`, packages `<packages>`, plugins `<plugins>`,
 > version `<old>` → `<new>`.
 > Cross-bump constraints for this alias: `<cross_bump_constraints, or "none">`.
+> Your isolated branch: `dep-review/<PR-number>/<alias>` — all investigation and
+> testing for this bump operates on this branch. Do not check out or modify any
+> other branch.
 > Phase files are in `skills/review-dependency-update/commands/phases/` from repo root.
 > **Execute Phases 2 and 3 only.** Do NOT run Phase 4, 5, or 6 yet.
 > Return your Phase 3 impact table (actionable usages count, advisory count, files affected).
@@ -143,6 +160,9 @@ run Phases 5–6 for each bump. Each agent receives the same prompt as Wave 1 pl
 > original PR context before beginning. If the file is not found, use the PR context
 > in this prompt as your intent anchor.
 >
+> Your isolated branch: `dep-review/<PR-number>/<alias>` — all verdict work for
+> this bump is based on the state of this branch. Do not check out or modify any
+> other branch.
 > Phase 4 remediation commits for your bump: <comma-separated hashes, or "none">.
 > Execute Phases 5 and 6 only. Post your own PR comment at the end.
 
@@ -151,18 +171,38 @@ entry in the manifest, in order. (Phase 4's one-bump-at-a-time sequencing requir
 is automatically satisfied by this serialisation — no additional sequencing step is
 needed.)
 
-### Wave 4 — Consolidated Summary Comment (Phase 7)
+### Wave 4 — Consolidation (Phase 8)
 
 After all Wave 3 agents have completed and all per-bump Phase 6 comments are posted,
-the **orchestrator** (not a sub-agent) executes Phase 7. This is a sequential,
-orchestrator-only step — there is exactly one Phase 7 execution per skill run.
+the **orchestrator** (not a sub-agent) executes Phase 8. This is a sequential,
+orchestrator-only step — there is exactly one Phase 8 execution per skill run.
 
-Read `phases/p7-summary.md` and execute it, using the collected Phase 5 verdict data
-from all bumps. The result is a single PR comment that consolidates all findings,
-CI outcomes, supply chain signals, remediations, and verdicts into one place.
+Read `phases/p8-consolidate.md` and execute it. Phase 8:
+1. Creates a fresh consolidation branch from base
+2. Merges each verified isolated branch in manifest order
+3. Runs the full integration test suite
+4. Bisects on failure to identify the regression introducer
+5. Force-pushes the consolidation branch to replace the PR head branch
+6. Cleans up isolated branches
 
-**If the Agent tool is not available** — Phase 7 runs immediately after the last
+The consolidation summary produced by Phase 8 is passed to Phase 7.
+
+**If the Agent tool is not available** — Phase 8 runs immediately after the last
 bump's Phase 6 comment is posted, using the data already in scope.
+
+### Wave 5 — Consolidated Summary Comment (Phase 7)
+
+After Phase 8 consolidation is complete, the **orchestrator** executes Phase 7.
+This is a sequential, orchestrator-only step — there is exactly one Phase 7
+execution per skill run.
+
+Read `phases/p7-summary.md` and execute it, using the collected Phase 5 verdict
+data from all bumps and the Phase 8 consolidation summary. The result is a single
+PR comment that consolidates all findings, CI outcomes, supply chain signals,
+remediations, consolidation results, and verdicts into one place.
+
+**If the Agent tool is not available** — Phase 7 runs immediately after Phase 8
+completes, using the data already in scope.
 
 ## Execution
 
