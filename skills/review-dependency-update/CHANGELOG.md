@@ -2,6 +2,60 @@
 
 ---
 
+## 3.0.0 — The Isolated Investigator (2026-04-01)
+
+**Breaking architectural change.** Replaces the shared PR head branch execution
+model with per-alias isolated branches. Previously, all per-bump agents operated
+on the same PR head branch, meaning bump-B's investigation and tests were
+contaminated by bump-A's unresolved state. This release eliminates cross-
+contamination entirely: each alias group lives on its own isolated branch from
+the moment Phase 1b completes until Phase 8 merges it into the consolidated branch.
+
+- **Phase 1b Step I (new):** after producing the atomic commit manifest, creates
+  one isolated branch per alias group forked from the **base branch** (not the PR
+  head); cherry-picks the alias group's commit onto the branch; pushes it to the
+  remote; manifest schema extended with an `isolated_branch` field
+  (`dep-review/<PR-number>/<alias>`) so all downstream phases can locate the branch
+  without inferring it
+- **Phase 4 Step A (rewritten):** now checks out the **isolated branch** for the
+  current alias (`dep-review/<PR-number>/<alias>`) rather than the PR head branch;
+  includes fetch-before-checkout fallback; adds a branch-name confirmation guard
+  (`git branch --show-current`) before any changes are made
+- **Phase 4 Step F (new):** force-pushes the isolated branch after all commits and
+  tests pass; uses `--force-with-lease`; includes an explicit note that Phase 4 must
+  never write to the PR head branch directly — that is Phase 8's responsibility
+- **New `phases/p8-consolidate.md` — Phase 8: Consolidation (orchestrator-only):**
+  - Step A: creates a fresh `dep-review/<PR-number>/consolidated` branch from base
+  - Step B: merges each verified isolated branch in manifest order using
+    `git merge --no-ff`; skips aliases flagged as unverified or BLOCK by Phase 5;
+    records merge outcome (clean / conflict resolved / skipped) per alias
+  - Step C: runs the full integration test suite on the consolidated branch; records
+    pass/fail and test counts
+  - Step D: on integration test failure, bisects by checking out each alias merge
+    point in order and re-running the suite; identifies the regression introducer;
+    does not automatically skip the offending alias — flags it for human decision
+  - Step E: force-pushes the consolidation branch to replace the PR head branch
+    (`git push --force-with-lease origin dep-review/<PR-number>/consolidated:<head-branch>`)
+  - Step F: deletes all remote isolated branches (including skipped ones)
+  - Step G: writes a structured consolidation summary (merge results table,
+    integration test result, bisect findings, skipped aliases) for Phase 7
+- **Orchestrator pipeline diagram:** updated to show isolated branches in Wave 1
+  and Wave 2; Phase 8 consolidation as Wave 4; Phase 7 summary as Wave 5
+- **Orchestrator Phase Dispatch Table:** Phase 8 row added (Sequential /
+  orchestrator, active after all Wave 3 agents complete); Phase 7 moved to Wave 5;
+  column descriptions updated to reference isolated branches
+- **Wave 1 agent prompt:** adds `isolated_branch` field so each agent knows which
+  branch to operate on; includes instruction not to check out or modify any other branch
+- **Wave 3 agent prompt:** adds `isolated_branch` field consistent with Wave 1;
+  verdict work is based on the isolated branch state
+- **Wave 4 section (new):** describes the sequential, orchestrator-only dispatch of
+  Phase 8; covers consolidation, integration test, bisect, force-push, and cleanup;
+  fallback for non-parallel execution
+- **Wave 5 section (renamed from Wave 4):** Phase 7 now runs after Phase 8, receiving
+  both the per-bump Phase 5 verdict data and the Phase 8 consolidation summary
+
+---
+
 ## 2.5.0 — The Consolidated Close (2026-04-01)
 
 Adds a final consolidated verdict comment as the last action of every skill run.
