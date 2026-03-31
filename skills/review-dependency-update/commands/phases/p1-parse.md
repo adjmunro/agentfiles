@@ -91,4 +91,4 @@ Rename the current Claude Code session to reflect the PR being reviewed:
 /rename PR #<number> - <PR title>
 ```
 
-→ Next: Read `phases/p2-investigate.md` and execute it for the first dependency in the list.
+→ Next: Read `phases/p1b-split-commits.md` and execute it.

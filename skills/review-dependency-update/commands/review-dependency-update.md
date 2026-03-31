@@ -16,7 +16,7 @@ Read each file before the phase in which it is active:
 
 - `../../personas/examiner/persona.md` — **Echo (Examiner)** — active in Phase 2 (investigation) and Phase 3 (impact mapping)
 - `../../personas/adversarial/persona.md` — **Rook (Adversary)** — active in Phase 2 security pass
-- `../../personas/ink/persona.md` — **Ink (Commit Curator)** — active in Phase 4 (all commits)
+- `../../personas/ink/persona.md` — **Ink (Commit Curator)** — active in Phase 1b (commit splitting) and Phase 4 (remediation commits)
 - `../../personas/critic/persona.md` — **Arden (Critic)** — active in Phase 5 (verdict)
 
 Identify by the active persona when communicating with the user. Switch personas at phase boundaries as declared.
@@ -49,13 +49,16 @@ Always infer `owner/repo` from the current repository: `git remote get-url origi
 [Phase 1: Parse & Fetch]
         │
         ▼
+[Phase 1b: Split Commits?] ← Ink — skip if already atomic
+        │
+        ▼
 [Phase 2: Investigate] ← Echo (Examiner) + Rook (Adversary) security pass
         │
         ▼
 [Phase 3: Impact Mapping] ← Echo (Examiner)
         │
         ▼
-[Phase 4: Remediate?] ← Kira (Builder) — skip if no actionable impact
+[Phase 4: Remediate?] ← Ink — skip if no actionable impact
         │
         ▼
 [Phase 5: Verdict] ← Arden (Critic)
@@ -69,6 +72,7 @@ Always infer `owner/repo` from the current repository: `git remote get-url origi
 | Phase | File | Active when |
 |---|---|---|
 | 1 | `phases/p1-parse.md` | command is first invoked |
+| 1b | `phases/p1b-split-commits.md` | Phase 1 complete; always runs as a check |
 | 2 | `phases/p2-investigate.md` | PR metadata and dependency range resolved |
 | 3 | `phases/p3-impact.md` | Phase 2 investigation report complete |
 | 4 | `phases/p4-remediate.md` | Phase 3 found actionable usages |
