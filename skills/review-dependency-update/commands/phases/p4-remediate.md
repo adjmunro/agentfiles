@@ -87,7 +87,9 @@ After all must-fix items are committed, assess the advisory usages (deprecations
 without urgency). Apply the migration if ALL of the following are true:
 - The replacement API is documented in the changelog with a code example or migration guide
 - The total number of call sites is ≤3, OR all call sites are structurally identical (copy-paste)
-- The migration does not alter the observable behaviour of the surrounding code
+- The migration is a pure rename or equivalent-replacement: the new API accepts the
+  same input types and returns the same output type, OR the changelog explicitly
+  states "no behaviour change" (or equivalent) for this symbol
 
 If any of these conditions is false, leave it and note it in the Phase 5 verdict
 for the reviewer's attention. If the conditions are met:

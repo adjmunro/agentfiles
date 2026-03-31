@@ -2,6 +2,19 @@
 
 ---
 
+## 1.9.2 — The Final Gate (2026-04-01)
+
+Replaces the last subjective acceptance criterion in Phase 4 with a concrete binary
+test. The previous condition ("does not alter the observable behaviour of the
+surrounding code") required interpretive judgment. The new condition is objectively
+checkable without tooling.
+
+- Phase 4 Step C: replaces "does not alter observable behaviour" with a two-part
+  binary test — pure rename/equivalent-replacement (same input/output types), OR
+  the changelog explicitly states "no behaviour change" for this symbol
+
+---
+
 ## 1.9.1 — The Explicit Fallback (2026-04-01)
 
 Clarifies the Wave 3 non-parallel fallback instruction to explicitly note that Phase
