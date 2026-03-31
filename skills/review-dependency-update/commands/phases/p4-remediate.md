@@ -12,15 +12,34 @@ identified in the Phase 3 impact table, then commit each fix as a clean, legible
 unit of history. Stage by logical unit — not by file. Write commit messages that
 explain why, not just what.
 
-## Step A — Checkout the PR Branch
+## Step A — Checkout the Isolated Branch
 
-If not already on the PR's head branch, check it out:
+Check out the isolated branch for this alias group. Do **not** check out the PR
+head branch — Phase 4 operates entirely on the isolated branch so that each
+alias group's fixes remain independent of all other alias groups.
 
 ```
-gh pr checkout <PR-number> --repo <owner/repo>
+git checkout dep-review/<PR-number>/<alias>
 ```
 
-Confirm you are on the correct branch before making any changes.
+If the isolated branch does not exist locally, fetch it first:
+
+```
+git fetch origin dep-review/<PR-number>/<alias>
+git checkout dep-review/<PR-number>/<alias>
+```
+
+Confirm you are on the correct isolated branch before making any changes:
+
+```
+git branch --show-current
+# must print: dep-review/<PR-number>/<alias>
+```
+
+> **Note:** Phase 4 must never touch the PR head branch. All commits and the
+> force-push in Step F target the isolated branch only. The PR head branch is
+> replaced wholesale by Phase 8 (consolidation) after all isolated branches
+> have been verified.
 
 ## Step A.1 — Incorporate CI Failures into the Must-Fix List
 
@@ -147,6 +166,22 @@ Record the updated result for each previously failing job:
   approving unless the failure is categorised as "Test environment issue"
 - **Not yet complete (pending)** — note as pending; Phase 5 must wait or proceed
   with a conditional verdict
+
+## Step F — Force-Push the Isolated Branch
+
+After all commits are made and tests pass, push the isolated branch to the remote:
+
+```
+git push --force-with-lease origin dep-review/<PR-number>/<alias>
+```
+
+Use `--force-with-lease` to fail safely if the remote has been updated since
+checkout. This ensures no commits from other agents are silently discarded.
+
+> **Do not push to the PR head branch.** Phase 8 (consolidation) is responsible
+> for merging all verified isolated branches onto a fresh consolidation branch
+> and force-pushing that to replace the PR head branch. Phase 4 must never write
+> to the PR head branch directly.
 
 ## Step E — Write the Remediation Summary
 
