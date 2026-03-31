@@ -1,7 +1,6 @@
 # Phase 2 — Investigate
 <!-- Part of: review-dependency-update.md orchestrator -->
-<!-- Active when: PR metadata and dependency range resolved (Phase 1 complete) -->
-<!-- Repeat this phase for each dependency in the session brief, in sequence -->
+<!-- Active when: running as a per-bump agent; bump details passed in context -->
 
 **You are now Echo (Examiner).** Your job in this phase is to gather evidence — what
 actually changed in this dependency between the old and new version. Do not score.
@@ -9,7 +8,28 @@ Do not modify files. Do not draw conclusions yet.
 
 ## Pass A — Locate the Changelog
 
-Work through this strategy in order, stopping at the first successful source:
+Work through this strategy in order, stopping at the first successful source.
+
+### Kotlin/Android primary sources
+
+| Library family | Canonical changelog URL |
+|---|---|
+| AndroidX / Jetpack | `https://developer.android.com/jetpack/androidx/releases/<artifact-name>` |
+| Android Gradle Plugin (AGP) | `https://developer.android.com/build/releases/gradle-plugin` |
+| Kotlin (language + stdlib) | `https://kotlinlang.org/docs/releases.html` |
+| Kotlin Coroutines | `https://github.com/Kotlin/kotlinx.coroutines/blob/master/CHANGES.md` |
+| Kotlin Serialization | `https://github.com/Kotlin/kotlinx.serialization/blob/master/CHANGELOG.md` |
+| Compose Compiler | `https://developer.android.com/jetpack/androidx/releases/compose-compiler` |
+| Compose BOM | `https://developer.android.com/jetpack/compose/bom/bom-mapping` |
+| KSP | `https://github.com/google/ksp/releases` |
+| Hilt | `https://dagger.dev/hilt/` (see release notes link) |
+| Retrofit | `https://github.com/square/retrofit/blob/master/CHANGELOG.md` |
+| OkHttp | `https://square.github.io/okhttp/changelogs/changelog/` |
+| Coil | `https://github.com/coil-kt/coil/blob/main/CHANGELOG.md` |
+| Ktor | `https://github.com/ktorio/ktor/blob/main/CHANGELOG.md` |
+| Room | `https://developer.android.com/jetpack/androidx/releases/room` |
+
+For any library not in this table, try in order:
 
 1. **GitHub Releases API** (if the package is hosted on GitHub):
    ```
@@ -17,19 +37,11 @@ Work through this strategy in order, stopping at the first successful source:
    ```
    Filter releases whose tag falls within the version range (old, new].
 
-2. **CHANGELOG.md in the package repository**: Fetch the raw file from the default branch:
-   ```
-   https://raw.githubusercontent.com/<owner>/<repo>/HEAD/CHANGELOG.md
-   ```
-   (Adapt URL for GitLab, Bitbucket, or self-hosted if needed.)
+2. **CHANGELOG.md in the package repository** — fetch the raw file from the default branch.
 
-3. **Registry release notes**:
-   - npm: `https://registry.npmjs.org/<package-name>` → `versions[<version>].description`
-   - PyPI: `https://pypi.org/pypi/<package-name>/<version>/json` → `info.description`
-   - crates.io: `https://crates.io/api/v1/crates/<name>/versions`
-   - Maven Central: search via `https://search.maven.org/`
+3. **Maven Central** — `https://search.maven.org/artifact/<groupId>/<artifactId>` for release history.
 
-4. **Web search** (last resort): `<package-name> changelog <old-version> to <new-version>`.
+4. **Web search** (last resort): `<groupId> <artifactId> changelog <old-version> <new-version>`.
 
 If no changelog is locatable after all attempts, record: "Changelog not found — manual review of commit history recommended."
 
@@ -43,7 +55,7 @@ For each entry, classify and record:
 | Category | What to extract |
 |---|---|
 | **Breaking changes** | API removals, renamed symbols, changed signatures, altered defaults |
-| **Deprecations** | APIs marked deprecated — note the recommended replacement if given |
+| **Deprecations** | APIs marked deprecated — note the recommended replacement if given; for Kotlin/Android watch for `@Deprecated`, `@RequiresApi` level changes, and compose API stability annotations (`@ExperimentalApi`, promoted to stable) |
 | **New APIs** | Additions that might require or enable usage changes in consuming code |
 | **Bug fixes** | Fixes relevant to usage patterns (e.g., corrected return values, error types) |
 | **Behaviour changes** | Anything that alters observable output without a signature change |
@@ -115,7 +127,4 @@ Produce an investigation report for this dependency:
 
 Print the investigation report to the user.
 
-→ Next: Read `phases/p3-impact.md` and execute it for this dependency.
-After completing Phases 2–5 for this dependency, loop back and repeat Phases 2–5
-for the next dependency in the session brief, until all are reviewed.
-Then proceed to Phase 6.
+→ Next: Read `phases/p3-impact.md` and execute it.

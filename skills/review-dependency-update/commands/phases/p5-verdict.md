@@ -59,9 +59,6 @@ verbatim in the Phase 6 comment.
 <advisory items, skipped migrations, or "None">
 ```
 
-If multiple dependencies are being reviewed, append each verdict block in sequence
-under a shared top-level heading.
+This agent is responsible for exactly one bump. Write the verdict block for that bump only.
 
-→ Next: If more dependencies remain in the session brief, return to Phase 2
-(`phases/p2-investigate.md`) and repeat Phases 2–5 for the next dependency.
-Once all dependencies are reviewed, read `phases/p6-comment.md` and execute it.
+→ Next: Read `phases/p6-comment.md` and execute it.

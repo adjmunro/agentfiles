@@ -10,6 +10,9 @@ argument-hint: "<PR-number>"
 
 # Review Dependency Update — Orchestrator
 
+Primarily designed for Kotlin/Android projects using Gradle with a
+`libs.versions.toml` version catalog.
+
 ## Personas
 
 Read each file before the phase in which it is active:
@@ -31,15 +34,13 @@ Always infer `owner/repo` from the current repository: `git remote get-url origi
 ## DO
 
 - Complete each phase fully before reading the next phase file
-- Investigate every dependency changed in the PR — if multiple packages are updated, review each one in sequence
 - Make only necessary code changes; do not refactor surrounding code or expand scope
 - Commit each remediation fix atomically (one fix, one commit) before moving to the next
-- Post exactly one PR comment containing the complete verdict for all dependencies reviewed
+- Each bump commit gets exactly one PR comment — do not aggregate
 
 ## DO NOT
 
 - Skip Phase 3 impact mapping even if Phase 2 reports no breaking changes — silent regressions often hide in minor version bumps
-- Post a partial comment then update it — gather all verdicts first, then post once
 - Modify source code during Phase 2 or Phase 3 — Echo and Rook are read-only passes
 - Abandon the pipeline on a single failing dependency — flag it and continue to the next
 
@@ -49,23 +50,16 @@ Always infer `owner/repo` from the current repository: `git remote get-url origi
 [Phase 1: Parse & Fetch]
         │
         ▼
-[Phase 1b: Split Commits?] ← Ink — skip if already atomic
+[Phase 1b: Split Commits?] ← Ink — skip if already atomic; produces manifest
         │
         ▼
-[Phase 2: Investigate] ← Echo (Examiner) + Rook (Adversary) security pass
-        │
-        ▼
-[Phase 3: Impact Mapping] ← Echo (Examiner)
-        │
-        ▼
-[Phase 4: Remediate?] ← Ink — skip if no actionable impact
-        │
-        ▼
-[Phase 5: Verdict] ← Arden (Critic)
-        │
-        ▼
-[Phase 6: Comment]
+[Parallel Dispatch] ─── agent-1: bump-A ──► [Phase 2 → 3 → 4? → 5 → 6]
+                    ├── agent-2: bump-B ──► [Phase 2 → 3 → 4? → 5 → 6]
+                    └── agent-N: bump-N ──► [Phase 2 → 3 → 4? → 5 → 6]
 ```
+
+Each agent runs Phases 2–6 independently for one version-catalog alias (or groupId).
+Each agent posts its own PR comment. There is no final aggregation step.
 
 ## Phase Dispatch Table
 
@@ -73,11 +67,28 @@ Always infer `owner/repo` from the current repository: `git remote get-url origi
 |---|---|---|
 | 1 | `phases/p1-parse.md` | command is first invoked |
 | 1b | `phases/p1b-split-commits.md` | Phase 1 complete; always runs as a check |
-| 2 | `phases/p2-investigate.md` | PR metadata and dependency range resolved |
-| 3 | `phases/p3-impact.md` | Phase 2 investigation report complete |
-| 4 | `phases/p4-remediate.md` | Phase 3 found actionable usages |
-| 5 | `phases/p5-verdict.md` | Phase 3 complete (and Phase 4 if it ran) |
-| 6 | `phases/p6-comment.md` | Phase 5 verdict written |
+| — | **Parallel Dispatch** | Phase 1b manifest produced |
+| 2 | `phases/p2-investigate.md` | per-agent: investigate this bump |
+| 3 | `phases/p3-impact.md` | per-agent: Phase 2 complete |
+| 4 | `phases/p4-remediate.md` | per-agent: Phase 3 found actionable usages |
+| 5 | `phases/p5-verdict.md` | per-agent: Phase 3 complete (and Phase 4 if it ran) |
+| 6 | `phases/p6-comment.md` | per-agent: Phase 5 verdict written |
+
+## Parallel Dispatch
+
+After Phase 1b produces the atomic commit manifest, dispatch one agent per entry.
+
+**If the Agent tool is available** — launch all agents concurrently in a single
+message. Each agent receives this prompt:
+
+> You are reviewing a single dependency bump on PR <number> in <owner/repo>.
+> Your bump: alias `<alias>`, packages `<packages>`, plugins `<plugins>`,
+> version `<old>` → `<new>`, commit `<hash>`.
+> Read `phases/p2-investigate.md` and execute Phases 2–6 in sequence for this bump.
+> Post your own PR comment at the end (Phase 6).
+
+**If the Agent tool is not available** — run Phases 2–6 sequentially for each
+entry in the manifest, in order.
 
 ## Execution
 

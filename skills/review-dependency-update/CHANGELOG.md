@@ -2,6 +2,24 @@
 
 ---
 
+## 1.2.0 — The Parallel Inspector (2026-03-31)
+
+Kotlin/Android focus, parallel agent dispatch per bump, and per-bump PR comments.
+Phase 1b rewritten around `libs.versions.toml` version-catalog aliases as the
+primary grouping signal; plugins and dependencies sharing an alias always co-commit.
+
+- Phase 1b: full rewrite — catalog alias is the authoritative group; plugin↔dependency
+  equivalence table covers AGP, Kotlin, KSP, Hilt, Navigation Safe Args, Wire
+- Orchestrator: parallel dispatch section — one agent per atomic commit runs Phases
+  2–6 concurrently; falls back to sequential when Agent tool unavailable
+- Phase 2: Kotlin/Android changelog source table (AndroidX, Jetpack, AGP, Kotlin,
+  Compose, KSP, Hilt, Ktor, Coil, Room, OkHttp, Retrofit, Coroutines, Serialization)
+- Phase 5: loop-back removed — each agent owns exactly one bump
+- Phase 6: rewritten for per-bump comments; no aggregation; temp-file posting to
+  avoid shell-escaping issues
+
+---
+
 ## 1.1.0 — The Atomic Splitter (2026-03-31)
 
 Adds Phase 1b: automatic commit splitting for PRs that bundle multiple unrelated

@@ -1,69 +1,51 @@
 # Phase 6 — Post PR Comment
 <!-- Part of: review-dependency-update.md orchestrator -->
-<!-- Active when: Phase 5 verdict blocks written for all dependencies -->
+<!-- Active when: Phase 5 verdict written for this bump -->
+<!-- Each agent posts its own comment — there is no aggregation step -->
 
 ## Step A — Assemble the Comment
 
-Compose the full comment by wrapping all verdict blocks from Phase 5 in a top-level
-structure:
+Compose a self-contained comment for this bump:
 
 ```markdown
-## Dependency Update Review
+## Dependency Review: `<alias>` · `<old-version>` → `<new-version>`
 
-> Reviewed by `/review-dependency-update` — automated analysis with human-in-the-loop verdict.
-
----
-
-<verdict block for dependency 1>
+> Commit: `<short-hash>` · Reviewed by `/review-dependency-update`
 
 ---
 
-<verdict block for dependency 2 (if applicable)>
+<verdict block from Phase 5, verbatim>
 
 ---
 
-### Overall Recommendation
+*Analysis performed on <date>. Remediation commits: <comma-separated hashes, or "none">.*
+```
 
-**<APPROVE / APPROVE WITH CONDITIONS / REQUEST CHANGES / BLOCK>**
+If this bump covers multiple artifacts under one alias (e.g., `room-runtime`,
+`room-compiler`, `room-ktx` all under `room`), list them in the header:
 
-<If multiple dependencies: state the aggregate verdict — the most severe individual
-verdict governs the overall recommendation. One BLOCK overrides all APPROVEs.>
-
-<1–2 sentences summarising the key reason for the overall recommendation.>
-
----
-
-*Analysis performed on <date>. Commits in this review: <comma-separated short hashes, or "none">.*
+```markdown
+## Dependency Review: `room` (`androidx.room:*`) · `2.5.2` → `2.6.1`
 ```
 
 ## Step B — Post the Comment
 
-Post the assembled comment to the PR:
+Write the comment to a temp file to avoid shell-escaping issues, then post:
 
 ```
-gh pr comment <PR-number> --repo <owner/repo> --body "<assembled comment>"
-```
+cat > /tmp/dep-review-<alias>.md << 'EOF'
+<assembled comment>
+EOF
 
-Use a heredoc or temp file if the comment body is long, to avoid shell escaping issues:
-
-```
-gh pr comment <PR-number> --repo <owner/repo> --body-file /tmp/dep-review-comment.md
+gh pr comment <PR-number> --repo <owner/repo> --body-file /tmp/dep-review-<alias>.md
 ```
 
 ## Step C — Report to the User
 
-Print a summary:
-
 ```
-✓ Comment posted to <PR URL>
-
-Dependency review complete.
-<package-name>: <VERDICT> (<RISK TIER>)
-<package-name-2>: <VERDICT> (<RISK TIER>)
-...
-Overall: <AGGREGATE VERDICT>
-
-Commits made: <N> (<list short hashes>) / none
+✓ Comment posted: `<alias>` <old> → <new> — <VERDICT> (<RISK TIER>)
+  PR: <PR URL>
+  Remediation commits: <hashes or "none">
 ```
 
-→ Done. Return control to the user.
+→ Done. This agent's work is complete.

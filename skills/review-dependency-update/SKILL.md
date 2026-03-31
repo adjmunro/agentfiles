@@ -8,9 +8,11 @@ argument-hint: "<PR-number>"
 
 ## Overview
 
-A structured dependency-update review pipeline. Point it at a PR number or URL and it
-will: investigate the dependency change end-to-end, assess code impact, apply
-remediation commits where needed, score the risk, and post a verdict comment on the PR.
+A structured dependency-update review pipeline for Kotlin/Android projects using
+Gradle with a `libs.versions.toml` version catalog. Point it at a PR number and it
+will: split any bundled version bumps into atomic commits, then investigate each bump
+in parallel — assessing code impact, applying remediation commits, scoring the risk,
+and posting one PR comment per bump.
 
 ## 6-Phase Pipeline
 
@@ -31,7 +33,7 @@ remediation commits where needed, score the risk, and post a verdict comment on 
 
 - **Echo (Examiner)** — Phase 2: changelog and API-change evidence gathering
 - **Rook (Adversary)** — Phase 2 security pass: supply-chain red-teaming
-- **Kira (Builder)** — Phase 4: remediation commits (only when changes are needed)
+- **Ink (Commit Curator)** — Phase 1b: commit splitting; Phase 4: remediation commits
 - **Arden (Critic)** — Phase 5: risk scoring and verdict
 
 ## Argument Format
