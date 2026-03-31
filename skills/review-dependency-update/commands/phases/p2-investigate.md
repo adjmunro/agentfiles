@@ -62,6 +62,30 @@ For any library not in this table, try in order:
 
 If no changelog is locatable after all attempts, record: "Changelog not found — manual review of commit history recommended."
 
+### Version Range Edge Cases
+
+Before fetching the changelog, apply these rules if the version strings are non-standard:
+
+**Pre-release suffixes** (`-alpha`, `-beta`, `-rc`, `-SNAPSHOT`, `-M1`, etc.)
+Treat pre-release versions as earlier than their stable release. For example:
+`1.0.0-alpha01` < `1.0.0-beta01` < `1.0.0-rc01` < `1.0.0`.
+Extract all entries in the range (old, new] using this ordering. If the new version
+is a stable release and old was a pre-release of the same version (e.g., `1.0.0-rc01`
+→ `1.0.0`), include the final stable release notes.
+
+**Multi-hop major upgrades** (old and new span more than one major version)
+If the PR bumps from e.g. `1.x` to `3.x`, fetch and combine the changelog entries
+for all major versions in between — `2.x` included — not just the latest. Many
+breaking changes accumulate across skipped major versions.
+
+**Version-only entries** (alias with no associated library artifact — e.g., a BOM pin)
+If the bumped entry is a version-only alias in `libs.versions.toml` that has no
+`[libraries]` entry referencing it, it is likely a BOM pin or a build-tool version.
+For BOM pins (e.g., `compose-bom`): use the BOM mapping URL from the lookup table to
+identify which transitive packages changed and record them as the effective changelog.
+For build-tool versions (e.g., a Gradle version alias): fetch the build-tool's release
+notes directly.
+
 ## Pass B — Extract Change Entries
 
 From the changelog (or release notes), extract all entries in the range (old, new].

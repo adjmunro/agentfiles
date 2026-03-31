@@ -2,6 +2,18 @@
 
 ---
 
+## 1.8.0 — The Version Realist (2026-04-01)
+
+Adds explicit handling for version range edge cases that were previously unaddressed
+in Phase 2: pre-release version string ordering, multi-hop major version upgrades,
+and BOM pin / version-only alias resolution.
+
+- Phase 2 Pass A: adds "Version Range Edge Cases" block covering pre-release suffixes
+  (alpha/beta/rc/SNAPSHOT ordering), multi-hop major ranges (fetch all intermediate
+  changelogs), and version-only BOM aliases (resolve via BOM mapping URL)
+
+---
+
 ## 1.7.0 — The Concrete Gate (2026-03-31)
 
 Replaces two subjective acceptance criteria with concrete, binary-testable conditions.
