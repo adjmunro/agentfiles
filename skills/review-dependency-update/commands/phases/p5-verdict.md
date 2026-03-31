@@ -33,7 +33,14 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 | Rook: possible supply-chain concern | +2 |
 | Significant behaviour change in exercised code path | +2 |
 | No changelog found — manual review incomplete | +2 |
+| Multi-version span (≥3 intermediate versions skipped) | +1 |
 | All actionable usages fully remediated (zero skipped must-fix items) | −1 (floor 0) |
+
+> **Note on "Multi-version span":** Apply this signal when the upgrade traverses three
+> or more intermediate versions (i.e., old → new spans at least two releases not
+> previously reviewed). The signal reflects the increased probability that advisory
+> signals were missed in intermediate releases. Do not apply it when the span is a
+> single minor or patch hop.
 
 > **Note on "Major version bump with no changelog found":** Use this signal (instead
 > of the plain "Major version bump" signal) only when the changelog lookup in Phase 2
@@ -84,8 +91,15 @@ verbatim in the Phase 6 comment.
 
 **Verdict: <VERDICT>**
 
+> **Version span:** single  |  multi — <count> intermediate versions traversed: <v1>, <v2>, ...
+> _(For multi-version spans: signals and advisories are aggregated across the full span,
+> including intermediate releases. CVEs that existed in traversed versions are reported
+> even if patched before the final version.)_
+
 #### Summary
-<2–4 sentences: what changed, what we checked, and the key reason for the verdict>
+<2–4 sentences: what changed, what we checked, and the key reason for the verdict.
+If a multi-version span was detected, explicitly state how many versions were traversed
+and whether any signals originated from intermediate releases rather than the final one.>
 
 #### Breaking Changes
 <list, or "None">

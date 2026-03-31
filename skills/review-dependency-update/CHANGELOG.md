@@ -2,6 +2,37 @@
 
 ---
 
+## 2.3.0 — The Full Span (2026-04-01)
+
+Adds multi-version span awareness across Phases 1, 2, and 5. Previously, when a
+dependency jumped multiple releases (e.g. `1.0.0 → 1.3.0`), the skill would only
+inspect the changelog and signals for the final version being moved to. Intermediate
+releases — and any breaking changes, deprecations, CVEs, or security signals they
+introduced — were silently skipped. This release closes that gap.
+
+- Phase 1 Step E: session brief now includes a `Version Span` column; multi-version
+  spans list all intermediate versions inline (e.g. `multi (3 versions: 1.1.0, 1.2.0,
+  1.3.0)`) to signal Phase 2 that changelog aggregation is required
+- Phase 2 Pass A: new "Multi-Version Span Detection" block — enumerates all released
+  versions in the range (old, new] using the appropriate registry API per ecosystem;
+  records the intermediate version list; distinguishes single-version and multi-version
+  spans before any changelog fetch begins
+- Phase 2 Pass B: explicit instruction to aggregate change entries across every
+  intermediate version; intermediate CVEs that were later patched must still be
+  reported, with both the introduction version and the fix version noted
+- Phase 2 Pass C.1: clarifying note that the `old-tag...new-tag` commit comparison
+  already covers all intermediates; no additional per-version comparison needed
+- Phase 2 Pass D report template: version span line added to the investigation report
+  header; Security Advisories table extended with an "Introduced in span" column and
+  an explanatory note on intermediate CVE reporting
+- Phase 5 Step A scoring matrix: new signal "Multi-version span (≥3 intermediate
+  versions skipped)" (+1) with a clarifying note on when to apply it
+- Phase 5 Step C verdict block: version span line added; Summary field guidance
+  updated to require explicit mention of traversed versions and whether any signals
+  originated from intermediate releases
+
+---
+
 ## 2.2.0 — The Lockfile Lens (2026-04-01)
 
 Adds explicit transitive dependency analysis to Phase 1. The agent now diffs the

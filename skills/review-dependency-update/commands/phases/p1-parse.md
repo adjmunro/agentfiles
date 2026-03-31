@@ -121,11 +121,18 @@ Author: <author>
 Date: <created-at>
 
 ### Dependencies to Review
-| # | Package | Ecosystem | Old → New | Type |
-|---|---------|-----------|-----------|------|
-| 1 | <name> | <ecosystem> | <old> → <new> | upgrade |
+| # | Package | Ecosystem | Old → New | Type | Version Span |
+|---|---------|-----------|-----------|------|--------------|
+| 1 | <name> | <ecosystem> | <old> → <new> | upgrade | single / multi (<count> versions) |
 ...
 ```
+
+**Version span detection:** For each dependency where the old and new version differ by more
+than one release (i.e., intermediate versions exist between them), mark the `Version Span`
+column as `multi (<count> versions)` and list the intermediate versions inline, e.g.:
+`multi (3 versions: 1.1.0, 1.2.0, 1.3.0)`. This signals to Phase 2 that changelog
+aggregation across the full span is required. If no intermediate versions exist, write
+`single`.
 
 Print the brief to the user.
 
