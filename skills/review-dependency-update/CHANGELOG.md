@@ -2,6 +2,19 @@
 
 ---
 
+## 1.5.0 — The Full Library (2026-03-31)
+
+Expands the Kotlin/Android changelog source table in Phase 2 from 14 to 31 entries,
+adding the most frequently-encountered library families that were previously missing.
+Agents investigating these libraries will now find a direct canonical URL rather than
+falling through to the generic GitHub Releases / Maven Central lookup chain.
+
+- Added: Lifecycle, WorkManager, Paging, DataStore, Navigation, Compose UI/Foundation/Material, Kotlin Immutable Collections
+- Added: Dagger (non-Hilt), Moshi, Glide, Accompanist, Timber, LeakCanary, MockK, Turbine
+- Added: Firebase Android SDK, Google Play Services / Play Core
+
+---
+
 ## 1.4.0 — The Anchored Agent (2026-03-31)
 
 Addresses context decay in parallel dispatch: sub-agents now re-anchor to the

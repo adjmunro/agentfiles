@@ -14,20 +14,37 @@ Work through this strategy in order, stopping at the first successful source.
 
 | Library family | Canonical changelog URL |
 |---|---|
-| AndroidX / Jetpack | `https://developer.android.com/jetpack/androidx/releases/<artifact-name>` |
+| AndroidX / Jetpack (generic) | `https://developer.android.com/jetpack/androidx/releases/<artifact-name>` |
 | Android Gradle Plugin (AGP) | `https://developer.android.com/build/releases/gradle-plugin` |
 | Kotlin (language + stdlib) | `https://kotlinlang.org/docs/releases.html` |
 | Kotlin Coroutines | `https://github.com/Kotlin/kotlinx.coroutines/blob/master/CHANGES.md` |
 | Kotlin Serialization | `https://github.com/Kotlin/kotlinx.serialization/blob/master/CHANGELOG.md` |
+| Kotlin Immutable Collections | `https://github.com/Kotlin/kotlinx.collections.immutable/blob/master/CHANGELOG.md` |
 | Compose Compiler | `https://developer.android.com/jetpack/androidx/releases/compose-compiler` |
 | Compose BOM | `https://developer.android.com/jetpack/compose/bom/bom-mapping` |
+| Compose UI / Foundation / Material | `https://developer.android.com/jetpack/androidx/releases/compose-ui` (swap artifact name) |
 | KSP | `https://github.com/google/ksp/releases` |
 | Hilt | `https://dagger.dev/hilt/` (see release notes link) |
+| Dagger (non-Hilt) | `https://github.com/google/dagger/releases` |
+| Navigation (Jetpack) | `https://developer.android.com/jetpack/androidx/releases/navigation` |
+| Lifecycle | `https://developer.android.com/jetpack/androidx/releases/lifecycle` |
+| WorkManager | `https://developer.android.com/jetpack/androidx/releases/work` |
+| Paging | `https://developer.android.com/jetpack/androidx/releases/paging` |
+| DataStore | `https://developer.android.com/jetpack/androidx/releases/datastore` |
 | Retrofit | `https://github.com/square/retrofit/blob/master/CHANGELOG.md` |
 | OkHttp | `https://square.github.io/okhttp/changelogs/changelog/` |
+| Moshi | `https://github.com/square/moshi/blob/master/CHANGELOG.md` |
 | Coil | `https://github.com/coil-kt/coil/blob/main/CHANGELOG.md` |
+| Glide | `https://github.com/bumptech/glide/releases` |
 | Ktor | `https://github.com/ktorio/ktor/blob/main/CHANGELOG.md` |
 | Room | `https://developer.android.com/jetpack/androidx/releases/room` |
+| Firebase Android SDK | `https://firebase.google.com/support/release-notes/android` |
+| Google Play Services / Play Core | `https://developers.google.com/android/guides/releases` |
+| Accompanist | `https://github.com/google/accompanist/releases` |
+| Timber | `https://github.com/JakeWharton/timber/blob/trunk/CHANGELOG.md` |
+| LeakCanary | `https://square.github.io/leakcanary/changelog/` |
+| MockK | `https://github.com/mockk/mockk/releases` |
+| Turbine | `https://github.com/cashapp/turbine/blob/trunk/CHANGELOG.md` |
 
 For any library not in this table, try in order:
 
