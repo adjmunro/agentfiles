@@ -49,3 +49,8 @@ gh pr comment <PR-number> --repo <owner/repo> --body-file /tmp/dep-review-<alias
 ```
 
 → Done. This agent's work is complete.
+
+> **Orchestrator note:** Once ALL per-bump Phase 6 comments have been posted (i.e.,
+> every bump in the manifest has reached this point), the orchestrator must read and
+> execute `phases/p7-summary.md` to post the single consolidated verdict comment.
+> Per-bump agents do NOT run Phase 7 — it is an orchestrator-only step.

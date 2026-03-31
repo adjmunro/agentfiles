@@ -71,6 +71,10 @@ Always infer `owner/repo` from the current repository: `git remote get-url origi
                                                               ├── agent-2 ──► [Phase 5 → 6]
                                                               └── agent-N ──► [Phase 5 → 6]
                                               (Phase 5: CI hard block if failures unresolved)
+                                                              │ (all P5-6 done)
+                                                              ▼
+                                              [Phase 7: Orchestrator Summary Comment]
+                                              Single consolidated comment posted by orchestrator
 ```
 
 Phases 2–3 (read-only investigation) run in parallel across all bumps.
@@ -91,6 +95,8 @@ Phases 5–6 (verdict and comment) resume in parallel after all Phase 4 work is 
 | — | **Wave 3 Dispatch** | — | All Phase 4 work committed |
 | 5 | `phases/p5-verdict.md` | **Parallel** | per-agent: Phase 4 complete (or skipped) |
 | 6 | `phases/p6-comment.md` | **Parallel** | per-agent: Phase 5 verdict written |
+| — | **Wave 4: Summary** | — | All Wave 3 agents complete |
+| 7 | `phases/p7-summary.md` | **Sequential (orchestrator)** | all Phase 6 comments posted |
 
 ## Parallel Dispatch
 
@@ -144,6 +150,19 @@ run Phases 5–6 for each bump. Each agent receives the same prompt as Wave 1 pl
 entry in the manifest, in order. (Phase 4's one-bump-at-a-time sequencing requirement
 is automatically satisfied by this serialisation — no additional sequencing step is
 needed.)
+
+### Wave 4 — Consolidated Summary Comment (Phase 7)
+
+After all Wave 3 agents have completed and all per-bump Phase 6 comments are posted,
+the **orchestrator** (not a sub-agent) executes Phase 7. This is a sequential,
+orchestrator-only step — there is exactly one Phase 7 execution per skill run.
+
+Read `phases/p7-summary.md` and execute it, using the collected Phase 5 verdict data
+from all bumps. The result is a single PR comment that consolidates all findings,
+CI outcomes, supply chain signals, remediations, and verdicts into one place.
+
+**If the Agent tool is not available** — Phase 7 runs immediately after the last
+bump's Phase 6 comment is posted, using the data already in scope.
 
 ## Execution
 

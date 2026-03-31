@@ -2,6 +2,34 @@
 
 ---
 
+## 2.5.0 — The Consolidated Close (2026-04-01)
+
+Adds a final consolidated verdict comment as the last action of every skill run.
+Previously, the skill posted one per-bump comment per dependency reviewed, leaving
+reviewers with no single place to see the full picture — they had to scroll through
+all individual comments to understand the overall recommendation. This release closes
+that gap with Phase 7, a new orchestrator-only step that posts one summary comment
+after all per-bump Phase 6 comments have been posted.
+
+- New `phases/p7-summary.md`: orchestrator-only phase that collects verdict data from
+  all bumps and posts a single consolidated PR comment; covers all required dimensions:
+  bumps reviewed (alias, versions, span, tier, score, verdict), CI status before and
+  after remediation with unresolved-failure call-outs, supply chain signals (tag
+  signing, registry integrity, source commit anomalies, maintainer changes), breaking
+  changes and deprecations with remediation status, remediations made (commit hashes
+  and descriptions), final verdicts table with overall recommendation, and a
+  plain-English paragraph written for non-technical reviewers
+- Phase 6 (`p6-comment.md`): adds orchestrator note at the end — per-bump agents do
+  not run Phase 7; it is dispatched by the orchestrator after all agents complete
+- Orchestrator pipeline diagram: updated to show Wave 4 and the Phase 7 summary step
+  after all Phase 5–6 parallel work is done
+- Orchestrator Phase Dispatch Table: Phase 7 row added as Sequential (orchestrator),
+  active when all Phase 6 comments are posted; Wave 4 separator row added
+- Orchestrator Wave 4 section: new section describing the sequential, orchestrator-only
+  dispatch of Phase 7, with a fallback for non-parallel execution
+
+---
+
 ## 2.4.0 — The CI Gatekeeper (2026-04-01)
 
 Adds CI status checking and failure triage to the pipeline. Previously, the skill
