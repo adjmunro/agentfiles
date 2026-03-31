@@ -221,3 +221,106 @@ Based on baseline measurement, the following experiments are queued.
 
 6. **Sub-Agent Intent Re-anchor** — (Enabled by experiment 1) Once the session brief is persisted to a file, adding a re-read instruction to Wave 1 and Wave 3 dispatch prompts brings Context Decay Resilience from 0 to 100.
 
+---
+
+## Experiment Results — 2026-03-31
+
+### H5 + H6 — Session Brief Persistence + Sub-Agent Prompt Enrichment
+**Pre-change:** CDR = 0, APC = 79, CCI = 86
+**Post-change:** CDR = 100, APC = 100, CCI = 100
+**Delta:** CDR +100pp, APC +21pp, CCI +14pp
+**Result:** confirmed
+**Notes:** H5 (prompt context fields) and H6 (session brief persistence + re-anchor) were implemented together in a single commit since they modified the same files and were structurally interdependent — the re-anchor instruction is only useful if the brief file exists, and the brief file is only useful if the prompt references it. Wave 1 and Wave 3 dispatch prompts now include PR title, ecosystem, and cross-bump constraints per bump, plus a re-read instruction pointing to `/tmp/dep-review-<PR-number>-session-brief.md`.
+
+### H2 — Changelog Table Expansion
+**Pre-change:** CSC = 48
+**Post-change:** CSC = 86
+**Delta:** CSC +38pp
+**Result:** confirmed
+**Notes:** Added 17 library families to the Phase 2 lookup table (14 → 31 entries). Remaining gap (~5 very niche libraries) accounts for the score not reaching 100. No secondary metric changes detected.
+
+### H3 — Scoring Matrix Symmetry Fix
+**Pre-change:** VSC = 60
+**Post-change:** VSC = 90
+**Delta:** VSC +30pp
+**Result:** confirmed
+**Notes:** Added two signals: "Major version bump with no changelog found" (+3, mutually exclusive with plain major bump) and "All actionable usages fully remediated" (−1, floor 0). The VSC check for "major-bump-alone calibration" still scores partial (0.5) because a major bump with a clear changelog still lands at Low — a deliberate design choice rather than an error. The note on mutual exclusivity closes the signal-distinctness gap. No secondary metric changes detected.
+
+### H4 — AC Concreteness: Subjective Qualifiers
+**Pre-change:** ACC = 82
+**Post-change:** ACC = 95
+**Delta:** ACC +13pp
+**Result:** confirmed (≥3pp on both targeted ACs converted from vague to concrete)
+**Notes:** Phase 4 Step C now uses three binary conditions instead of "low-risk and well-documented". Phase 2 Pass B bug fixes now use a codebase-presence check. One condition in Phase 4 Step C ("does not alter observable behaviour") remains partially interpretive — it cannot be made fully binary without additional tooling. This leaves ACC at 95 rather than 100. No material secondary metric changes.
+
+### H1 — Sub-Agent Intent Re-anchor
+**Result:** confirmed (implemented as part of H6 commit)
+**Notes:** The re-anchor instruction was added to both Wave dispatch prompts in the same commit as H6. Treated as one experiment for commit purposes.
+
+## Experiment Summary
+- Confirmed: H1, H2, H3, H4, H5, H6
+- Partial: (none)
+- Disconfirmed: (none)
+
+---
+
+## Final Results — 2026-03-31
+
+| Metric | Baseline | Post | Delta | Status |
+|---|---|---|---|---|
+| Intent-to-Output Traceability | 100 | 100 | — | — |
+| Directive Density | 100 | 100 | — | — |
+| Instruction Ambiguity Rate | 100 | 100 | — | — |
+| Wiring Completeness Score | 100 | 100 | — | — |
+| Redundancy Index | 98 | 98 | — | — |
+| AC Concreteness | 82 | 95 | +13 | ↑ |
+| Subagent Alignment Score | 100 | 100 | — | — |
+| Human Touchpoint Count | 95 | 95 | — | — |
+| Context Decay Resilience | 0 | 100 | +100 | ↑ |
+| Context Loading Efficiency | 93 | 93 | — | — |
+| Parallelisation Safety Score | 100 | 100 | — | — |
+| Instruction Token Efficiency | 99 | 99 | — | — |
+| Persona-Phase Fit Score | 100 | 100 | — | — |
+| Persona Richness Score | 100 | 100 | — | — |
+| Recovery Path Completeness | 100 | 100 | — | — |
+| Changelog Source Coverage | 48 | 86 | +38 | ↑ |
+| Agent Prompt Completeness | 79 | 100 | +21 | ↑ |
+| Phase File Navigation Completeness | 100 | 100 | — | — |
+| Verdict Scoring Calibration | 60 | 90 | +30 | ↑ |
+| Cross-Bump Context Isolation | 86 | 100 | +14 | ↑ |
+| **Composite** | **84.4%** | **97.6%** | **+13.2 pp** | |
+
+### What improved and why
+
+- **Context Decay Resilience**: 0 → 100 (+100pp) — Phase 1 now writes the session brief to a temp file; Wave 1 and Wave 3 dispatch prompts include an explicit re-read instruction. Both session transitions are now anchored.
+- **Changelog Source Coverage**: 48 → 86 (+38pp) — Added 17 library families to the Phase 2 lookup table (14 → 31 entries), covering the most common Kotlin/Android libraries that were previously missing.
+- **Verdict Scoring Calibration**: 60 → 90 (+30pp) — Added two signals: a differentiated major-bump-no-changelog signal (+3) and a risk-reduction signal for fully-remediated PRs (−1, floor 0). A clarifying note closes the signal-distinctness gap.
+- **AC Concreteness**: 82 → 95 (+13pp) — Two subjective qualifiers replaced with concrete binary conditions: the advisory migration gate in Phase 4 and the bug-fix relevance check in Phase 2.
+- **Agent Prompt Completeness**: 79 → 100 (+21pp) — Wave 1 and Wave 3 prompts now include PR title, ecosystem, and cross-bump constraints per bump.
+- **Cross-Bump Context Isolation**: 86 → 100 (+14pp) — The cross-bump constraints field is now explicitly included in per-bump prompts, closing the last isolation gap.
+
+### What was dropped and why
+
+Nothing was dropped. All 6 hypotheses were confirmed.
+
+### What remains to improve
+
+- **Context Decay Resilience** — now at 100. The risk-reduction path (temp file not writable) is handled by a non-fatal fallback that downgrades to inline context; the fallback is acceptable for the session model.
+- **Changelog Source Coverage** — at 86. Remaining gap (~5 entries) covers very niche libraries; the fallback generic lookup chain handles these adequately.
+- **Verdict Scoring Calibration** — at 90. The residual 0.5 on the "major-bump-alone calibration" check is intentional: a well-documented major bump with no other signals is Low by design. This could be re-evaluated if real-world verdicts show the Low assignment misleads reviewers.
+- **AC Concreteness** — at 95. The "observable behaviour change" condition in Phase 4 Step C remains partially interpretive; closing this fully would require tooling (e.g., automated test diff) rather than instruction changes.
+
+### Novel Pattern Candidates
+
+### NP1 — Prompt Context Completeness
+**Discovered in:** skills/review-dependency-update
+**Problem it solved:** Sub-agent dispatch prompts were missing ecosystem label, PR title, and cross-bump constraints — information the agent needed to execute its phases and write an accurate verdict.
+**Implementation:** Enumerate all information fields a sub-agent needs before dispatching; add missing fields to prompt template.
+**Metrics it improved:** Agent Prompt Completeness (+21pp), Cross-Bump Context Isolation (+14pp)
+**Generalises to:** Any workflow that dispatches sub-agents with per-item context; multi-agent pipelines where the orchestrator knows more than it shares.
+**Seed candidate:** yes — this is a generalisation of P3 (Progressive Disclosure) applied to agent prompt construction rather than file loading. Could be added as a sub-pattern of P3 or as a standalone pattern (P16 — Prompt Context Completeness).
+
+---
+
+Log within size threshold; no archival required (estimated ~7,500 tokens).
+
