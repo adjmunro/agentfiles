@@ -14,19 +14,25 @@ will: split any bundled version bumps into atomic commits, then investigate each
 in parallel — assessing code impact, applying remediation commits, scoring the risk,
 and posting one PR comment per bump.
 
-## 6-Phase Pipeline
+## Pipeline
 
 ```
-[Phase 1: Parse] ──► [Phase 2: Investigate] ──► [Phase 3: Impact]
-                                                        │
-                                                        ▼
-                                              [Phase 4: Remediate?]
-                                                        │
-                                                        ▼
-                                               [Phase 5: Verdict]
-                                                        │
-                                                        ▼
-                                               [Phase 6: Comment]
+[Phase 1: Parse]
+       │
+       ▼
+[Phase 1b: Split Commits?] ← skip if already atomic
+       │
+       ▼  (one agent per bump — parallel)
+[Phase 2: Investigate] ──► [Phase 3: Impact]
+                                    │  (all agents complete)
+                                    ▼  (sequential — one bump at a time)
+                           [Phase 4: Remediate?]
+                                    │  (one agent per bump — parallel)
+                                    ▼
+                            [Phase 5: Verdict]
+                                    │
+                                    ▼
+                            [Phase 6: Comment]
 ```
 
 ## Personas
@@ -45,8 +51,9 @@ and posting one PR comment per bump.
 Pass a bare PR number. The current git repository is used automatically.
 Full GitHub URLs and `#`-prefixed numbers are also accepted as fallbacks.
 
-Multiple dependencies updated in one PR are reviewed in sequence; each receives
-its own verdict section in the final comment.
+Multiple dependencies updated in one PR are reviewed in parallel (Phases 2–3 and 5–6);
+remediation commits (Phase 4) run sequentially to avoid git race conditions. Each bump
+receives its own PR comment.
 
 ## Versioning
 

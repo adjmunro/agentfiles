@@ -2,6 +2,19 @@
 
 ---
 
+## 1.8.1 — The Accurate Map (2026-04-01)
+
+Corrects the SKILL.md pipeline diagram to reflect the actual pipeline structure,
+including Phase 1b and parallelisation annotations that were previously absent.
+
+- SKILL.md: adds Phase 1b to pipeline diagram; annotates Phases 2–3 and 5–6 as
+  parallel-per-bump and Phase 4 as sequential
+- SKILL.md: corrects the "Multiple dependencies" note to accurately describe
+  the parallel/sequential split rather than implying pure sequential execution
+- SKILL.md: renames "6-Phase Pipeline" heading to "Pipeline"
+
+---
+
 ## 1.8.0 — The Version Realist (2026-04-01)
 
 Adds explicit handling for version range edge cases that were previously unaddressed
