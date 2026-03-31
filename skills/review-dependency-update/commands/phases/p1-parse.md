@@ -68,6 +68,47 @@ Parse each diff to extract the changed packages. For each package, record:
 
 If the diff shows only lock-file changes with no manifest change (e.g., transitive dependency), note that it is a transitive update and record the dependency chain if determinable.
 
+## Step D.1 — Lockfile Transitive Analysis
+
+If a lockfile is present in the PR diff (any of: `package-lock.json`, `yarn.lock`,
+`pnpm-lock.yaml`, `Pipfile.lock`, `poetry.lock`, `Cargo.lock`, `go.sum`,
+`Gemfile.lock`, `composer.lock`, `Package.resolved`, `gradle/verification-metadata.xml`):
+
+**a. Diff the lockfile.** Fetch the full lockfile diff:
+```
+gh pr diff <PR-number> --repo <owner/repo> -- <lockfile-path>
+```
+
+**b. Extract all transitive version changes.** From the lockfile diff, identify
+every package whose version changed — not just the direct dependencies from Step D.
+For each changed package, determine whether it is:
+- A **direct dependency** (already in Step D list) — skip; already captured
+- A **transitive dependency** (appears only in the lockfile, not the manifest) — record it
+
+**c. Flag transitive major-version bumps.** For each transitive dependency that
+changed, check whether the bump crosses a major version boundary (e.g., `1.x → 2.x`).
+If so, record it as a **transitive major bump** requiring attention in Phase 2.
+
+**d. Flag newly introduced transitive packages.** Identify any package that appears
+in the new lockfile but not the old (i.e., a `+` line in the lockfile diff with no
+corresponding `-` line for the same package name). Record these as
+**new transitive dependencies** requiring investigation.
+
+**e. Record the results.** Append to the session brief (Step E):
+```
+### Transitive Dependency Changes (from lockfile diff)
+| Package | Old Version | New Version | Type |
+|---|---|---|---|
+| <name> | <old> | <new> | Major bump / New introduction |
+```
+
+If there are no transitive major bumps or new introductions, write:
+"No transitive major-version bumps or new transitive packages detected."
+
+If no lockfile is present in the PR diff, write:
+"No lockfile present in PR — transitive analysis skipped. Consider running a
+lockfile update and re-reviewing if transitive risks are a concern."
+
 ## Step E — Write the Session Brief
 
 Produce a summary block for use in subsequent phases:
