@@ -95,10 +95,16 @@ After Phase 1b produces the atomic commit manifest, follow the two-wave protocol
 **If the Agent tool is available** — launch all agents concurrently in a single
 message. Each agent receives this prompt:
 
+> Re-read `/tmp/dep-review-<PR-number>-session-brief.md` now to re-anchor to the
+> original PR context before beginning. If the file is not found (session resumed after
+> restart), use the PR context below as your intent anchor.
+>
 > You are reviewing a single dependency bump as part of PR <number> (<PR URL>) in
 > <owner/repo>. Base branch: `<base-branch>`. Head commit for this bump: `<hash>`.
+> PR title: `<title>`. Ecosystem: `<ecosystem>`.
 > Your bump: alias `<alias>`, packages `<packages>`, plugins `<plugins>`,
 > version `<old>` → `<new>`.
+> Cross-bump constraints for this alias: `<cross_bump_constraints, or "none">`.
 > Phase files are in `skills/review-dependency-update/commands/phases/` from repo root.
 > **Execute Phases 2 and 3 only.** Do NOT run Phase 4, 5, or 6 yet.
 > Return your Phase 3 impact table (actionable usages count, advisory count, files affected).
@@ -121,6 +127,10 @@ race conditions — commits can be lost or the push rejected.
 After all Phase 4 work is complete, re-launch agents (or resume sequentially) to
 run Phases 5–6 for each bump. Each agent receives the same prompt as Wave 1 plus:
 
+> Re-read `/tmp/dep-review-<PR-number>-session-brief.md` now to re-anchor to the
+> original PR context before beginning. If the file is not found, use the PR context
+> in this prompt as your intent anchor.
+>
 > Phase 4 remediation commits for your bump: <comma-separated hashes, or "none">.
 > Execute Phases 5 and 6 only. Post your own PR comment at the end.
 

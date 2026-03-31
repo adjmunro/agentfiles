@@ -83,6 +83,15 @@ Date: <created-at>
 
 Print the brief to the user.
 
+Also write the brief to a temp file for sub-agent re-anchoring in later waves:
+
+```
+/tmp/dep-review-<PR-number>-session-brief.md
+```
+
+If the write fails (e.g. /tmp is not writable), proceed without writing and note:
+"Session brief not persisted — sub-agents will receive PR context via prompt only."
+
 ## Step F — Rename the Session
 
 Rename the current Claude Code session to reflect the PR being reviewed:

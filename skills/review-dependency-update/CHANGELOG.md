@@ -2,6 +2,19 @@
 
 ---
 
+## 1.4.0 — The Anchored Agent (2026-03-31)
+
+Addresses context decay in parallel dispatch: sub-agents now re-anchor to the
+original PR intent before beginning their phases, and receive a richer context
+packet including ecosystem, PR title, and cross-bump constraints.
+
+- Phase 1 Step E: writes session brief to `/tmp/dep-review-<PR-number>-session-brief.md` for sub-agent re-anchoring; failure is non-fatal
+- Wave 1 and Wave 3 dispatch prompts: prepend re-read instruction for the session brief file
+- Wave 1 prompt: adds `PR title`, `Ecosystem`, and `Cross-bump constraints` fields to per-bump agent context
+- Wave 3 prompt: adds re-anchor instruction (consistent with Wave 1)
+
+---
+
 ## 1.3.0 — The Safe Paralleliser (2026-03-31)
 
 Fixes a concurrency bug in the parallel dispatch architecture where multiple agents
