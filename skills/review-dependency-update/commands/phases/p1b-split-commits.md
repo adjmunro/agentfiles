@@ -137,9 +137,10 @@ Split into:
     files: gradle/libs.versions.toml (versions.agp line)
 ```
 
-Print the full plan to the user and wait for any corrections before proceeding.
-If the plan looks correct to the user (or after a reasonable pause with no objection),
-continue to Step E.
+Print the full plan to the user. Wait for explicit confirmation or correction.
+- If the user confirms (or does not respond within 60 seconds), proceed to Step E.
+- If the user requests a change, revise the plan and re-print before continuing.
+- If operating in a fully automated mode with no user present, print the plan and proceed immediately.
 
 ---
 
@@ -181,7 +182,30 @@ Use `--force-with-lease` — fail safely if the remote has moved since checkout.
 
 ---
 
-## Step G — Produce the Atomic Commit Manifest
+## Step G — Cross-Bump Compatibility Check
+
+Before producing the manifest, check whether any pair of aliases has a known
+version-constraint relationship. If two or more aliases are being bumped, consult
+this table:
+
+| Alias pair | Constraint | How to check |
+|---|---|---|
+| `kotlin` + `ksp` | KSP major.minor must match Kotlin major.minor | e.g., Kotlin 2.0.x requires KSP 2.0.x — confirm both aliases use matching major.minor |
+| `agp` + `kotlin` | AGP and Kotlin have documented compatible version pairs | Check the [AGP release notes](https://developer.android.com/build/releases/gradle-plugin) for the minimum Kotlin version required |
+| `compose-compiler` + `kotlin` | Compose Compiler requires a specific Kotlin version range | Check the [Compose Compiler compatibility map](https://developer.android.com/jetpack/androidx/releases/compose-kotlin) |
+| `compose-bom` + `compose-compiler` | BOM version implies specific compiler version | Use BOM mapping at `https://developer.android.com/jetpack/compose/bom/bom-mapping` |
+| `hilt` + `ksp` | Hilt's KSP variant requires matching KSP version | Check Hilt release notes for the KSP version it was built against |
+
+For each constraint pair where both aliases appear in this PR:
+1. Confirm the new versions satisfy the constraint.
+2. If they do not, flag the incompatibility in the manifest and note that the two bumps should be co-reviewed even though they are in separate commits.
+3. If the constraint cannot be verified (changelog unavailable), mark as "unverified — manual check recommended."
+
+If no constrained pairs are found among the bumped aliases, note: "No cross-bump constraints detected."
+
+---
+
+## Step H — Produce the Atomic Commit Manifest
 
 Write a manifest of the final atomic commits for the orchestrator to use in
 parallel dispatch. For each atomic commit, record:
@@ -193,11 +217,24 @@ parallel dispatch. For each atomic commit, record:
   "packages": ["<groupId:artifactId>", ...],
   "plugins": ["<plugin-id>", ...],
   "old_version": "<old>",
-  "new_version": "<new>"
+  "new_version": "<new>",
+  "cross_bump_constraints": ["<note, or empty array>"]
 }
 ```
 
-This manifest is passed to each parallel agent in Phase 2 onward.
+Also record the following PR-level context once (shared across all entries):
+
+```
+{
+  "pr_number": "<number>",
+  "pr_url": "<url>",
+  "owner_repo": "<owner/repo>",
+  "base_branch": "<base-branch>",
+  "head_branch": "<head-branch>"
+}
+```
+
+This manifest, including PR context, is passed to each parallel agent.
 
 → Next: Return the manifest to the orchestrator. The orchestrator dispatches one
 agent per entry — read the orchestrator's **Parallel Dispatch** section now.

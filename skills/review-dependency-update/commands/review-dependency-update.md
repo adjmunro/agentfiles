@@ -53,42 +53,79 @@ Always infer `owner/repo` from the current repository: `git remote get-url origi
 [Phase 1b: Split Commits?] ← Ink — skip if already atomic; produces manifest
         │
         ▼
-[Parallel Dispatch] ─── agent-1: bump-A ──► [Phase 2 → 3 → 4? → 5 → 6]
-                    ├── agent-2: bump-B ──► [Phase 2 → 3 → 4? → 5 → 6]
-                    └── agent-N: bump-N ──► [Phase 2 → 3 → 4? → 5 → 6]
+[Parallel Dispatch] ─── agent-1: bump-A ──► [Phase 2 → 3]  ─┐
+                    ├── agent-2: bump-B ──► [Phase 2 → 3]  ─┤
+                    └── agent-N: bump-N ──► [Phase 2 → 3]  ─┘
+                                                              │ (all P2-3 done)
+                                                              ▼
+                                              [Phase 4: Sequential Remediation]
+                                              bump-A → bump-B → bump-N (one at a time)
+                                                              │
+                                                              ▼
+                                              [Parallel Resume] ─── agent-1 ──► [Phase 5 → 6]
+                                                              ├── agent-2 ──► [Phase 5 → 6]
+                                                              └── agent-N ──► [Phase 5 → 6]
 ```
 
-Each agent runs Phases 2–6 independently for one version-catalog alias (or groupId).
-Each agent posts its own PR comment. There is no final aggregation step.
+Phases 2–3 (read-only investigation) run in parallel across all bumps.
+**Phase 4 (remediation commits) runs sequentially** — git operations are not concurrency-safe.
+Phases 5–6 (verdict and comment) resume in parallel after all Phase 4 work is done.
 
 ## Phase Dispatch Table
 
-| Phase | File | Active when |
-|---|---|---|
-| 1 | `phases/p1-parse.md` | command is first invoked |
-| 1b | `phases/p1b-split-commits.md` | Phase 1 complete; always runs as a check |
-| — | **Parallel Dispatch** | Phase 1b manifest produced |
-| 2 | `phases/p2-investigate.md` | per-agent: investigate this bump |
-| 3 | `phases/p3-impact.md` | per-agent: Phase 2 complete |
-| 4 | `phases/p4-remediate.md` | per-agent: Phase 3 found actionable usages |
-| 5 | `phases/p5-verdict.md` | per-agent: Phase 3 complete (and Phase 4 if it ran) |
-| 6 | `phases/p6-comment.md` | per-agent: Phase 5 verdict written |
+| Phase | File | Concurrency | Active when |
+|---|---|---|---|
+| 1 | `phases/p1-parse.md` | Sequential | command is first invoked |
+| 1b | `phases/p1b-split-commits.md` | Sequential | Phase 1 complete; always runs as a check |
+| — | **Wave 1 Dispatch** | — | Phase 1b manifest produced |
+| 2 | `phases/p2-investigate.md` | **Parallel** | per-agent: investigate this bump |
+| 3 | `phases/p3-impact.md` | **Parallel** | per-agent: Phase 2 complete |
+| — | **Wave 2: Remediation** | — | All Wave 1 agents complete |
+| 4 | `phases/p4-remediate.md` | **Sequential** | Phase 3 found actionable usages; one bump at a time |
+| — | **Wave 3 Dispatch** | — | All Phase 4 work committed |
+| 5 | `phases/p5-verdict.md` | **Parallel** | per-agent: Phase 4 complete (or skipped) |
+| 6 | `phases/p6-comment.md` | **Parallel** | per-agent: Phase 5 verdict written |
 
 ## Parallel Dispatch
 
-After Phase 1b produces the atomic commit manifest, dispatch one agent per entry.
+After Phase 1b produces the atomic commit manifest, follow the two-wave protocol:
+
+### Wave 1 — Parallel Investigation (Phases 2–3)
 
 **If the Agent tool is available** — launch all agents concurrently in a single
 message. Each agent receives this prompt:
 
-> You are reviewing a single dependency bump on PR <number> in <owner/repo>.
+> You are reviewing a single dependency bump as part of PR <number> (<PR URL>) in
+> <owner/repo>. Base branch: `<base-branch>`. Head commit for this bump: `<hash>`.
 > Your bump: alias `<alias>`, packages `<packages>`, plugins `<plugins>`,
-> version `<old>` → `<new>`, commit `<hash>`.
-> Read `phases/p2-investigate.md` and execute Phases 2–6 in sequence for this bump.
-> Post your own PR comment at the end (Phase 6).
+> version `<old>` → `<new>`.
+> Phase files are in `skills/review-dependency-update/commands/phases/` from repo root.
+> **Execute Phases 2 and 3 only.** Do NOT run Phase 4, 5, or 6 yet.
+> Return your Phase 3 impact table (actionable usages count, advisory count, files affected).
 
-**If the Agent tool is not available** — run Phases 2–6 sequentially for each
-entry in the manifest, in order.
+**If the Agent tool is not available** — run Phases 2–3 sequentially for each
+entry in the manifest, collecting impact tables before proceeding to Wave 2.
+
+### Wave 2 — Sequential Remediation (Phase 4)
+
+**Phase 4 must run sequentially across bumps — never concurrently.**
+
+For each bump that has actionable usages (must-fix items), run Phase 4 in manifest
+order. Only start the next bump's Phase 4 after the previous one's commits are pushed.
+
+Reason: concurrent `git commit` and `git push` operations on the same branch produce
+race conditions — commits can be lost or the push rejected.
+
+### Wave 3 — Parallel Verdict and Comment (Phases 5–6)
+
+After all Phase 4 work is complete, re-launch agents (or resume sequentially) to
+run Phases 5–6 for each bump. Each agent receives the same prompt as Wave 1 plus:
+
+> Phase 4 remediation commits for your bump: <comma-separated hashes, or "none">.
+> Execute Phases 5 and 6 only. Post your own PR comment at the end.
+
+**If the Agent tool is not available** — run Phases 2–6 fully sequentially for each
+entry in the manifest, in order. The serialisation requirement is automatically satisfied.
 
 ## Execution
 

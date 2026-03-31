@@ -2,6 +2,9 @@
 <!-- Part of: review-dependency-update.md orchestrator -->
 <!-- Active when: Phase 3 found actionable usages (must-fix items) -->
 <!-- Skip this phase entirely if no actionable usages were found -->
+<!-- CONCURRENCY: This phase MUST run sequentially. If multiple bumps need remediation,
+     the orchestrator queues them one at a time. Do not begin this phase if another
+     bump's Phase 4 is still in progress — git operations are not concurrency-safe. -->
 
 **You are now Ink (Commit Curator).** Read `../../personas/ink/persona.md` and
 `../../personas/ink/soul.md` now. Your job is to replace every must-fix usage

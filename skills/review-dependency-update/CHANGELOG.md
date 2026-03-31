@@ -2,6 +2,30 @@
 
 ---
 
+## 1.3.0 — The Safe Paralleliser (2026-03-31)
+
+Fixes a concurrency bug in the parallel dispatch architecture where multiple agents
+could run Phase 4 (remediation commits) simultaneously on the same branch, causing
+git race conditions. Introduces a three-wave execution model, enriches the per-bump
+agent prompt, adds cross-bump compatibility checking, and replaces qualitative
+verdict tiers with a scored calibration matrix.
+
+- Orchestrator: three-wave model — Phases 2–3 in parallel, Phase 4 sequential,
+  Phases 5–6 parallel; Phase Dispatch Table updated with concurrency column
+- Orchestrator: per-bump agent prompt enriched with PR URL, base branch, and
+  phase-file base path; Wave 3 prompt carries remediation commit hashes
+- Phase 1b: Step D gate now explicit (60-second timeout or auto-proceed in automated
+  mode) instead of "reasonable pause"
+- Phase 1b: new Step G — cross-bump compatibility check for known Kotlin/Android
+  alias constraints (Kotlin↔KSP, AGP↔Kotlin, Compose Compiler↔Kotlin, Hilt↔KSP)
+- Phase 1b: Step H manifest enriched with PR-level context (pr_url, base_branch,
+  head_branch, cross_bump_constraints)
+- Phase 4: concurrency guard comment — Phase 4 must not run in parallel across bumps
+- Phase 5: qualitative tier table replaced with a 19-signal scoring matrix; tier
+  thresholds and tier-to-verdict mapping added; scores override ambiguous multi-criteria situations
+
+---
+
 ## 1.2.0 — The Parallel Inspector (2026-03-31)
 
 Kotlin/Android focus, parallel agent dispatch per bump, and per-bump PR comments.
