@@ -218,7 +218,8 @@ parallel dispatch. For each atomic commit, record:
   "plugins": ["<plugin-id>", ...],
   "old_version": "<old>",
   "new_version": "<new>",
-  "cross_bump_constraints": ["<note, or empty array>"]
+  "cross_bump_constraints": ["<note, or empty array>"],
+  "isolated_branch": "dep-review/<PR-number>/<alias>"
 }
 ```
 
@@ -235,6 +236,41 @@ Also record the following PR-level context once (shared across all entries):
 ```
 
 This manifest, including PR context, is passed to each parallel agent.
+
+---
+
+## Step I — Create Isolated Branches
+
+For each entry in the manifest, create an isolated branch forked from the
+**base branch** (not the PR head branch) with only that alias group's commit
+cherry-picked onto it.
+
+For each manifest entry in order:
+
+```
+# Create the isolated branch from base
+git checkout <base-branch>
+git checkout -b dep-review/<PR-number>/<alias>
+
+# Cherry-pick the alias commit onto the isolated branch
+git cherry-pick <commit-hash>
+
+# Push the isolated branch to the remote
+git push origin dep-review/<PR-number>/<alias>
+```
+
+If the cherry-pick produces a conflict (e.g., because the version catalog line
+was last modified by a different bump in the same bundle), resolve it by keeping
+only the lines belonging to this alias — the other aliases will be handled on
+their own isolated branches. Commit the resolution before pushing.
+
+After creating all isolated branches, confirm that:
+- Each isolated branch exists on the remote
+- Each branch contains exactly the commits from the base branch plus the one
+  alias commit (verify with `git log --oneline <base-branch>..dep-review/<PR-number>/<alias>`)
+
+The `isolated_branch` field in the manifest is already populated from Step H.
+No further update is needed.
 
 → Next: Return the manifest to the orchestrator. The orchestrator dispatches one
 agent per entry — read the orchestrator's **Parallel Dispatch** section now.
