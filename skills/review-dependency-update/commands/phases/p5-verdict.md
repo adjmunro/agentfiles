@@ -14,6 +14,7 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 | Signal | Points |
 |---|---|
 | Major version bump | +2 |
+| Major version bump with no changelog found | +3 |
 | Minor version bump | +1 |
 | Patch version bump | 0 |
 | Breaking change confirmed in codebase | +4 |
@@ -32,6 +33,11 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 | Rook: possible supply-chain concern | +2 |
 | Significant behaviour change in exercised code path | +2 |
 | No changelog found — manual review incomplete | +2 |
+| All actionable usages fully remediated (zero skipped must-fix items) | −1 (floor 0) |
+
+> **Note on "Major version bump with no changelog found":** Use this signal (instead
+> of the plain "Major version bump" signal) only when the changelog lookup in Phase 2
+> exhausted all sources and returned nothing. Do not apply both signals for the same bump.
 
 ### Tier Thresholds
 

@@ -2,6 +2,18 @@
 
 ---
 
+## 1.6.0 — The Calibrated Scorer (2026-03-31)
+
+Improves the Phase 5 risk scoring matrix by adding a differentiated signal for
+major bumps with no changelog, and a risk-reduction signal for fully-remediated PRs.
+Closes the one-directional asymmetry in the matrix.
+
+- New signal: "Major version bump with no changelog found" (+3) — differentiated from plain major bump (+2); mutually exclusive (note added to prevent double-counting)
+- New signal: "All actionable usages fully remediated (zero skipped must-fix items)" (−1, floor 0) — provides credit for clean Phase 4 outcomes
+- Clarifying note: the two major-bump signals are mutually exclusive; use the no-changelog variant only when Phase 2 found nothing
+
+---
+
 ## 1.5.0 — The Full Library (2026-03-31)
 
 Expands the Kotlin/Android changelog source table in Phase 2 from 14 to 31 entries,
