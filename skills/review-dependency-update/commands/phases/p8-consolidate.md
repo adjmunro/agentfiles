@@ -17,6 +17,10 @@ Create a fresh branch forked from the **base branch** (not the current PR head).
 This branch will accumulate each alias group's verified commits in manifest order.
 
 ```
+# Delete the consolidated branch if it already exists from a prior run
+git push origin --delete dep-review/<PR-number>/consolidated 2>/dev/null || true
+git branch -D dep-review/<PR-number>/consolidated 2>/dev/null || true
+
 git fetch origin <base-branch>
 git checkout origin/<base-branch>
 git checkout -b dep-review/<PR-number>/consolidated

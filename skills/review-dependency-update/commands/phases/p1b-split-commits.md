@@ -248,6 +248,11 @@ cherry-picked onto it.
 For each manifest entry in order:
 
 ```
+# Delete the isolated branch if it already exists from a prior run
+# (ensures a clean slate on re-runs — safe because each run re-creates from base)
+git push origin --delete dep-review/<PR-number>/<alias> 2>/dev/null || true
+git branch -D dep-review/<PR-number>/<alias> 2>/dev/null || true
+
 # Create the isolated branch from base
 git checkout <base-branch>
 git checkout -b dep-review/<PR-number>/<alias>
