@@ -169,6 +169,7 @@ run Phases 5–6 for each bump. Each agent receives the same prompt as Wave 1 pl
 > other branch.
 > Phase 4 remediation commits for your bump: <comma-separated hashes, or "none">.
 > Execute Phases 5 and 6 only. Post your own PR comment at the end.
+> **Return your Phase 5 verdict block as the final line of your output message.**
 
 **If the Agent tool is not available** — run Phases 2–6 fully sequentially for each
 entry in the manifest, in order. (Phase 4's one-bump-at-a-time sequencing requirement
