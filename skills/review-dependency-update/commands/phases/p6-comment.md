@@ -33,11 +33,11 @@ If this bump covers multiple artifacts under one alias (e.g., `room-runtime`,
 Write the comment to a temp file to avoid shell-escaping issues, then post:
 
 ```
-cat > /tmp/dep-review-<alias>.md << 'EOF'
+cat > /tmp/dep-review-<PR-number>-<alias>.md << 'EOF'
 <assembled comment>
 EOF
 
-gh pr comment <PR-number> --repo <owner/repo> --body-file /tmp/dep-review-<alias>.md
+gh pr comment <PR-number> --repo <owner/repo> --body-file /tmp/dep-review-<PR-number>-<alias>.md
 ```
 
 ## Step C — Report to the User

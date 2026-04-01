@@ -132,11 +132,11 @@ _If no remediations were required: "No changes were required — the codebase wa
 Write the comment to a temp file, then post it to the PR:
 
 ```
-cat > /tmp/dep-review-summary.md << 'EOF'
+cat > /tmp/dep-review-<PR-number>-summary.md << 'EOF'
 <assembled summary comment>
 EOF
 
-gh pr comment <PR-number> --repo <owner/repo> --body-file /tmp/dep-review-summary.md
+gh pr comment <PR-number> --repo <owner/repo> --body-file /tmp/dep-review-<PR-number>-summary.md
 ```
 
 ## Step D — Report to the User
