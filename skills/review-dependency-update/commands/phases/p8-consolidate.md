@@ -66,6 +66,17 @@ For each alias in the manifest, in the order they were recorded:
    - Merge outcome: `clean` | `conflict resolved` | `skipped`
    - The merge commit hash (if merged)
 
+**All-skipped early exit:** If every alias was skipped (i.e., the merge results list
+contains only `skipped` entries), do **not** proceed to Steps C, D, or E. The
+consolidated branch has no changes relative to base — running the test suite would
+be meaningless and pushing would overwrite the PR head with a no-op branch.
+Instead:
+- Write to Step G: "All aliases were skipped — no isolated branches were merged."
+- Proceed directly to Step F (cleanup) to delete the empty consolidated branch and
+  all remote isolated branches.
+- In Step G Notes field: "PR head branch was not modified — all bumps were flagged
+  as BLOCK or unverified by Phase 5. Manual review required before merging."
+
 ---
 
 ## Step C — Run the Full Integration Test Suite
@@ -138,8 +149,25 @@ git push --force-with-lease origin \
 ```
 
 Use `--force-with-lease` to fail safely if the remote has moved. If the push is
-rejected, fetch and inspect the remote state before retrying — do not use
-`--force` without `--lease`.
+rejected:
+
+1. Run `git fetch origin <head-branch>` to retrieve the current remote state.
+2. Run `git log --oneline origin/<head-branch>` to inspect what changed.
+3. **If the remote tip matches the PR's original head commit** (i.e., no human has
+   pushed to the branch since Phase 1b): the rejection is a lease mismatch from a
+   stale local ref — update the lease and retry once:
+   ```
+   git push --force-with-lease=<head-branch>:$(git rev-parse origin/<head-branch>) \
+     origin dep-review/<PR-number>/consolidated:<head-branch>
+   ```
+4. **If the remote has new commits not from this run** (i.e., a human or another
+   process pushed after Phase 1b): do **not** retry. Stop and report:
+   > "Consolidation push rejected — `<head-branch>` has new commits on the remote
+   > that were not part of this review run. Manual merge of the consolidated branch
+   > into `<head-branch>` is required before the PR can be updated."
+   Record this in Step G under Notes and proceed to Step F (cleanup only).
+
+Do not use `--force` without `--lease` under any circumstance.
 
 After a successful push, confirm the PR head branch now points to the
 consolidation branch's tip:
