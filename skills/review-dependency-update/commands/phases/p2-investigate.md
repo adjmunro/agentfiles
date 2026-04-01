@@ -74,6 +74,11 @@ Work through this strategy in order, stopping at the first successful source.
 | LeakCanary | `https://square.github.io/leakcanary/changelog/` |
 | MockK | `https://github.com/mockk/mockk/releases` |
 | Turbine | `https://github.com/cashapp/turbine/blob/trunk/CHANGELOG.md` |
+| Koin | `https://github.com/InsertKoinIO/koin/blob/master/CHANGELOG.md` |
+| Arrow | `https://github.com/arrow-kt/arrow/releases` |
+| SqlDelight | `https://github.com/cashapp/sqldelight/blob/master/CHANGELOG.md` |
+| Detekt | `https://detekt.dev/docs/introduction/changelog` |
+| Gradle (build tool) | `https://docs.gradle.org/current/release-notes.html` |
 
 For any library not in this table, try in order:
 
