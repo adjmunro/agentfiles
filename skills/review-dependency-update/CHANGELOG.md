@@ -2,6 +2,39 @@
 
 ---
 
+## 3.2.0 — The Complete Pipeline (2026-04-01)
+
+Closes five edge-case gaps discovered in the fifth optimisation pass: the
+already-atomic PR path, bisect recovery, consolidation summary durability,
+push-failed alias visibility, and supply-chain verdict enforcement.
+
+- **Phase 1b Step C (already-atomic path):** when all commits are already atomic
+  and no splitting is required, the skip path now continues to Steps G, H, and I
+  (cross-bump check, manifest production, and isolated branch creation) rather
+  than jumping straight to `→ Next`; the orchestrator's Wave 1 dispatch requires
+  a populated manifest regardless of whether splitting occurred
+- **Phase 8 Step D (bisect combinatorial failure):** the combinatorial-failure path
+  ("record that finding explicitly") now includes an explicit `git checkout
+  dep-review/<PR-number>/consolidated` instruction, returning the orchestrator to
+  the consolidated branch HEAD before the force-push step
+- **Phase 8 Step G (consolidation summary persistence):** writes the consolidation
+  summary to `/tmp/dep-review-<PR-number>-consolidation-summary.md` in addition to
+  in-context output; failure-tolerant (if `/tmp` is unwritable, notes this and
+  proceeds — consistent with Phase 1 Step E)
+- **Phase 7 Step A (push-failed alias visibility):** instructs the orchestrator to
+  scan the manifest for `push_failed: true` entries and surface them as "Not
+  reviewed — isolated branch push failed in Phase 1b" rows in the Bumps Reviewed
+  table; Phase 7 Step B template updated with the corresponding row type
+- **Phase 7 Step A item 7 (consolidation summary read):** reads from the Phase 8
+  temp file as the primary source for the consolidation outcome, with in-context
+  data as fallback
+- **Phase 5 Step B (supply-chain integrity hard block):** adds a hard block
+  mirroring the existing CI hard block — if Rook reports a Confirmed tag-signing
+  regression or tag-to-tarball mismatch, the verdict floor is REQUEST CHANGES
+  regardless of tier; the existing Rook +5 scoring signal is unchanged
+
+---
+
 ## 3.1.0 — The Resilient Consolidator (2026-04-01)
 
 Hardens the isolated-branch architecture introduced in v3.0.0 against six
