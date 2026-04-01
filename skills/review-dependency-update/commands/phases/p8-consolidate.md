@@ -226,5 +226,16 @@ per-bump Phase 5 verdict data.
 <any conflict resolutions, edge cases, or manual actions required>
 ```
 
+Also write the consolidation summary to a temp file for Phase 7:
+
+```
+cat > /tmp/dep-review-<PR-number>-consolidation-summary.md << 'EOF'
+<consolidation summary markdown>
+EOF
+```
+
+If the write fails (e.g., `/tmp` is not writable), proceed without writing and
+note: "Consolidation summary not persisted — Phase 7 will use in-context data."
+
 → Next: Read `phases/p7-summary.md` and execute it. Pass the consolidation
 summary above alongside the collected Phase 5 verdict data.

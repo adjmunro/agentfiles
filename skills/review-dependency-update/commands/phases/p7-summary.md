@@ -31,7 +31,10 @@ For each bump reviewed during this run, gather:
 4. **Breaking changes and deprecations** — what was found across the full version span (including intermediate releases); whether each was remediated or left for manual action.
 5. **Remediations made** — commit hashes and a one-line description of each fix.
 6. **Verdict** — tier (Low / Medium / High / Critical), score, and verdict (APPROVE / APPROVE WITH CONDITIONS / REQUEST CHANGES / BLOCK). Include any override applied.
-7. **Consolidation outcome** — from the Phase 8 consolidation summary: merge outcome per alias (clean / conflict resolved / skipped), integration test result (PASS / FAIL), bisect findings if any.
+7. **Consolidation outcome** — from the Phase 8 consolidation summary. Retrieve using the following priority order:
+   - **Primary:** read `/tmp/dep-review-<PR-number>-consolidation-summary.md` if it exists (written by Phase 8 Step G).
+   - **Fallback:** use the Phase 8 consolidation summary already in orchestrator context if the file is absent.
+   Record: merge outcome per alias (clean / conflict resolved / skipped), integration test result (PASS / FAIL), bisect findings if any.
 
 If a bump was skipped (Phase 2 or 3 could not complete), note it as "Skipped — manual review required".
 
