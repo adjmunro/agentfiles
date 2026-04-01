@@ -135,7 +135,12 @@ For each alias merge point (from oldest to newest in consolidation order):
      ```
 
 If bisection cannot isolate a single alias (e.g., the failure only occurs when
-two alias groups are present together), record that finding explicitly.
+two alias groups are present together), record that finding explicitly. Then
+return to the HEAD of the consolidated branch before continuing:
+
+```
+git checkout dep-review/<PR-number>/consolidated
+```
 
 ---
 
