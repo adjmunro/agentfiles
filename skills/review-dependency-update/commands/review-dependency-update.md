@@ -118,6 +118,10 @@ After Phase 1b produces the atomic commit manifest, follow the two-wave protocol
 
 ### Wave 1 — Parallel Investigation (Phases 2–3)
 
+**Before dispatching**, exclude any manifest entries where `push_failed: true` — these
+aliases have no isolated branch and cannot be investigated. Dispatch only entries without
+this flag.
+
 **If the Agent tool is available** — launch all agents concurrently in a single
 message. Each agent receives this prompt:
 

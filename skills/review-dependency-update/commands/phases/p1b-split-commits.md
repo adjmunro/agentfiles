@@ -282,9 +282,11 @@ If the push fails (e.g., network error, permission issue, or remote rejection):
 - Do **not** abort the remaining aliases — continue to the next entry.
 - After all aliases are processed, report any push failures to the user:
   > "The following isolated branches could not be pushed to the remote: <list>.
-  > Wave 1 investigation will be skipped for these aliases — they are excluded
-  > from the manifest. Re-run Phase 1b or push them manually to include them."
-- Remove push-failed aliases from the manifest before returning it to the orchestrator.
+  > Wave 1 investigation will be skipped for these aliases. Re-run Phase 1b or
+  > push them manually to include them in the review."
+- **Retain** push-failed entries in the manifest (with `push_failed: true`). Do **not**
+  remove them. The orchestrator's Wave 1 dispatch skips entries where `push_failed: true`;
+  Phase 7 uses the retained entries to surface excluded aliases in the summary comment.
 
 After creating all isolated branches, confirm that:
 - Each isolated branch exists on the remote
