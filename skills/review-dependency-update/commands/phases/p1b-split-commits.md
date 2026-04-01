@@ -114,7 +114,11 @@ If every bump commit in the PR is already atomic: print
 
 > Phase 1b: commits are already atomic — no splitting required.
 
-and skip to `→ Next` immediately.
+Skip Steps D, E, and F (no rewriting needed). **Proceed directly to Step G**
+(cross-bump compatibility check) and then to Step H (manifest production) and
+Step I (isolated branch creation). These steps must run even for already-atomic
+PRs — the orchestrator's Wave 1 dispatch requires a populated manifest and
+isolated branches regardless of whether splitting was performed.
 
 ---
 
