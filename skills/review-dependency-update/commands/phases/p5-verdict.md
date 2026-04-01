@@ -7,6 +7,12 @@ update. Your output is the evidence report that will be posted to the PR.
 
 ## Step A — Classify the Risk
 
+> **CI data source:** if Phase 4 ran, the CI status is in its Remediation Summary
+> (Step E). If Phase 4 was **skipped** (no actionable usages found), read the CI
+> Status section from `/tmp/dep-review-<PR-number>-session-brief.md` (or the
+> in-prompt CI Status section if the file is unavailable) to obtain the Phase 1
+> CI verdict for this bump before scoring.
+
 Score each signal from the findings across Phases 2–4, then sum to determine the tier.
 
 ### Scoring Matrix
