@@ -23,8 +23,25 @@ For each symbol in the list, search the codebase:
 
 ```
 Grep pattern: <symbol-name or usage pattern>
-Glob: **/*.{ext}   (appropriate extensions for this ecosystem)
+Glob: **/*.{ext}   (use the ecosystem-appropriate extensions from the table below)
 ```
+
+### Ecosystem Search Extensions
+
+| Ecosystem | Source file extensions | Config / build extensions |
+|---|---|---|
+| Kotlin / Android | `.kt`, `.kts` | `*.gradle`, `*.gradle.kts`, `*.toml`, `*.xml` (manifests) |
+| Java | `.java` | `*.gradle`, `*.gradle.kts`, `pom.xml`, `*.xml` |
+| npm / Yarn | `.js`, `.mjs`, `.cjs`, `.ts`, `.tsx`, `.jsx` | `package.json`, `*.config.js`, `*.config.ts` |
+| Python | `.py` | `pyproject.toml`, `setup.cfg`, `requirements*.txt`, `Pipfile` |
+| Ruby | `.rb` | `Gemfile`, `Rakefile`, `*.gemspec` |
+| Go | `.go` | `go.mod`, `go.sum` |
+| Rust | `.rs` | `Cargo.toml`, `Cargo.lock` |
+| Swift | `.swift` | `Package.swift`, `*.xcconfig` |
+| PHP | `.php` | `composer.json` |
+| .NET (C#/F#) | `.cs`, `.fs`, `.vb` | `*.csproj`, `*.fsproj`, `*.props`, `*.targets` |
+
+> For Kotlin/Android projects, always include `.kts` (Kotlin Script — used for `build.gradle.kts`, `settings.gradle.kts`, and `*.main.kts`) alongside `.kt`. Searches limited to `.java` will miss the majority of a Kotlin-first codebase.
 
 For each match, record: file path, line number, and the surrounding context (2–3 lines).
 
