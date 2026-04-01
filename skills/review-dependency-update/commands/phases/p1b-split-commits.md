@@ -188,6 +188,24 @@ git push --force-with-lease origin <head-branch>
 
 Use `--force-with-lease` — fail safely if the remote has moved since checkout.
 
+If the push is rejected:
+
+1. Run `git fetch origin <head-branch>` to retrieve the current remote state.
+2. Run `git log --oneline origin/<head-branch>` to inspect what changed.
+3. **If the remote tip matches the original PR head commit** (no new commits since
+   checkout): the rejection is a stale-lease artefact — update the lease and retry
+   once:
+   ```
+   git push --force-with-lease=<head-branch>:$(git rev-parse origin/<head-branch>) \
+     origin <head-branch>
+   ```
+4. **If the remote has new commits not from this run** (a human or another process
+   pushed after checkout): do **not** retry. Stop and report:
+   > "Force-push of split commits rejected — `<head-branch>` has new commits on the
+   > remote that were not part of this review run. Re-run Phase 1b after reconciling
+   > the remote changes, or push the split manually."
+5. Do not attempt a second retry. If the single retry also fails, stop and report.
+
 ---
 
 ## Step G — Cross-Bump Compatibility Check
