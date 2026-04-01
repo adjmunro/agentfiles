@@ -2,6 +2,34 @@
 
 ---
 
+## 3.3.0 — The Consistent Executor (2026-04-01)
+
+Closes three instruction-level correctness gaps found in the sixth optimisation
+pass: a manifest schema contradiction introduced in v3.2.0, an unhandled push-failure
+path in Phase 1b, and a missing CI data source in Phase 5 for the Phase 4 skip path.
+
+- **Phase 1b Step I (push-failed alias retention):** retains push-failed aliases in
+  the manifest with `push_failed: true` rather than removing them; Phase 7's check
+  for excluded aliases now has data to find; the v3.2.0 instruction ("Remove
+  push-failed aliases from the manifest") contradicted Phase 7 Step A's instruction
+  ("check the manifest for entries with `push_failed: true`") and made the Run 5
+  reporting fix unreachable at runtime
+- **Orchestrator Wave 1 dispatch:** adds an explicit pre-dispatch guard to skip
+  manifest entries where `push_failed: true`; clarifies that excluded aliases have
+  no isolated branch and cannot be investigated; makes the exclusion logic explicit
+  rather than implicit
+- **Phase 1b Step F (force-push failure recovery):** adds a 5-step push-failure
+  decision tree matching the existing pattern in Phase 4 Step F and Phase 8 Step E;
+  previously the step only noted `--force-with-lease` with no prescribed next action
+  on rejection; closes the last unhandled conditional branch in the pipeline
+- **Phase 5 Step A (CI data source note):** when Phase 4 is skipped (no actionable
+  usages), Phase 5 now has an explicit instruction to read the CI Status section
+  from the session brief; previously, CI data only entered Phase 5 scope via Phase 4's
+  Remediation Summary — a clean bump with CI failures and no codebase usages to
+  remediate had no prescribed CI data retrieval path
+
+---
+
 ## 3.2.0 — The Complete Pipeline (2026-04-01)
 
 Closes five edge-case gaps discovered in the fifth optimisation pass: the
