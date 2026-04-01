@@ -8,6 +8,10 @@ bump lives in its own commit before investigation begins. A bundled commit is
 harder to bisect, harder to revert selectively, and obscures which change
 introduced a regression.
 
+Re-read `/tmp/dep-review-<PR-number>-session-brief.md` now (or the PR context
+section in your prompt if the file is unavailable). Confirm: PR number, owner/repo,
+head branch, base branch. These values are used in every git command in this phase.
+
 ---
 
 ## Step A — Inspect the PR Commits
