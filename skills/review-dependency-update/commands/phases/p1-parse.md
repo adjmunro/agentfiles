@@ -4,6 +4,9 @@
 
 ## Step A — Resolve the Repository
 
+> **Prerequisite check:** This skill requires a GitHub-hosted repository and an
+> authenticated `gh` CLI session. Verify both before proceeding.
+
 The argument is a bare PR number. Run:
 
 ```
@@ -12,6 +15,30 @@ git remote get-url origin
 
 Parse the SSH (`git@github.com:owner/repo.git`) or HTTPS
 (`https://github.com/owner/repo.git`) remote URL to derive `owner/repo`.
+
+**If the remote URL domain is not `github.com`** (e.g., gitlab.com, bitbucket.org,
+an enterprise host): stop and print:
+
+> "This skill uses the GitHub CLI (`gh`) and GitHub-specific APIs throughout. The
+> remote `<url>` does not appear to be a GitHub repository. The skill cannot
+> proceed on a non-GitHub repository. If you believe this is an error (e.g., the
+> remote uses a GitHub Enterprise host), update the prerequisite check in Phase 1
+> Step A to recognise your host and retry."
+
+Do not proceed past this point if the remote is not GitHub-hosted.
+
+**Verify `gh` authentication:**
+
+```
+gh auth status
+```
+
+If the command returns a non-zero exit code or reports "not logged in":
+
+> "The GitHub CLI (`gh`) is not authenticated. Run `gh auth login` to authenticate
+> and then retry the skill."
+
+Do not proceed past this point if `gh` is not authenticated.
 
 If the argument is hash-prefixed (`#1509`) or a full GitHub URL, strip the prefix
 to extract the number and, if present in the URL, override the inferred `owner/repo`.
