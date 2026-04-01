@@ -273,6 +273,15 @@ was last modified by a different bump in the same bundle), resolve it by keeping
 only the lines belonging to this alias — the other aliases will be handled on
 their own isolated branches. Commit the resolution before pushing.
 
+If the push fails (e.g., network error, permission issue, or remote rejection):
+- Record the failure for this alias: `push_failed: true` alongside the manifest entry.
+- Do **not** abort the remaining aliases — continue to the next entry.
+- After all aliases are processed, report any push failures to the user:
+  > "The following isolated branches could not be pushed to the remote: <list>.
+  > Wave 1 investigation will be skipped for these aliases — they are excluded
+  > from the manifest. Re-run Phase 1b or push them manually to include them."
+- Remove push-failed aliases from the manifest before returning it to the orchestrator.
+
 After creating all isolated branches, confirm that:
 - Each isolated branch exists on the remote
 - Each branch contains exactly the commits from the base branch plus the one

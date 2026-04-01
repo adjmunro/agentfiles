@@ -178,6 +178,21 @@ git push --force-with-lease origin dep-review/<PR-number>/<alias>
 Use `--force-with-lease` to fail safely if the remote has been updated since
 checkout. This ensures no commits from other agents are silently discarded.
 
+If the push is rejected:
+1. Run `git fetch origin dep-review/<PR-number>/<alias>` to retrieve the remote state.
+2. Run `git log --oneline origin/dep-review/<PR-number>/<alias>` to inspect what changed.
+3. **If the remote tip is the cherry-pick commit from Phase 1b** (no new commits beyond
+   base + cherry-pick): the rejection is a stale lease from the Phase 1b push — update
+   the lease and retry **once**:
+   ```
+   git push --force-with-lease=dep-review/<PR-number>/<alias>:$(git rev-parse origin/dep-review/<PR-number>/<alias>) \
+     origin dep-review/<PR-number>/<alias>
+   ```
+4. **If the remote has unexpected commits** (commits not made by this run): stop and
+   report: "Force-push rejected on `dep-review/<PR-number>/<alias>` — unexpected remote
+   commits detected. Manual inspection required before proceeding."
+5. Do not attempt a second retry. If the single retry also fails, stop and report.
+
 > **Do not push to the PR head branch.** Phase 8 (consolidation) is responsible
 > for merging all verified isolated branches onto a fresh consolidation branch
 > and force-pushing that to replace the PR head branch. Phase 4 must never write
