@@ -2,6 +2,34 @@
 
 ---
 
+## 3.5.0 — The Precise Searcher (2026-04-01)
+
+Closes two first-time-agent gaps identified in the eighth optimisation pass:
+missing ecosystem-specific file extension guidance in Phase 3, and temp file
+naming collisions between concurrent skill runs in Phase 6 and Phase 7.
+
+- **Phase 3 Step B (ecosystem search extensions table):** adds a 10-ecosystem
+  lookup table mapping each supported ecosystem to its relevant source and
+  config file extensions; covers Kotlin/Android (`.kt`, `.kts`, `.java`,
+  `*.gradle`, `*.gradle.kts`, `*.toml`, `*.xml`), Java, npm/Yarn, Python,
+  Ruby, Go, Rust, Swift, PHP, and .NET; includes an explicit callout that
+  Kotlin/Android searches must include `.kts` or they will miss the majority
+  of a Kotlin-first codebase; previously, Phase 3 instructed agents to use
+  "appropriate extensions for this ecosystem" with no definition of what those
+  are — a first-time agent on an unfamiliar project could search the wrong
+  file types and miss real usages
+- **Phase 6 Step B (temp file path):** renames `/tmp/dep-review-<alias>.md`
+  to `/tmp/dep-review-<PR-number>-<alias>.md`; two concurrent skill runs for
+  different PRs bumping the same alias would previously write to the same path
+  and clobber each other's per-bump comment; now consistent with the PR-numbered
+  pattern already established in Phase 1 and Phase 8
+- **Phase 7 Step C (temp file path):** renames `/tmp/dep-review-summary.md`
+  to `/tmp/dep-review-<PR-number>-summary.md`; any two concurrent skill runs
+  previously shared this path, meaning the last run to reach Phase 7 would
+  silently post a summary for the wrong PR; now disambiguated by PR number
+
+---
+
 ## 3.4.0 — The Prepared Agent (2026-04-01)
 
 Closes two first-time-agent gaps identified in the seventh optimisation pass:
