@@ -38,6 +38,16 @@ For each bump reviewed during this run, gather:
 
 If a bump was skipped (Phase 2 or 3 could not complete), note it as "Skipped — manual review required".
 
+Also check the manifest for any entries with `push_failed: true` (aliases whose
+isolated branches could not be pushed to the remote in Phase 1b Step I). For each
+such alias, add a row to the Bumps Reviewed table with:
+- Alias: `<alias>`
+- Verdict: **Not reviewed — isolated branch push failed in Phase 1b**
+- All other columns: `—`
+
+These aliases were excluded from the review pipeline. The reviewer must assess
+them manually before merging the PR.
+
 ## Step B — Compose the Summary Comment
 
 Assemble a single markdown comment using the template below. Render it faithfully — do not collapse sections, even if they contain only "None" or "N/A" values.
@@ -54,6 +64,7 @@ Assemble a single markdown comment using the template below. Render it faithfull
 | Alias | Packages | Old → New | Span | Tier | Score | Verdict |
 |---|---|---|---|---|---|---|
 | `<alias>` | `<packages>` | `<old>` → `<new>` | single \| multi (<N> versions) | <TIER> | <score> | <VERDICT> |
+| `<alias>` | — | — | — | — | — | **Not reviewed — isolated branch push failed in Phase 1b** |
 
 ---
 
