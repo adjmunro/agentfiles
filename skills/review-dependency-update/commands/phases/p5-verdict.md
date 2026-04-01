@@ -81,6 +81,15 @@ Calculate the total score and state which signals contributed. Then assign the t
 > receive APPROVE or APPROVE WITH CONDITIONS. State the CI block reason explicitly
 > in the verdict block.
 
+> **Supply-chain integrity hard block:** Regardless of tier, if Rook reported a
+> **Confirmed** supply-chain concern relating to **tag signing regression** (a package
+> that previously signed its tags and now does not) or **tag-to-tarball mismatch**
+> (the published registry artifact does not match the tagged source), the verdict
+> must be **REQUEST CHANGES** at minimum. These signals indicate potential key
+> compromise or package takeover — they cannot receive APPROVE or APPROVE WITH
+> CONDITIONS even if all other signals are low-risk. State the integrity block reason
+> explicitly in the verdict block.
+
 ## Step B — Form the Verdict
 
 Using the tier from Step A and the tier-to-verdict mapping, assign one of:
