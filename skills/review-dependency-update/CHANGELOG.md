@@ -2,6 +2,49 @@
 
 ---
 
+## 3.1.0 — The Resilient Consolidator (2026-04-01)
+
+Hardens the isolated-branch architecture introduced in v3.0.0 against six
+failure modes that were previously unhandled. Re-runability after an aborted
+session, Phase 8 edge cases, Phase 7 data availability across closed sub-agents,
+and Phase 1b intent-anchoring gaps are all addressed.
+
+- **Phase 1b (start):** re-reads `/tmp/dep-review-<PR-number>-session-brief.md`
+  at startup before Step A — the only phase in the pipeline that previously
+  skipped this re-anchor; closes the Intent-to-Output Traceability gap
+- **Phase 1b Step I:** adds delete-if-exists guards (`git push origin --delete`
+  and `git branch -D` with `2>/dev/null || true`) before each `git checkout -b`
+  to make isolated-branch creation idempotent on re-runs; adds a push-failure
+  handler that records `push_failed` on the manifest entry, continues to the
+  next alias, reports all failures after the loop, and excludes failed aliases
+  from the manifest
+- **Phase 4 Step F:** adds a four-step retry decision tree for `--force-with-lease`
+  rejections: fetch remote state, inspect commits, retry once if the rejection is
+  a stale-lease artefact from Phase 1b's original push, and stop with an explicit
+  message if unexpected remote commits are found
+- **Phase 8 Step A:** adds delete-if-exists guard before consolidated branch
+  creation (same idempotency fix as Phase 1b)
+- **Phase 8 Step B (all-skipped exit):** if every alias is skipped (all Phase 5
+  verdicts are BLOCK or unverified), skip the integration test suite and the
+  force-push step; proceed directly to cleanup and document that the PR head
+  branch was not modified
+- **Phase 8 Step E (push-rejection decision tree):** four-step handler: fetch
+  remote, inspect commits, retry once if the rejection is a stale-lease artefact,
+  stop with an explicit message if a human has pushed new commits to the head
+  branch since Phase 1b
+- **Phase 7 Step A:** adds an explicit data-source block at the top with a
+  three-tier data collection strategy (parallel agent return values, sequential
+  in-context data, fallback PR-comment retrieval via gh CLI); adds item 7
+  (consolidation outcome) to the data-gather list, referencing the Phase 8
+  consolidation summary
+- **Orchestrator Wave 5:** documents the three-tier Phase 5 data collection
+  strategy — require Wave 3 agents to return verdict blocks as final output;
+  sequential data is already in context; fallback: `gh pr view --json comments`
+- **Phase 2 changelog table:** adds Koin, Arrow, SqlDelight, Detekt, and Gradle
+  (build tool) to the Kotlin/Android primary sources table
+
+---
+
 ## 3.0.0 — The Isolated Investigator (2026-04-01)
 
 **Breaking architectural change.** Replaces the shared PR head branch execution
