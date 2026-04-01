@@ -2,6 +2,28 @@
 
 ---
 
+## 3.4.0 — The Prepared Agent (2026-04-01)
+
+Closes two first-time-agent gaps identified in the seventh optimisation pass:
+a missing pre-flight check that caused the skill to fail silently on non-GitHub
+repositories and unauthenticated sessions, and a return-contract gap that caused
+Wave 3 sub-agents to never surface their Phase 5 verdict blocks to the orchestrator.
+
+- **Phase 1 Step A (prerequisite gate):** adds a two-part pre-flight check before
+  the first `gh` call — (1) verifies the `git remote get-url origin` URL is
+  `github.com`-hosted and stops with a plain-language advisory if not, naming the
+  detected host and directing the user to a GitHub repository; (2) runs
+  `gh auth status` and stops with the authentication instruction if `gh` is not
+  logged in; previously, a non-GitHub remote or unauthenticated session would fail
+  silently at the first `gh pr view` call with no prescribed diagnostic
+- **Orchestrator Wave 3 dispatch prompt (return contract):** adds an explicit
+  instruction for each Wave 3 sub-agent to return its Phase 5 verdict block as the
+  final line of its output message; previously, the orchestrator's Wave 5 preamble
+  required this return but the sub-agents never received the instruction — every
+  parallel run silently fell through to the `gh pr view --json comments` fallback
+
+---
+
 ## 3.3.0 — The Consistent Executor (2026-04-01)
 
 Closes three instruction-level correctness gaps found in the sixth optimisation
