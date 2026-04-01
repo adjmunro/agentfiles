@@ -11,6 +11,18 @@ full picture without scrolling through the individual per-bump comments.
 
 ## Step A — Collect Data Across All Bumps
 
+**Data source:** Phase 5 verdict data should be available in context from the
+orchestrator's Wave 5 setup (see the orchestrator's Wave 5 section for how this
+data is collected). If it is not in context, retrieve it from the Phase 6 PR
+comments already posted:
+
+```
+gh pr view <PR-number> --repo <owner/repo> --json comments \
+  --jq '.comments[] | select(.body | startswith("## Dependency Review:")) | .body'
+```
+
+Use each matching comment as the Phase 5 verdict block for that bump.
+
 For each bump reviewed during this run, gather:
 
 1. **Dependency identity** — alias, old version → new version, version span (single / multi with count).
@@ -19,6 +31,7 @@ For each bump reviewed during this run, gather:
 4. **Breaking changes and deprecations** — what was found across the full version span (including intermediate releases); whether each was remediated or left for manual action.
 5. **Remediations made** — commit hashes and a one-line description of each fix.
 6. **Verdict** — tier (Low / Medium / High / Critical), score, and verdict (APPROVE / APPROVE WITH CONDITIONS / REQUEST CHANGES / BLOCK). Include any override applied.
+7. **Consolidation outcome** — from the Phase 8 consolidation summary: merge outcome per alias (clean / conflict resolved / skipped), integration test result (PASS / FAIL), bisect findings if any.
 
 If a bump was skipped (Phase 2 or 3 could not complete), note it as "Skipped — manual review required".
 

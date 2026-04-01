@@ -196,10 +196,26 @@ After Phase 8 consolidation is complete, the **orchestrator** executes Phase 7.
 This is a sequential, orchestrator-only step — there is exactly one Phase 7
 execution per skill run.
 
+**Before reading Phase 7**, ensure Phase 5 verdict data for all bumps is available
+in the orchestrator's context:
+
+- **If running with the Agent tool (parallel waves):** require each Wave 3 agent
+  to return its Phase 5 verdict block as the final line of its output message.
+  The orchestrator accumulates these as agents complete.
+- **If running sequentially:** Phase 5 verdict blocks are already in context from
+  each bump's sequential execution — no additional step needed.
+- **Fallback (parallel, data not in context):** retrieve verdict data from the PR
+  comments already posted by Phase 6. Run:
+  ```
+  gh pr view <PR-number> --repo <owner/repo> --json comments \
+    --jq '.comments[] | select(.body | startswith("## Dependency Review:")) | .body'
+  ```
+  Use this output as the Phase 5 verdict data source.
+
 Read `phases/p7-summary.md` and execute it, using the collected Phase 5 verdict
-data from all bumps and the Phase 8 consolidation summary. The result is a single
-PR comment that consolidates all findings, CI outcomes, supply chain signals,
-remediations, consolidation results, and verdicts into one place.
+data and the Phase 8 consolidation summary. The result is a single PR comment that
+consolidates all findings, CI outcomes, supply chain signals, remediations,
+consolidation results, and verdicts into one place.
 
 **If the Agent tool is not available** — Phase 7 runs immediately after Phase 8
 completes, using the data already in scope.
