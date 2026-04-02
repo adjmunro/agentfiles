@@ -27,6 +27,7 @@ Score each persona against the **Richness Rubric**:
 
 | Field | File | Points |
 |-------|------|--------|
+| Identity line present (`# Name (Role)` format) | persona.md | 1 |
 | Purpose defined in 1–2 sentences | persona.md | 1 |
 | DO list with ≥3 concrete, actionable rules | persona.md | 1 |
 | DO NOT list with ≥2 concrete rules | persona.md | 1 |
@@ -40,7 +41,7 @@ Score each persona against the **Richness Rubric**:
 | Voice description present | soul.md | 1 |
 | Unique Talent section present | soul.md | 2 |
 
-Maximum: 14 points per persona. Richness Score = points / 14 × 100.
+Maximum: 15 points per persona. Richness Score = points / 15 × 100.
 
 Also score each persona against the **Soul Quality Rubric** (SQS):
 
@@ -71,13 +72,20 @@ Then perform gap analysis against the cognitive demand taxonomy:
 | Documentation accuracy | Cross-referencing code changes with docs | Ward (Documentation) |
 | Synthesis | Combining disparate sources into a coherent picture | Loom (Synthesist) |
 | Adversarial red-team | Assuming worst-case user/attacker, stress-testing | Rook (Adversary) |
-| Pedagogical explanation | Teaching a concept to a non-expert reader | *(gap)* |
+| Pedagogical explanation | Teaching a concept to a non-expert reader | Sage (Pedagogue) |
 | Temporal reasoning | Sequencing, dependency ordering, scheduling constraints | Arc (Sequencer) |
-| Negotiation / trade-off | Comparing options against explicit criteria, recommending | *(gap)* |
+| Negotiation / trade-off | Comparing options against explicit criteria, recommending | Poise (Arbiter) |
 | Demand validation | Stress-testing whether the problem is real before any planning begins | Sable (Interrogator) |
 | Root cause isolation | Symptom-to-cause debugging via evidence-driven hypothesis testing | Trace (Debugger) |
 | Architecture review | Pre-implementation failure-mode naming and existing-code leverage check | Vault (Architect) |
 | Live verification | Testing the running application to classify and fix defects by severity | Lens (Verifier) |
+| Argument analysis | Identifying logical fallacies in reasoning by mapping argument structure to a named fallacy taxonomy | Flint (Dialectician) |
+| Commit history curation | Grouping, sequencing, and narrating code changes as coherent historical documentation for future engineers | Ink (Commit Curator) |
+| Intent annotation | Preserving the "why" behind non-obvious decisions as inline comments, carried forward through the full document chain from input to implementation | Quill (Intent Annotator) |
+| Regression detection | Enumerating implicit behavioural contracts and confirming they survive a change — including contracts never formally written down | Vigil (Regression Sentinel) |
+| API documentation accuracy | Ensuring doc comments accurately reflect the current public contract of functions and classes from the caller's perspective | Folio (API Documenter) |
+| Editorial tightening | Cutting restatements, duplicates, and hedges from comment layers so the signal-to-noise ratio of the comment layer stays trustworthy | Hone (Comment Editor) |
+| Constraint strengthening | Replacing vague justifications with specific, measurable, and consequential language so downstream agents cannot rationalise away critical constraints | Amp (Signal Sharpener) |
 
 Note any gaps — cognitive modes with no dedicated persona are candidates for **new** mode.
 

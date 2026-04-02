@@ -53,6 +53,7 @@ Display this table, then the patterns table, then the stats summary. Nothing els
 | P12 | Content Synchronisation Audit | HCU ↑ | Any skill that maintains a parallel help/reference file alongside its command files |
 | P13 | Corrective-Pattern Applicability Classification | PEV ↑ | Any workflow with a pattern library that distinguishes proactive from corrective patterns |
 | P14 | Pre-Experiment Dependency Scan | EIS ↑ | Any multi-hypothesis session where ≥2 changes are queued |
+| P15 | Measurement Accuracy Retrospective | RI ↑ (any estimated metric) | Any workflow where a metric has been estimated (not counted) for ≥2 consecutive runs at the same value |
 
 ### Stats at a Glance
 
@@ -63,7 +64,7 @@ Read `research-log.md` in the optimise skill directory and append a compact stat
 | M1 · IOT | ... | ... | ... | ... |
 
 Only include metrics that have been applied at least once. Keep it to one line per metric.
-End with: *"Run `/optimise help <name or ID>` for full detail on any metric or pattern."*
+End with: *"Run `/optimise help <name or ID>` for full detail on any metric or pattern. For workflows producing `.kanban/` subjects, outcome metrics MX-OQ1–5 are also evaluated — run `/optimise help MX-OQ1` for the full series."*
 
 ---
 
@@ -649,3 +650,151 @@ Both are executed via `/personas evolve` — the command handles scoring, recomm
 **How to improve:** Apply Persona Rotation (P8) — for each phase with a partial or mismatch score, try an alternative persona drawn from existing files or invent a new one. When inventing, write a proper persona file; do not assign a name without defining the cognitive style.
 
 **Stats:** New metric — no historical data yet.
+
+---
+
+### Measurement Accuracy Retrospective (P15)
+*Also matches: P15, retrospective, accuracy, estimated, re-audit, measurement, scope*
+
+**Purpose:** When a metric has been estimated (rather than precisely counted) for two or more consecutive runs at the same value, conduct a targeted re-audit to either confirm the estimate or correct it.
+
+**Problem it solves:** Estimated scores tend to accumulate hidden errors: the scope may silently drift to include out-of-scope files, or the counting method may differ from the metric's definition. A score that is stable but has never been directly verified is a liability — the system appears to be at a known quality level when it may not be. The Measurement Accuracy Retrospective converts a "probably correct" score into a ground-truth measurement.
+
+**How to apply:**
+1. Identify any metric that has not been directly measured from source files for ≥2 consecutive runs (look for "estimate", "approximately", or unchanged scores over multiple runs in the research-log).
+2. Re-read the metric's definition and methodology from `p2-baseline.md` to confirm scope.
+3. Count or score the metric precisely from the current source files — do not rely on the prior estimate.
+4. If the precise count differs from the estimate by ≥2pp, update the score and record the mechanism ("scope included out-of-scope file X; corrected denominator").
+5. If the precise count confirms the estimate, record that too ("precise audit confirmed estimate; no score change").
+
+**When to apply:** Any run where a metric shows the same estimated score for ≥2 consecutive runs without a direct re-measurement.
+
+**Healthy outcome:** The precise score either improves (estimate was pessimistic) or is confirmed (estimate was accurate). A score that worsens after re-measurement is a rare but important finding — it means the metric was over-estimated.
+
+**Targets:** Redundancy Index (most commonly), Instruction Ambiguity Rate, any metric with a "~" or "approximately" qualifier in the baseline notes.
+
+**Stats:** First applied in run 6 (self-optimisation). Corrected Redundancy Index from 88 to 97 by removing out-of-scope file from the scope.
+
+---
+
+### Interview Acceptance Rate (MX-OQ1)
+*Also matches: MX-OQ1, OQ1, interview, acceptance, approved, rejected*
+
+**Measures:** The fraction of interview recommendations that users accepted (approved), excluding overrides. Tracks whether the interview phase's recommendations are calibrated to user needs.
+
+**Intent:** A low acceptance rate signals a calibration or communication failure in the interview phase — either recommendations are too conservative, too aggressive, or poorly framed. This is a direct trust signal that no structural metric would catch.
+
+**Applies when:** `.kanban/.archive/` contains at least one `00-quality-*.md` file with an `## Interview Signals` section.
+
+**Weight:** 2×
+
+**Healthy range:** 80–100 (most recommendations accepted without rejection).
+
+**Skip condition:** No archived quality envelopes with Interview Signals data.
+
+**How to improve:** Review rejected recommendations in the archive for patterns — were they consistently too broad? Too narrow? Targeting the wrong audience? Apply findings to interview phase persona or question structure.
+
+---
+
+### First-Pass Review Rate (MX-OQ2)
+*Also matches: MX-OQ2, OQ2, review, first pass, consecutive failures, rework*
+
+**Measures:** The fraction of archived tickets that passed review on the first attempt (zero consecutive failures). Tracks whether implementations are ready for review when submitted.
+
+**Intent:** A low first-pass rate means rework cycles are the norm — each failure compounds the latency and re-implementation cost of a ticket. No seed metric captures this directly.
+
+**Applies when:** `.kanban/.archive/` contains at least one archived done-ticket with `consecutive_failures` frontmatter.
+
+**Weight:** 2×
+
+**Healthy range:** 70–100.
+
+**Skip condition:** No archived done-tickets with `consecutive_failures` data.
+
+**How to improve:** Identify tickets with multiple failures — are they in a specific domain? Assigned to a specific phase? Look for patterns that predict failure, then improve the planning or review gate for that category.
+
+---
+
+### Plan Stability Rate (MX-OQ3)
+*Also matches: MX-OQ3, OQ3, plan, stability, drift, requirements*
+
+**Measures:** The fraction of archived subjects whose plan showed "None" or "Minor" drift from original scope. A leading indicator of interview quality and requirement clarity.
+
+**Intent:** Frequent plan drift suggests the interview phase under-constrained the problem — the implementing agent had to improvise mid-execution. This is an indirect signal, but repeated drift in the same area points to a systematic gap.
+
+**Applies when:** `.kanban/.archive/` contains at least one `00-quality-*.md` with a `## Plan Drift` section.
+
+**Weight:** 1×
+
+**Healthy range:** 80–100.
+
+**Skip condition:** No Plan Drift sections in archived quality envelopes.
+
+**How to improve:** For subjects with Moderate or Significant drift, read the original plan and the final implementation — where did the gap appear? Was it a missing constraint, an ambiguous requirement, or a scope expansion? Feed this back to the interview or planning phase.
+
+---
+
+### Session Satisfaction Rate (MX-OQ4)
+*Also matches: MX-OQ4, OQ4, session, satisfaction, rating, yes, partially*
+
+**Measures:** The fraction of rated work sessions marked "yes" (satisfactory). A subjective but useful proxy for systemic friction that structural metrics don't surface.
+
+**Intent:** Low session satisfaction can indicate context management problems, tool friction, or task scope issues — things that structural metrics score well but that make the session feel difficult in practice.
+
+**Applies when:** `.kanban/.archive/` contains at least one `00-quality-*.md` with a `## Work Sessions` section containing at least one rated session.
+
+**Weight:** 1×
+
+**Healthy range:** 75–100.
+
+**Skip condition:** No rated Work Sessions in archived quality envelopes.
+
+**How to improve:** Read the "partially" sessions — was there a common point where work stalled? Recurring patterns suggest a specific phase or handoff to improve.
+
+---
+
+### PR Critique Rate (MX-OQ5)
+*Also matches: MX-OQ5, OQ5, PR, review, rework, critique, response*
+
+**Measures:** Average rework cycles per archived ticket (lower is better). Tracks how often implementations need revision after submission — a direct cost signal.
+
+**Intent:** PR rework is the most measurable quality failure this workflow produces. Each revision cycle adds latency and re-implementation effort. A high rework rate means implementations are not ready when submitted, and the root cause is usually in the planning or implementation phase.
+
+**Applies when:** `.kanban/.archive/` contains at least one `00-quality-*.md` with a `## PR Responses` section.
+
+**Weight:** 2×
+
+**Healthy range:** 0–50 after normalisation (≤1 average rework cycle per ticket).
+
+**Normalisation:** score = max(0, 100 − (rate × 50)). A rate of 0 cycles → 100. A rate of 2+ cycles → 0.
+
+**Skip condition:** No PR Responses sections in archived quality envelopes.
+
+**How to improve:** Examine tickets with ≥2 revision cycles. Are they clustered in a domain? Did the review feedback reveal a missing constraint that the planning phase should have captured?
+
+---
+
+### Loop Control (count mode / auto mode)
+*Also matches: loop, count, auto, iterations, N runs, loop mode, termination*
+
+**Purpose:** Run the full 5-phase optimise cycle multiple times on the same target, with automatic termination when either a count is reached or a quality threshold is met.
+
+**Invocation modes:**
+
+| Mode | Syntax | Terminates when |
+|------|--------|----------------|
+| Single run (default) | `/optimise <path>` | After Phase 5 completes |
+| Count mode | `/optimise N <path>` | After N full iterations complete |
+| Auto mode | `/optimise auto <path>` | Composite > 95%, OR Phase 3 produces zero hypotheses, OR 2 consecutive iterations with only Partial results |
+
+**How it works:**
+- Each iteration runs all 5 phases in sequence (Audit → Baseline → Hypothesise → Experiment → Report).
+- Hypothesis numbering is continuous across iterations — do not reset to H1. If run 1 ends at H5, run 2 starts at H6.
+- Confirmed changes from previous iterations must not be re-applied.
+- At the start of each iteration, `research-log.md` is re-read as the Intent Anchor before Phase 1.
+
+**When to use count mode:** When you want a fixed number of improvement passes (e.g., `/optimise 3 skills/ideation/` to run three optimisation loops on the ideation skill).
+
+**When to use auto mode:** When you want to drive the composite above 95% and let the skill decide when to stop. Use with caution on first runs — if the baseline is low, auto mode may run many iterations.
+
+**Loop termination safety:** Count mode always terminates. Auto mode has three exit conditions (score threshold, zero hypotheses, stalled-partial guard) to prevent infinite loops.

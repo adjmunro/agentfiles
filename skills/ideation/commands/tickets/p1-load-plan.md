@@ -27,7 +27,7 @@ LOAD WITH CAVEAT (TTL: 7 days). Check its `created_at` frontmatter field (or fil
 
 **STOP:** If the plan file does not exist, report: "No plan found. Run `/ideate` through Step 6 first." Do not proceed.
 
-**STOP:** If the plan file exists but contains no audit section (look for a heading containing "Audit" or "audit"), report: "Plan has not been audited. Run `/ideate` through Step 5 first." Do not proceed.
+**STOP:** If the plan file exists but contains no audit section, report: "Plan has not been audited. Run `/ideate` through Step 5 first." Do not proceed. An audit section is present if the file contains a line matching `- Full: \d+, Partial:` or a heading line containing `## Audit:`.
 
 Read the plan file in full. Enumerate every numbered requirement — these are the items that must map to ticket ACs during the audit.
 

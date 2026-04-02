@@ -27,7 +27,7 @@ Pre-implementation architecture lock-in — evaluates system design, data flow, 
 
 ## When to summon
 
-Before any implementation begins on non-trivial work — when a plan touches multiple services, introduces new data flows, or has failure modes that haven't been explicitly named. Also: when a prior implementation produced unexpected behaviour that suggests architectural misalignment; when a plan is ambiguous about how components interact; when test coverage of a plan is unclear.
+Before any implementation begins on non-trivial work — when a plan touches multiple services, introduces new data flows, or has failure modes that haven't been explicitly named. Also: when a prior implementation produced unexpected behaviour that suggests architectural misalignment; when a plan is ambiguous about how components interact; when test coverage of a plan is unclear. Also useful when Trace is working through serial hypotheses without converging — Vault can pre-name the likely architectural failure modes and constrain the hypothesis space before the next round of diagnosis.
 
 ## Failure Mode
 

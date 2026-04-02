@@ -18,6 +18,7 @@ Before writing a single line of code, read the full ticket file from top to bott
 **Staleness policies for artifacts read in this phase:**
 - Ticket file (`05-in-progress/TASK-NNN-*.md`): NO TTL — frontmatter is updated in-place and always reflects current state. Load without age check.
 - Plan file (path from ticket's `plan` frontmatter field): LOAD WITH CAVEAT (TTL: 7 days). Check its `created_at` frontmatter field (or file mtime as fallback).
+  - If the file does not exist at the stated path: STOP. Print "Plan file not found: {path}. Verify the ticket's `plan` frontmatter field is correct, or re-run `/implement init` to regenerate it." Do not proceed.
   - If age ≤ 7 days: load normally.
   - If age > 7 days: load, but prepend this warning to any extracted content:
     ⚠ STALE (written {N} days ago): treat as reference only. Plan will not reflect current codebase state — verify requirements against existing code before implementing.
@@ -47,7 +48,7 @@ Ticket has reached {N} consecutive failures. Identical gap is recurring. Prior r
 
 ## WHY-Comments — Non-Negotiable
 
-Every code change must include inline comments explaining:
+**Quill (Intent Annotator) governs this section.** Read `../../personas/quill/persona.md` before beginning the WHY-comment pass. Every code change must include inline comments explaining:
 
 - **WHY this code exists** — what requirement or constraint drives it
 - **WHY this approach was chosen** — what alternatives were considered and rejected
@@ -55,6 +56,41 @@ Every code change must include inline comments explaining:
 - **Which plan item or ticket AC it satisfies** — reference by ID where applicable
 
 Comments that only describe *what* the code does are non-compliant. "Sort the list" is not a WHY-comment. "Sort before binary search — O(log n) lookup in Phase 3 requires sorted input; unsorted input silently returns wrong results" is.
+
+## Doc Comments — Public API Surface
+
+**Folio (API Documenter) governs this section.** Read `../../personas/folio/persona.md` before writing or modifying any public function or class.
+
+For every new or modified public function, method, or class:
+
+- Write or update the doc comment (`///`, JSDoc, docstring, KDoc, XML doc) to reflect the current signature, return type, and behaviour — from the caller's perspective only
+- Document every exception that can be thrown — no exceptions are too unlikely to document
+- Do not describe implementation details the caller has no need to know
+- Do not state the obvious — if the function name and signature already say everything, no doc comment is needed
+
+If a function's signature did not change and its observable behaviour did not change, its doc comment does not need updating.
+
+## Comment Review Pass
+
+**Hone (Comment Editor) governs this section.** Read `../../personas/hone/persona.md` after completing both the WHY-Comments and Doc Comments sections above.
+
+Review all comments written in this phase — inline intent comments and doc comments:
+
+- Cut any sentence that restates what the code or signature already communicates
+- Eliminate duplicate intent across adjacent comments
+- Replace hedged language with concrete statements or remove the comment
+- Gate every cut: "could a future engineer remove this and not know they broke a constraint?" — if yes, it stays
+
+## Signal Sharpening Pass
+
+**Amp (Signal Sharpener) governs this section.** Read `../../personas/amp/persona.md` after Hone completes.
+
+Review the comments that survived the Hone pass for signal strength:
+
+- Replace vague justifications with specific, measurable ones
+- Add consequences to constraints where a model could rationalise the constraint away
+- Make hard rules unambiguous — if it has no exceptions, say so
+- Do not strengthen every comment; strengthen the ones a downstream agent could misread or deprioritise under time pressure
 
 ## Scope Enforcement
 
@@ -101,5 +137,5 @@ Examples:
 > See `_shared.md § Ticket Body Structure` when you need the body template.
 > See `_shared.md § Directory Structure` when you need path references.
 
-→ Next: When implementation is complete and all ACs are addressed, read `work/p6-work-log.md` and execute it.
-   If out-of-scope work is discovered during implementation, read `work/p5-scope-enforcement.md` first, then return here.
+→ Next: When all acceptance criteria in the ticket have been addressed — each item has a corresponding code change or verified implementation — read `work/p6-work-log.md` and execute it.
+   If implementation reveals work outside the ticket's stated acceptance criteria, read `work/p5-scope-enforcement.md` first, then return here.

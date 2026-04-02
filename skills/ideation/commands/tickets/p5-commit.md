@@ -2,6 +2,8 @@
 <!-- Part of: tickets.md orchestrator -->
 <!-- Active when: audit passes at ≥ 95% (Phase 4 done) -->
 
+**Read `../../personas/ink/persona.md` and `../../personas/ink/soul.md` now. Ink (Commit Curator) is active for this phase.**
+
 After Phase 4 completes and the audit passes:
 
 1. Stage all new and modified files.
@@ -18,24 +20,17 @@ Include in the commit body:
 
 ## DO / DO NOT
 
+<!-- WHY commit gate is locked below 95%: committing a partial ticket set could allow the implement skill to claim tickets before all coverage gaps are resolved. A committed-but-incomplete ticket set would appear complete from the git history perspective, making the gap invisible to future audits. -->
 - NEVER commit if the audit score is below 95% — the commit gate only opens when Phase 4 passes.
 - ALWAYS stage all new and modified files before committing; do not commit a partial ticket set.
 - MUST include the audit score in the commit body — a bare ticket count is not sufficient.
 - NEVER use `--amend` to retrofit a commit once any files have been pushed to a remote branch.
 - DO include the count of auto-created fix tickets in the commit body if any were created during the Phase 4 auto-fix pass.
 
-## Backlog Promotion
+<!-- WHY promotion is NOT here: H21 (run 5) found that this section contradicted ideate.md Phase 7 — "no tickets go to 04-todo until step 9 explicitly promotes them." Having p5-commit.md promote immediately made the user-confirmation gate at Phase 8 semantically void. Promotion is the orchestrator's responsibility, gated by user choice. -->
 
-After the commit succeeds, promote all tickets from `03-refinement/` to `04-todo/`:
+**Note — promotion is deferred to the orchestrator.** This phase ends at the audit commit. Ticket files remain in `03-refinement/` until the user makes their choice at Step 9 (ideate.md Phase 8). Do NOT move tickets to `04-todo/` here.
 
-1. Move every `TASK-NNN-{subject}.md` file from `03-refinement/` to `04-todo/`. Create `04-todo/` if it does not exist.
-   - Use `git mv` inside a git repo, or move the file and then `git add -A` to capture both the deletion and the addition.
-2. Stage and commit:
-   ```
-   kanban(tickets): promote N tickets to backlog for {subject}
-   ```
-3. Report the ticket IDs now available in `04-todo/`.
+If you are invoking `tickets.md` directly without the `ideate.md` orchestrator, manually promote tickets from `03-refinement/` to `04-todo/{subject}/` after this command completes.
 
-This makes the tickets immediately available to `implement work`. The `03-refinement/` directory is left in place but empty — it serves as a breadcrumb showing where tickets were staged before promotion.
-
-→ Done. Return to orchestrator and report results.
+→ Done. Return to orchestrator (ideate.md Phase 8) for the Step 9 hard stop gate.

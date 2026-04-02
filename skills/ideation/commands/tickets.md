@@ -14,7 +14,7 @@ argument-hint: "[YYYY-MM-DD-{subject}] — subject to create tickets for"
 ## Personas
 
 - `../../personas/scout/persona.md` — **Finn (Scout)** — active in Phase 2
-- `../../personas/critic/persona.md` — **Arden (Critic)** — active in Phase 4
+- `../../personas/critic/persona.md` — **Arden (Critic)** — active in Phases 3b and 4
 
 Read each file before proceeding. Identify by the active persona when communicating with the user.
 
@@ -28,7 +28,7 @@ Read each file before proceeding. Identify by the active persona when communicat
 
 ## DO NOT
 
-- Write any ticket directly to `04-todo/` — tickets are drafted to `03-refinement/` first and promoted to `04-todo/` by Phase 5 after the audit passes
+- Write any ticket directly to `04-todo/` — tickets are drafted to `03-refinement/` first and stay there until the orchestrator promotes them at Step 9 (ideate.md Phase 8), gated by user confirmation
 - Skip or merge TASK-001 with any other ticket
 - Write vague ACs — "documentation updated" is not acceptable; "grep -c 'TODO' docs/ returns 0" is
 - Create tickets for version bumps or changelog updates — those happen automatically in commits
@@ -41,8 +41,10 @@ Read each file before proceeding. Identify by the active persona when communicat
 | 1 | `tickets/p1-load-plan.md` | command is first invoked |
 | 2 | `tickets/p2-scout-research.md` | plan loaded and enumerated |
 | 3 | `tickets/p3-draft-tickets.md` | Scout research complete |
-| 4 | `tickets/p4-critic-audit.md` | all ticket files drafted and committed |
-| 5 | `tickets/p5-commit.md` | audit passes at ≥ 95% |
+| 3b | `tickets/p3b-lint.md` | all ticket files drafted — per-ticket quality check before coverage audit |
+| 4 | `tickets/p4-critic-audit.md` | lint passes — all tickets have valid effort, non-empty ACs, and concrete verifiable signals |
+| 4b | `tickets/p4b-tighten.md` | coverage audit passes at ≥ 95% — prose tightening pass before commit |
+| 5 | `tickets/p5-commit.md` | tighten pass complete |
 
 ## Execution
 

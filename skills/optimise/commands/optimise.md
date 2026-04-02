@@ -70,7 +70,7 @@ Execute phases in order by reading the corresponding file. Read each file only o
 After Phase 5 completes, apply the loop control rule:
 
 - **count(n) mode**: decrement the remaining count. If count > 0, begin the next iteration from Phase 1 (re-audit the target in its updated state). If count = 0, stop.
-- **auto mode**: compute the composite score using the formula `(confirmed + 0.5 × partial) / total_hypotheses × 100`. If the score is **> 95**, stop — the threshold is satisfied. Otherwise begin the next iteration from Phase 1. If Phase 3 produces zero hypotheses (no improvements found), stop regardless of score and note "No further hypotheses — auto loop complete."
+- **auto mode**: compute the composite score using the formula `(confirmed + 0.5 × partial) / total_hypotheses × 100`. If the score is **> 95**, stop — the threshold is satisfied. Otherwise begin the next iteration from Phase 1. If Phase 3 produces zero hypotheses (no improvements found), stop regardless of score and note "No further hypotheses — auto loop complete." If all hypotheses in two consecutive iterations produce only Partial results (no Confirmed, no Disconfirmed), stop and report: "Auto mode halted — composite stalled after two consecutive partial-only iterations. Review remaining gaps in `research-log.md` manually."
 - **count(1) / single run**: stop after Phase 5. No looping.
 
 On each subsequent iteration, re-read `research-log.md` as the Intent Anchor before Phase 1. Hypotheses confirmed in a previous iteration must not be re-applied. Each iteration's experiments are numbered sequentially (H1–HN across all iterations — do not reset to H1).

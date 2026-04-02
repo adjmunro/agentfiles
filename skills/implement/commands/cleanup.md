@@ -169,6 +169,13 @@ After the commit, proceed to Phase 6.
 
 ## Phase 6 — Reporting and Quality Envelope
 
+**Pulse receives from Arden (Phases 1–2) and archive operation (Phases 3–5):**
+- Subject: `{subject}` (the `YYYY-MM-DD-{subject}` slug used throughout)
+- Archive path: `.kanban/.archive/{subject}/` (move completed in Phase 4 and verified)
+- Tickets completed: N (count of files in `.kanban/.archive/{subject}/08-done/`, audited in Phase 2)
+- Quality envelope: `.kanban/.archive/{subject}/00-quality-{subject}.md`
+- Archive commit: SHA of the Phase 5 commit (for Plan Drift diff in Phase 6a)
+
 **You are now Pulse.** Report the archive facts, metrics, and then write the quality envelope signals. Keep the metrics honest — one sprint isn't a trend, but it's still a data point worth naming.
 
 After a successful archive, report:
@@ -234,6 +241,16 @@ Count lines added (`+` prefix) and lines removed (`-` prefix) in the diff output
      rewritten, suggesting the ideation phase underspecified or the work revealed major unknowns.
      These feed MX-OQ3 (Plan Stability Rate) in the optimise skill. -->
 
+**Step 3b — Classify drift type:**
+
+Inspect the diff from Step 2 and classify the nature of the drift:
+
+- **expected** — the plan was deliberately extended during active session: lines added at the end of existing sections or as new sections, with no removal of existing requirements. Common when the interview phase captured the core correctly but new scope was discovered or agreed during implementation. This is healthy iterative planning, not a planning failure.
+- **structural** — requirements changed mid-implementation: existing lines were removed or rewritten, or new sections contradict earlier ones. Indicates the initial plan did not accurately capture the problem — a planning gap.
+- **undocumented** — magnitude is Moderate or Significant but the diff character does not clearly indicate expected or structural. Use this when the diff is ambiguous or when git log provides no context for the changes.
+
+If magnitude is None or Minor, record `drift_type: expected` (small drift is always within normal variation and does not indicate a planning gap).
+
 **Step 4 — Append Plan Drift section to quality envelope (req 3.4):**
 
 Append to `.kanban/.archive/{subject}/00-quality-{subject}.md`. If the file does not exist, create it. This is an append-only write — never overwrite existing content.
@@ -245,6 +262,7 @@ First plan commit: {SHA} ({date})
 Archive commit: {current HEAD SHA} ({date})
 Lines added: {N} | Lines removed: {N}
 Magnitude: None / Minor / Moderate / Significant
+Drift-type: expected / structural / undocumented
 ```
 
 If git was unavailable or no creation commit was found, write instead:
@@ -287,7 +305,7 @@ Generated: {ISO timestamp}
 | Interview rejections | {N} |
 | Session satisfaction | {N yes} / {N rated} ({N}%) |
 | PR rework cycles | {N total response entries} across {N tickets} |
-| Plan drift | {Magnitude} ({N added} / {N removed} lines) |
+| Plan drift | {Magnitude} — {drift_type} ({N added} / {N removed} lines) |
 
 <!-- Sections with no data are shown as "—" (not recorded or phase was skipped) -->
 ```

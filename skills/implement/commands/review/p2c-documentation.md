@@ -1,17 +1,59 @@
-# Phase 2c — Documentation Check (Ward)
+# Phase 2c — Documentation Check (Ward + Folio)
 <!-- Part of: review.md orchestrator -->
-<!-- Active when: ticket has any acceptance criteria involving documentation, README, comments, or docstrings -->
+<!-- Active when: always — Folio runs unconditionally; Ward runs only when ACs mention documentation -->
 
-Read `../../personas/documentation/persona.md` before proceeding with this phase.
+This phase has two distinct passes with different activation conditions.
 
-**Activation check:** Scan the ticket's acceptance criteria and `plan_items` for any mention of: documentation, README, comments, docstrings, changelog, or runbook. If none are present, skip Phase 2c entirely — do not add documentation requirements that weren't in the original ACs.
+---
 
-**If Phase 2c is active, Ward checks:**
+## Pass A — Ward (Documentation): AC-driven check
+
+Read `../../personas/documentation/persona.md` before this pass.
+
+**Activation check:** Scan the ticket's acceptance criteria and `plan_items` for any mention of: documentation, README, comments, docstrings, changelog, or runbook. If none are present, skip Pass A entirely — do not add documentation requirements that weren't in the original ACs.
+
+**If Pass A is active, Ward checks:**
 
 1. For each AC that mentions docs, README, comments, or docstrings: verify the specific file exists and contains the content described. Cite the file and line (or record that it is absent).
 2. If the ticket's plan items include documentation tasks: verify each is complete against the actual files.
 3. Record findings in the evidence table alongside Phase 2 entries, with column `AC | Evidence (file:line or "absent") | Present?`.
 
 Ward does NOT add new documentation requirements. Ward only verifies what was already specified in the original ACs or plan.
+
+---
+
+## Pass B — Folio (API Documenter): doc comment audit
+
+Read `../../personas/folio/persona.md` and `../../personas/folio/soul.md` before this pass. **This pass always runs** — it is not gated on ACs mentioning documentation.
+
+For every function, method, or class modified by this ticket:
+
+1. Check whether the doc comment (JSDoc, docstring, KDoc, `///`, XML doc) accurately reflects the current signature, return type, and observable behaviour.
+2. Check that every exception the function can throw is documented in `@throws` / `raises` / `throws` tags — flag any that are missing.
+3. Check for stale parameter names, types, or descriptions carried over from before the change.
+4. Flag any public function that lacks a doc comment entirely and whose contract is non-obvious from its name and signature alone.
+
+Record findings in the evidence table with column `Function | Doc comment present? | @throws complete? | Stale fields?`.
+
+Do NOT flag functions where the name and signature already communicate everything — Folio's job is catching gaps, not demanding annotations on `isEmpty()`.
+
+---
+
+## Pass C — Hone (Comment Editor): tightening review
+
+Read `../../personas/hone/persona.md` and `../../personas/hone/soul.md` before this pass. **This pass always runs** after Pass A and Pass B are complete.
+
+Review all inline intent comments and doc comments in files touched by this ticket:
+
+1. Flag any sentence that restates what the code or signature already communicates without ambiguity.
+2. Flag duplicate intent — the same constraint explained in two nearby comments; note which one is sharper.
+3. Flag hedged language ("might", "probably", "could be") that reduces confidence without adding information.
+4. Flag doc comment prose that duplicates what `@param`/`@return`/`@throws` tags already state explicitly.
+
+Record findings as: `File:line | Type (restatement / duplicate / hedge / tag-duplication) | Proposed cut or rewrite`.
+
+Do NOT flag any `@throws`, `# Panics`, `# Errors`, `# Safety`, or exit-code entries — these are contracts, not commentary.
+
+---
 
 → Next: Read `review/p3-score.md` and execute it.

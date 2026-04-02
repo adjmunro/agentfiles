@@ -1,5 +1,5 @@
 ---
-model: claude-sonnet-4-6
+model: claude-opus-4-6
 allowed-tools: Read, Grep, Glob, Bash, Write, Edit, AskUserQuestion
 argument-hint: "[YYYY-MM-DD-{subject}] — subject to interview about"
 ---
@@ -10,7 +10,7 @@ This command uses two personas. Load both before proceeding.
 
 - Read `../../personas/strategist/persona.md` — you are **Keeper (Strategist)** during Phase 2 (Recommendation Formation) and Phase 5 (Critic Pass pre-check). Keeper reads for strategic direction: tradeoffs, longer arc, hidden constraints, failure modes.
 - Read `../../personas/critic/persona.md` — you are **Arden (Critic)** during Phase 5 (Critic Pass). Arden audits for coverage gaps: ambiguities, edge cases, scope boundaries, acceptance signals.
-- Optionally read `../../personas/designer/persona.md` — draw on Designer perspective when recommendations touch UI/UX or interaction patterns.
+- **Designer persona** — conditionally loaded in Phase 2 after reading input and research. See Phase 2 for the loading condition.
 
 Identify by the active persona when communicating with the user.
 
@@ -59,10 +59,10 @@ Construct the input paths:
 Read both files before proceeding.
 
 - If `00-input-{subject}.md` is missing: **STOP** and print:
-  > Cannot run interview: `00-input-{subject}.md` does not exist. Run `/ideation capture` first.
+  > Cannot run interview: `00-input-{subject}.md` does not exist. Run `/ideate` (Step 1: Capture) first.
 
 - If `01-research-{subject}.md` is missing: **WARN** and continue with only the input file. Print:
-  > ⚠ Research file not found — proceeding with input only. Confidence levels will reflect the absence of codebase evidence. Run `/ideation research` first for higher-quality recommendations.
+  > ⚠ Research file not found — proceeding with input only. Confidence levels will reflect the absence of codebase evidence. Run `/ideate` (Step 2: Research) first for higher-quality recommendations.
   All UNCERTAIN items that would normally cite codebase evidence must be marked UNCERTAIN (not HIGH).
 
 ---
@@ -70,6 +70,8 @@ Read both files before proceeding.
 ## Phase 2 — Recommendation Formation
 
 Acting as **Keeper (Strategist)**, synthesise the input and research snapshot into a set of opinionated recommendations — one per key decision point.
+
+**Designer persona — conditional load:** If any of the decision points you identify involve UI/UX, interaction design, or user-experience patterns (identifiable from the input and research already read in Phase 1), additionally load `../../personas/designer/persona.md` now, before finalising those recommendations. Draw on Designer perspective for any UI/UX-related items in the brief.
 
 **Identify decision points across these dimensions:**
 
@@ -96,6 +98,7 @@ For each remaining decision point, form one recommendation with all four fields:
 **Confidence rules:**
 - `HIGH`: The research snapshot or input file provides direct evidence (an existing pattern, an explicit constraint, a documented dependency).
 - `UNCERTAIN`: No clear evidence exists. The decision is genuinely open and requires the user's preference. UNCERTAIN items become targeted binary questions in the brief (X or Y), not open prompts.
+- **Research Confidence override:** Before finalising confidence levels, check the `## Research Confidence` section in `01-research-{subject}.md` (written by Scout). For any recommendation derived primarily from a section rated **Low**, override its confidence to `UNCERTAIN` — regardless of other evidence. A Low-confidence section is primarily inference or general knowledge; treat it as if no codebase evidence exists for that area. If the `## Research Confidence` section is absent (e.g., a snapshot created before this section was added), proceed with standard HIGH / UNCERTAIN rules only — the override does not apply.
 
 **Volume constraint:** Minimum 3 items, maximum 7. If you identify more than 7, rank by implementation impact and keep the top 7.
 
@@ -103,7 +106,13 @@ For each remaining decision point, form one recommendation with all four fields:
 
 ## Phase 3 — Recommendation Brief
 
-Before presenting to the user, Arden runs a silent pre-check (Phase 5 logic applied early — see Phase 5 for audit criteria). If the brief does not pass the 95% threshold, revise it before proceeding.
+Before presenting to the user, Arden runs a silent pre-check against the following 5 criteria (these are also the Phase 5 Critic Pass criteria, applied here before the user sees anything). If the brief does not pass the 95% threshold, revise it before proceeding:
+
+1. **Evidence backing** — every HIGH-confidence recommendation cites traceable evidence from the research snapshot or input file. No assertion without a source.
+2. **UNCERTAIN integrity** — no item is marked UNCERTAIN to avoid making a call when evidence is available. Conversely, no item is marked HIGH when the evidence is absent.
+3. **Resolution completeness** — every UNCERTAIN item is phrased as a targeted binary choice (X or Y), not an open-ended question.
+4. **Scope coverage** — the brief covers all decision points that materially affect implementation. No significant unknown is silently omitted.
+5. **Plan readiness** — the brief, once the user responds, gives `plan.md` enough information to proceed without a follow-up interview.
 
 Once the brief passes, present it as a **single `AskUserQuestion` call** using this exact format:
 
@@ -155,6 +164,11 @@ Parse the user's reply and apply their amendments to the recommendation set:
 - Inline overrides → record the user's stated preference verbatim
 - UNCERTAIN items answered → record which option the user chose
 
+<!-- WHY idempotency guard exists: H8 (run 2) found that context restores or re-runs would append a duplicate Interview block, making the input file ambiguous about how many interview rounds occurred. The timestamp-uniqueness check prevents silent duplication. -->
+**Idempotency guard:** Before appending, check whether an `## Interview` block with today's date already exists in `00-input-{subject}.md`. If one exists for this session:
+- If its content is identical to the current response (exact re-run) → skip the append; the block is already recorded.
+- If the content differs (updated user response) → append with a timestamp suffix `-v2` (e.g., `## Interview 20260322-14:30-v2`).
+
 Append the complete brief and the user's response to `00-input-{subject}.md` as a new block. Never overwrite any existing content.
 
 **Block format:**
@@ -202,6 +216,8 @@ Apply the classification per-item. Record the user's verbatim redirect text for 
 
 **Append an `## Interview Signals` block to `00-quality-{subject}.md`** (Req 2.3):
 
+<!-- STALENESS POLICY: NO TTL — append-only log; age does not indicate staleness. Load without age check. -->
+
 - The quality envelope file path is: `.kanban/{YYYY-MM-DD-subject}/00-quality-{subject}.md`
 - Create the file if it does not exist — write the block as the initial content. If the file already exists, append the new block after all existing content. Never overwrite existing content. (Req 1.1, 1.3)
 
@@ -225,17 +241,9 @@ Use the same timestamp as the `## Interview` block written to `00-input-{subject
 
 ## Phase 5 — Critic Pass
 
-Acting as **Arden (Critic)**, audit the brief before it is sent (this pass also runs silently as the pre-check in Phase 3).
+Acting as **Arden (Critic)**, audit the brief after the user has responded and decisions are parsed (this same pass also ran silently as the pre-check in Phase 3 — see Phase 3 for the full criteria list).
 
-Arden checks the following — every item must pass at 95% confidence before the brief is considered complete:
-
-1. **Evidence backing** — every HIGH-confidence recommendation cites traceable evidence from the research snapshot or input file. No assertion without a source.
-2. **UNCERTAIN integrity** — no item is marked UNCERTAIN to avoid making a call when evidence is available. Conversely, no item is marked HIGH when the evidence is absent.
-3. **Resolution completeness** — every UNCERTAIN item is phrased as a targeted binary choice (X or Y), not an open-ended question.
-4. **Scope coverage** — the brief covers all decision points that materially affect implementation. No significant unknown is silently omitted.
-5. **Plan readiness** — the brief, once the user responds, gives `plan.md` enough information to proceed without a follow-up interview.
-
-If any item fails, revise the affected recommendations and re-run the check. Do not present the brief to the user until the 95% threshold is met.
+Apply the same 5 criteria from the Phase 3 pre-check. If any item fails, revise the affected recommendations and re-run the check. Do not finalise until the 95% threshold is met.
 
 ---
 
@@ -251,6 +259,7 @@ If inside a git repo:
 1. Stage `00-input-{subject}.md`.
 2. Stage `00-quality-{subject}.md` (created or updated in Phase 4b). If the file does not exist for any reason, skip staging it but note the omission in the Phase 7 report.
 3. Commit both files together with the message: `kanban(interview): record recommendation brief for {subject}`
+   Body: number of recommendations presented, breakdown of Approved / Overridden / Rejected items.
 
 If not inside a git repo: skip this phase silently.
 

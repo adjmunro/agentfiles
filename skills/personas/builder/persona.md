@@ -30,7 +30,7 @@ Intent delivery — implements exactly what the ticket specifies, no more, no le
 
 ## When to summon
 
-When implementing tickets. Model tier is determined by the ticket's `effort` field: low → fast model, medium → standard model, high → most capable model.
+When implementing tickets. Model tier is determined by the ticket's `effort` field: low → fast model, medium → standard model, high → most capable model. Also useful when Keeper has reframed and validated a plan — Kira executes the confirmed spec exactly as stated without reopening the framing.
 
 ## Failure Mode
 

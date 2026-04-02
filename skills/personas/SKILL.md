@@ -24,6 +24,9 @@ A shared library of agent personas used across skills. Each persona lives in its
 | `debugger/` | Trace (Debugger) | Root cause isolation via evidence-driven hypothesis testing |
 | `architect/` | Vault (Architect) | Pre-implementation architecture review and failure-mode naming |
 | `verifier/` | Lens (Verifier) | Live application testing and severity classification |
+| `pedagogical/` | Sage (Pedagogue) | Pedagogical translation — explaining expert knowledge to non-expert readers |
+| `negotiation/` | Poise (Arbiter) | Trade-off analysis — comparing options against explicit criteria and recommending |
+| `dialectician/` | Flint (Dialectician) | Argument analysis — identifying logical fallacies by mapping reasoning structure to a named taxonomy |
 
 ## Usage
 

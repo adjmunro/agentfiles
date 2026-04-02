@@ -4,6 +4,47 @@ What's new, what's better, what's different. Most recent stuff on top.
 
 ---
 
+## v3.3.0 — Persona pipeline expansion (2026-03-27)
+
+Six new and updated personas wired into the implementation and review cycle, forming a structured comment and quality pipeline.
+
+- **Ink (Commit Curator)** wired into `work/p7-commit.md` — all implementation commits now go through Ink's commit hygiene lens
+- **Quill (Intent Annotator)** wired into `work/p3-implementation.md` (WHY-Comments) and `work/p6-work-log.md` — ensures the "why" is attributed to upstream plan items, not just described
+- **Amp (Signal Sharpener)** wired into `work/p3-implementation.md` and `work/p6-work-log.md` — strengthens constraints for downstream agents; vague justifications become specific and consequential
+- **Folio (API Documenter)** wired into `work/p3-implementation.md` (Doc Comments) and `review/p2c-documentation.md` (Pass B, always-on) — keeps doc comments accurate and caller-focused; Kotlin/Java/Rust/Swift/Go/Bash conventions
+- **Hone (Comment Editor)** wired into `work/p3-implementation.md` (Comment Review Pass) and `review/p2c-documentation.md` (Pass C, always-on) — cuts restatements, duplicate intent, hedged language
+- **Vigil (Regression Sentinel)** wired into `review/p2b-tests.md` and `pr.md` (Phase 2b, pre-PR) — flags silent regressions and hollow tests; blocks PR if unintentional behaviour changes are found
+- **Test quality lens** added to `review/p2b-tests.md` — green suite with hollow tests is an unknown result, not a passing one
+- `review/p2c-documentation.md` restructured into three passes: Ward (AC-driven), Folio (always-on doc audit), Hone (always-on tightening)
+
+Comment pipeline in `p3-implementation.md`: Quill (write why) → Folio (write doc comments) → Hone (tighten) → Amp (strengthen signal)
+
+---
+
+## v3.2.0 — Optimise Run 2 (2026-03-25)
+
+Five correctness and robustness fixes from the second optimise pass. Composite instruction quality: 90.9% → 96.9% (+6.0 pp against the expanded 32-metric baseline).
+
+- **Stale command names fixed** — `review/p4-pass.md` and `work/p4-stale-detection.md` still referenced `/kanban` after the v3.0.0 rename; updated both to `/implement`
+- **Error recovery added** — plan-file-absent and lock-write-failure scenarios now have explicit STOP-and-report instructions in `work/p2`, `work/p3`, `review/p2a`, and `review/p1`
+- **Sequence failure guards added** — `review/p4-pass.md`, `review/p5-fail.md`, and `work/p2-ticket-selection.md` now specify behaviour if any step in a 4–5 step sequence fails mid-operation
+- **Persona handoff context materialised** — `pr.md` Phase 4 (Vale→Helm) and `cleanup.md` Phase 6 (Arden→Pulse) now have explicit "receives:" blocks listing the context each incoming persona needs from prior phases
+- **Ward persona for work log** — `work/p6-work-log.md` now loads Ward (Documentation) instead of inheriting Kira; the phase already told Kira to write "as if Ward is reading" — now Ward actually writes it
+
+---
+
+## v3.1.0 — Optimise Run 1 (2026-03-25)
+
+Five targeted consistency and correctness fixes from the first optimise pass. Composite instruction quality score: 86.7% → 97.8% (+11.1 pp).
+
+- **Commit format unified** — `work/p7-commit.md` now uses the same `feat({NNN}): [what and why]` format as `work/p3-implementation.md`; the old `feat(scope): implement {ticket-id}` stub is removed
+- **Dependency satisfaction unified** — `work/p2-ticket-selection.md` now requires `status: done` in `06-in-review/` or `07-pull-request/`, matching `next.md`'s stricter criterion; accepting `in_review` could allow work to start on a ticket whose blocker still might fail
+- **Stale claim detection fixed** — `next.md` Claimed Check replaced phantom `expires_at` field (never in schema, never written) with computed staleness from `claimed_at + stale_after_hours`; previously caused auto mode to permanently skip subjects with any in-progress tickets
+- **Phase dispatch triggers concretised** — all four vague "Active when" conditions in `work.md` and `work/p3-implementation.md` replaced with deterministic, checkable criteria (file:line evidence recorded, log section exists, specific mutation types)
+- **Plan drift classification added** — `cleanup.md` Phase 6a now classifies drift as `expected` / `structural` / `undocumented`; Plan Stability Rate now distinguishes deliberate scope extension from genuine planning gaps
+
+---
+
 ## v3.0.0 — The Big Rename (2026-03-22)
 
 Skill renamed from kanban2 to implement; user command renamed from `/kanban` to `/implement`; `init` command extracted to the shared `commands/init.md` at repo root so it is callable by any skill.

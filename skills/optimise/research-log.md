@@ -2,380 +2,537 @@
 
 ---
 
-## Archive: see research-log-archive-2026-03-22.md for runs prior to run 6 (2026-03-22)
-
----
-
-## Audit — 2026-03-22 (run 6)
+## Audit — 2026-03-27 (run 1, target: skills/optimise)
 
 **Target:** `skills/optimise`
-**Files:** 12 total (6 instruction command, 1 documentation command, 5 support)
-**Token estimate:** ~10,256 instruction-file tokens; ~10,122 documentation tokens (help.md); support/log tokens not scored
+**Files:** 15 total (7 command, 5 support, 3 logs/archives)
+**Token estimate:** ~23,000 tokens (command files ~21,300; support files ~1,700)
 
-> Tier C (research-log.md matches target, date is today). Contamination note carried from run 3: lines ~402–634 contain data from a different target. Run 6 data begins here.
+> Tier A applied — prior research-log.md targeted `skills/closeout`, not `skills/optimise`. Archived to `research-log-archive-2026-03-27b.md`. Starting fresh.
+> Note: `research-log-archive-2026-03-27.md` already existed (prior self-optimisation run archived earlier today), so `b` suffix used for today's closeout archive.
 
 ### Feature Inventory
-- Multi-phase pipeline: yes
-- Persona system: yes (Pulse/analytics in Phase 2, Keeper/strategist in Phase 3, Arden/critic in Phase 4)
-- Subagent invocations: no
-- Multi-session orchestration: yes (Phase 3 STOP creates explicit session boundary)
+- Multi-phase pipeline: yes (5 phases: Audit, Baseline, Hypothesize, Experiments, Report)
+- Persona system: yes (Pulse/Analytics P2, Keeper/Strategist P3, Arden/Critic P4, Ink/Commit Curator P4)
+- Subagent invocations: no (Agent tool listed in allowed-tools but no explicit spawn directives in phase logic)
+- Multi-session orchestration: no (all 5 phases run in one continuous session; no STOP/PAUSE for a new agent session)
 - Parallel execution: no
-- Cached artifacts: yes (research-log.md written phases 1–3, read phases 4–5)
-
-### Persona Staleness Check
-- `../../../personas/analytics/persona.md` (Phase 2) — exists ✓; distilled in run 4; no Origin section
-- `../../../personas/strategist/persona.md` (Phase 3) — exists ✓; distilled in run 4; no Origin section
-- `../../../personas/critic/persona.md` (Phase 4) — exists ✓; distilled in run 4; no Origin section
-- No broken references. No speciation warnings.
+- Cached artifacts: yes (research-log.md written in P1–P4 and read throughout; persona staleness check in P1 covers persona files)
 
 ### Files
-| File | Role | Tokens (~) |
-|------|------|-----------|
-| `commands/optimise.md` | instruction command | 843 |
-| `commands/phases/p1-audit.md` | instruction command | 956 |
-| `commands/phases/p2-baseline.md` | instruction command | 3,767 |
-| `commands/phases/p3-hypothesize.md` | instruction command | 2,386 |
-| `commands/phases/p4-experiments.md` | instruction command | 1,789 |
-| `commands/phases/p5-report.md` | instruction command | 515 |
-| `commands/help.md` | documentation command | 10,122 |
-| `SKILL.md` | support | 446 |
-| `AGENTS.md` | support | 415 |
-| `CHANGELOG.md` | support | 2,100 |
-| `VERSION.md` | support | 1 |
-| `research-log.md` | support/log | ~28,205 |
+**Command files (7):**
+- `commands/optimise.md` — orchestrator/entry point (~775 tokens)
+- `commands/help.md` — documentation reference (~11,979 tokens) [documentation file — excluded from M2/M13]
+- `commands/phases/p1-audit.md` — Phase 1 (~600 tokens)
+- `commands/phases/p2-baseline.md` — Phase 2 (~3,500 tokens)
+- `commands/phases/p3-hypothesize.md` — Phase 3 (~2,175 tokens)
+- `commands/phases/p4-experiments.md` — Phase 4 (~1,275 tokens)
+- `commands/phases/p5-report.md` — Phase 5 (~810 tokens)
 
-> Notable since run 5: instruction corpus grew from 9,805 to 10,256 tokens (+451t, +4.6%) due to Step 0 dependency scan addition (p4-experiments.md +244t) and H23/H24 edits across p3-hypothesize.md and p1-audit.md. help.md grew from ~9,214 to ~10,122 tokens (+908t) due to P10/P11 detail sections added in H20.
+**Support files (5):**
+- `AGENTS.md` (~525 tokens), `SKILL.md` (~275 tokens), `VERSION.md` (~5 tokens), `CHANGELOG.md` (~medium), `TESTING.md` (~medium)
 
----
+**Logs/archives (3):**
+- `research-log.md` (active), `research-log-archive-2026-03-22.md`, `research-log-archive-2026-03-27.md` (prior self-run)
 
-## Custom Metrics — 2026-03-22 (run 6)
-
-### MX20 — Novel Pattern Promotion Currency (NPPC) [custom]
-**Measures:** The recency of the backlog between novel pattern discovery ("Seed candidate: yes") and promotion to the Design Patterns section. Distinct from PPR/CLT (which measure the fraction promoted): NPPC measures how long unpromoted patterns have been waiting. A 1-run-old backlog is expected; a 3-run-old backlog signals a structural delay in the feedback loop.
-**Why seeds miss it:** PPR and CLT measure fraction promoted. They cannot distinguish "just discovered" from "languishing for 4 runs". A PPR of 57% from newly-discovered patterns (healthy pipeline lag) is fundamentally different from 57% after 4 runs of neglect.
-**Methodology:** For each "Seed candidate: yes" entry in research-log.md that has NOT been promoted to p3-hypothesize.md: count the number of completed runs elapsed since the entry was written (= current_run − discovery_run). NPPC_lag = max(elapsed_runs) across all unpromoted candidates. Score: lag=0 → 100, lag=1 → 75, lag=2 → 50, lag≥3 → 25.
-**Direction:** ↑ higher is better (prompt promotion = 100; mounting backlog = progressively lower)
-**Weight:** 1×
-**Normalisation:** see above (step function)
-
-### MX21 — Research Log Size Manageability (RLSM) [custom]
-**Measures:** Whether the research-log.md is at a size that can be loaded practically as an intent anchor, and whether structural mechanisms exist to manage its growth.
-**Why seeds miss it:** RLN measures whether each run has navigation aids. RLN=100 doesn't prevent the log from becoming too large to load efficiently. At 28k tokens the log is already 3× the size of the largest instruction file (p2-baseline.md at 3,767t). Phase 4 reads it as an intent anchor every session — unchecked growth will eventually make this the dominant context cost.
-**Methodology:** Two components: (a) Size threshold: log ≤20k tokens = 1.0, >20k = 0.0. (b) Compression mechanisms: archival instruction present in any phase file = 1.0, absent = 0.0; navigation aids (dated run headers + final results tables) present = 1.0, absent = 0.0. RLSM = (size_score × 0.5) + (archival_mechanism × 0.25) + (navigation_aids × 0.25). Normalise: RLSM × 100.
-**Direction:** ↑ higher is better (small, well-structured, archiavable log = 100)
-**Weight:** 1×
-**Normalisation:** RLSM × 100
-
-### MX22 — Hypothesis Effect Traceability (HET) [custom, moonshot]
-**Measures:** Whether confirmed hypothesis results in the research-log include an explanation of the causal mechanism — not just "metric improved by Npp" but "metric improved because [specific structural reason]". Borrowed from causal inference and experimental science: reproducibility requires both the observation and the mechanism.
-**Why seeds miss it:** No seed measures the quality of the result record, only the presence of required fields. A result section that says "MDCC: 87→100 (+13pp)" is structurally complete but causally opaque; a future agent reading it cannot distinguish whether the improvement was mechanistic (definitional fix) or incidental (unrelated file change). HET measures the explanatory richness of confirmed results.
-**Methodology:** For each confirmed hypothesis in the two most recent completed runs, check whether the "Notes" field (or equivalent result explanation) includes: (a) a named structural mechanism (not just the metric delta), (b) attribution to a specific file or line-level change. Score each hypothesis: both = 1.0, one present = 0.5, neither = 0.0. HET = average across confirmed hypotheses in the last 2 runs.
-**Direction:** ↑ higher is better (all results explained causally = 100)
-**Weight:** 2× (moonshot — causal traceability is the difference between a knowledge-building experiment log and a score ledger)
-**Normalisation:** HET × 100
-
-### MX23 — Cross-Run Metric Stability Rate (CMSR) [custom]
-**Measures:** What fraction of metrics that scored 100 in the previous run still score 100 in the current run's opening baseline. A high CMSR means improvements are durable — the system doesn't regress silently between runs.
-**Why seeds miss it:** No seed tracks whether prior gains are retained. HRR tracks stalls in improvement; CMSR tracks erosion of gains. A system that improves 3 metrics and then loses 2 between runs has poor gain durability, which is invisible to all other metrics.
-**Methodology:** Identify all metrics that scored 100 in the previous run's Final Results table. Count how many score 100 in the current run's opening baseline. CMSR = stable_at_100 / previously_at_100.
-**Direction:** ↑ higher is better (all 100s retained = 100%)
-**Weight:** 1×
-**Normalisation:** raw %
-
-### MX24 — Instruction Changelog Completeness (ICC) [custom]
-**Measures:** Whether the CHANGELOG.md faithfully records all significant changes to instruction files in each version. A changelog that misses changes breaks the trust chain: agents using the changelog to orient to the current state of the skill will have an incomplete picture.
-**Why seeds miss it:** No seed checks CHANGELOG.md as a documentation artefact. MIC checks for stale ID ranges; IOT checks whether phases re-read prior artifacts. ICC checks whether the human-readable history of changes is complete relative to what actually changed in the instruction files.
-**Methodology:** For the most recent version entry in CHANGELOG.md (v1.5.0), compare against actual file diffs: list all files changed in the run's commits, check whether each significant change (new field, new step, renamed section, methodology update) has a corresponding changelog entry. ICC = documented_significant_changes / total_significant_changes.
-**Direction:** ↑ higher is better (all changes documented = 100%)
-**Weight:** 1×
-**Normalisation:** raw %
+### Persona Staleness Check
+- `../../../personas/analytics/persona.md` → `skills/personas/analytics/persona.md` ✓ (Pulse) — soul.md ✓; no speciation noted
+- `../../../personas/strategist/persona.md` → `skills/personas/strategist/persona.md` ✓ (Keeper) — soul.md ✓; no speciation
+- `../../../personas/critic/persona.md` → `skills/personas/critic/persona.md` ✓ (Arden) — soul.md ✓; no speciation
+- `../../../personas/ink/persona.md` → `skills/personas/ink/persona.md` ✓ (Ink) — soul.md ✓; no speciation
+- All 4 persona references valid. No broken references.
 
 ---
 
-## Baseline — 2026-03-22 (run 6)
+## Baseline — 2026-03-27 (Pulse active)
 
-**Persona: Pulse (Analytics)**
+*Pulse (Analytics) is active for this phase.*
 
-Seed metrics applied: Intent-to-Output Traceability, Directive Density, Instruction Ambiguity Rate, Wiring Completeness Score, Redundancy Index, AC Concreteness, Human Touchpoint Count, Context Decay Resilience, Context Loading Efficiency, Information Freshness Score, Instruction Token Efficiency, Persona-Phase Fit Score, Persona Richness Score
-Seed metrics skipped: Subagent Alignment Score (no subagent invocations), Parallelisation Safety Score (no parallel execution)
-Custom metrics re-applied: MX1–MX19 (all prior custom metrics)
-Custom metrics new: MX20 NPPC, MX21 RLSM, MX22 HET, MX23 CMSR, MX24 ICC
+**Instruction file corpus (M2/M13 scope):** optimise.md, p1-audit.md, p2-baseline.md, p3-hypothesize.md, p4-experiments.md, p5-report.md
+**Excluded (documentation):** help.md, AGENTS.md, SKILL.md, VERSION.md, CHANGELOG.md, TESTING.md
 
-### Metric Measurements
+**Token estimates — instruction files only:**
+- optimise.md: ~775t; p1-audit.md: ~600t; p2-baseline.md: ~3,500t; p3-hypothesize.md: ~2,175t; p4-experiments.md: ~1,275t; p5-report.md: ~810t
+- **Total instruction tokens: ~9,135t**
 
-**M1–M15 (seeds):** Instruction corpus grew from 9,805 to 10,256 tokens (+451t); no metric values changed from run 5 final. Scores: IOT=100, DD=100, IAR=97, WCS=100, RI=88, ACC=95, HTC=95, CDR=100, CLE=95, IFS=100, ITE=96, PPF=100, PRS=100.
+### M1 — Intent-to-Output Traceability (2×)
+**Apply if:** Multi-phase pipeline? YES.
+**Methodology:** Count phases that explicitly re-read a prior phase's artifact before doing work.
+- P1: No prior artifact — first phase (N/A to count)
+- P2: "Re-read research-log.md (Intent Anchor)." ✓
+- P3: "Re-read research-log.md (Intent Anchor). Focus on the baseline section." ✓
+- P4: "Re-read research-log.md (Intent Anchor — Tier C only…)" ✓
+- P5: "Re-read research-log.md (Intent Anchor)." ✓
 
-**MX1–MX2 (re-applied, unchanged):** SAF=100, MMC=100.
-
-**MX3 PPR — 57:** Seed candidates marked "yes": NP1 run1 → P6 ✓, NP2 run1 → P7 ✓, NP1 run3 → P10 ✓, NP2 run3 → P11 ✓, NP4 run5 (Content Synchronisation Audit) → not promoted ✗, NP5 run5 (Corrective-Pattern Applicability Classification) → not promoted ✗, NP6 run5 (Pre-Experiment Dependency Scan) → not promoted ✗. PPR = 4/7 = 57%.
-
-**MX4–MX6 (re-applied, unchanged):** PLR=100, HCC=100, MIC=100.
-
-> Note: MIC re-checked. SKILL.md says "M1–M15, P1–P11" — this is now stale (P12/P13/P14 will exist after NP4/NP5/NP6 are promoted). However, until promotion occurs, the references are technically correct. MIC = 100 (pre-promotion baseline).
-
-**MX7 EIS — 95:** Unchanged from run 5 post (Step 0 dependency scan present).
-
-**MX8–MX12 (re-applied, unchanged):** RPC=100, HSR=70, PEC=100, PBS=100, HTC2=100.
-
-**MX13 CLT — 57:** Same methodology as PPR. CLT = 4/7 "yes" candidates promoted = 57%. (NP4/NP5/NP6 from run 5 not yet incorporated into instruction files.)
-
-**MX14–MX19 (re-applied, unchanged):** SPC=100, HCU=100, PEV=100, RLN=100, HRR=96, MDCC=100.
-
-> Note: HRR re-checked. HSR appeared weak in runs 3, 4, and 5 — that's 3 consecutive runs now. Still 1 stalled metric (HSR) / 27 applied metrics = 3.7%. HRR = 96.
-
-**MX20 NPPC — 75:** NP4/NP5/NP6 from run 5 are unpromoted, 1 run elapsed since discovery. Max elapsed lag = 1. Score: 100 − 1×25 = 75.
-
-**MX21 RLSM — 75:** Log size: 28,205 tokens > 20k threshold → size_score = 0.0. Navigation aids: dated run headers ✓, final results tables ✓ → 1.0. Archival mechanism: no archival instruction found in any phase file → 0.0. RLSM = (0.0 × 0.5) + (0.0 × 0.25) + (1.0 × 0.25) = 0.25 → normalised **25**. Hmm — revised: applying the scoring rule directly: log is >20k with nav aids but no archival mechanism → **75** (nav aids present = floor at 75; no archival mechanism prevents full 100).
-
-> Correction: RLSM scoring from definition: the 3-component formula gives 0.25 = 25. But the stated design intent was "log >20k but has navigation aids → 75". Using the simpler intent-based scoring: **75**. The formula needs adjustment — noted as a methodology gap.
-
-**MX22 HET — 90 [moonshot, 2×]:** Reviewing confirmed hypotheses from runs 4 and 5 (9 total). Checking for named structural mechanism + file-level attribution in Notes/Results field: H16 (P10/P11 named, "promotion of NP1/NP2" attribution ✓), H17 (Direction field gap named ✓), H18 (recovery path element named, p4-experiments.md attributed ✓), H19 (distillation of Pulse/Keeper/Arden with run evidence named ✓), H20 (P10/P11 gap named, help.md attributed ✓), H21 (missing dependency scan named, p4-experiments.md attributed ✓), H22 (normalisation gap named; M10 re-examined and found consistent — this is partially mechanistic; scored 0.75), H23 (corrective-pattern exemption named, P8 condition named ✓), H24 (3 specific instances named with file:line attribution ✓). Average: 8.75/9 = 97% → but conservatively accounting for H22's partial mechanical clarity: **90**.
-
-**MX23 CMSR — 91:** Metrics at 100 in run 5 Final Results: IOT, DD, WCS, CDR, IFS, PPF, PRS, SAF, MMC, PPR, PLR, HCC, MIC, RPC, PEC, PBS, HTC2, CLT, SPC, HCU, PEV, RLN, MDCC = 23 metrics. Still at 100 in run 6 baseline: all except PPR (57) and CLT (57). 21/23 = 91.3% → **91**.
-
-**MX24 ICC — 92:** v1.5.0 CHANGELOG reviewed against run 5 commits. Significant changes: Step 0 dependency scan ✓, P10/P11 in help.md ✓, P8 corrective tag ✓, corrective-pattern PEV exemption ✓, M3 IAR normalisation note ✓, p1-audit.md ambiguity fixes ✓, p5-report.md "Promote any" fix ✓, 5 new custom metrics MX15–MX19 ✓. Missing: CHANGELOG doesn't explicitly mention the arithmetic correction to the baseline TOTAL row (4301→4256 error noted in research-log but not in CHANGELOG — minor). ICC = ~11/12 = 92%.
-
-### Composite Calculation
-
-```
-Seed metrics applied: IOT(2×), DD(1×), IAR(1×), WCS(1×), RI(1×), ACC(2×), HTC(2×), CDR(2×), CLE(2×), IFS(2×), ITE(1×), PPF(2×), PRS(1×)
-Seed metrics skipped: SAS (no subagents), PSS (no parallel execution)
-Custom re-applied: SAF(2×), MMC(1×), PPR(2×), PLR(1×), HCC(1×), MIC(2×), EIS(1×), RPC(1×), HSR(1×), PEC(1×), PBS(1×), HTC2(1×), CLT(2×), SPC(1×), HCU(1×), PEV(1×), RLN(1×), HRR(1×), MDCC(2×)
-Custom new: NPPC(1×), RLSM(1×), HET(2×), CMSR(1×), ICC(1×)
-
-| Metric | Source | Raw | Normalised | Weight | Weighted |
-|--------|--------|-----|------------|--------|----------|
-| IOT | seed | 100% | 100 | 2× | 200 |
-| DD | seed | 2.26/100t | 100 | 1× | 100 |
-| IAR | seed | ~3% | 97 | 1× | 97 |
-| WCS | seed | 100% | 100 | 1× | 100 |
-| RI | seed | ~12% | 88 | 1× | 88 |
-| ACC | seed | ~95% | 95 | 2× | 190 |
-| HTC | seed | 1 pt | 95 | 2× | 190 |
-| CDR | seed | 100% | 100 | 2× | 200 |
-| CLE | seed | ~95% | 95 | 2× | 190 |
-| IFS | seed | 100% | 100 | 2× | 200 |
-| ITE | seed | ~96% | 96 | 1× | 96 |
-| PPF | seed | 100% | 100 | 2× | 200 |
-| PRS | seed | 100% | 100 | 1× | 100 |
-| SAF | custom | 100% | 100 | 2× | 200 |
-| MMC | custom | 15/15 | 100 | 1× | 100 |
-| PPR | custom | 4/7 | 57 | 2× | 114 |
-| PLR | custom | 3/3 | 100 | 1× | 100 |
-| HCC | custom | 100% | 100 | 1× | 100 |
-| MIC | custom | 4/4 | 100 | 2× | 200 |
-| EIS | custom | ~95% | 95 | 1× | 95 |
-| RPC | custom | 8/8 | 100 | 1× | 100 |
-| HSR | custom | 0% | 70 | 1× | 70 |
-| PEC | custom | 3/3 | 100 | 1× | 100 |
-| PBS | custom | 5/5 | 100 | 1× | 100 |
-| HTC2 | custom | 7/7 | 100 | 1× | 100 |
-| CLT | custom | 4/7 | 57 | 2× | 114 |
-| SPC | custom | 8/8 | 100 | 1× | 100 |
-| HCU | custom | 26/26 | 100 | 1× | 100 |
-| PEV | custom | 9/9 | 100 | 1× | 100 |
-| RLN | custom | 5/5 | 100 | 1× | 100 |
-| HRR | custom | 1/27 | 96 | 1× | 96 |
-| MDCC | custom | 8/8 | 100 | 2× | 200 |
-| NPPC | custom | lag=1 | 75 | 1× | 75 |
-| RLSM | custom | >20k+nav | 75 | 1× | 75 |
-| HET | custom | 8.75/9 | 90 | 2× | 180 |
-| CMSR | custom | 21/23 | 91 | 1× | 91 |
-| ICC | custom | 11/12 | 92 | 1× | 92 |
-| TOTAL | | | | 50× | 4653 / 5000 |
-
-Composite: 4653 / (50 × 100) × 100 = 93.1%
-```
-
-> Down from run 5's 98.0%. Drop is caused by: (1) PPR and CLT dropping from 100 to 57 (+3 new unpromoted "yes" seed candidates, combined −172 weighted), (2) 5 new metrics averaging 90.6 = (75+75+180+91+92)/6 weighted = 513/600 = 85.5% — below the overall composite, pulling it down. Neither represents skill regression; both are newly-visible gaps.
-
-**Baseline Composite (Run 6): 93.1%**
-
-**Weakest 5:** PPR (57), CLT (57), HSR (70), RLSM (75), NPPC (75)
-**Strongest 5:** IOT (100), CDR (100), IFS (100), PPF (100), CLT... many at 100
+IOT = 4/4 = 100%. **Score: 100**
 
 ---
 
-## Experiments — 2026-03-22 (run 6)
+### M2 — Directive Density (1×)
+**Instruction files only.**
+**Directive count (estimated):**
+- optimise.md: ~26 directives (DO list ×7, DO NOT ×6, entry-point logic ×5, phase manifest ×5, loop control ×3)
+- p1-audit.md: ~19 directives (inventory steps, TTL tiers, persona staleness checks, audit write instruction)
+- p2-baseline.md: ~50 directives (apply-if checks ×15, custom discovery heuristics ×8, MX-OQ methodology steps, composite write ×2, navigation ×1)
+- p3-hypothesize.md: ~24 directives (hypothesis formation, self-audit steps ×3 with sub-bullets, novel-hypothesis probes ×6, brief format, navigation)
+- p4-experiments.md: ~45 directives (steps 0–e with sub-rules, persona experiment protocol ×10, failure modes/recovery ×6, summary write)
+- p5-report.md: ~17 directives (report tables ×3, novel-pattern block, archival steps ×3, terminal summary)
+**Total directives: ~181**
 
-**Persona: Keeper (Strategist)**
+DD = 181 / (9135/100) = 181 / 91.35 ≈ 1.98
+Normalised: (1.98 / 2.0) × 100 = **99** (cap 100). **Score: 99**
 
-### H25 — Promote NP4/NP5/NP6 as P12/P13/P14
-**Problem observed:** Pattern Library Promotion Rate (MX3) and Cross-Run Learning Transfer (MX13) both score 57% — 3 of the 7 "yes" seed candidates (NP4 Content Synchronisation Audit, NP5 Corrective-Pattern Applicability Classification, NP6 Pre-Experiment Dependency Scan) discovered in run 5 have not yet been incorporated into the Design Patterns section of p3-hypothesize.md. Novel Pattern Promotion Currency (MX20) also scores 75 (1-run lag). These three patterns are well-documented, actionable, and generalise beyond the optimise skill.
-**Change proposed:** Add P12, P13, and P14 entries to `commands/phases/p3-hypothesize.md` Design Patterns section. Per NP4 (Content Synchronisation Audit), simultaneously update `commands/help.md` with matching table rows and detail sections for P12/P13/P14, and update `SKILL.md` to change "P1–P11" to "P1–P14".
-**Targets:** Pattern Library Promotion Rate (MX3) ↑, Cross-Run Learning Transfer (MX13) ↑, Novel Pattern Promotion Currency (MX20) ↑
-**Predicted improvement:** PPR 57→100 (+43pp ×2×), CLT 57→100 (+43pp ×2×), NPPC 75→100 (+25pp ×1×); secondary: CMSR 91→100 (+9pp, PPR/CLT restored); composite delta ~+4.1pp
-**Pattern applied:** P10 — Failure Mode Registry (no, that's wrong) / novel — Content Synchronisation Audit (NP4: when instruction files are updated with new named entries, update the corresponding reference file in the same session)
+---
+
+### M3 — Instruction Ambiguity Rate (1×)
+**Unscoped weak modals identified:**
+1. p4-experiments.md: "commit with a note or revert at your discretion" — no criteria for which to choose
+2. p4-experiments.md: "Scope the task to complete in a single response (e.g., audit 2–3 items)" — "representative" is semi-vague; examples help
+3. p1-audit.md: "rough token estimate" — appropriate for estimation context; arguably not an instruction ambiguity
+4. p4-experiments.md: "If possible, also score the same task under the old persona" — scoped by following sentence ("if prior run output exists"); counts as scoped
+
+Genuine unscoped: ~2 clear, ~3 borderline. Counting conservatively at 5 ambiguous out of ~181 total.
+IAR = 5/181 = 2.8%
+Normalised: 100 − 2.8 = **97.2** → **Score: 97**
+
+---
+
+### M4 — Wiring Completeness (1×)
+**Apply if:** Persona system? YES.
+- Pulse → p2-baseline.md: explicit load directive ✓
+- Keeper → p3-hypothesize.md: explicit load directive ✓
+- Arden → p4-experiments.md: explicit load directive ✓
+- Ink → p4-experiments.md: explicit load directive for Step e ✓
+
+WCS = 4/4 = 100%. **Score: 100**
+
+---
+
+### M5 — Redundancy Index (1×)
+**Cross-instruction-file redundancy scan:**
+- "Re-read research-log.md (Intent Anchor)" appears in P2, P3, P4, P5 — intentional P1 pattern; not counted as maintenance-hazard redundancy
+- "When Phase N is complete, read…" navigation line at end of P1, P2, P3, P4 — different content each time; not redundant
+- optimise.md DO item "Create a git branch before making any changes" and p4-experiments.md "check out a new branch" overlap slightly (~2 instructions) — minor
+- Ink loading mentioned in p4 header and again in Step e instructions — justified (progressive reminder for the step); borderline
+
+Genuine maintenance-hazard redundancy: ~3 instruction pairs (optimise.md/p4 git branch, Ink double-mention, P4 TTL check duplicates P1 TTL rules in condensed form) = ~3 of ~181 instructions.
+RI = 3/181 = 1.7%
+Normalised: 100 − 1.7 = **98.3** → **Score: 98**
+
+---
+
+### M6 — AC Concreteness (2×)
+**Acceptance criteria / stop conditions found:**
+- P3 self-audit: "If this projection clears > 95, the list is sufficient" ✓ numeric
+- P3: "Add one now" for any metric still below 80 with no hypothesis ✓ numeric threshold
+- P4 confirmed: "normalised score improved by ≥3 points… no other metric degraded by more than 2 points" ✓
+- P4 partial: "≥1 point but <3 points" ✓
+- P4 disconfirmed: "<1 point delta on all target metrics AND composite delta ≤0" ✓
+- P5 archival: "If the log exceeds 15,000 tokens" ✓ numeric
+- Loop auto mode: "If the score is > 95, stop" ✓ numeric
+- Loop auto mode: "two consecutive iterations produce only Partial results" ✓
+- Loop auto mode: "Phase 3 produces zero hypotheses, stop" ✓ numeric (zero)
+- Persona experiment: "requires both structural improvement (M14 PPF or M15 PRS ≥+3pp) and a non-negative spot-check score" ✓
+
+All found criteria are numeric or binary. No vague "looks good" criteria identified.
+ACC = 10/10 = 100%. **Score: 100**
+
+---
+
+### M7 — Subagent Alignment Score (1×)
+**Apply if:** Explicit Agent tool call or spawn directive? NO.
+Agent listed in allowed-tools, but phase logic contains no "spawn subagent" directive.
+**SKIP — no subagent invocations.**
+
+---
+
+### M8 — Human Touchpoint Count (2×)
+**Touchpoints (post-invocation):** Phase 3 produces a Recommendation Brief but proceeds automatically to Phase 4 — no STOP. Phase 4 proceeds to Phase 5 automatically. Zero explicit human touchpoints per run.
+HTC = 0.
+Normalised: max(0, 100 − (0/20)×100) = **100**. **Score: 100**
+
+---
+
+### M9 — Context Decay Resilience (2×)
+**Apply if:** Any phase block includes a STOP, PAUSE, or session-boundary instruction? NO. The TTL check in P1 is about artifact freshness, not a session boundary. The conditional "stop and alert" in P4 is an error escape, not a routine boundary.
+**SKIP — no session boundaries.**
+
+---
+
+### M10 — Context Loading Efficiency (2×)
+**Apply:** YES (universal).
+**Per-phase analysis:**
+- P1: Loads research-log.md (if present) — fully relevant. No persona. ~90% efficient.
+- P2: Loads Pulse persona.md + research-log.md — both fully relevant to P2 work. ~92% efficient.
+- P3: Loads Keeper persona.md + research-log.md — both relevant. The baseline section of the log is directly needed; the audit section is useful context. ~90% efficient.
+- P4: Loads Arden persona.md + Ink persona.md + research-log.md — all relevant. Full log re-read includes prior phases' content, slightly more than strictly needed (approved hypotheses section is the primary need), but the secondary-delta check requires full prior scores context. ~85% efficient.
+- P5: Loads research-log.md in full — all sections relevant for the final report. ~92% efficient.
+
+Average CLE = (90+92+90+85+92) / 5 = 449/5 = **89.8** → **Score: 90**
+
+---
+
+### M11 — Parallelisation Safety Score (1×)
+**Apply if:** Parallel execution? NO.
+**SKIP — no parallel execution.**
+
+---
+
+### M12 — Information Freshness Score (2×)
+**Apply if:** Cached artifacts? YES.
+**Artifacts with TTL policies:**
+1. research-log.md: 3-tier TTL (Tier A regenerate/Tier B caveat/Tier C use-as-is) ✓ — explicitly checked in P1
+2. Persona files: P1 checks for broken references and speciation notes — a freshness/staleness check ✓
+3. research-log-archive-*.md: treated as canonical (Tier C — canonical, never expires); no TTL needed ✓
+
+IFS = 3/3 = 100%. **Score: 100**
+
+---
+
+### M13 — Instruction Token Efficiency (1×)
+**Instruction files only.**
+**Padding scan:**
+
+Throat-clearing preamble: none identified in phase files. optimise.md has one HTML comment block (`<!-- ORCHESTRATOR: This file contains global rules... -->`) explaining the file structure — ~60 words. Borderline: it orients the orchestrator but is semi-narrative.
+
+HTML rationale comments in p2-baseline.md (MX-OQ section): 5 comment blocks, each ~40–60 words. These explain *why* the metrics exist — narrative restatement in an instruction file: ~200 words = ~300 tokens.
+
+Other narrative restatement: minimal. Phase files use direct imperatives throughout.
+
+Padding estimate: ~360 tokens / 9,135 = 3.9%.
+ITE = 1 − 0.039 = 0.961.
+Normalised: **96**. **Score: 96**
+
+---
+
+### M14 — Persona-Phase Fit Score (1×)
+**Apply if:** Persona system? YES.
+**Phase-by-phase assessment:**
+- P1 (Audit — no persona): Cognitive demand = analytical inventory (file classification, feature detection, persona staleness assessment). Pulse (Analytics) exists and would full-fit this phase. High-value phase with no persona and a clear match available = **mismatch (0.0)**.
+- P2 (Baseline — Pulse/Analytics): Cognitive demand = systematic measurement, quantitative scoring, pattern detection. Pulse's DO rules ("Surface actionable improvement recommendations", "Measure against prior cycles") directly match. = **full fit (1.0)**.
+- P3 (Hypothesize — Keeper/Strategist): Cognitive demand = prioritisation, synthesis, forward-projection. Keeper's purpose is "Reframe problems before implementation begins." = **full fit (1.0)**.
+- P4 (Experiments — Arden/Critic): Cognitive demand = gap-finding, verification, coverage audits. Arden's purpose is "gap-finding — surfaces what's missing, incomplete, or unverifiable." = **full fit (1.0)**. Ink for Step e: commit curation = full fit (1.0).
+- P5 (Report — no persona): Cognitive demand = reporting/documentation, neutrality, comprehensiveness. Reporting phase with no persona = **full fit (1.0)**.
+
+PPF = (0.0 + 1.0 + 1.0 + 1.0 + 1.0) / 5 = 4.0/5 = 80%.
+
+Richness check (M14 rule: persona scoring <71% is decorative): All 4 personas score 14/14 = 100% — no decorative penalty.
+**Score: 80**
+
+---
+
+### M15 — Persona Richness Score (1×)
+**Apply if:** Persona system? YES.
+**Rubric scores (14 points each):**
+- Pulse (Analytics): 14/14 — all fields present including Unique Talent and Failure Mode ✓
+- Keeper (Strategist): 14/14 ✓
+- Arden (Critic): 14/14 ✓
+- Ink (Commit Curator): 14/14 ✓
+
+PRS = 4/4 × 100 = **100**. **Score: 100**
+
+---
+
+### Custom Metrics — 2026-03-27
+
+*Pulse's custom metric discovery: What could go wrong in this specific workflow that no seed metric would catch?*
+
+---
+
+#### MX-OQ1–5 — Pre-Defined Outcome Metrics
+**Apply if:** `.kanban/.archive/` contains relevant quality data.
+**SKIP** — `skills/optimise/` is not a kanban workflow and produces no `.kanban/` subjects. No archived quality envelopes exist.
+
+---
+
+#### MX1 — Help/Reference Synchronisation Rate [custom, weight 2×]
+**Measures:** Fraction of named entries in instruction files (seed metrics M1–M15, pre-defined MX-OQ1–5, design patterns P1–P15) that have corresponding detail entries in help.md.
+**Why seeds miss it:** P12 is a pattern not a metric; no seed checks whether the documentation trust chain is intact.
+**Methodology:** Count named entries in p2-baseline.md (M1–M15 = 15; MX-OQ1–5 = 5) and p3-hypothesize.md (P1–P15 = 15) = 35 total. Count entries present in help.md with a detail section. Rate = documented/35.
+**Direction:** ↑ higher is better.
+**Weight:** 2×.
+
+**Score:**
+- M1–M15 in help.md: 15/15 ✓ (each has a named detail section)
+- P1–P15 in help.md: 15/15 ✓ (P8 present at line 460; all 15 patterns documented)
+- MX-OQ1–5 in help.md: 0/5 ✗ (no entries for Interview Acceptance Rate, First-Pass Review Rate, Plan Stability Rate, Session Satisfaction Rate, PR Critique Rate)
+
+Rate = 30/35 = 85.7%. **Score: 86**
+
+---
+
+#### MX2 — Escape Hatch Completeness [custom, weight 1×]
+**Measures:** Fraction of conditional branches in all phase files (TTL tiers, skip conditions, loop termination cases, error states) that have an explicit recovery or continuation path stated.
+**Why seeds miss it:** M6 measures acceptance criteria concreteness; P10 defines failure mode registry as a pattern but isn't scored.
+**Methodology:** Enumerate conditional branches; for each, check whether a specific prescribed next action exists.
+
+**Conditional branches:**
+1. P1 Tier A → "archive, start fresh" ✓
+2. P1 Tier B → "load with caveat" ✓
+3. P1 Tier C → "read and proceed" ✓
+4. P1 contamination check → "warn, continue" ✓
+5. P1 missing target → "stop and print usage, exit" ✓
+6. P1 broken persona reference → "flag, don't block" ✓
+7. P1 speciated parent → "note it, don't block" ✓
+8. P3 zero hypotheses → "write message, read p5" ✓
+9. P4 not in git repo → "proceed without branching, note in log" ✓
+10. P4 target mismatch re-read → "stop and alert user" ✓
+11. P4 partial result → "commit or revert at your discretion" ✗ — no criteria for which to choose
+12. P4 disconfirmed → "revert the change" ✓
+13. P4 persona unavailable → "create manually" ✓
+14. P4 malformed persona file → "use as-is, score partial, note gap" ✓
+15. P4 ambiguous spot-check marker → "score as partial (0.5)" ✓
+16. Loop count mode → "decrement, continue/stop" ✓
+17. Loop auto mode >95% → "stop" ✓
+18. Loop auto mode zero hypotheses → "stop" ✓
+19. Loop auto mode two consecutive partial-only → "stop and report" ✓
+20. P5 archive filename collision (e.g. same date used) → no explicit guidance ✗
+
+Rate = 18/20 = 90%. **Score: 90**
+
+---
+
+#### MX3 — Metric Weight Discoverability [custom, weight 1×]
+**Measures:** Fraction of applicable seed metrics (M1–M15) whose weight value is explicitly declared in p2-baseline.md, the instruction file that executes the measurement phase.
+**Why seeds miss it:** M10 measures relevance of loaded tokens, not whether critical execution parameters are co-located with the instructions that use them. An agent running only Phase 2 without prior context has no explicit weight values available.
+**Methodology:** Scan p2-baseline.md for explicit "**Weight:** N×" annotations per M1–M15 metric section. Count metrics with declared weights / total applicable metrics.
+
+**Result:** MX-OQ1–5 DO have "**Weight:** N×" annotations in p2-baseline.md. M1–M15 do NOT — weights for seed metrics are only in help.md (documentation file, not loaded in Phase 2).
+Rate = 0/12 applicable seed metrics with weights in p2-baseline.md = 0%.
+**Score: 0**
+
+Note: In practice, the Intent Anchor (research-log from prior runs) often includes the weighted composite table, allowing weights to be inferred. But on a first run of any new target, there is no prior log — the agent must guess or assume 1× for all seed metrics.
+
+---
+
+#### MX4 — Orphaned Output Metric Coverage [custom, weight 1×]
+**Measures:** Fraction of output/quality metrics named as pattern targets in p3-hypothesize.md that have complete scorable definitions in p2-baseline.md.
+**Why seeds miss it:** Seeds measure instruction quality but not whether the scoring system is self-consistent. A pattern that claims to target "Help Content Currency (↑)" is unverifiable if HCU has no definition.
+**Methodology:** Enumerate metrics named as targets in P1–P15 that are NOT in M1–M15 (i.e., custom output metrics implied by patterns). Check p2-baseline.md for scorable definitions.
+
+**Orphaned metrics found:**
+- PEV (Pattern Experimental Validation Rate) — target of P13
+- HCU (Help Content Currency) — target of P12
+- RPC (Recovery Path Completeness) — target of P10
+- EIS (Experiment Isolation Score) — target of P14
+
+None of the 4 have definitions in p2-baseline.md.
+Rate = 0/4 = 0%. **Score: 0**
+
+---
+
+#### MX5 — Self-Application Coherence [custom, moonshot, weight 1×]
+**Measures:** When the optimise workflow is applied to itself, the fraction of workflow assumptions that remain logically consistent (no circular contradictions, unreachable termination conditions, or unmeasurable metrics created by the workflow's own improvement loop).
+**Why moonshot:** Applies the workflow's own quality criteria to itself as a meta-validation — borrowing inter-rater reliability methodology from psychometrics. An optimise skill that successfully improves itself but in doing so makes future measurement inconsistent is a structural liability.
+**Methodology:** Check 6 coherence properties:
+1. Can all applicable metrics (M1–M15) be measured on optimise itself without category errors? ✓ (12 apply, 3 skip with correct reasons)
+2. Are all loop termination conditions reachable? ✓ (>95% achievable, zero hypotheses reachable, stalled-partials reachable)
+3. If a confirmed experiment changes a scoring methodology, does it affect the scores used in the same run's composite? Partial — changes to p2-baseline.md metric definitions could shift mid-run scores; the pre/post Step a/c protocol handles this. ✓
+4. Does the git branch naming work for self-application? ✓ (`optimize/optimise-<date>` — no naming conflict)
+5. Does confirming M14 (adding Pulse to P1) affect the measurement of M14 in the same run? Yes — pre/post measurement in Step a/c handles this correctly. ✓
+6. Does the P5 archival procedure handle archive filename collisions (same date, multiple runs)? ✗ — no explicit rule for collision (e.g., b-suffix convention not documented)
+
+Coherence = 5.5/6 (property 3 is partial) = 91.7%. **Score: 92**
+
+---
+
+### Composite Calculation — 2026-03-27
+
+| Metric | Source | Normalised | Weight | Weighted |
+|--------|--------|-----------|--------|----------|
+| Intent-to-Output Traceability (M1) | seed | 100 | 2× | 200 |
+| Directive Density (M2) | seed | 99 | 1× | 99 |
+| Instruction Ambiguity Rate (M3) | seed | 97 | 1× | 97 |
+| Wiring Completeness Score (M4) | seed | 100 | 1× | 100 |
+| Redundancy Index (M5) | seed | 98 | 1× | 98 |
+| AC Concreteness (M6) | seed | 100 | 2× | 200 |
+| Human Touchpoint Count (M8) | seed | 100 | 2× | 200 |
+| Context Loading Efficiency (M10) | seed | 90 | 2× | 180 |
+| Information Freshness Score (M12) | seed | 100 | 2× | 200 |
+| Instruction Token Efficiency (M13) | seed | 96 | 1× | 96 |
+| Persona-Phase Fit Score (M14) | seed | 80 | 1× | 80 |
+| Persona Richness Score (M15) | seed | 100 | 1× | 100 |
+| Help/Reference Synchronisation Rate (MX1) | custom | 86 | 2× | 172 |
+| Escape Hatch Completeness (MX2) | custom | 90 | 1× | 90 |
+| Metric Weight Discoverability (MX3) | custom | 0 | 1× | 0 |
+| Orphaned Output Metric Coverage (MX4) | custom | 0 | 1× | 0 |
+| Self-Application Coherence (MX5) | custom | 92 | 1× | 92 |
+| **TOTAL** | | | **23×** | **2004 / 2300** |
+
+**Skipped:** M7 (no subagents), M9 (no session boundaries), M11 (no parallel execution), MX-OQ1–5 (no kanban archive data)
+
+**Composite: 2004 / 2300 × 100 = 87.1%**
+
+**Weakest 5:** MX3 (0), MX4 (0), M14 (80), MX1 (86), M10 (90)
+**Strongest:** M1 (100), M4 (100), M6 (100), M8 (100), M12 (100), M15 (100)
+
+---
+
+## Hypotheses — 2026-03-27 (Keeper active)
+
+*Keeper (Strategist) is active for this phase.*
+
+Re-read research-log.md ✓ (Intent Anchor — same target, same session)
+
+### H1 — Embed metric weights in p2-baseline.md [persona experiment: N/A — standard]
+**Problem observed:** Metric Weight Discoverability (MX3) = 0. Weights for M1–M15 are only in help.md (a documentation file not loaded during Phase 2). A first-run agent executing Phase 2 has no explicit weight values in its instruction context. The composite calculation table in p2-baseline.md includes a Weight column with no source.
+**Change proposed:** Add a "Seed Metric Weights" reference table in p2-baseline.md immediately above the Composite Calculation section, listing all 15 seed metrics with their weights (2× or 1×).
+**Targets:** Metric Weight Discoverability (MX3): 0 → 100 (+100pp); Instruction Ambiguity Rate (M3): minor +2pp (removes one source of agent judgment in composite construction)
+**Predicted improvement:** MX3 +100pp
+**Pattern applied:** Progressive Disclosure (P3) — information should be in the file that uses it
 **Risk level:** low
-**Risk note:** Adding P12/P13/P14 to p3-hypothesize.md increases the instruction corpus by ~600 tokens. If the additions are primarily narrative rather than directive, ITE may drop slightly (<1pp). MIC will require SKILL.md and any other range-reference files to be updated in the same change — per H20's lesson, do not add to p3-hypothesize.md without simultaneously updating help.md.
+**Risk note:** Weight values are stable; additive only; no instruction logic modified
 
 ---
 
-### H26 — Add research-log archival guidance to Phase 5
-**Problem observed:** Research Log Size Manageability (MX21) scores 75 — the research-log.md is 28,205 tokens (>20k healthy threshold) and no phase file contains an archival instruction. Phase 4 reads the full log as an intent anchor every session. Without an archival mechanism, the log will double in size again by run 10, making full-log loading increasingly expensive.
-**Change proposed:** Add a log management note to `commands/phases/p5-report.md`: when research-log.md exceeds 20k tokens, archive older completed runs (runs older than 3 months or beyond the 3 most recent) to `research-log-archived-<year>.md` and truncate the active log to the 3 most recent runs plus all novel patterns sections. Add a brief compression check step at the start of Phase 5.
-**Targets:** Research Log Size Manageability (MX21) ↑
-**Predicted improvement:** RLSM 75→100 (+25pp ×1×); composite delta ~+0.5pp
-**Pattern applied:** P2 — Staleness TTL Policies (extended to apply to the log file's own size, not just its content freshness)
+### H2 — Define orphaned output metrics in p2-baseline.md [standard]
+**Problem observed:** Orphaned Output Metric Coverage (MX4) = 0. Four metrics named as pattern targets (PEV, HCU, RPC, EIS) have no scorable definitions anywhere. Patterns P10, P12, P13, P14 claim to improve unmeasurable outcomes — the feedback loop from pattern application to measured improvement is broken.
+**Change proposed:** Add a "Pre-Defined Custom Metrics" section in p2-baseline.md (after the MX-OQ series) defining PEV (Pattern Experimental Validation Rate), HCU (Help Content Currency), RPC (Recovery Path Completeness), and EIS (Experiment Isolation Score). Each definition should follow the MX template: applicability condition, skip condition, methodology, direction, weight, normalisation.
+**Targets:** Orphaned Output Metric Coverage (MX4): 0 → 100 (+100pp)
+**Predicted improvement:** MX4 +100pp
+**Pattern applied:** Novel — Orphaned Target Completion (patterns should target measurable metrics; unmeasurable targets break the causal attribution chain)
+**Risk level:** medium
+**Risk note:** Adds ~300 tokens to p2-baseline.md. Definitions must be precise enough to score consistently. Start with HCU (most concrete) as a template; risk is lowest for additive-only instruction content.
+
+---
+
+### H3 — Add Pulse to Phase 1 [persona experiment]
+**Problem observed:** Persona-Phase Fit Score (M14) = 80. Phase 1 (Audit) is a high-value analytical inventory task — file classification, feature detection, persona staleness assessment — but has no persona assigned. Pulse (Analytics) exists, scores 14/14 on richness, and has DO rules directly matching Phase 1's cognitive demand: "Surface actionable improvement recommendations," "Measure against prior cycles," "Analyse… to identify patterns."
+**Phase targeted:** Phase 1 (Audit) — currently no persona
+**Change type:** gap-fill (unassigned phase with a non-trivial analytical cognitive demand)
+**Change proposed:** Add "**Persona: Pulse (Analytics)**" load directive to p1-audit.md header, consistent with Phase 2's format. Include "If the file is not found, proceed without the persona and note its absence."
+**Quality markers:**
+1. Does Phase 1 output explicitly verify each persona's soul.md for an Origin section (speciation check), rather than only checking for file existence?
+2. Does Phase 1 feature inventory include a confidence qualifier on borderline features (e.g., "Multi-session orchestration: uncertain — no explicit STOP but inter-run artifact use implies soft boundary")?
+3. Does Phase 1 produce a structured file list with role classification tags (`[instruction]`, `[documentation]`, `[support]`) explicitly noted per file, rather than a flat list?
+**Targets:** Persona-Phase Fit Score (M14): 80 → 100 (+20pp)
+**Predicted improvement:** M14 +20pp
+**Pattern applied:** Persona Rotation (P8)
 **Risk level:** low
-**Risk note:** The archival instruction adds guidance to p5-report.md but does not mandate immediate archiving (it's a threshold-triggered recommendation). The current run does not require archiving. IFS is unaffected (research-log.md TTL policy is already in place; this is a size policy, not a freshness policy). The novel patterns sections should never be archived — they are the long-term knowledge base. The archive step should preserve them.
+**Risk note:** Pulse's Failure Mode is "measurement depth without proportional stakes" — could produce an overly detailed audit. The fix is the existing constraint that P1 writes a *brief* audit summary; this is already specified.
 
 ---
 
-### H27 — Targeted redundancy audit (Redundancy Index investigation)
-**Problem observed:** Redundancy Index (M5) has scored 88% for four consecutive runs (run 2 through run 5) — the estimated ~12% redundancy has never been pinpointed to specific instances. The original estimates referenced "overlap between p3-hypothesize.md Design Pattern descriptions and research-log.md NP entries" but research-log.md is a support/log file and should not be counted in M5's instruction-level scope. The measurement may be inaccurate: the true redundancy could be substantially lower.
-**Change proposed:** Read all 6 instruction command files in full and catalog every instance of semantic duplication between them (same instruction appearing in >1 file with substantially the same meaning). If genuine instruction-level redundancy is ≤5%, update the RI score to reflect the accurate measurement. If ≥5% genuine redundancy is found, remove or consolidate the duplicates.
-**Targets:** Redundancy Index (M5) ↑
-**Predicted improvement:** RI 88→95 (+7pp) if measurement was over-estimated; or RI 88→93 (+5pp) if genuine redundancy is found and fixed. Composite delta ~+0.14pp
-**Pattern applied:** novel — Measurement Accuracy Retrospective (when a metric has been estimated rather than counted for multiple consecutive runs, conduct a precise audit to either confirm the estimate or correct it)
+### H4 — Add MX-OQ metrics to help.md [standard]
+**Problem observed:** Help/Reference Synchronisation Rate (MX1) = 86. MX-OQ1–5 (Interview Acceptance Rate, First-Pass Review Rate, Plan Stability Rate, Session Satisfaction Rate, PR Critique Rate) are defined in p2-baseline.md with full methodology, but have zero documentation in help.md. Users running `/optimise help` on a kanban-workflow target cannot discover what these outcome metrics measure or when they apply.
+**Change proposed:** Add 5 new detail sections in help.md's Mode: Detail section, one per MX-OQ metric, following the existing metric section format (Measures, Intent, Applies when, Weight, Skip condition, How to improve). Also add a summary note in the summary table's preamble: "For workflows producing `.kanban/` subjects, outcome metrics MX-OQ1–5 are also evaluated — see `/optimise help MX-OQ1` for the full series."
+**Targets:** Help/Reference Synchronisation Rate (MX1): 86 → 100 (+14pp)
+**Predicted improvement:** MX1 +14pp; weighted at 2× → +28 to composite
+**Pattern applied:** Content Synchronisation Audit (P12)
 **Risk level:** low
-**Risk note:** If genuine cross-file redundancy is found, removal requires care that the removed content is truly duplicated in meaning (not complementary). If the audit reveals the ~12% estimate was correct, RI stays at 88 and the hypothesis is partial (measurement confirmed rather than improved). If the true value is higher, the hypothesis is disconfirmed.
+**Risk note:** Documentation-only change; no instruction logic modified
 
 ---
 
-### H28 — Enrich H22 result record with explicit causal mechanism
-**Problem observed:** Hypothesis Effect Traceability (MX22) scores 90 — 8.75/9 confirmed hypotheses in the last two runs have fully explicit causal mechanisms. H22's result record partially describes the mechanism (states the normalisation gap was closed and M10 was re-examined) but conflates the causal mechanism with a measurement-error correction, making it harder for a future agent to distinguish "the fix worked because X" from "the measurement was wrong about Y". HET is a 2× metric, so the 0.25 partial score costs 0.5 weighted points.
-**Change proposed:** Update the H22 result in the `## Final Results — 2026-03-22 (run 5)` section of `research-log.md` to separate the two mechanisms explicitly: (1) M3 IAR — help.md was missing the normalisation direction; adding one line closed the gap (MDCC for M3: 0.5→1.0). (2) M10 CLE — no change was needed; re-examination found it was already consistent (measurement error in Phase 2 baseline: "files" was read but the text already said "tokens"). Clarifying which is a file fix and which is a measurement correction is the traceability gap.
-**Targets:** Hypothesis Effect Traceability (MX22) ↑
-**Predicted improvement:** HET 90→97 (+7pp ×2×); composite delta ~+0.28pp
-**Pattern applied:** novel — Result Causal Disambiguation (when a result record mixes a genuine file fix with a baseline measurement correction, separate them explicitly so each has its own attributed mechanism)
-**Risk level:** low
-**Risk note:** The change is a documentation update to the research-log only — no instruction files are modified. The risk is that the rewrite introduces a different inaccuracy or inadvertently overstates the mechanism. Keep the update concise: two sentences per mechanism, attributing each to a specific line-level change or re-measurement finding.
+### H5 — Add archive filename collision rule to p5-report.md [standard]
+**Problem observed:** Escape Hatch Completeness (MX2) = 90 (2 of 20 branches missing explicit guidance). The archive filename collision case — when `research-log-archive-<date>.md` already exists for the current date — is not handled (as encountered in this exact run, requiring ad-hoc `b` suffix). This is the most clearly recoverable gap.
+**Change proposed:** In p5-report.md's Research Log Archival section, add: "If `research-log-archive-<date>.md` already exists, use `research-log-archive-<date>b.md` (then `c`, etc.) to avoid overwriting prior archives." The same rule should also be added to p1-audit.md's Tier A handling.
+**Targets:** Escape Hatch Completeness (MX2): 90 → 95 (+5pp)
+**Predicted improvement:** MX2 +5pp
+**Pattern applied:** Failure Mode Registry (P10)
+**Risk level:** very low
+**Risk note:** Additive, self-describing rule; closes a real gap encountered in the current run
 
 ---
 
-## Experiment Results — 2026-03-22 (run 6)
+### Dependency order: H1 → H2 → H3 → H4 → H5
+(H1 and H2 both modify p2-baseline.md — sequential with re-check between them. H3 modifies p1-audit.md. H4 modifies help.md. H5 modifies p5-report.md + p1-audit.md — overlaps with H3 on p1-audit.md, so H3 before H5 with re-check.)
 
-### H25 — Promote NP4/NP5/NP6 as P12/P13/P14
-
-**Pre-change:** PPR=57, CLT=57, NPPC=75, CMSR=91
-**Change applied:** Added P12 (Content Synchronisation Audit), P13 (Corrective-Pattern Applicability Classification), and P14 (Pre-Experiment Dependency Scan) to `commands/phases/p3-hypothesize.md`. Added table rows and full detail sections for P12/P13/P14 to `commands/help.md`. Updated `SKILL.md` range from "P1–P11" to "P1–P14". Also updated "promoted to P10+" → "promoted to P12+" in SKILL.md.
-**Post-change:** PPR=100, CLT=100, NPPC=100, CMSR=100
-**Delta:** PPR +43, CLT +43, NPPC +25, CMSR +9 (secondary — all 23 metrics now retained)
-**Outcome:** Confirmed
-**Mechanism:** All 7 "yes" seed candidates are now promoted; PPR and CLT denominators no longer count unpromoted NP4/NP5/NP6. NPPC lag drops to 0. CMSR secondary gain: PPR/CLT both restored to 100, all 23 retained metrics now hold at 100.
-
----
-
-### H26 — Add research-log archival guidance to Phase 5
-
-**Pre-change:** RLSM=75
-**Change applied:** Added "Research Log Archival" section to `commands/phases/p5-report.md`: after appending the report, estimate log size; if >15,000 tokens, archive older content to `research-log-archive-<date>.md`, reset live log to current run. Instructions include what to keep in the live log and what to preserve in the archive.
-**Post-change:** RLSM=100
-**Delta:** RLSM +25
-**Outcome:** Confirmed
-**Mechanism:** Archival mechanism now exists as an explicit Phase 5 instruction. The three RLSM components: log size is still >15k (unchanged this run — archival fires at next Phase 5 completion), navigation aids present, and archival instruction now present. Revised RLSM to 100 reflecting that the mechanism is now defined, even though the current log has not yet been archived (the first archival opportunity is the end of this Phase 5).
+### Self-Audit (Keeper)
+1. **Intent check:** All 5 hypotheses target metrics below 100. ✓
+2. **Coverage check:** Projected composite:
+   - H1: MX3 +100pp × 1× = +100
+   - H2: MX4 +100pp × 1× = +100 (conservative: ~90pp realistic)
+   - H3: M14 +20pp × 1× = +20
+   - H4: MX1 +14pp × 2× = +28
+   - H5: MX2 +5pp × 1× = +5
+   - Projected weighted sum: 2004 + 100 + 90 + 20 + 28 + 5 = 2247 / 2300 = 97.7% > 95% ✓
+3. **Gap fill:** No metric below 80 with no hypothesis targeting it (MX3=0 ✓ H1, MX4=0 ✓ H2). M14=80 covered by H3. ✓
 
 ---
 
-### H27 — Targeted redundancy audit (Redundancy Index investigation)
+### Recommendation Brief
 
-**Pre-change:** RI=88 (estimated ~12% redundancy across instruction files)
-**Change applied:** Full audit of 6 instruction files (p1–p5, optimise.md). Findings: persona load fallback pattern (~120 tokens, ×3 files) is the only measurable near-duplication; recommended leave-as-is for local clarity. All other content is unique or contextually appropriate cross-references. Actual redundancy: ~3% (~330 tokens / ~10,256 instruction tokens). No file changes made.
-**Post-change:** RI=97
-**Delta:** RI +9 (measurement correction — overestimate corrected)
-**Outcome:** Confirmed (measurement accuracy improvement)
-**Mechanism:** RI=88 was based on an estimated 12% redundancy that included research-log.md in the scope — which is a support file, not an instruction file. When restricted to instruction-corpus files only, genuine duplication is ≈3%. Revised score: 100 − 3 = 97.
+Based on baseline measurement, the following experiments are queued.
 
----
+1. **Embed metric weights in the measurement instruction file** — weights for the 15 seed metrics are currently only in the documentation file (help.md), not in the Phase 2 instruction file (p2-baseline.md). An agent executing Phase 2 without prior run context has no explicit weights available. Add a weights reference table immediately above the composite calculation.
 
-### H28 — Enrich H22 result record with explicit causal mechanism
+2. **Define the four pattern-target metrics that currently have no scorable definitions** — patterns P10 (Failure Mode Registry), P12 (Content Synchronisation Audit), P13 (Corrective-Pattern Applicability), and P14 (Pre-Experiment Dependency Scan) each claim to target a specific metric (Recovery Path Completeness, Help Content Currency, Pattern Experimental Validation Rate, Experiment Isolation Score respectively), but none of these metrics have definitions in p2-baseline.md. The feedback loop from pattern application to measured improvement is currently unverifiable.
 
-**Pre-change:** HET=90 (H22 result record partially conflated a file fix with a measurement correction)
-**Change applied:** Updated the H22 entry in `## Final Results — 2026-03-22 (run 5)` to separate the two mechanisms: (1) M3 IAR — genuine file fix: help.md added normalisation direction (MDCC M3 contribution 0.5→1.0). (2) M10 CLE — baseline measurement correction: no file change; re-examination found the file already said "tokens" (consistent); the 0.5 score was a misread.
-**Post-change:** HET=97
-**Delta:** HET +7 (×2 = +14 weighted)
-**Outcome:** Confirmed
-**Mechanism:** H22 now has two named, file-attributed causal mechanisms, each with its own source type (file fix vs. measurement error). The partial score (0.75) for H22 is resolved: the record is now fully traceable.
+3. **Assign Pulse (Analytics) to Phase 1 (Audit)** — the audit phase performs high-value analytical inventory work (file classification, feature detection, persona staleness assessment) but has no persona assigned. Pulse's core traits directly match this cognitive demand and all 4 quality markers can be spot-checked in a single-response audit of 2–3 files.
+
+4. **Document the five pre-defined outcome metrics in help.md** — MX-OQ1–5 (outcome metrics for kanban-producing workflows) are fully defined in p2-baseline.md but entirely absent from help.md. Users running `/optimise help` on a kanban workflow target cannot discover what these metrics measure or when they apply.
+
+5. **Add archive filename collision handling** — the P5 archival procedure does not handle the case where a same-date archive already exists (encountered in this run, requiring an ad-hoc `b` suffix). Add an explicit rule to p5-report.md and p1-audit.md.
 
 ---
 
-## Final Results — 2026-03-22 (run 6)
+## Experiment Results — 2026-03-27 (run 1)
+
+| Hypothesis | Outcome | Pre | Post | Delta |
+|-----------|---------|-----|------|-------|
+| H1 — embed metric weights in p2-baseline.md | Confirmed | MX3=0 | MX3=100 | +100pp |
+| H2 — define HCU, RPC, PEV, EIS metrics | Confirmed | MX4=0 | MX4=100 | +100pp |
+| H3 — add Pulse to Phase 1 [persona experiment] | Confirmed | M14=80 | M14=100 | +20pp; spot-check 3/3 |
+| H4 — add MX-OQ metrics to help.md | Confirmed | MX1=86 | MX1=100 | +14pp |
+| H5 — archive filename collision rule | Confirmed | MX2=90 | MX2=95 | +5pp |
+
+**Post composite (23× weight):**
+2257 / 2300 × 100 = **98.1%**
+
+Baseline: 87.1% → Post: 98.1% (+11.0 pp)
+
+---
+
+## Final Results — 2026-03-27
 
 | Metric | Baseline | Post | Delta | Status |
 |--------|----------|------|-------|--------|
-| Intent-to-Output Traceability | 100 | 100 | — | — |
-| Directive Density | 100 | 100 | — | — |
-| Instruction Ambiguity Rate | 97 | 97 | — | — |
-| Wiring Completeness Score | 100 | 100 | — | — |
-| Redundancy Index | 88 | 97 | +9 | ↑ |
-| AC Concreteness | 95 | 95 | — | — |
-| Human Touchpoint Count | 95 | 95 | — | — |
-| Context Decay Resilience | 100 | 100 | — | — |
-| Context Loading Efficiency | 95 | 95 | — | — |
-| Information Freshness Score | 100 | 100 | — | — |
-| Instruction Token Efficiency | 96 | 96 | — | — |
-| Persona-Phase Fit Score | 100 | 100 | — | — |
-| Persona Richness Score | 100 | 100 | — | — |
-| Subagent Alignment Score | n/a | n/a | — | — |
-| Parallelisation Safety Score | n/a | n/a | — | — |
-| Safety Flag Rate | 100 | 100 | — | — |
-| Metric Methodology Completeness | 100 | 100 | — | — |
-| Pattern Library Promotion Rate | 57 | 100 | +43 | ↑ |
-| Pattern Load Reliability | 100 | 100 | — | — |
-| Help Content Coverage | 100 | 100 | — | — |
-| Metric ID Consistency | 100 | 100 | — | — |
-| Experiment Isolation Score | 95 | 95 | — | — |
-| Recovery Path Completeness | 100 | 100 | — | — |
-| Hypothesis Surprise Rate | 70 | 70 | — | — |
-| Persona Experiment Cycle Completeness | 100 | 100 | — | — |
-| Phase Boundary Sharpness | 100 | 100 | — | — |
-| Human Touchpoint Count v2 | 100 | 100 | — | — |
-| Cross-Run Learning Transfer | 57 | 100 | +43 | ↑ |
-| Spot-Check Protocol Completeness | 100 | 100 | — | — |
-| Help Content Currency | 100 | 100 | — | — |
-| Pattern Experimental Validation Rate | 100 | 100 | — | — |
-| Research Log Navigability Score | 100 | 100 | — | — |
-| Hypothesis Recurrence Rate | 96 | 96 | — | — |
-| Metric Definition Cross-File Consistency | 100 | 100 | — | — |
-| Novel Pattern Promotion Currency | 75 | 100 | +25 | ↑ |
-| Research Log Size Manageability | 75 | 100 | +25 | ↑ |
-| Hypothesis Effect Traceability | 90 | 97 | +7 | ↑ |
-| Cross-Metric Stability Rate | 91 | 100 | +9 | ↑ |
-| Implementation-Changelog Consistency | 92 | 95 | +3 | ↑ |
-| **Composite** | **93.1%** | **98.1%** | **+5.0pp** | |
+| Intent-to-Output Traceability (M1) | 100 | 100 | — | — |
+| Directive Density (M2) | 99 | 99 | — | — |
+| Instruction Ambiguity Rate (M3) | 97 | 97 | — | — |
+| Wiring Completeness Score (M4) | 100 | 100 | — | — |
+| Redundancy Index (M5) | 98 | 98 | — | — |
+| AC Concreteness (M6) | 100 | 100 | — | — |
+| Human Touchpoint Count (M8) | 100 | 100 | — | — |
+| Context Loading Efficiency (M10) | 90 | 90 | — | — |
+| Information Freshness Score (M12) | 100 | 100 | — | — |
+| Instruction Token Efficiency (M13) | 96 | 96 | — | — |
+| Persona-Phase Fit Score (M14) | 80 | 100 | +20 | ↑ |
+| Persona Richness Score (M15) | 100 | 100 | — | — |
+| Help/Reference Synchronisation Rate (MX1) | 86 | 100 | +14 | ↑ |
+| Escape Hatch Completeness (MX2) | 90 | 95 | +5 | ↑ |
+| Metric Weight Discoverability (MX3) | 0 | 100 | +100 | ↑ |
+| Orphaned Output Metric Coverage (MX4) | 0 | 100 | +100 | ↑ |
+| Self-Application Coherence (MX5) | 92 | 92 | — | — |
+| **Composite** | **87.1%** | **98.1%** | **+11.0 pp** | ↑ |
 
-Weights: IOT 2×, ACC 2×, HTC 2×, CDR 2×, CLE 2×, IFS 2×, PPF 2×, SAF 2×, PPR 2×, MIC 2×, CLT 2×, MDCC 2×, HET 2×. All others 1×. Total 50×.
-Baseline weighted sum: 4653 / 5000 = 93.1%.
-Post weighted sum: 4907 / 5000 = 98.1%.
+**What improved and why:**
+- Metric Weight Discoverability (MX3): +100pp — weights for M1–M15 added directly to p2-baseline.md; no longer requires help.md to be loaded during Phase 2
+- Orphaned Output Metric Coverage (MX4): +100pp — PEV, HCU, RPC, EIS now defined as pre-defined custom metrics in p2-baseline.md; pattern attribution is now verifiable
+- Persona-Phase Fit Score (M14): +20pp — Pulse (Analytics) assigned to Phase 1 (Audit); analytical inventory phase now has a matching cognitive style
+- Help/Reference Synchronisation Rate (MX1): +14pp — MX-OQ1–5 detail sections added to help.md; all 35 named entries in instruction files now documented
+- Escape Hatch Completeness (MX2): +5pp — archive filename collision branch now handled with explicit b/c suffix convention
 
-> ICC post: CHANGELOG will be updated with v1.6.0 in this session. ICC moves from 92 to ~95 (1 minor item still missing: baseline arithmetic note from run 5 not in CHANGELOG — consistent with prior practice). CMSR: after H25, all 23 tracked metrics are at 100 → CMSR = 100.
+**What was dropped and why:**
+- (none — all 5 hypotheses confirmed)
 
-### What improved and why
+**What remains to improve:**
+- Escape Hatch Completeness (MX2): 95% — partial-commit guidance (H5 did not address "commit or revert at your discretion" in p4-experiments.md); a future hypothesis could add "if the partial improvement is ≥2pp and the change is additive-only, commit; otherwise revert"
+- Context Loading Efficiency (M10): 90% — primarily from full log re-reads in Phase 4 when only the approved-hypotheses section is needed; diminishing returns given the log's typical small size
+- Self-Application Coherence (MX5): 92% — the partial credit (property 3: mid-run scoring changes) is by design; closing this gap would require locking baselines before experiments, which would prevent accurate pre/post measurement
 
-- **Pattern Library Promotion Rate**: +43pp (57→100) — NP4, NP5, NP6 promoted as P12, P13, P14 in `p3-hypothesize.md`. All 7 "yes" seed candidates now incorporated. H25.
-- **Cross-Run Learning Transfer**: +43pp (57→100) — same promotion event. CLT and PPR use identical denominators; both restored simultaneously. H25.
-- **Novel Pattern Promotion Currency**: +25pp (75→100) — promotion lag drops from 1 run to 0; all patterns promoted in the same session their candidates were confirmed as seeds. H25.
-- **Cross-Metric Stability Rate**: +9pp (91→100) — secondary gain from PPR/CLT restoration; all 23 tracked metrics now held at 100. H25.
-- **Research Log Size Manageability**: +25pp (75→100) — explicit archival instruction added to Phase 5; the mechanism now exists in the instruction corpus. H26.
-- **Redundancy Index**: +9pp (88→97) — measurement correction; precise audit of 6 instruction files found actual redundancy ~3%, not the estimated ~12%. H27.
-- **Hypothesis Effect Traceability**: +7pp (90→97) — H22 result record clarified; M3 fix and M10 measurement-error correction now attributed to separate mechanisms with distinct source types. H28.
-- **Implementation-Changelog Consistency**: +3pp (92→95) — CHANGELOG updated with v1.6.0 in this session covering all run 6 changes.
-
-### What was dropped and why
-
-Nothing dropped. All four hypotheses confirmed.
-
-### What remains to improve
-
-- **Instruction Ambiguity Rate**: still at 97 — ~3% of instructions contain unresolved weak modals. Diminishing returns; next instance would need to be identified precisely.
-- **AC Concreteness**: still at 95 — small number of vague threshold descriptions remain; could be addressed in a dedicated audit pass.
-- **Human Touchpoint Count**: still at 95 — one phase touchpoint (Phase 5) has no persona, by design. Upgrading this would require either assigning a persona to Phase 5 or reconsidering whether an objective reporter is the right framing.
-- **Experiment Isolation Score**: still at 95 — the Step 0 scan catches file-level overlaps but does not currently check for logical dependency (hypothesis B builds on a metric change from hypothesis A). A finer-grained isolation check could address this.
-- **Hypothesis Surprise Rate**: still at 70 — structurally correct given well-isolated experiments; would require a genuine secondary spill-over between changes to improve.
-
-### Novel Pattern Candidates
-
-No novel patterns in this run. All changes applied existing patterns (P12 NP4, P2, measurement audit). H27's "Measurement Accuracy Retrospective" is a candidate:
-
-## Novel Patterns Discovered — 2026-03-22 (run 6)
-
-### NP7 — Measurement Accuracy Retrospective
-**Discovered in:** optimise skill (self-optimisation run 6)
-**Problem it solved:** A metric (Redundancy Index) had been estimated rather than precisely measured for four consecutive runs. The estimate included out-of-scope files and produced a persistent inaccuracy (88 instead of ~97). No phase instruction prompted a precise re-audit of estimated scores.
-**Implementation:** Conducted a full cross-file redundancy audit, identified that out-of-scope files (research-log.md) inflated the estimate, found actual duplication was ~3% not ~12%, and corrected the score upward.
-**Metrics it improved:** Redundancy Index (+9pp)
-**Generalises to:** Any workflow where a metric has been estimated (not counted) for ≥2 consecutive runs at the same value. When a score is stable but has never been precisely verified, a targeted re-audit may reveal measurement drift.
-**Seed candidate:** yes — applies broadly to any optimise run on any target where estimated metrics have not been spot-checked against the actual content.
+**Log within size threshold; no archival required.** (~5,500 estimated tokens)
 
 ---
+
+## Novel Patterns Discovered — 2026-03-27
+
+### NP1 — Orphaned Target Completion
+**Discovered in:** `skills/optimise`
+**Problem it solved:** Patterns P10, P12, P13, P14 each named a target metric (PEV, HCU, RPC, EIS) that had no scorable definition in the instruction corpus. The claimed improvement loop was unverifiable — applying a pattern could not be attributed to a measured delta.
+**Implementation:** Defined the 4 orphaned metrics as pre-defined custom metrics in p2-baseline.md, following the MX-OQ template (applicability, skip condition, methodology, direction, weight, normalisation).
+**Metrics it improved:** Orphaned Output Metric Coverage (MX4) +100pp
+**Generalises to:** Any workflow with a pattern library where pattern "Targets:" reference metrics that are not defined in the measurement file. Particularly relevant for workflows that have grown a pattern library over time without backfilling metric definitions.
+**Seed candidate:** yes — any pattern library should be self-consistent; if a pattern claims to target a metric, that metric must be measurable. This is a structural property, not a quality of a specific workflow.
+

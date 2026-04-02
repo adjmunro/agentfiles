@@ -47,12 +47,13 @@ Construct the subject directory path from the argument or context:
 
 **Slugify rules**: lowercase only, spaces → hyphens, strip all characters except alphanumerics and hyphens. Date prefix: `YYYY-MM-DD` from today's date. Final subject name: `YYYY-MM-DD-{subject-slug}`.
 
+<!-- WHY slug uniqueness guard exists: guards against silently targeting the wrong subject directory when a subject with the same date+name is already in progress. Without this check, a second ideation session on the same day with the same topic slug would write to the existing subject's directory, potentially overwriting in-progress work. Mirrors the guard in ideate.md Phase 1. -->
 **Slug uniqueness guard:** After deriving the slug, check whether `.kanban/YYYY-MM-DD-{subject-slug}/` already exists. If it does and this is a first run (not a loop-back), append `-2` to the slug and check again. Continue incrementing (`-3`, `-4`, …) until a unique slug is found. Log which slug was chosen: "Subject directory already existed — using `YYYY-MM-DD-{subject-slug}` instead." Skip this guard if `$ARGUMENTS` explicitly named the slug (the caller intended to target that directory).
 
 **Check for existing input file:**
 
 - If `00-input-{subject}.md` does **not exist** (or is a stub with empty sections only) → this is a **first run**. Continue to Phase 2.
-- If `00-input-{subject}.md` **exists with substantive content** → this is a **loop-back iteration**. Append a new session block in Phase 4. Prior sessions are immutable — do not touch them.
+- If `00-input-{subject}.md` **exists with substantive content** (file size > 0 bytes and contains at least one non-heading line — a line that does not start with `#`) → this is a **loop-back iteration**. Append a new session block in Phase 4. Prior sessions are immutable — do not touch them.
 
 ---
 
@@ -112,6 +113,8 @@ Structure the captured content for writing to `00-input-{subject}.md`.
 
 All content captured in this run goes inside this block. Use the same four subsections within the block if the content warrants it, or write as a flat transcript if the session was narrowly focused.
 
+<!-- STALENESS POLICY (authoritative): 00-input-{subject}.md — NO TTL. Append-only record; age never indicates staleness. Consumers load without age check. -->
+
 **The cardinal rule — verbatim transcription**:
 
 - Zero paraphrasing
@@ -130,13 +133,18 @@ Write the file using the file-write tool. NEVER overwrite prior session content 
 
 ## Phase 5 — Critic Pass
 
-Before committing, adopt the **Critic** role. Silently scan the captured material for:
+Before committing, adopt the **Critic** role.
 
-- Unstated assumptions (things the user assumed you already knew)
-- Missing constraints (what happens at boundary cases?)
-- Acceptance signals not yet defined (how will the user know the work is done?)
-- Contradictions between sections
-- Ambiguous terms that could be interpreted multiple ways
+<!-- WHY verbatim check exists: H6 (run 2) found agents paraphrasing captured text, which corrupted the plan audit trail downstream. The spot-check prevents silent verbatim drift before the gap audit runs. -->
+**Verbatim fidelity check (mandatory — run before the gap audit):** Compare the key phrases, decisions, and named entities in `00-input-{subject}.md` against the user's raw message in this session. Spot-check 3–5 distinctive phrases, decisions, or named items and confirm they appear verbatim in the written file. If any are paraphrased, correct them now before proceeding to the gap audit.
+
+Then silently scan the captured material for:
+
+- **Unstated assumptions** — things the user assumes but did not say (technology choices, team context, existing infrastructure)
+- **Missing constraints** — limits not mentioned but likely relevant (performance requirements, platform restrictions, compatibility targets)
+- **Acceptance signals** — how will success be known? Is there any observable outcome or test that would confirm the work is done?
+- **Contradictions** — inconsistencies between stated goals, constraints, or out-of-scope items
+- **Ambiguous terms** — words or phrases with multiple plausible interpretations that would affect implementation
 
 If meaningful gaps are found, ask one final targeted question round — keep it to the minimum set that would close the gaps. Transcribe any new answers per Phase 4 rules (verbatim, append-only).
 
@@ -152,6 +160,7 @@ If inside a git repo:
 
 1. Stage only the input file and assets directory (if newly created).
 2. Commit with the message: `kanban(capture): capture raw input for {subject}`
+   Body: one line stating whether this was a first run or loop-back iteration, and any named assets captured (or "no assets" if none).
 
 If not inside a git repo: skip this phase silently.
 

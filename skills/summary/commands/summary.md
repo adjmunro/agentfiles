@@ -9,11 +9,13 @@ argument-hint: "[pr | trunk | <git-ref>]"
 
 ## Personas
 
-Read each file before proceeding. Identify by the active persona at each phase boundary when communicating with the user.
+Personas are loaded progressively at each phase boundary — do not read all files upfront. Identify by the active persona at each phase boundary when communicating with the user.
 
-- `../../personas/temporal/persona.md` — **Arc (Sequencer)** — active in Phase 1 (ref resolution and timeline ordering)
-- `../../personas/synthesis/persona.md` — **Loom (Synthesist)** — active in Phase 2 and Phase 3 (cross-source synthesis)
-- `../../personas/documentation/persona.md` — **Ward (Documentation)** — active in Phase 4 (doc drift detection)
+| Persona | File | Active phases |
+|---------|------|---------------|
+| Arc (Sequencer) | `../../personas/temporal/persona.md` | Phase 1 |
+| Loom (Synthesist) | `../../personas/synthesis/persona.md` | Phase 2, Phase 3 |
+| Ward (Documentation) | `../../personas/documentation/persona.md` | Phase 2 Step 5, Phase 4, Phase 5 |
 
 ---
 
@@ -38,11 +40,11 @@ If `$ARGUMENTS` is a ref-like token that cannot be resolved (git returns an erro
 
 ## Phase 1 — Ref Resolution (Arc)
 
-*Arc (Sequencer) is active. Establish the temporal boundary before reading any files.*
+*Load `../../personas/temporal/persona.md` and `../../personas/temporal/soul.md` — Arc (Sequencer) is active. Establish the temporal boundary before reading any files.*
 
 **Step 1 — Resolve SCOPE_REF:**
 
-- If mode is `pr` or arguments are empty: run `git merge-base HEAD $(git rev-parse --abbrev-ref HEAD@{upstream} 2>/dev/null || git log --oneline | tail -1 | awk '{print $1}')` to find the branch parent. If upstream tracking is available use it; otherwise fall back to the first commit on the current branch. Store the resulting SHA as `SCOPE_REF`.
+- If mode is `pr` or arguments are empty: first check for detached HEAD with `git rev-parse --abbrev-ref HEAD`. If the result is `HEAD` (detached), fall back to: `git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null`. If neither branch exists, abort with: "Cannot determine branch parent in detached HEAD state. Provide an explicit ref with `/summary <ref>`." Otherwise, run `git merge-base HEAD $(git rev-parse --abbrev-ref HEAD@{upstream} 2>/dev/null || git log --oneline | tail -1 | awk '{print $1}')` to find the branch parent. If upstream tracking is available use it; otherwise fall back to the first commit on the current branch. Store the resulting SHA as `SCOPE_REF`.
 - If mode is `trunk`: run `git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null` to find the divergence point. Store as `SCOPE_REF`.
 - If `$ARGUMENTS` is any other token: validate it with `git rev-parse --verify <token>`. Store as `SCOPE_REF` if valid; abort with a clear error if not.
 
@@ -74,9 +76,11 @@ Store the full list. Note any paths matching these patterns for targeted reading
 
 ## Phase 2 — Source Reading (Loom)
 
-*Loom (Synthesist) is active. Gather all source material before synthesising.*
+*Load `../../personas/synthesis/persona.md` and `../../personas/synthesis/soul.md` — Loom (Synthesist) is active. Gather all source material before synthesising. As you gather, note emergent connections between source domains — these become the synthesis threads in Phase 3.*
 
-Identify the distinct source domains present in this change set. At minimum, distinguish between: git commit messages (intent layer), CHANGELOG entries (structured description layer), and changed instruction files (implementation layer). Read across all three before drawing any conclusions.
+*Intent Anchor: Confirm `SCOPE_REF` and `MODE` are set (Phase 1). If not, return to Phase 1.*
+
+Identify at least 3 source domains before drawing conclusions: git commit messages, CHANGELOG entries, and changed instruction/skill/persona files. Read across all three before synthesising.
 
 **Step 1 — Read full commit log with bodies:**
 
@@ -110,11 +114,17 @@ For each changed `persona.md` in the list, read the Purpose and DO sections. Not
 
 **Step 5 — Check for documentation drift (Ward):**
 
-*Ward (Documentation) is active for this step.*
+*Load `../../personas/documentation/persona.md` and `../../personas/documentation/soul.md` — Ward (Documentation) is active for this step.*
 
 For each changed SKILL.md, AGENTS.md, or README file, cross-reference against the commit subjects that touched it. If a commit claims to add a feature but the documentation does not reflect it, flag it as drift. If a commit body references a file path that does not exist in the changed-files list, flag it as a potential stale reference.
 
 Record any drift findings — they will appear in the output under a "Documentation notes" sub-section inside the relevant area block.
+
+*Loom (Synthesist) resumes after Step 5. Ward's documentation-drift check is complete.*
+
+**Step 6 — Source domain coverage tally:**
+
+Count how many of the three domains yielded data: (a) commit message bodies, (b) CHANGELOG entries, (c) changed instruction/skill/persona files. Always record a coverage line in the Context block: "Source coverage: X/3 — [list of contributing domains]." If X < 3, note which domains are absent.
 
 ---
 
@@ -122,7 +132,9 @@ Record any drift findings — they will appear in the output under a "Documentat
 
 *Loom (Synthesist) is active. Synthesise across all three source domains into a unified picture.*
 
-Before writing output, identify the emergent property of this change set: what quality or capability exists now that did not exist before, that could not have been derived from any single commit message or changelog entry alone? Name it explicitly in the "Changes by area" introduction.
+*Intent Anchor: Confirm `SCOPE_REF`, `MODE`, and Phase 2 source material (commit log, CHANGELOG entries, instruction files) are gathered before synthesising.*
+
+Identify the emergent property of this change set: the capability that could not be derived from any single source domain alone. Name it in the "Changes by area" introduction.
 
 **Step 1 — Build the Context block:**
 
@@ -142,7 +154,9 @@ Group all commits by scope/area. For each group:
 3. Write a 1–2 sentence synthesis of the group's intent — drawn from commit bodies and changelog entries, not just subject lines
 4. If Ward flagged documentation drift for this area, include a `> Doc note:` block beneath the synthesis
 
-Aim for one paragraph per area. Do not list every commit bullet-for-bullet — synthesise.
+Write one paragraph per area. Do not list every commit bullet-for-bullet — synthesise.
+
+Verify each area entry contains: (1) area name heading, (2) commit subjects for the group, (3) 1–2 sentence synthesis drawn from bodies and changelog entries, and (4) a `> Doc note:` block if Ward flagged drift for this area.
 
 **Step 3 — Build the New & changed features block:**
 
@@ -152,7 +166,7 @@ Write a brief entry with two parts:
 - **What it does now**: one sentence describing the current capability
 - **How to use it**: the invocation syntax or trigger condition, taken directly from the file
 
-If the file was not changed enough to alter usage (e.g. only a doc fix), note "Usage unchanged — documentation updated."
+If the file's invocation syntax or trigger condition did not change, note "Usage unchanged — documentation updated."
 
 **Step 4 — Build the Why block:**
 
@@ -162,13 +176,17 @@ Pull rationale from:
 
 Write this as prose, not a list. One paragraph per logical motivation thread. If multiple commits share the same rationale, consolidate.
 
-If no commit bodies exist and no changelog entries provide rationale, write: "No rationale recorded in commit messages or changelogs."
+If no commit bodies exist and no changelog entries provide rationale, write: "No rationale recorded in commit messages or changelogs." Then append a diagnostic note listing the commits that are missing bodies by SHA and subject, and recommend the author enrich those commits before re-running `/summary`.
+
+If the Why section contains fewer than 3 sentences of substantive rationale, append: "Why section is brief — [N] commits in this range had bodies. Consider enriching commit history for a more complete rationale."
 
 ---
 
 ## Phase 4 — Open Work
 
-*Ward (Documentation) is active.*
+*Ward (Documentation) is active. Treat the Open work section as a living status document — surface every in-progress, in-review, and queued ticket with the same accuracy you would apply to updating a project runbook.*
+
+*Intent Anchor: Phases 1–3 complete. SCOPE_REF is established and source material has been synthesised. Scanning open work now.*
 
 Scan for in-progress and queued tickets in `.kanban/`. Check for any items in these directories:
 
@@ -192,6 +210,12 @@ If tickets are found, present them as a table:
 ---
 
 ## Phase 5 — Output
+
+*Ward (Documentation) is active. Assemble sections in the defined order. Write for the next person reading this — assume no prior context about this branch or session.*
+
+*Intent Anchor: Phases 1–4 complete. All source material is gathered and open work is scanned. Assembling final report now.*
+
+Before finalising output, verify completion: all 5 sections must be present (Context, Changes by area, New & changed features, Why, Open work), each containing either substantive content or explicit fallback text. Verify section order matches the list above.
 
 Assemble the final report using the sections below, in this order. Use markdown headings. Do not add commentary outside the defined sections.
 
@@ -242,7 +266,7 @@ When `MODE` is `pr`, append a final section after Open work:
 ## Review checklist
 ```
 
-Populate it with 3–5 targeted items derived from the actual changes — not a generic checklist. Each item should be a specific thing a reviewer should verify, based on what was changed. Examples:
+Populate it with 3–5 targeted items derived from the actual changes — not a generic checklist. Each item must be a specific verification step derived from the actual changes. Examples:
 
 - "Check that the new `trunk` mode resolves the correct merge-base when upstream is not configured"
 - "Verify CHANGELOG entry matches the implementation in `commands/summary.md`"
@@ -258,5 +282,5 @@ Do not include generic items such as "check for typos" or "verify tests pass" un
 | `$ARGUMENTS` ref cannot be resolved | Abort with: "Cannot resolve ref `<token>`. Check the ref exists and is reachable from HEAD." |
 | Git is not available or not a repo | Abort with: "Not inside a git repository. `/summary` requires git." |
 | No commits in range | Report: "No commits between `<SCOPE_REF>` and HEAD. Nothing to summarise." |
-| No files changed in range | Report the Context block only, then: "No files were changed in this range." |
+| No files changed in range | Output all 5 sections. Context block as normal. Changes by area: "No file changes detected in this range." New & changed features: "No skill, command, or persona files changed in this range." Why: "No commit bodies or changelog entries — no rationale to record." Open work: scan `.kanban/` as normal. |
 | `.kanban/` does not exist | In the Open work section, write: "No `.kanban/` directory found." |

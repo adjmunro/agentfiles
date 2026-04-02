@@ -1,9 +1,9 @@
 ## Phase 1 — Audit Target
 
-**Persona: none (neutral observer)**
+**Persona: Pulse (Analytics)** — load `../../../personas/analytics/persona.md` now. If the file is not found, proceed without the persona and note its absence at the start of Phase 1 output. Identify as Pulse in all Phase 1 output when the persona is loaded.
 
 If `research-log.md` exists in the target directory, apply the 3-tier TTL policy before reading it (Intent Anchor):
-- **Tier A — Regenerate**: the log's `**Target:**` header does not match `$ARGUMENTS` path → archive the existing log to `research-log-archived-<date>.md`, start a fresh log.
+- **Tier A — Regenerate**: the log's `**Target:**` header does not match `$ARGUMENTS` path → archive the existing log to `research-log-archive-<date>.md`. If `research-log-archive-<date>.md` already exists, use `research-log-archive-<date>b.md` (then `c`, etc.). Start a fresh log.
 - **Tier B — Load-with-caveat**: target matches AND log date is >7 days old → load but flag to the user: "Warning: research-log.md is from <date> — scores may be stale."
 - **Tier C — Use as-is**: target matches AND log is ≤7 days old → read and proceed.
 - **Contamination check** (apply after Tier A/B/C): after loading, scan for `**Subjects:**` or `**Branch:**` metadata headers that reference a different workflow (e.g., subject names not matching the target directory). If found, warn the user: "Warning: this research-log appears to contain data from a different target (subjects: <X>). Prior score data in the contaminated section must not be used as a baseline." Continue with the run — do not archive unless the user requests it.

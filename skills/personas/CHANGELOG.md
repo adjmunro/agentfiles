@@ -1,5 +1,73 @@
 # Personas Changelog
 
+## v1.10.0 - 2026-03-27 - Optimise Run 8
+
+**Opening composite: 95.1% (corrected) → final: 95.9% (+0.8pp). All 4 hypotheses confirmed. Auto loop complete (>95% threshold).**
+
+Note: opening composite corrected from 94.8% to 95.1% after full CPVS measurement revealed the directional baseline was too pessimistic (78 estimated vs 93 actual).
+
+- Added Identity line (`# Name (Role)` format) as first row in Richness Rubric in `commands/evolve.md`; updated maximum from 14→15 and formula accordingly — SRCA 92→100 [H25]; also propagated to `skills/optimise/commands/phases/p2-baseline.md` M15 rubric
+- Wired Quill into `skills/implement/commands/work/p3-implementation.md` with explicit `Read` directive — the only pipeline persona in that file lacking one [H26]
+- Added Vigil-governed Step C.5 (Regression Check) to `skills/implement/commands/review/p2a-examiner.md` — PIS 89→100, PES 80→87 [H26]
+- Reordered Hone's Voice section in `hone/soul.md` to lead with its distinctive output descriptor, removing structural overlap with Amp — CPVS 93→100 [H27]
+- Re-measured FMCS at all 27 personas: converted 3 partial pairs (Echo/Hone, Helm/Poise, Trace/Sable) to full complements — FMCS 86→96 [H28]; measurement only, no file changes
+- 5 new custom metrics defined: CABA, PES, SMRC, WTCQ, CPVS
+- Novel patterns documented: NP8 (Pipeline Persona Phase Wiring Audit), NP9 (Cross-Library Voice Fingerprinting Audit)
+- Research log archived: runs 6–7 moved to `research-log-archive-2026-03-27b.md`; live log retains run 8 only
+
+---
+
+## v1.9.0 - 2026-03-27 - Optimise Run 7
+
+**Opening composite: 92.9% → final: 95.75% (+2.9pp). All 4 hypotheses confirmed. Auto loop complete (>95% threshold).**
+
+Note: composite opened lower than run 6 final (96.3%) due to 7 new personas introducing metric drops in WCS, WTTS, LCMU, SQS, NPQP, and PVD.
+
+- Added 6 new personas (Ink, Quill, Vigil, Folio, Hone, Amp) to `commands/summon.md` Persona Roster — WCS 78→100 [H21]
+- Added 6 new personas to `TESTING.md` per-persona table; fixed stale "18 personas" header references to "27" — WTTS 78→100 [H22]
+- Added 6 pipeline-persona cognitive modes to `commands/evolve.md` taxonomy (commit curation, intent annotation, regression detection, API documentation accuracy, editorial tightening, constraint strengthening) — LCMU 70→100, CTC 78→100 [H23]
+- Sharpened Opinion 1 for 5 personas (Ink, Quill, Vigil, Folio, Hone) to counter-intuitive non-obvious positions — SQS 98→100, NPQP 29→100 [H24]; 5 files updated
+- 5 new custom metrics defined: PIS (2×), CTC, SIC, PDR, FMCAL
+
+---
+
+## v1.8.0 - 2026-03-27 - Flint (Dialectician)
+
+**New persona. Fills the argument analysis cognitive gap — 21 personas, 21 distinct taxonomy modes.**
+
+- Added **Flint (Dialectician)** (`dialectician/persona.md` + `dialectician/soul.md`) — applies a formal fallacy taxonomy (formal + informal, by category) to any input regardless of artefact type; unique cognitive function is treating reasoning structure as the primary object of analysis rather than content gaps or specification loopholes
+- Registered in SKILL.md roster, summon.md persona table, evolve.md taxonomy, and TESTING.md per-persona table
+
+---
+
+## v1.7.0 - 2026-03-27 - Optimise Run 6
+
+**Opening composite: 95.0% → final: 96.3% (+1.3pp). All 2 hypotheses confirmed. Auto loop complete (>95% threshold).**
+
+Note: composite opened lower than run 5 final (95.9%) due to 4 new metrics added this run — NPQP=50 and PPCC=89 revealed previously unmeasured gaps.
+
+- Sharpened Opinion 1 in Sage (pedagogical/soul.md) and Poise (negotiation/soul.md) to score 2/2 on Non-obviousness — SQS 99→100, NPQP 50→100 [H19]; 2 files updated
+- Fixed 4 imprecise WTS complement-references in Arden (critic/persona.md) and Keeper (strategist/persona.md) to accurately paraphrase cited personas' Failure Mode text — PPCC 89→100 [H20]; 2 files updated
+- 4 new custom metrics defined: NPQP, WTTS, LCMU, PPCC (two at 100 at baseline; two revealed gaps)
+- Research log archived: runs 4–5 moved to `research-log-archive-2026-03-27.md`; live log retains run 6 only
+
+---
+
+## v1.6.0 - 2026-03-26 - Optimise Run 5
+
+**Opening composite: 93.1% → final: 95.9% (+2.8pp). All 4 hypotheses confirmed. Auto loop complete (>95% threshold).**
+
+Note: composite opened lower than run 4 final (97.5%) due to 5 new metrics added this run — TSCR=0 and PCDS=53 revealed previously unmeasured gaps.
+
+- Documented all 18 failure-mode complement pairs in persona "When to summon" sections — PCDS 53→100 (+94 weighted) [H15]; 7 files updated (Arden, Keeper, Vela, Trace, Vault, Echo, Kira)
+- Created new personas **Sage (Pedagogue)** and **Poise (Arbiter)** to fill the two remaining taxonomy gaps — PCC 90→100 [H17]; all 20 cognitive modes now covered
+- Sharpened Vault's Opinions to non-obvious architecture perspectives — SQS 99→100 [H18]
+- Marked 2 structural test scenarios as verified by metric evidence — TSCR 0→25 [H16]
+- 5 new custom metrics defined: TSCR, EMPAC, PVD, AGD, PCDS (two at 100; three revealed gaps)
+- Novel patterns documented: NP6 (Failure Mode Guardrail Documentation), NP7 (Evidence-Anchored Test Status)
+
+---
+
 ## v1.5.0 - 2026-03-22 - Optimise Run 4
 
 **Opening composite: 94.7% → final: 97.5% (+2.8pp). All 3 hypotheses confirmed. Auto loop complete (>95% threshold).**

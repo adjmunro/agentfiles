@@ -36,13 +36,25 @@ Resolve the subject slug from `$ARGUMENTS`:
 2. If `$ARGUMENTS` is `new` or empty → use `AskUserQuestion` to ask: "What is the subject name for this ideation session?" Then slugify: lowercase, spaces → hyphens, strip non-alphanumerics except hyphens, prepend today's date as `YYYY-MM-DD`.
 3. Final subject slug format: `YYYY-MM-DD-{subject-slug}`.
 
+<!-- WHY slug uniqueness guard exists: prevents silently targeting the wrong subject directory when a subject with the same date+name already exists (e.g., two ideation sessions started on the same day with the same topic). Appending -2/-3 makes the collision explicit rather than overwriting prior work. -->
 **Slug uniqueness guard:** If `.kanban/YYYY-MM-DD-{subject-slug}/` already exists and this is NOT a loop-back (i.e. `$ARGUMENTS` did not explicitly name it), append `-2` to the slug. If that also exists, try `-3`, and so on until a unique slug is found. Log which slug was chosen: "Subject directory already existed — using `YYYY-MM-DD-{subject-slug}` instead."
 
+<!-- WHY init.md is an external dependency: init.md is provided by the kanban skill (see skills/kanban/commands/). Expected behaviour: creates .kanban/YYYY-MM-DD-{subject}/ with stage directories (00-assets, 03-refinement, 04-todo, 05-in-progress, 06-in-review, 07-pull-request, 08-done). If init.md is unavailable, create this directory structure manually with Bash before proceeding. -->
 Invoke `commands/init.md` with the derived subject slug to create the subject scaffold. This creates `.kanban/YYYY-MM-DD-{subject}/` with all stage directories. If the directory already exists, `init.md` handles reinitialisation safely — only missing directories are added.
 
-**Check for loop-back**: If `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md` exists with substantive content, this is a loop-back iteration. Note this for Phase 2 — `capture.md` will append a new session block rather than create a fresh file.
+**State detection and resume routing:**
 
-Announce to the user: "Starting ideation for `YYYY-MM-DD-{subject}`. Beginning capture (step 1 of 9)."
+<!-- WHY resume routing exists: H1 (run 1) — multi-session subjects resume from the most advanced completed state rather than restarting, avoiding re-execution of work that has already been committed. Without this check, invoking /ideate on an existing subject would re-run from step 1 and could overwrite completed artifacts. -->
+After resolving the subject slug and before announcing start, check for a partially-completed subject by testing artifact presence in order (most advanced state first):
+
+1. If `.kanban/YYYY-MM-DD-{subject}/03-refinement/` contains at least one ticket file with substantive content → **resume at step 9 (hard stop gate)**. Announce: "Resuming ideation for `YYYY-MM-DD-{subject}` — tickets are drafted. Advancing to step 9 (hard stop gate)." Skip Phases 2–7 and jump directly to Phase 8.
+2. If `.kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md` exists with substantive content → **resume at step 6 (validate)**. Announce: "Resuming ideation for `YYYY-MM-DD-{subject}` — plan is complete. Advancing to step 6 (validate with user)." Skip Phases 2–5 and jump directly to Phase 6.
+3. If `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md` contains an `## Interview` block (any date) → **resume at step 4 (plan)**. Announce: "Resuming ideation for `YYYY-MM-DD-{subject}` — interview is recorded. Advancing to step 4 (plan)." Skip Phases 2–4 and jump directly to Phase 5.
+4. If `.kanban/YYYY-MM-DD-{subject}/01-research-{subject}.md` exists with substantive content → **resume at step 3 (interview)**. Announce: "Resuming ideation for `YYYY-MM-DD-{subject}` — research is complete. Advancing to step 3 (interview)." Skip Phases 2–3 and jump directly to Phase 4.
+5. If `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md` exists with substantive content → this is a **loop-back iteration**. Note this for Phase 2 — `capture.md` will append a new session block rather than create a fresh file. Announce: "Resuming ideation for `YYYY-MM-DD-{subject}`. Beginning capture (loop-back — step 1 of 9)."
+6. Otherwise → this is a **fresh first run**. Announce: "Starting ideation for `YYYY-MM-DD-{subject}`. Beginning capture (step 1 of 9)."
+
+Substantive content means: file exists, size > 0 bytes, and contains at least one non-heading line (a line that does not start with `#`). A file with only headings or an empty body does not qualify.
 
 ---
 
@@ -64,9 +76,9 @@ Wait for capture to complete before proceeding. Capture ends when `00-input-{sub
 
 ## Phase 3 — Step 2: Research
 
-<!-- INTENT ANCHOR — verify subject before dispatch -->
-<!-- Read: .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md -->
-<!-- Confirm: subject slug matches $ARGUMENTS (or derived slug from Phase 1). File must exist. Do not dispatch if missing. -->
+<!-- WHY re-read before each dispatch (active intent anchors, run 1): re-reading the primary artifact before dispatching a subagent prevents context drift across long sessions. Without this anchor, a subagent may operate on a stale in-memory copy of the intent rather than the committed file state. -->
+Re-read `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md` now to anchor context before dispatching.
+Confirm: subject slug matches $ARGUMENTS (or derived slug from Phase 1). File must exist — do not dispatch if missing.
 
 Invoke `research.md` for this subject. Research runs automatically — do not ask the user for input before or during research.
 
@@ -82,9 +94,8 @@ Announce: "Research complete. Beginning interview (step 3 of 9)."
 
 ## Phase 4 — Step 3: Interview
 
-<!-- INTENT ANCHOR — verify subject before dispatch -->
-<!-- Read: .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md -->
-<!-- Confirm: subject slug is current (matches Phase 1 resolution). File must exist and contain substantive content. Do not dispatch if missing. -->
+Re-read `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md` now to anchor context before dispatching.
+Confirm: subject slug is current (matches Phase 1 resolution). File must exist and contain substantive content — do not dispatch if missing.
 
 Invoke `interview.md` for this subject.
 
@@ -100,9 +111,8 @@ Wait for the interview to complete (user has reviewed and approved/amended the r
 
 ## Phase 5 — Steps 4–5: Plan + Audit
 
-<!-- INTENT ANCHOR — verify subject before dispatch -->
-<!-- Read: .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md -->
-<!-- Confirm: subject slug is current (matches Phase 1 resolution). File must exist and contain at least one interview block. Do not dispatch if missing. -->
+Re-read `.kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md` now to anchor context before dispatching.
+Confirm: subject slug is current (matches Phase 1 resolution). File must exist and contain at least one interview block — do not dispatch if missing.
 
 Invoke `plan.md` for this subject. The plan phase writes the plan and runs the internal audit — both steps 4 and 5 are handled by a single phase file.
 
@@ -118,6 +128,8 @@ Wait for the plan (and its audit) to complete before proceeding to step 6.
 ---
 
 ## Phase 6 — Step 6: Validate with User
+
+Re-read `.kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md` now to anchor context before presenting to the user.
 
 Ask the user using `AskUserQuestion` (max 4 options):
 
@@ -142,9 +154,9 @@ Options:
 
 ## Phase 7 — Steps 7–8: Tickets + Audit
 
-<!-- INTENT ANCHOR — verify subject before dispatch -->
-<!-- Read: .kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md -->
-<!-- Confirm: subject slug is current (matches Phase 1 resolution). Plan file must exist and contain an audit section. Do not dispatch if missing. -->
+Re-read `.kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md` now to anchor context before dispatching.
+<!-- WHY plan audit precondition exists: dispatching to tickets.md without a completed plan audit would create tickets against an unvalidated plan. If the plan later fails the audit, all tickets must be discarded and recreated. Requiring the audit section confirms that Steps 4–5 are complete and that the requirement set the ticket audit will test against is already at 95%+ coverage. -->
+Confirm: subject slug is current (matches Phase 1 resolution). Plan file must exist and contain an audit section — do not dispatch if missing.
 
 Invoke `tickets.md` for this subject. The tickets phase writes all ticket files into `03-refinement/` and runs the internal ticket audit — both steps 7 and 8 are handled by a single phase file.
 
@@ -162,6 +174,8 @@ Wait for tickets and the ticket audit to complete.
 
 ## Phase 8 — Step 9: Hard Stop Gate
 
+Re-read `.kanban/YYYY-MM-DD-{subject}/02-plan-{subject}.md` now to anchor context before the final decision.
+
 This is the final decision point. Ask the user using `AskUserQuestion` (max 2 options):
 
 > "Ideation for `YYYY-MM-DD-{subject}` is complete. The tickets are staged in `03-refinement/` and ready to promote. What would you like to do?"
@@ -172,9 +186,17 @@ Options:
 
 **If option 1 (Add to backlog)**:
 1. Move all ticket files from `.kanban/YYYY-MM-DD-{subject}/03-refinement/` to `.kanban/YYYY-MM-DD-{subject}/04-todo/` (create `04-todo/` if it does not exist).
-2. Report: "Subject `YYYY-MM-DD-{subject}` is now in backlog. Pick it up with `/implement from-ideation-handoff`."
-3. The `from-ideation-handoff` token signals to implement that this is a sanctioned boundary crossing from ideation.
-4. Stop.
+   <!-- WHY idempotency guard on ticket move: H21 (run 5) — guards against double-promotion if Phase 8 is re-entered after a crash mid-move. Each ticket's presence in 04-todo/ is checked before git mv to prevent a second mv attempt on an already-moved file, which would fail with a "file not found in 03-refinement" error. -->
+   - Before moving each file, check whether it already exists in `04-todo/`. If it does → skip the move for that ticket (already promoted).
+   - Use `git mv` inside a git repo, or move the file and then `git add -A` to capture both the deletion and the addition.
+2. Stage and commit:
+   ```
+   kanban(tickets): promote N tickets to backlog for {subject}
+   ```
+   Body: number of tickets promoted, ticket IDs (e.g., "TASK-001 through TASK-005"), and destination (`04-todo/{subject}/`).
+3. Report: "Subject `YYYY-MM-DD-{subject}` is now in backlog. Pick it up with `/implement from-ideation-handoff`."
+4. The `from-ideation-handoff` token signals to implement that this is a sanctioned boundary crossing from ideation.
+5. Stop.
 
 **If option 2 (Abandon)**:
 1. Ask: "Type the exact subject slug to confirm deletion: `YYYY-MM-DD-{subject}`"

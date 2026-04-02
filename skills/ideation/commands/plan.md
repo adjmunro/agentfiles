@@ -40,7 +40,7 @@ Construct the input path:
 .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md
 ```
 
-<!-- STALENESS POLICY: NO TTL — append-only record; age does not indicate staleness. Load without age check. -->
+<!-- STALENESS POLICY: NO TTL — see capture.md for authoritative policy. Load without age check. -->
 
 Read the file in full. This file may contain multiple session blocks:
 - Initial capture block (verbatim user input)
@@ -51,13 +51,13 @@ Read ALL blocks before proceeding.
 
 **STOP:** If the file does not exist, print:
 
-> Cannot run plan: `00-input-{subject}.md` does not exist. Run capture (Step 1) first.
+> Cannot run plan: `00-input-{subject}.md` does not exist. Run `/ideate` (Step 1: Capture) first.
 
 Do not proceed.
 
 **STOP:** If the file contains no meaningful content (empty or stub only), print:
 
-> Cannot run plan: `00-input-{subject}.md` contains no input. Run capture (Step 1) first.
+> Cannot run plan: `00-input-{subject}.md` contains no input. Run `/ideate` (Step 1: Capture) first.
 
 Do not proceed.
 
@@ -66,6 +66,13 @@ Do not proceed.
 ## Phase 2 — Draft Plan
 
 **Active persona: Keeper (Strategist)**
+
+<!-- WHY re-entry guard exists: H8 (run 2) found that looping back to add more input after a plan was already drafted would overwrite the complete plan, destroying the audit record. The guard detects a completed plan and skips straight to Phase 3 (critic audit). -->
+**Re-entry guard:** Before drafting, check whether `02-plan-{subject}.md` already exists.
+
+- If it exists **and** contains an audit section (a line matching `- Full: \d+, Partial:` or a heading `## Audit:`) → the plan is complete. Skip Phase 2 entirely and advance to Phase 3 (Critic Audit Gate).
+- If it exists **without** an audit section → this indicates a partial write (draft exists but was not fully audited). Overwrite is safe — proceed with drafting.
+- If it does not exist → proceed normally.
 
 Using all session blocks from `00-input-{subject}.md`, draft `02-plan-{subject}.md` with exactly this structure:
 
@@ -110,19 +117,26 @@ Write the drafted plan to:
 
 ### Step A — Enumerate Input
 
-Read `00-input-{subject}.md` in full (all session blocks). <!-- STALENESS POLICY: NO TTL — append-only record; age does not indicate staleness. Load without age check. --> Break all content into a numbered list of discrete, verifiable items. Every stated requirement, constraint, goal, contextual detail, interview question answer, and decision made during the interview is a separate item. Be granular — split compound items.
+Read `00-input-{subject}.md` in full (all session blocks). <!-- STALENESS POLICY: NO TTL — see capture.md for authoritative policy. Load without age check. --> Break all content into a numbered list of discrete, verifiable items. Every stated requirement, constraint, goal, contextual detail, interview question answer, and decision made during the interview is a separate item. Be granular — split compound items.
+
+<!-- WHY interview item tagging exists: decisions explicitly surfaced and resolved in the interview phase are more deliberately chosen than raw capture items — the user was directly asked about them. Silently omitting an [INTERVIEW] item from the plan is a more serious traceability failure than missing an incidental capture detail, because the user was already consulted. The [INTERVIEW] tag makes this distinction auditable. -->
+**Interview item tagging:** After enumerating all items, identify any item that originates from an `## Interview YYYYMMDD-HH:MM` block. Tag these items with `[INTERVIEW]` in the enumeration list. These items carry higher traceability weight — a decision that was explicitly surfaced and resolved in the interview is more deliberately chosen than a raw capture item. When building the audit table in Step B, include a `Source` column to distinguish `[INTERVIEW]` items from `[CAPTURE]` items at a glance.
 
 ### Step B — Map Input to Plan
 
 Build a table mapping each input item to the plan requirement(s) that cover it:
 
-| # | Item (from input) | Plan Section | Status | Notes |
-|---|-------------------|--------------|--------|-------|
+| # | Source | Item (from input) | Plan Section | Status | Notes |
+|---|--------|-------------------|--------------|--------|-------|
+
+- `Source` column: `[INTERVIEW]` for items from an `## Interview` block; `[CAPTURE]` for all others.
 
 Classify each item:
 - **Full** — addressed in the plan with sufficient detail to act on
 - **Partial** — mentioned but missing detail, context, or specificity
 - **Missing** — does not appear in the plan at all
+
+**Priority note:** If any `[INTERVIEW]` item is Missing or Partial after Step D fixes are applied, record it explicitly in the Fixes Applied section with the prefix `[INTERVIEW GAP]`. Interview items are the most deliberate input — silent omission here is a more serious traceability failure than for raw capture items.
 
 ### Step C — Score
 
@@ -143,6 +157,9 @@ Add new requirement entries, expand vague constraints, strengthen partial items,
 After all fixes are applied, recalculate the score. All items must reach Full status.
 
 ### Step F — Append Audit Block
+
+<!-- WHY plan audit idempotency guard exists: H15 (run 3) — prevents double-append of the audit block if plan.md is re-entered after a crash mid-write. A duplicate audit block would contain conflicting PASS/FAIL labels and confuse any downstream consumer that parses the plan file. -->
+**Idempotency guard:** Before appending, check whether a line matching `## Audit: input → plan` already exists in `02-plan-{subject}.md`. If it does → the audit block is already recorded. Skip the append and proceed to Phase 4.
 
 Append the following structured block to `02-plan-{subject}.md`. Do not overwrite any existing content — this is always appended.
 
@@ -166,9 +183,17 @@ Append the following structured block to `02-plan-{subject}.md`. Do not overwrit
 - [Describe each auto-fix made, or "None — all items were Full on first pass"]
 ```
 
-Replace `PASS` with `FAIL` only if the audit score is still below 95% after all fixes are applied. A FAIL result means the auto-fix step did not fully resolve all gaps — diagnose and fix before committing.
+Replace `PASS` with `FAIL` only if the audit score is still below 95% after all fixes are applied. A FAIL result means the auto-fix step did not fully resolve all gaps.
 
-**STOP:** If the audit result is FAIL after fixes, diagnose which items remain unresolvable and report to the user before proceeding.
+**STOP (FAIL):** If the audit score is still below 95% after all auto-fixes are applied, present to the user:
+
+> ⚠ Plan audit failed — N items could not be auto-resolved: [list items by number and description]. Choose:
+> (a) Accept the plan with known gaps marked `[UNRESOLVED]` and continue to Step 6, or
+> (b) Return to capture to provide more information.
+
+Wait for the user's choice.
+- If (a): mark each unresolved item in `02-plan-{subject}.md` with `[UNRESOLVED]` and continue to Phase 4 (git commit).
+- If (b): loop back to Phase 2 of `ideate.md` (capture) so the user can provide additional information before the plan is reattempted.
 
 ---
 
@@ -179,6 +204,7 @@ Check whether the project is inside a git repository. Use `Bash` with `git rev-p
 If inside a git repo:
 1. Stage `02-plan-{subject}.md`.
 2. Commit with the message: `kanban(plan): draft plan for {subject}`
+   Body: audit score, total requirement count, and a one-line note if any items needed auto-fixing (or "all items Full on first pass" if not).
 
 If not inside a git repo: skip this phase silently.
 

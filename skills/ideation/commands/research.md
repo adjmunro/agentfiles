@@ -44,7 +44,7 @@ Locate the input file:
 .kanban/YYYY-MM-DD-{subject}/00-input-{subject}.md
 ```
 
-<!-- STALENESS POLICY: NO TTL — append-only record; age does not indicate staleness. Load without age check. -->
+<!-- STALENESS POLICY: NO TTL — see capture.md for authoritative policy. Load without age check. -->
 
 **STOP**: If `00-input-{subject}.md` does not exist, report: "No captured input found for `{subject}`. Run `/ideate` (capture step) first." Do not proceed.
 
@@ -132,10 +132,26 @@ created_at: YYYY-MM-DDTHH:MM:SSZ
 ## Recommended Approach
 
 [What Finn observed and recommends investigating further in the interview. Highlight the most important unknowns, tradeoffs, or decisions the interview should surface. Written in Finn's voice — cartographic, honest about the map's edges.]
+
+## Research Confidence
+
+[Rate each section on a 3-tier scale and state the basis for the rating:
+- **Project Structure**: High / Medium / Low — reason (e.g. "High — 12 relevant files found and read")
+- **Relevant Patterns**: High / Medium / Low — reason (e.g. "Low — project too new; only one relevant file, patterns inferred")
+- **Dependencies**: High / Medium / Low — reason (e.g. "Medium — main libraries identified, transitive deps not checked; 1 URL fetch failed")
+- **Hazards**: High / Medium / Low — reason (e.g. "High — tight coupling in auth layer confirmed from source")
+- **Recommended Approach**: High / Medium / Low — reason (e.g. "Medium — based on patterns found; one key unknown remains")
+
+High = substantial direct evidence from the codebase or fetched docs.
+Medium = partial evidence or inferred from conventions; findings directionally reliable.
+Low = minimal evidence; based primarily on general knowledge or absence of findings — treat as hypothesis, not fact.]
 ```
 
-All six sections are required. An empty section is acceptable; a missing section heading is not.
+All seven sections are required. An empty section is acceptable; a missing section heading is not.
 
+After writing all sections, score each section's confidence tier. If any section is **Low**, flag it in the Phase 6 report for the interview phase.
+
+<!-- WHY research snapshot is always overwritten: research.md is a point-in-time snapshot, not an append-only log. Overwriting ensures the interview phase always works from current codebase state — a stale snapshot from a previous loop-back would contain outdated file paths, patterns, or dependencies that could lead to incorrect recommendations. -->
 If `01-research-{subject}.md` already exists (loop-back iteration), overwrite it. Research is always regenerated fresh — it is a snapshot, not an append-only log.
 
 ---
@@ -152,6 +168,7 @@ If inside a git repo:
 
 1. Stage only `01-research-{subject}.md`.
 2. Commit with the message: `kanban(research): snapshot research for {subject}`
+   Body: 2–3 lines summarising key findings — primary tech patterns, any hazards or blockers identified, and the recommended approach.
 
 If not inside a git repo, skip this phase silently.
 
@@ -168,3 +185,7 @@ Report to the user:
 - Any WebFetch failures and the URLs that were skipped
 
 Keep the report concise. The user must be able to confirm research completed and know what gaps, if any, exist before the interview begins.
+
+If any section was rated **Low** confidence in the Research Confidence section, list those sections explicitly: "Low-confidence sections: [names] — treat as reference only; assign UNCERTAIN confidence to any interview recommendation derived primarily from these sections."
+
+→ Next: Run `ideation/commands/interview.md` to form research-informed recommendations.

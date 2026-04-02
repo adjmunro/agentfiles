@@ -122,17 +122,23 @@ Read `../../personas/strategist/persona.md` before proceeding. You are **Keeper 
 ## Claimed Check
 <!-- Active when: subject selection is evaluating candidates in auto mode (Phase 1) -->
 
-A subject is **claimed** if it has any ticket files in `05-in-progress/`, `06-in-review/`, or `07-pull-request/` for that subject, AND at least one of those tickets has an `expires_at` timestamp that is **in the future** (`now < expires_at`).
+A subject is **claimed** if it has any ticket files in `05-in-progress/`, `06-in-review/`, or `07-pull-request/` for that subject, AND at least one of those tickets has a live claim (not yet stale).
 
-**Staleness check:** compare `expires_at` directly to now — no arithmetic needed.
+**Staleness check:** for each in-flight ticket, compute whether the claim is still active:
 
-- `expires_at` in the future → ticket is live → subject is claimed → skip it
-- `expires_at` in the past → ticket is stale (crashed or abandoned session)
-- `expires_at` null/unset → treat as claimed (unknown state, err on the side of caution)
+```
+stale = (now - claimed_at) > (stale_after_hours * 3600 seconds)
+```
+
+Use the ticket's `claimed_at` and `stale_after_hours` frontmatter fields (both in the canonical schema; `stale_after_hours` defaults to 4 if absent).
+
+- `claimed_at` set AND not yet elapsed → ticket is live → subject is claimed → skip it
+- `claimed_at` set AND elapsed → ticket is stale (crashed or abandoned session)
+- `claimed_at` null/unset → ticket was never properly claimed → treat as stale
 
 A subject is **not claimed** (available to pick) if:
 - All its tickets are in `04-todo/`, OR
-- It has tickets in later stages but every one has an `expires_at` in the past
+- It has tickets in later stages but every one has a stale or absent `claimed_at`
 
 When a subject is skipped as claimed in auto mode, note it in output: `"Skipping YYYY-MM-DD-{subject} — claimed (active tickets in-flight)"`.
 

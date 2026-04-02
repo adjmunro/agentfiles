@@ -51,12 +51,14 @@ kanban(review): PASS TASK-NNN (XX%), moving to pull-request
 
 If not inside a git repo: skip silently.
 
+**Sequence failure guard:** If any step in A–D fails (append error, frontmatter write error, move error, or commit error), stop immediately. Report which step failed and what the last successfully completed step was. Do not attempt the remaining steps — partial completion is preferable to silent inconsistency.
+
 ### Step E — All-Tickets Check
 
 List all ticket files across `05-in-progress/`, `06-in-review/`, and `07-pull-request/` for this subject.
 
 If ALL tickets for this subject are now in `07-pull-request/` (none remain in earlier stages):
 
-> "All tickets for YYYY-MM-DD-<subject> have passed in-review. Run `/kanban pr` to open the pull request."
+> "All tickets for YYYY-MM-DD-<subject> have passed in-review. Run `/implement pr` to open the pull request."
 
 → Next: Read `review/p6-report.md` and execute it.
