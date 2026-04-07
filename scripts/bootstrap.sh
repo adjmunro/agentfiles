@@ -88,24 +88,46 @@ echo ""
 echo "  Components: kanban  symlinks  sign-hook  british-english-hook"
 echo "              bash-guard  readme-hook  title-hook  gradle-idea"
 
-# ── Install skill CLI ─────────────────────────────────────────────────────────
+# ── Register skill alias ──────────────────────────────────────────────────────
+#
+# Writes a shell alias that curls skill.sh fresh from GitHub on each
+# invocation — no local copy to maintain or version.
+#
+# Customise via env vars before running bootstrap:
+#   SKILL_ALIAS=myskill   change the alias name   (default: skill)
+#   SKILL_ALIAS=          skip alias registration entirely
 
-mkdir -p "${HOME}/.local/bin"
+alias_name="${SKILL_ALIAS-skill}"   # default "skill"; empty string = skip
 
-if $use_local; then
-  cp "$AGENTFILES_PATH/scripts/skill.sh" "${HOME}/.local/bin/skill"
-else
-  curl -sSL "$AGENTFILES_RAW/scripts/skill.sh" -o "${HOME}/.local/bin/skill"
+if [[ -n "$alias_name" ]]; then
+  # Detect rc file from the current shell.
+  case "${SHELL:-}" in
+    */zsh)  rc_file="${HOME}/.zshrc" ;;
+    */bash) rc_file="${HOME}/.bashrc" ;;
+    *)      rc_file="${HOME}/.zshrc" ;;
+  esac
+
+  alias_line="alias ${alias_name}='zsh <(curl -fsSL ${AGENTFILES_RAW}/scripts/skill.sh)'"
+  alias_marker="# agentfiles: ${alias_name}"
+
+  # Avoid writing a duplicate if the alias is already present.
+  if grep -qF "$alias_marker" "$rc_file" 2>/dev/null; then
+    echo "✓ '${alias_name}' alias already present in ${rc_file}"
+  else
+    {
+      echo ""
+      echo "${alias_marker}"
+      echo "${alias_line}"
+    } >> "$rc_file"
+    echo "✓ '${alias_name}' alias written to ${rc_file}"
+    echo "  Reload your shell or run: source ${rc_file}"
+  fi
+
+  echo ""
+  echo "  ${alias_name} install <name>  — install a skill into this project"
+  echo "  ${alias_name} update          — update all installed skills"
+  echo "  ${alias_name} list            — list installed skills"
+  echo "  ${alias_name} status          — check for available updates"
+  echo ""
+  echo "  Always runs the latest version of skill.sh from GitHub."
 fi
-
-chmod +x "${HOME}/.local/bin/skill"
-
-echo "✓ skill CLI installed to ~/.local/bin/skill"
-echo ""
-echo "  skill install <name>  — install a skill into this project"
-echo "  skill update          — update all installed skills"
-echo "  skill list            — list installed skills"
-echo "  skill status          — check for available updates"
-echo ""
-echo "  Ensure ~/.local/bin is on your PATH (add to .zshrc if needed):"
-echo "    export PATH=\"\$HOME/.local/bin:\$PATH\""
