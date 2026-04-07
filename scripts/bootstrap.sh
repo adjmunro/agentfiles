@@ -8,6 +8,10 @@
 #   AGENTFILES_PATH=~/path/to/agentfiles zsh bootstrap.sh
 #
 # After running, use /install all (or /install <component>) in this repo.
+#
+# Env vars:
+#   AGENTFILES_PATH   path to a local agentfiles checkout (skips GitHub fetch)
+#   AGENTFILES_ALIAS  name for the shell function  (default: agentfiles)
 
 set -e
 
@@ -88,46 +92,39 @@ echo ""
 echo "  Components: kanban  symlinks  sign-hook  british-english-hook"
 echo "              bash-guard  readme-hook  title-hook  gradle-idea"
 
-# ── Register skill alias ──────────────────────────────────────────────────────
+# ── Print shell function snippet ──────────────────────────────────────────────
 #
-# Writes a shell alias that curls skill.sh fresh from GitHub on each
-# invocation — no local copy to maintain or version.
+# Prints a shell function for the user to add to their config.
+# The function caches skill.sh locally and re-fetches only when stale (1 hour).
 #
-# Customise via env vars before running bootstrap:
-#   SKILL_ALIAS=myskill   change the alias name   (default: skill)
-#   SKILL_ALIAS=          skip alias registration entirely
+# Use AGENTFILES_ALIAS to change the function name (default: agentfiles).
 
-alias_name="${SKILL_ALIAS-skill}"   # default "skill"; empty string = skip
+fn_name="${AGENTFILES_ALIAS:-agentfiles}"
+skill_url="${AGENTFILES_RAW}/scripts/skill.sh"
 
-if [[ -n "$alias_name" ]]; then
-  # Detect rc file from the current shell.
-  case "${SHELL:-}" in
-    */zsh)  rc_file="${HOME}/.zshrc" ;;
-    */bash) rc_file="${HOME}/.bashrc" ;;
-    *)      rc_file="${HOME}/.zshrc" ;;
-  esac
-
-  alias_line="alias ${alias_name}='zsh <(curl -fsSL ${AGENTFILES_RAW}/scripts/skill.sh)'"
-  alias_marker="# agentfiles: ${alias_name}"
-
-  # Avoid writing a duplicate if the alias is already present.
-  if grep -qF "$alias_marker" "$rc_file" 2>/dev/null; then
-    echo "✓ '${alias_name}' alias already present in ${rc_file}"
-  else
-    {
-      echo ""
-      echo "${alias_marker}"
-      echo "${alias_line}"
-    } >> "$rc_file"
-    echo "✓ '${alias_name}' alias written to ${rc_file}"
-    echo "  Reload your shell or run: source ${rc_file}"
+echo ""
+echo "──────────────────────────────────────────────────────────────────"
+echo "  Add the following to your shell config (.zshrc, .bashrc, etc.)"
+echo "  Skip this step if you already have '${fn_name}' set up."
+echo "──────────────────────────────────────────────────────────────────"
+echo ""
+cat <<SNIPPET
+${fn_name}() {
+  local _cache="\${XDG_CACHE_HOME:-\$HOME/.cache}/agentfiles/skill.sh"
+  local _ttl=3600
+  if [[ ! -f "\$_cache" ]] || (( \$(date +%s) - \$(date -r "\$_cache" +%s 2>/dev/null || echo 0) > _ttl )); then
+    mkdir -p "\${_cache:h}"
+    curl -fsSL '${skill_url}' -o "\$_cache"
   fi
-
-  echo ""
-  echo "  ${alias_name} install <name>  — install a skill into this project"
-  echo "  ${alias_name} update          — update all installed skills"
-  echo "  ${alias_name} list            — list installed skills"
-  echo "  ${alias_name} status          — check for available updates"
-  echo ""
-  echo "  Always runs the latest version of skill.sh from GitHub."
-fi
+  zsh "\$_cache" "\$@"
+}
+SNIPPET
+echo ""
+echo "──────────────────────────────────────────────────────────────────"
+echo ""
+echo "  ${fn_name} install <name>  — install a skill into this project"
+echo "  ${fn_name} update          — update all installed skills"
+echo "  ${fn_name} list            — list installed skills"
+echo "  ${fn_name} status          — check for available updates"
+echo ""
+echo "  Caches skill.sh for 1 hour; re-fetches automatically when stale."
