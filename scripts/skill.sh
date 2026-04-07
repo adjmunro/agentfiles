@@ -8,6 +8,7 @@
 #   skill list             List installed skills and their versions
 #   skill status           Check for available updates
 #   skill remove <name>    Remove an installed skill
+#   skill force-update     Clear the local cache and re-download skill.sh
 #
 # Configuration (environment variables):
 #   AGENTFILES_REPO    GitHub repo slug  (default: adjmunro/agentfiles)
@@ -21,6 +22,8 @@ AGENTFILES_REPO="${AGENTFILES_REPO:-adjmunro/agentfiles}"
 AGENTFILES_BRANCH="${AGENTFILES_BRANCH:-main}"
 AGENTFILES_REMOTE="https://github.com/${AGENTFILES_REPO}.git"
 AGENTFILES_RAW="https://raw.githubusercontent.com/${AGENTFILES_REPO}/${AGENTFILES_BRANCH}"
+
+CACHE_FILE="${XDG_CACHE_HOME:-${HOME}/.cache}/agentfiles/skill.sh"
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -195,14 +198,23 @@ cmd_remove() {
   ok "${name} removed"
 }
 
+cmd_force_update() {
+  print "Refreshing skill.sh cache..."
+  mkdir -p "${CACHE_FILE:h}"
+  curl -fsSL "${AGENTFILES_RAW}/scripts/skill.sh" -o "$CACHE_FILE" \
+    || die "failed to download skill.sh from ${AGENTFILES_RAW}"
+  ok "skill.sh cached at ${CACHE_FILE}"
+}
+
 # ── Dispatch ──────────────────────────────────────────────────────────────────
 
 case "${1:-}" in
-  install) shift; cmd_install "$@" ;;
-  update)  shift; cmd_update  "${1:-}" ;;
-  list)    cmd_list ;;
-  status)  cmd_status ;;
-  remove)  shift; cmd_remove  "$@" ;;
+  install)      shift; cmd_install "$@" ;;
+  update)       shift; cmd_update  "${1:-}" ;;
+  list)         cmd_list ;;
+  status)       cmd_status ;;
+  remove)       shift; cmd_remove  "$@" ;;
+  force-update) cmd_force_update ;;
   *)
     print "Usage: skill <command> [args]"
     print ""
@@ -212,6 +224,7 @@ case "${1:-}" in
     print "  list             List installed skills and their versions"
     print "  status           Check for available updates"
     print "  remove <name>    Remove an installed skill"
+    print "  force-update     Clear cache and re-download skill.sh immediately"
     print ""
     print "Environment:"
     print "  AGENTFILES_REPO    Source repo  (default: adjmunro/agentfiles)"

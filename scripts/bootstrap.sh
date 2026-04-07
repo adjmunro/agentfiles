@@ -92,9 +92,9 @@ echo ""
 echo "  Components: kanban  symlinks  sign-hook  british-english-hook"
 echo "              bash-guard  readme-hook  title-hook  gradle-idea"
 
-# ── Print shell function snippet ──────────────────────────────────────────────
+# ── Write shell function ──────────────────────────────────────────────────────
 #
-# Prints a shell function for the user to add to their config.
+# Asks where to write the shell function, then appends it to that file.
 # The function caches skill.sh locally and re-fetches only when stale (1 hour).
 #
 # Use AGENTFILES_ALIAS to change the function name (default: agentfiles).
@@ -102,29 +102,40 @@ echo "              bash-guard  readme-hook  title-hook  gradle-idea"
 fn_name="${AGENTFILES_ALIAS:-agentfiles}"
 skill_url="${AGENTFILES_RAW}/scripts/skill.sh"
 
-echo ""
-echo "──────────────────────────────────────────────────────────────────"
-echo "  Add the following to your shell config (.zshrc, .bashrc, etc.)"
-echo "  Skip this step if you already have '${fn_name}' set up."
-echo "──────────────────────────────────────────────────────────────────"
-echo ""
-cat <<SNIPPET
-${fn_name}() {
-  local _cache="\${XDG_CACHE_HOME:-\$HOME/.cache}/agentfiles/skill.sh"
+fn_body="${fn_name}() {
+  local _cache=\"\${XDG_CACHE_HOME:-\$HOME/.cache}/agentfiles/skill.sh\"
   local _ttl=3600
-  if [[ ! -f "\$_cache" ]] || (( \$(date +%s) - \$(date -r "\$_cache" +%s 2>/dev/null || echo 0) > _ttl )); then
-    mkdir -p "\${_cache:h}"
-    curl -fsSL '${skill_url}' -o "\$_cache"
+  if [[ ! -f \"\$_cache\" ]] || (( \$(date +%s) - \$(date -r \"\$_cache\" +%s 2>/dev/null || echo 0) > _ttl )); then
+    mkdir -p \"\${_cache:h}\"
+    curl -fsSL '${skill_url}' -o \"\$_cache\"
   fi
-  zsh "\$_cache" "\$@"
-}
-SNIPPET
+  zsh \"\$_cache\" \"\$@\"
+}"
+
 echo ""
-echo "──────────────────────────────────────────────────────────────────"
+printf "Where should the '${fn_name}' shell function be written?\n"
+printf "File will be created if it does not exist. Leave blank to skip.\n"
+printf "Path [~/.zshrc]: "
+read rc_path
+
+if [[ -z "$rc_path" ]]; then
+  echo "Skipped. Add the function manually when ready."
+else
+  # Expand leading ~ to $HOME
+  rc_path="${rc_path/#~/${HOME}}"
+
+  mkdir -p "$(dirname "$rc_path")"
+  printf "\n# agentfiles: ${fn_name}\n%s\n" "$fn_body" >> "$rc_path"
+
+  echo "✓ '${fn_name}' function written to ${rc_path}"
+  echo "  Reload with: source ${rc_path}"
+fi
+
 echo ""
 echo "  ${fn_name} install <name>  — install a skill into this project"
 echo "  ${fn_name} update          — update all installed skills"
 echo "  ${fn_name} list            — list installed skills"
 echo "  ${fn_name} status          — check for available updates"
+echo "  ${fn_name} force-update    — clear cache and re-download skill.sh"
 echo ""
 echo "  Caches skill.sh for 1 hour; re-fetches automatically when stale."
