@@ -22,20 +22,18 @@ AGENTFILES_BRANCH="${AGENTFILES_BRANCH:-main}"
 AGENTFILES_REMOTE="https://github.com/${AGENTFILES_REPO}.git"
 AGENTFILES_RAW="https://raw.githubusercontent.com/${AGENTFILES_REPO}/${AGENTFILES_BRANCH}"
 
-STATE_DIR=".agentfiles"
-
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 die()  { print -u2 "skill: error: $*"; exit 1 }
 step() { print "  $*" }
 ok()   { print "✓ $*" }
 
-# Detect (or create) the skills directory for the current project.
+# Detect the skills directory for the current project (read-only — no side effects).
 skills_dir() {
   if   [[ -d ".agents/skills" ]]; then print ".agents/skills"
   elif [[ -d ".claude/skills" ]]; then print ".claude/skills"
-  elif [[ -d ".agents"        ]]; then mkdir -p ".agents/skills";  print ".agents/skills"
-  else                                  mkdir -p ".claude/skills";  print ".claude/skills"
+  elif [[ -d ".agents"        ]]; then print ".agents/skills"
+  else                                  print ".claude/skills"
   fi
 }
 
@@ -48,15 +46,18 @@ parse_version() {
 remote_version() {
   local name="$1"
   local content
-  content=$(curl -fsSL "${AGENTFILES_RAW}/skills/${name}/VERSION.md" 2>/dev/null) || { print ""; return 0; }
+  content=$(curl -fsSL "${AGENTFILES_RAW}/skills/${name}/VERSION.md" 2>/dev/null) \
+    || { print ""; return 0; }
   parse_version "$content"
 }
 
-# Read the locally recorded version of an installed skill.
+# Read the version from an installed skill's own VERSION.md.
 local_version() {
   local name="$1"
-  local vfile="${STATE_DIR}/${name}/version"
-  [[ -f "$vfile" ]] && cat "$vfile" || print ""
+  local vfile
+  vfile="$(skills_dir)/${name}/VERSION.md"
+  [[ -f "$vfile" ]] || { print ""; return 0; }
+  parse_version "$(< "$vfile")"
 }
 
 # ── Commands ──────────────────────────────────────────────────────────────────
@@ -102,10 +103,6 @@ cmd_install() {
   cp -r "${src}/." "$dest/"
   step "→ ${dest}/"
 
-  # Record installed version so status and update can work offline.
-  mkdir -p "${STATE_DIR}/${name}"
-  print "$version" > "${STATE_DIR}/${name}/version"
-
   rm -rf "$tmp"
   trap - EXIT INT TERM
 
@@ -117,13 +114,13 @@ cmd_update() {
 
   # No argument: update every installed skill.
   if [[ -z "$name" ]]; then
-    [[ -d "$STATE_DIR" ]] || { print "No skills installed."; return; }
+    local dir; dir=$(skills_dir)
+    [[ -d "$dir" ]] || { print "No skills installed."; return; }
     local found=false
-    for state in "${STATE_DIR}"/*/; do
-      [[ -d "$state" ]] || continue
+    for skill_dir in "${dir}"/*/; do
+      [[ -d "$skill_dir" ]] || continue
       found=true
-      local skill_name="${state%/}"
-      skill_name="${skill_name##*/}"
+      local skill_name="${skill_dir%/}"; skill_name="${skill_name##*/}"
       cmd_update "$skill_name"
     done
     $found || print "No skills installed."
@@ -147,14 +144,15 @@ cmd_update() {
 }
 
 cmd_list() {
-  [[ -d "$STATE_DIR" ]] || { print "No skills installed."; return; }
+  local dir; dir=$(skills_dir)
+  [[ -d "$dir" ]] || { print "No skills installed."; return; }
 
   local found=false
   print "Installed skills:"
-  for state in "${STATE_DIR}"/*/; do
-    [[ -d "$state" ]] || continue
+  for skill_dir in "${dir}"/*/; do
+    [[ -d "$skill_dir" ]] || continue
     found=true
-    local name="${state%/}"; name="${name##*/}"
+    local name="${skill_dir%/}"; name="${name##*/}"
     local version; version=$(local_version "$name")
     printf "  %-22s v%s\n" "$name" "$version"
   done
@@ -162,14 +160,15 @@ cmd_list() {
 }
 
 cmd_status() {
-  [[ -d "$STATE_DIR" ]] || { print "No skills installed."; return; }
+  local dir; dir=$(skills_dir)
+  [[ -d "$dir" ]] || { print "No skills installed."; return; }
 
   print "Checking for updates..."
   local found=false
-  for state in "${STATE_DIR}"/*/; do
-    [[ -d "$state" ]] || continue
+  for skill_dir in "${dir}"/*/; do
+    [[ -d "$skill_dir" ]] || continue
     found=true
-    local name="${state%/}"; name="${name##*/}"
+    local name="${skill_dir%/}"; name="${name##*/}"
     local current; current=$(local_version "$name")
     local latest;  latest=$(remote_version "$name" 2>/dev/null) || latest=""
 
@@ -192,7 +191,6 @@ cmd_remove() {
 
   local dest; dest="$(skills_dir)/${name}"
   [[ -d "$dest" ]] && rm -rf "$dest"
-  rm -rf "${STATE_DIR}/${name}"
 
   ok "${name} removed"
 }
@@ -221,7 +219,7 @@ case "${1:-}" in
     print ""
     print "Notes:"
     print "  Installed skills go to .claude/skills/<name>/ or .agents/skills/<name>/."
-    print "  Version state is tracked in .agentfiles/<name>/version — commit both."
+    print "  Version is read directly from the skill's own VERSION.md."
     print "  For private repos, ensure git credentials are configured before installing."
     ;;
 esac
