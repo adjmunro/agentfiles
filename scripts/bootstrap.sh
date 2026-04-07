@@ -87,3 +87,25 @@ echo "  Run /install <component> — install a specific component"
 echo ""
 echo "  Components: kanban  symlinks  sign-hook  british-english-hook"
 echo "              bash-guard  readme-hook  title-hook  gradle-idea"
+
+# ── Install skill CLI ─────────────────────────────────────────────────────────
+
+mkdir -p "${HOME}/.local/bin"
+
+if $use_local; then
+  cp "$AGENTFILES_PATH/scripts/skill.sh" "${HOME}/.local/bin/skill"
+else
+  curl -sSL "$AGENTFILES_RAW/scripts/skill.sh" -o "${HOME}/.local/bin/skill"
+fi
+
+chmod +x "${HOME}/.local/bin/skill"
+
+echo "✓ skill CLI installed to ~/.local/bin/skill"
+echo ""
+echo "  skill install <name>  — install a skill into this project"
+echo "  skill update          — update all installed skills"
+echo "  skill list            — list installed skills"
+echo "  skill status          — check for available updates"
+echo ""
+echo "  Ensure ~/.local/bin is on your PATH (add to .zshrc if needed):"
+echo "    export PATH=\"\$HOME/.local/bin:\$PATH\""
