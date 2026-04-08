@@ -107,32 +107,43 @@ fn_body="${fn_name}() {
   local _ttl=3600
   if [[ ! -f \"\$_cache\" ]] || (( \$(date +%s) - \$(date -r \"\$_cache\" +%s 2>/dev/null || echo 0) > _ttl )); then
     mkdir -p \"\${_cache:h}\"
-    curl -fsSL '${skill_url}' -o \"\$_cache\"
+    if ! curl -fsSL '${skill_url}' -o \"\$_cache\" 2>/dev/null; then
+      echo \"agentfiles: failed to fetch skill.sh — the URL may have moved.\" >&2
+      echo \"  Re-run bootstrap to get the updated function:\" >&2
+      echo \"    zsh <(curl -sSL https://raw.githubusercontent.com/${AGENTFILES_REPO}/main/scripts/bootstrap.sh)\" >&2
+      return 1
+    fi
   fi
   zsh \"\$_cache\" \"\$@\"
 }"
 
-# Detection pattern: just the repo slug, not the filename — stable even if
-# scripts/skill.sh is ever renamed or moved within the repository.
-detect_pattern="raw.githubusercontent.com/${AGENTFILES_REPO}"
+# Sentinel file written on successful setup — unambiguous detection that works
+# regardless of where the function was placed or what it was named.
+sentinel="${HOME}/.config/agentfiles/installed"
 
 echo ""
-printf "Where should the '${fn_name}' shell function be written?\n"
-printf "File will be created if it does not exist. Leave blank to skip.\n"
-printf "Path [~/.zshrc]: "
-read rc_path
 
-if [[ -z "$rc_path" ]]; then
-  echo "Skipped. Add the function manually when ready."
+if [[ -f "$sentinel" ]]; then
+  echo "✓ agentfiles already set up (see ${sentinel}) — skipping shell function."
 else
-  # Expand leading ~ to $HOME
-  rc_path="${rc_path/#~/${HOME}}"
+  printf "Where should the '${fn_name}' shell function be written?\n"
+  printf "File will be created if it does not exist. Leave blank to skip.\n"
+  printf "Path [~/.zshrc]: "
+  read rc_path
 
-  if grep -qF "$detect_pattern" "$rc_path" 2>/dev/null; then
-    echo "✓ agentfiles already set up in ${rc_path} — skipping."
+  if [[ -z "$rc_path" ]]; then
+    echo "Skipped. Add the function manually when ready."
   else
+    # Expand leading ~ to $HOME
+    rc_path="${rc_path/#~/${HOME}}"
+
     mkdir -p "$(dirname "$rc_path")"
     printf "\n%s\n" "$fn_body" >> "$rc_path"
+
+    # Write sentinel so future bootstrap runs skip this step
+    mkdir -p "$(dirname "$sentinel")"
+    printf "%s\n%s\n" "$rc_path" "$skill_url" > "$sentinel"
+
     echo "✓ '${fn_name}' function written to ${rc_path}"
     echo "  Reload with: source ${rc_path}"
   fi
