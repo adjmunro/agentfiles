@@ -16,11 +16,11 @@ chore(scope): short description
 
 The commit body should be generated — describe what changed, why, and any non-obvious side effects. Keep the subject line under 72 characters.
 
-Common scopes: `implement`, `commands`, `hooks`, `skills`, `config`
+Common scopes: `scripts`, `hooks`, `skills`, `prompts`, `config`
 
 Examples:
 - `feat(implement): add pr command with GitHub and manual fallback paths`
-- `fix(commands): correct audit.md status field reference`
+- `fix(hooks): correct bash-guard pattern for zsh process substitution`
 - `chore(config): update AGENTS.md symlinks at repo root`
 
 **Never force push.** This is a hard rule with no exceptions.
@@ -29,13 +29,47 @@ Examples:
 
 ```
 agentfiles/
-├── commands/         # Standalone agent command files
-├── hooks/            # Shell hooks for agent tooling
-└── skills/
-    └── implement/    # The implement skill — subject-centric pipeline from capture to archive
+├── skills/       # Multi-step agentic workflows (versioned directories)
+├── hooks/        # Shell hooks for agent tooling (versioned directories)
+├── prompts/      # One-shot agent instructions (versioned directories)
+├── scripts/      # Shell utilities and the agentfiles CLI
+├── commands/     # [deprecated] superseded by skills/
+└── docs/
 ```
 
-Each skill under `skills/` is self-contained: it has its own `AGENTS.md`, `CHANGELOG.md`, `VERSION.md`, and a `commands/` subdirectory with the actual skill logic.
+Every component directory under `skills/`, `hooks/`, and `prompts/` is self-contained:
+
+```
+<type>/<name>/
+├── SKILL.md / HOOK.md / PROMPT.md   # entry point loaded by the agent
+├── VERSION.md                        # semver — bump when the component changes
+├── CHANGELOG.md                      # newest-to-oldest, dated, named entries
+├── AGENTS.md                         # development conventions for this component
+└── commands/ / scripts/ / ...        # supporting files (skills and hooks only)
+```
+
+### Symlinks (internal use)
+
+`.claude/` and `.agents/` within this repo are **not** canonical — they are symlink bridges so Claude Code can discover components locally during development:
+
+```
+.claude/commands/<name>.md  →  ../../skills/<name>/SKILL.md    (or similar)
+.claude/hooks/<name>.sh     →  ../../hooks/<name>/hook.sh
+```
+
+Do not add canonical content under `.claude/` or `.agents/`. Edits always go in the top-level type directory.
+
+### Routing — what goes where
+
+| It is… | Put it in… | Installed to… |
+|---|---|---|
+| A multi-step workflow the agent runs repeatedly | `skills/` | `<skills_dir>/<name>/` |
+| A shell hook that fires on agent events | `hooks/` | `.claude/hooks/<name>/` |
+| A one-shot instruction the agent runs once to set something up | `prompts/` | `.claude/prompts/<name>/` |
+| A shell utility or CLI tool | `scripts/` | `~/.local/bin/` or project scripts dir |
+| ~~A standalone command file~~ | ~~`commands/`~~ | ~~deprecated~~ |
+
+**Rule of thumb:** if a human would invoke it repeatedly as a slash command, it's a skill. If it fires automatically in response to an agent event, it's a hook. If it's a one-time environment setup or project change that reads local context to decide what to do, it's a prompt.
 
 ## Language & Spelling
 
