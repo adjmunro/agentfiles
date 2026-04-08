@@ -112,6 +112,10 @@ fn_body="${fn_name}() {
   zsh \"\$_cache\" \"\$@\"
 }"
 
+# Detection pattern: just the repo slug, not the filename — stable even if
+# scripts/skill.sh is ever renamed or moved within the repository.
+detect_pattern="raw.githubusercontent.com/${AGENTFILES_REPO}"
+
 echo ""
 printf "Where should the '${fn_name}' shell function be written?\n"
 printf "File will be created if it does not exist. Leave blank to skip.\n"
@@ -124,11 +128,14 @@ else
   # Expand leading ~ to $HOME
   rc_path="${rc_path/#~/${HOME}}"
 
-  mkdir -p "$(dirname "$rc_path")"
-  printf "\n# agentfiles: ${fn_name}\n%s\n" "$fn_body" >> "$rc_path"
-
-  echo "✓ '${fn_name}' function written to ${rc_path}"
-  echo "  Reload with: source ${rc_path}"
+  if grep -qF "$detect_pattern" "$rc_path" 2>/dev/null; then
+    echo "✓ agentfiles already set up in ${rc_path} — skipping."
+  else
+    mkdir -p "$(dirname "$rc_path")"
+    printf "\n%s\n" "$fn_body" >> "$rc_path"
+    echo "✓ '${fn_name}' function written to ${rc_path}"
+    echo "  Reload with: source ${rc_path}"
+  fi
 fi
 
 echo ""
