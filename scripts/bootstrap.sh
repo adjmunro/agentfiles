@@ -100,15 +100,15 @@ echo "              bash-guard  readme-hook  title-hook  gradle-idea"
 # Use AGENTFILES_ALIAS to change the function name (default: agentfiles).
 
 fn_name="${AGENTFILES_ALIAS:-agentfiles}"
-skill_url="${AGENTFILES_RAW}/scripts/skill.sh"
+cli_url="${AGENTFILES_RAW}/scripts/agentfiles.sh"
 
 fn_body="${fn_name}() {
-  local _cache=\"\${XDG_CACHE_HOME:-\$HOME/.cache}/agentfiles/skill.sh\"
+  local _cache=\"\${XDG_CACHE_HOME:-\$HOME/.cache}/agentfiles/agentfiles.sh\"
   local _ttl=3600
   if [[ ! -f \"\$_cache\" ]] || (( \$(date +%s) - \$(date -r \"\$_cache\" +%s 2>/dev/null || echo 0) > _ttl )); then
     mkdir -p \"\${_cache:h}\"
-    if ! curl -fsSL '${skill_url}' -o \"\$_cache\" 2>/dev/null; then
-      echo \"agentfiles: failed to fetch skill.sh — the URL may have moved.\" >&2
+    if ! curl -fsSL '${cli_url}' -o \"\$_cache\" 2>/dev/null; then
+      echo \"agentfiles: failed to fetch CLI — the URL may have moved.\" >&2
       echo \"  Re-run bootstrap to get the updated function:\" >&2
       echo \"    zsh <(curl -sSL https://raw.githubusercontent.com/${AGENTFILES_REPO}/main/scripts/bootstrap.sh)\" >&2
       return 1
@@ -126,13 +126,25 @@ echo ""
 if [[ -f "$sentinel" ]]; then
   echo "✓ agentfiles already set up (see ${sentinel}) — skipping shell function."
 else
-  printf "Where should the '${fn_name}' shell function be written?\n"
-  printf "File will be created if it does not exist. Leave blank to skip.\n"
-  printf "Path [~/.zshrc]: "
-  read rc_path
+  if [[ -t 0 ]]; then
+    # Interactive terminal: prompt for the rc file path.
+    printf "Where should the '${fn_name}' shell function be written?\n"
+    printf "File will be created if it does not exist. Leave blank to skip.\n"
+    printf "Path [~/.zshrc]: "
+    read rc_path
+  else
+    # Non-interactive (e.g. Claude, CI): use AGENTFILES_RC env var or skip.
+    rc_path="${AGENTFILES_RC:-}"
+    if [[ -n "$rc_path" ]]; then
+      echo "Non-interactive: writing '${fn_name}' function to AGENTFILES_RC=${rc_path}"
+    else
+      echo "Non-interactive: skipping shell function setup."
+      echo "  Re-run interactively or set AGENTFILES_RC=<path> to write automatically."
+    fi
+  fi
 
   if [[ -z "$rc_path" ]]; then
-    echo "Skipped. Add the function manually when ready."
+    echo "Skipped shell function setup."
   else
     # Expand leading ~ to $HOME
     rc_path="${rc_path/#~/${HOME}}"
@@ -140,9 +152,9 @@ else
     mkdir -p "$(dirname "$rc_path")"
     printf "\n%s\n" "$fn_body" >> "$rc_path"
 
-    # Write sentinel so future bootstrap runs skip this step
+    # Write sentinel so future bootstrap runs skip this step.
     mkdir -p "$(dirname "$sentinel")"
-    printf "%s\n%s\n" "$rc_path" "$skill_url" > "$sentinel"
+    printf "%s\n%s\n" "$rc_path" "$cli_url" > "$sentinel"
 
     echo "✓ '${fn_name}' function written to ${rc_path}"
     echo "  Reload with: source ${rc_path}"
@@ -150,10 +162,11 @@ else
 fi
 
 echo ""
-echo "  ${fn_name} install <name>  — install a skill into this project"
-echo "  ${fn_name} update          — update all installed skills"
-echo "  ${fn_name} list            — list installed skills"
-echo "  ${fn_name} status          — check for available updates"
-echo "  ${fn_name} force-update    — clear cache and re-download skill.sh"
+echo "  ${fn_name} install skill/<name>    — install a skill"
+echo "  ${fn_name} install hook/<name>     — install a hook"
+echo "  ${fn_name} install command/<name>  — install a command"
+echo "  ${fn_name} update                  — update all installed skills"
+echo "  ${fn_name} status                  — check for updates"
+echo "  ${fn_name} force-update            — clear cache and re-download CLI"
 echo ""
-echo "  Caches skill.sh for 1 hour; re-fetches automatically when stale."
+echo "  Caches agentfiles.sh for 1 hour; re-fetches automatically when stale."
