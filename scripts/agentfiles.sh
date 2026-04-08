@@ -175,8 +175,13 @@ cmd_update() {
   fi
 
   local _type _name; parse_ref "$ref"
-  [[ "$_type" == "skill" ]] \
-    || die "update only supports skills — version tracking is not available for type '${_type}'"
+
+  # Non-skill types have no VERSION.md — reinstall unconditionally.
+  if [[ "$_type" != "skill" ]]; then
+    print "note: no version tracking for ${_type}s — reinstalling"
+    cmd_install "$ref"
+    return
+  fi
 
   local current; current=$(local_version "$_name")
   [[ -z "$current" ]] \
@@ -282,7 +287,8 @@ case "${1:-}" in
     print "  AGENTFILES_BRANCH  Branch       (default: main)"
     print ""
     print "Notes:"
-    print "  Version tracking (update/status) is only available for skills."
+    print "  Skills have VERSION.md — update checks before fetching, status compares versions."
+    print "  Hooks and commands have no version tracking — update always reinstalls."
     print "  For private repos, ensure git credentials are configured before installing."
     ;;
 esac
