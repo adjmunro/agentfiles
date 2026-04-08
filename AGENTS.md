@@ -33,7 +33,7 @@ agentfiles/
 ├── hooks/        # Shell hooks for agent tooling (versioned directories)
 ├── prompts/      # One-shot agent instructions (versioned directories)
 ├── scripts/      # Shell utilities and the agentfiles CLI
-├── commands/     # [deprecated] superseded by skills/
+├── commands/     # Legacy standalone command files — pending migration to skills/prompts
 └── docs/
 ```
 
@@ -42,7 +42,7 @@ Every component directory under `skills/`, `hooks/`, and `prompts/` is self-cont
 ```
 <type>/<name>/
 ├── SKILL.md / HOOK.md / PROMPT.md   # entry point loaded by the agent
-├── VERSION.md                        # semver — bump when the component changes
+├── VERSION.md                        # plain semver only — see spec below
 ├── CHANGELOG.md                      # newest-to-oldest, dated, named entries
 ├── AGENTS.md                         # development conventions for this component
 └── commands/ / scripts/ / ...        # supporting files (skills and hooks only)
@@ -53,23 +53,59 @@ Every component directory under `skills/`, `hooks/`, and `prompts/` is self-cont
 `.claude/` and `.agents/` within this repo are **not** canonical — they are symlink bridges so Claude Code can discover components locally during development:
 
 ```
-.claude/commands/<name>.md  →  ../../skills/<name>/SKILL.md    (or similar)
-.claude/hooks/<name>.sh     →  ../../hooks/<name>/hook.sh
+.agents/skills/   →  ../skills/
+.agents/hooks/    →  ../hooks/
+.claude/skills/   →  ../.agents/skills/
+.claude/hooks/    →  ../.agents/hooks/
 ```
 
 Do not add canonical content under `.claude/` or `.agents/`. Edits always go in the top-level type directory.
+
+When `agentfiles install` adds a component to a target project, it writes to `.agents/<type>/<name>/` and creates `.claude/<type>/` → `../.agents/<type>/` if `.claude/` exists and the symlink is missing.
 
 ### Routing — what goes where
 
 | It is… | Put it in… | Installed to… |
 |---|---|---|
-| A multi-step workflow the agent runs repeatedly | `skills/` | `<skills_dir>/<name>/` |
-| A shell hook that fires on agent events | `hooks/` | `.claude/hooks/<name>/` |
-| A one-shot instruction the agent runs once to set something up | `prompts/` | `.claude/prompts/<name>/` |
-| A shell utility or CLI tool | `scripts/` | `~/.local/bin/` or project scripts dir |
-| ~~A standalone command file~~ | ~~`commands/`~~ | ~~deprecated~~ |
+| A multi-step workflow the agent runs repeatedly as a slash command | `skills/` | `.agents/skills/<name>/` |
+| A shell hook that fires automatically on agent events | `hooks/` | `.agents/hooks/<name>/` |
+| A one-shot instruction run once to set something up or change the project | `prompts/` | `.agents/prompts/<name>/` |
+| A shell utility or CLI tool | `scripts/` | `~/.local/bin/` |
+| A legacy standalone command file | `commands/` | — migrate to skill or prompt |
 
-**Rule of thumb:** if a human would invoke it repeatedly as a slash command, it's a skill. If it fires automatically in response to an agent event, it's a hook. If it's a one-time environment setup or project change that reads local context to decide what to do, it's a prompt.
+**Rule of thumb:** if a human invokes it repeatedly as a slash command → skill. If it fires automatically on an agent event → hook. If it reads local context and applies a one-time change → prompt.
+
+> **Note on "commands":** Claude Code's slash command and hook *platform features* are not deprecated. The agentfiles `commands/` *directory* is a legacy format predating the skill structure — its files are pending migration.
+
+### VERSION.md specification
+
+`VERSION.md` contains **plain semver only** — nothing else:
+
+```
+1.2.3
+```
+
+Do not add instructions, upstream URLs, "Current version:" prefixes, or agent guidance. Those belonged to an earlier pattern where agents read version files directly. AGENTS.md is now the authoritative source of versioning conventions.
+
+### CHANGELOG.md specification
+
+Every version entry must follow this format exactly:
+
+```markdown
+## X.Y.Z — Name (YYYY-MM-DD)
+
+One or two sentences describing what changed and why it matters to the user.
+
+- Specific bullet point
+- Another bullet point
+```
+
+Rules:
+- **Newest first** — latest version at the top of the file.
+- **Named releases** — every version gets a short, memorable name (2–4 words).
+- **Dated** — `(YYYY-MM-DD)` at the end of the header, not standalone.
+- **No subsections** — do not use `### Added`, `### Changed`, `### Fixed` headers; bullets are sufficient.
+- **Brief** — one paragraph plus a few bullets maximum per entry.
 
 ## Language & Spelling
 

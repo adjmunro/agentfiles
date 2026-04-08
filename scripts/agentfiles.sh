@@ -3,22 +3,22 @@
 # Installs and updates components from a remote (or local) agentfiles repository.
 #
 # Usage:
-#   agentfiles available [type]        List installable components from the source
+#   agentfiles install list [type]     List installable components from the source
 #   agentfiles install <type>/<name>   Install a component
 #   agentfiles update [<type>/<name>]  Update installed components (default: all)
-#   agentfiles list                    List installed components and their versions
+#   agentfiles list [type]             List installed components (optionally filtered)
 #   agentfiles status                  Check for available updates
 #   agentfiles remove <type>/<name>    Remove an installed component
 #   agentfiles force-update            Clear CLI cache and re-download
 #
 # Types (all directory-based, all carry VERSION.md):
-#   skill/<name>    skills/<name>/     →  <skills_dir>/<name>/
-#   hook/<name>     hooks/<name>/      →  .claude/hooks/<name>/
-#   prompt/<name>   prompts/<name>/    →  .claude/prompts/<name>/
-#   command/<name>  commands/<name>/   →  .claude/commands/<name>/   [deprecated]
+#   skill/<name>    skills/<name>/     →  .agents/skills/<name>/
+#   hook/<name>     hooks/<name>/      →  .agents/hooks/<name>/
+#   prompt/<name>   prompts/<name>/    →  .agents/prompts/<name>/
 #
-# Prompts are one-shot agent instructions (environment-aware, run once).
-# They install to .claude/prompts/ rather than .claude/commands/.
+# All types install to .agents/<type>/<name>/. If .claude/ exists, a symlink
+# .claude/<type>/ → ../.agents/<type>/ is created automatically so both
+# agent-agnostic and Claude Code paths resolve correctly.
 #
 # Configuration (environment variables):
 #   AGENTFILES_REPO    GitHub repo slug  (default: adjmunro/agentfiles)
@@ -44,19 +44,14 @@ type_repo_dir() {
     skill)   print "skills"   ;;
     hook)    print "hooks"    ;;
     prompt)  print "prompts"  ;;
-    command) print "commands" ;;
-    *) die "unknown type '${1}' — supported: skill, hook, prompt  (command is deprecated)" ;;
+    *) die "unknown type '${1}' — supported: skill, hook, prompt" ;;
   esac
 }
 
-# Map an install type to its local destination base directory.
+# Map an install type to its local base directory (under .agents/).
 type_local_base() {
-  case "$1" in
-    skill)   skills_dir ;;
-    hook)    print ".claude/hooks" ;;
-    prompt)  print ".claude/prompts" ;;
-    command) print ".claude/commands" ;;
-  esac
+  local dir; dir=$(type_repo_dir "$1")
+  print ".agents/${dir}"
 }
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -71,15 +66,6 @@ parse_ref() {
   [[ "$ref" == */* ]] || die "expected <type>/<name>, got '${ref}' — e.g. skill/implement"
   _type="${ref%%/*}"
   _name="${ref#*/}"
-}
-
-# Detect the skills directory for the current project (no side effects).
-skills_dir() {
-  if   [[ -d ".agents/skills" ]]; then print ".agents/skills"
-  elif [[ -d ".claude/skills" ]]; then print ".claude/skills"
-  elif [[ -d ".agents"        ]]; then print ".agents/skills"
-  else                                  print ".claude/skills"
-  fi
 }
 
 # Extract the first semver string from content.
@@ -104,7 +90,7 @@ remote_version() {
 }
 
 # Read the version from an installed component's local VERSION.md.
-# Arg: absolute or relative path to the installed component directory.
+# Arg: path to the installed component directory.
 local_version() {
   local local_dest="$1"
   local vfile="${local_dest}/VERSION.md"
@@ -113,7 +99,6 @@ local_version() {
 }
 
 # Fetch a component directory from the source into a local destination.
-# Uses AGENTFILES_PATH if set, otherwise sparse-clones from GitHub.
 fetch_component() {
   local repo_path="$1"
   local local_dest="$2"
@@ -143,16 +128,28 @@ fetch_component() {
   fi
 }
 
+# Ensure .claude/<type_dir>/ symlinks to ../.agents/<type_dir>/ if .claude/ exists
+# and the symlink does not already exist.
+ensure_claude_symlink() {
+  local type_dir="$1"  # e.g. "skills", "hooks", "prompts"
+  local claude_dir=".claude/${type_dir}"
+
+  [[ -d ".claude" ]]    || return 0  # no .claude/ in this project, skip
+  [[ -e "$claude_dir" ]] && return 0  # already exists (real dir or symlink), skip
+
+  ln -s "../.agents/${type_dir}" "$claude_dir"
+  step "→ ${claude_dir}/ → .agents/${type_dir}/ (symlink)"
+}
+
 # List component names available under a repo directory.
-# Uses AGENTFILES_PATH if set, otherwise a no-checkout git clone + ls-tree.
 list_remote_components() {
-  local repo_dir="$1"   # e.g. "skills", "hooks"
+  local repo_dir="$1"
 
   if [[ -n "${AGENTFILES_PATH:-}" ]]; then
     local base="${AGENTFILES_PATH}/${repo_dir}"
     [[ -d "$base" ]] || return 0
     for d in "${base}"/*/; do
-      [[ -d "$d" ]] && print "${d%/}" | sed "s|.*/||"
+      [[ -d "$d" ]] && basename "$d"
     done
     return
   fi
@@ -173,12 +170,12 @@ list_remote_components() {
 
 # ── Commands ──────────────────────────────────────────────────────────────────
 
-cmd_available() {
+cmd_install_list() {
   local filter_type="${1:-}"
   local -a types
 
   if [[ -n "$filter_type" ]]; then
-    type_repo_dir "$filter_type" >/dev/null  # validates the type
+    type_repo_dir "$filter_type" >/dev/null  # validate
     types=("$filter_type")
   else
     types=(skill hook prompt)
@@ -188,7 +185,7 @@ cmd_available() {
   [[ -n "${AGENTFILES_PATH:-}" ]] \
     && source_label="local: ${AGENTFILES_PATH}" \
     || source_label="${AGENTFILES_REPO} (${AGENTFILES_BRANCH})"
-  print "Available components from ${source_label}:"
+  print "Available from ${source_label}:"
   print ""
 
   for type in "${types[@]}"; do
@@ -200,12 +197,13 @@ cmd_available() {
       [[ -z "$name" ]] && continue
       found=true
       local local_dest="${local_base}/${name}"
-      local installed=""
       local version; version=$(local_version "$local_dest")
-      [[ -n "$version" ]] && installed=" (installed v${version})"
-      printf "    %s/%s%s\n" "$type" "$name" "$installed"
+      local tag=""
+      [[ -n "$version" ]] && tag=" (installed v${version})"
+      printf "    %s/%s%s\n" "$type" "$name" "$tag"
     done < <(list_remote_components "$repo_dir")
     $found || print "    (none)"
+    print ""
   done
 }
 
@@ -222,7 +220,6 @@ cmd_install() {
 
   local current; current=$(local_version "$local_dest")
 
-  # When using a local path, always install (version may not be bumped yet).
   if [[ -z "${AGENTFILES_PATH:-}" && "$current" == "$version" ]]; then
     print "${ref} is already at v${version}."
     return
@@ -238,6 +235,7 @@ cmd_install() {
 
   fetch_component "$repo_path" "$local_dest"
   step "→ ${local_dest}/"
+  ensure_claude_symlink "$repo_dir"
   ok "${ref} v${version} installed"
 }
 
@@ -245,7 +243,6 @@ cmd_update() {
   local ref="${1:-}"
 
   if [[ -z "$ref" ]]; then
-    # Update all installed versioned components.
     local found=false
     for type in skill hook prompt; do
       local local_base; local_base=$(type_local_base "$type")
@@ -283,8 +280,18 @@ cmd_update() {
 }
 
 cmd_list() {
+  local filter_type="${1:-}"
+  local -a types
+
+  if [[ -n "$filter_type" ]]; then
+    type_repo_dir "$filter_type" >/dev/null  # validate
+    types=("$filter_type")
+  else
+    types=(skill hook prompt)
+  fi
+
   local found=false
-  for type in skill hook prompt; do
+  for type in "${types[@]}"; do
     local local_base; local_base=$(type_local_base "$type")
     [[ -d "$local_base" ]] || continue
     for component_dir in "${local_base}"/*/; do
@@ -293,7 +300,7 @@ cmd_list() {
       found=true
       local name="${component_dir%/}"; name="${name##*/}"
       local version; version=$(local_version "$component_dir")
-      printf "  %-8s %-22s v%s\n" "${type}" "$name" "$version"
+      printf "  %-8s %-22s v%s\n" "$type" "$name" "$version"
     done
   done
   $found || print "No versioned components installed."
@@ -348,10 +355,16 @@ cmd_force_update() {
 # ── Dispatch ──────────────────────────────────────────────────────────────────
 
 case "${1:-}" in
-  available)    shift; cmd_available   "${1:-}" ;;
-  install)      shift; cmd_install     "$@" ;;
+  install)
+    shift
+    case "${1:-}" in
+      list) shift; cmd_install_list "${1:-}" ;;
+      "")   die "usage: agentfiles install list [type]  |  agentfiles install <type>/<name>" ;;
+      *)    cmd_install "$@" ;;
+    esac
+    ;;
   update)       shift; cmd_update      "${1:-}" ;;
-  list)         cmd_list ;;
+  list)         shift; cmd_list        "${1:-}" ;;
   status)       cmd_status ;;
   remove)       shift; cmd_remove      "$@" ;;
   force-update) cmd_force_update ;;
@@ -359,18 +372,21 @@ case "${1:-}" in
     print "Usage: agentfiles <command> [args]"
     print ""
     print "Commands:"
-    print "  available [type]         List installable components from the source"
+    print "  install list [type]      List installable components from the source"
     print "  install <type>/<name>    Install a component"
     print "  update [<type>/<name>]   Update installed components (default: all)"
-    print "  list                     List installed components and their versions"
+    print "  list [type]              List installed components"
     print "  status                   Check for available updates"
     print "  remove <type>/<name>     Remove an installed component"
     print "  force-update             Clear CLI cache and re-download"
     print ""
     print "Types (all directory-based, all carry VERSION.md):"
-    print "  skill/<name>    skills/<name>/    →  <skills_dir>/<name>/"
-    print "  hook/<name>     hooks/<name>/     →  .claude/hooks/<name>/"
-    print "  prompt/<name>   prompts/<name>/   →  .claude/prompts/<name>/"
+    print "  skill/<name>    skills/<name>/    →  .agents/skills/<name>/"
+    print "  hook/<name>     hooks/<name>/     →  .agents/hooks/<name>/"
+    print "  prompt/<name>   prompts/<name>/   →  .agents/prompts/<name>/"
+    print ""
+    print "Components install to .agents/. If .claude/ exists, a symlink"
+    print ".claude/<type>/ → ../.agents/<type>/ is created automatically."
     print ""
     print "Environment:"
     print "  AGENTFILES_REPO    Source repo       (default: adjmunro/agentfiles)"
