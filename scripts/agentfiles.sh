@@ -1,19 +1,23 @@
 #!/usr/bin/env zsh
 # agentfiles — component manager for agentfiles repositories
-# Installs and updates skills, hooks, and commands from a remote agentfiles repository.
+# Installs and updates components from a remote agentfiles repository.
 #
 # Usage:
 #   agentfiles install <type>/<name>   Install a component
-#   agentfiles update [skill/<name>]   Update installed skills (default: all)
-#   agentfiles list                    List installed skills and their versions
-#   agentfiles status                  Check for available skill updates
+#   agentfiles update [<type>/<name>]  Update versioned components (default: all)
+#   agentfiles list                    List installed versioned components
+#   agentfiles status                  Check for available updates
 #   agentfiles remove <type>/<name>    Remove an installed component
-#   agentfiles force-update            Clear CLI cache and re-download agentfiles.sh
+#   agentfiles force-update            Clear CLI cache and re-download
 #
-# Supported types:
-#   skill/<name>    From skills/<name>/        → <skills_dir>/<name>/
-#   hook/<name>     From hooks/<name>.sh       → .claude/hooks/<name>.sh
-#   command/<name>  From commands/<name>.md    → .claude/commands/<name>.md
+# Types:
+#   skill/<name>    Directory  skills/<name>/       →  <skills_dir>/<name>/
+#   hook/<name>     Directory  hooks/<name>/        →  .claude/hooks/<name>/
+#   prompt/<name>   File       prompts/<name>.md    →  .claude/commands/<name>.md
+#   command/<name>  File       commands/<name>.md   →  .claude/commands/<name>.md
+#
+# Directory types (skill, hook) support VERSION.md and can be version-tracked.
+# File types (prompt, command) are always reinstalled on update.
 #
 # Configuration (environment variables):
 #   AGENTFILES_REPO    GitHub repo slug  (default: adjmunro/agentfiles)
@@ -55,8 +59,13 @@ resolve_paths() {
       _is_dir=true
       ;;
     hook)
-      _repo_path="hooks/${name}.sh"
-      _local_dest=".claude/hooks/${name}.sh"
+      _repo_path="hooks/${name}"
+      _local_dest=".claude/hooks/${name}"
+      _is_dir=true
+      ;;
+    prompt)
+      _repo_path="prompts/${name}.md"
+      _local_dest=".claude/commands/${name}.md"
       _is_dir=false
       ;;
     command)
@@ -65,7 +74,7 @@ resolve_paths() {
       _is_dir=false
       ;;
     *)
-      die "unknown type '${type}' — supported: skill, hook, command"
+      die "unknown type '${type}' — supported: skill, hook, prompt, command"
       ;;
   esac
 }
@@ -79,24 +88,24 @@ skills_dir() {
   fi
 }
 
-# Extract the first semver string from VERSION.md content.
+# Extract the first semver string from content.
 parse_version() {
   grep -oE '[0-9]+\.[0-9]+\.[0-9]+' <<< "$1" | head -1
 }
 
-# Fetch the current version of a skill from the remote repository.
+# Fetch the version from a remote directory component's VERSION.md.
 remote_version() {
-  local name="$1"
+  local repo_path="$1"
   local content
-  content=$(curl -fsSL "${AGENTFILES_RAW}/skills/${name}/VERSION.md" 2>/dev/null) \
+  content=$(curl -fsSL "${AGENTFILES_RAW}/${repo_path}/VERSION.md" 2>/dev/null) \
     || { print ""; return 0; }
   parse_version "$content"
 }
 
-# Read the version from an installed skill's own VERSION.md.
+# Read the version from an installed directory component's VERSION.md.
 local_version() {
-  local name="$1"
-  local vfile; vfile="$(skills_dir)/${name}/VERSION.md"
+  local local_dest="$1"
+  local vfile="${local_dest}/VERSION.md"
   [[ -f "$vfile" ]] || { print ""; return 0; }
   parse_version "$(< "$vfile")"
 }
@@ -109,22 +118,21 @@ cmd_install() {
   parse_ref "$ref"
   resolve_paths "$_type" "$_name"
 
-  # Skills: check versions and skip if already current.
   local version=""
   if [[ "$_is_dir" == true ]]; then
-    version=$(remote_version "$_name")
-    [[ -z "$version" ]] && die "${_type}/${_name} not found in ${AGENTFILES_REPO}"
+    version=$(remote_version "$_repo_path")
+    [[ -z "$version" ]] && die "${ref} not found in ${AGENTFILES_REPO}"
 
-    local current; current=$(local_version "$_name")
+    local current; current=$(local_version "$_local_dest")
     if [[ "$current" == "$version" ]]; then
-      print "${_type}/${_name} is already at v${version}."
+      print "${ref} is already at v${version}."
       return
     fi
     [[ -n "$current" ]] \
-      && print "Updating ${_type}/${_name} v${current} → v${version}..." \
-      || print "Installing ${_type}/${_name} v${version}..."
+      && print "Updating ${ref} v${current} → v${version}..." \
+      || print "Installing ${ref} v${version}..."
   else
-    print "Installing ${_type}/${_name}..."
+    print "Installing ${ref}..."
   fi
 
   # Sparse-clone only the target path.
@@ -135,7 +143,7 @@ cmd_install() {
     git clone --quiet --filter=blob:none --sparse --depth=1 \
       "$AGENTFILES_REMOTE" "$tmp" 2>/dev/null
     git -C "$tmp" sparse-checkout set "$_repo_path" >/dev/null 2>&1
-  ) || die "failed to fetch '${_type}/${_name}' from ${AGENTFILES_REPO}"
+  ) || die "failed to fetch '${ref}' from ${AGENTFILES_REPO}"
 
   local src="${tmp}/${_repo_path}"
   [[ -e "$src" ]] || die "'${_repo_path}' not found in repository"
@@ -153,45 +161,55 @@ cmd_install() {
   trap - EXIT INT TERM
 
   [[ -n "$version" ]] \
-    && ok "${_type}/${_name} v${version} installed" \
-    || ok "${_type}/${_name} installed"
+    && ok "${ref} v${version} installed" \
+    || ok "${ref} installed"
 }
 
 cmd_update() {
   local ref="${1:-}"
 
   if [[ -z "$ref" ]]; then
-    local dir; dir=$(skills_dir)
-    [[ -d "$dir" ]] || { print "No skills installed."; return; }
+    # Update all installed directory-type components that have a VERSION.md.
     local found=false
-    for skill_dir in "${dir}"/*/; do
-      [[ -d "$skill_dir" ]] || continue
-      found=true
-      local name="${skill_dir%/}"; name="${name##*/}"
-      cmd_update "skill/${name}"
+    local sdir; sdir=$(skills_dir)
+
+    for dir_pair in "${sdir}:skill" ".claude/hooks:hook"; do
+      local base="${dir_pair%%:*}"
+      local type="${dir_pair##*:}"
+      [[ -d "$base" ]] || continue
+      for component_dir in "${base}"/*/; do
+        [[ -d "$component_dir" ]] || continue
+        [[ -f "${component_dir}VERSION.md" ]] || continue
+        found=true
+        local name="${component_dir%/}"; name="${name##*/}"
+        cmd_update "${type}/${name}"
+      done
     done
-    $found || print "No skills installed."
+
+    $found || print "No versioned components installed."
     return
   fi
 
-  local _type _name; parse_ref "$ref"
+  local _type _name _repo_path _local_dest _is_dir
+  parse_ref "$ref"
+  resolve_paths "$_type" "$_name"
 
-  # Non-skill types have no VERSION.md — reinstall unconditionally.
-  if [[ "$_type" != "skill" ]]; then
+  # File-based types have no VERSION.md — reinstall unconditionally.
+  if [[ "$_is_dir" != true ]]; then
     print "note: no version tracking for ${_type}s — reinstalling"
     cmd_install "$ref"
     return
   fi
 
-  local current; current=$(local_version "$_name")
+  local current; current=$(local_version "$_local_dest")
   [[ -z "$current" ]] \
-    && die "skill '${_name}' is not installed (run: agentfiles install skill/${_name})"
+    && die "${ref} is not installed (run: agentfiles install ${ref})"
 
-  local latest; latest=$(remote_version "$_name")
-  [[ -z "$latest" ]] && die "could not reach remote for '${_name}'"
+  local latest; latest=$(remote_version "$_repo_path")
+  [[ -z "$latest" ]] && die "could not reach remote for '${ref}'"
 
   if [[ "$current" == "$latest" ]]; then
-    print "skill/${_name}: already up to date (v${current})"
+    print "${ref}: already up to date (v${current})"
     return
   fi
 
@@ -199,43 +217,56 @@ cmd_update() {
 }
 
 cmd_list() {
-  local dir; dir=$(skills_dir)
-  [[ -d "$dir" ]] || { print "No skills installed."; return; }
-
   local found=false
-  print "Installed skills:"
-  for skill_dir in "${dir}"/*/; do
-    [[ -d "$skill_dir" ]] || continue
-    found=true
-    local name="${skill_dir%/}"; name="${name##*/}"
-    local version; version=$(local_version "$name")
-    printf "  %-22s v%s\n" "$name" "$version"
+  local sdir; sdir=$(skills_dir)
+
+  for dir_pair in "${sdir}:skill" ".claude/hooks:hook"; do
+    local base="${dir_pair%%:*}"
+    local type="${dir_pair##*:}"
+    [[ -d "$base" ]] || continue
+    for component_dir in "${base}"/*/; do
+      [[ -d "$component_dir" ]] || continue
+      [[ -f "${component_dir}VERSION.md" ]] || continue
+      found=true
+      local name="${component_dir%/}"; name="${name##*/}"
+      local version; version=$(local_version "$component_dir")
+      printf "  %-8s %-20s v%s\n" "${type}" "$name" "$version"
+    done
   done
-  $found || print "  (none)"
+
+  $found && return
+  print "No versioned components installed."
 }
 
 cmd_status() {
-  local dir; dir=$(skills_dir)
-  [[ -d "$dir" ]] || { print "No skills installed."; return; }
+  local found=false
+  local sdir; sdir=$(skills_dir)
 
   print "Checking for updates..."
-  local found=false
-  for skill_dir in "${dir}"/*/; do
-    [[ -d "$skill_dir" ]] || continue
-    found=true
-    local name="${skill_dir%/}"; name="${name##*/}"
-    local current; current=$(local_version "$name")
-    local latest;  latest=$(remote_version "$name" 2>/dev/null) || latest=""
+  for dir_pair in "${sdir}:skill" ".claude/hooks:hook"; do
+    local base="${dir_pair%%:*}"
+    local type="${dir_pair##*:}"
+    [[ -d "$base" ]] || continue
+    for component_dir in "${base}"/*/; do
+      [[ -d "$component_dir" ]] || continue
+      [[ -f "${component_dir}VERSION.md" ]] || continue
+      found=true
+      local name="${component_dir%/}"; name="${name##*/}"
+      local repo_path; [[ "$type" == "skill" ]] && repo_path="skills/${name}" || repo_path="hooks/${name}"
+      local current; current=$(local_version "$component_dir")
+      local latest;  latest=$(remote_version "$repo_path" 2>/dev/null) || latest=""
 
-    if [[ -z "$latest" ]]; then
-      printf "  %-22s v%s  (remote unavailable)\n" "$name" "$current"
-    elif [[ "$current" == "$latest" ]]; then
-      printf "  %-22s v%s  up to date\n" "$name" "$current"
-    else
-      printf "  %-22s v%s → v%s  UPDATE AVAILABLE\n" "$name" "$current" "$latest"
-    fi
+      if [[ -z "$latest" ]]; then
+        printf "  %-8s %-20s v%s  (remote unavailable)\n" "${type}" "$name" "$current"
+      elif [[ "$current" == "$latest" ]]; then
+        printf "  %-8s %-20s v%s  up to date\n" "${type}" "$name" "$current"
+      else
+        printf "  %-8s %-20s v%s → v%s  UPDATE AVAILABLE\n" "${type}" "$name" "$current" "$latest"
+      fi
+    done
   done
-  $found || print "  No skills installed."
+
+  $found || print "  No versioned components installed."
 }
 
 cmd_remove() {
@@ -244,9 +275,9 @@ cmd_remove() {
   parse_ref "$ref"
   resolve_paths "$_type" "$_name"
 
-  [[ -e "$_local_dest" ]] || die "${_type}/${_name} is not installed"
+  [[ -e "$_local_dest" ]] || die "${ref} is not installed"
   rm -rf "$_local_dest"
-  ok "${_type}/${_name} removed"
+  ok "${ref} removed"
 }
 
 cmd_force_update() {
@@ -271,24 +302,26 @@ case "${1:-}" in
     print ""
     print "Commands:"
     print "  install <type>/<name>    Install a component from ${AGENTFILES_REPO}"
-    print "  update [skill/<name>]    Update installed skills (default: all)"
-    print "  list                     List installed skills and their versions"
-    print "  status                   Check for available skill updates"
+    print "  update [<type>/<name>]   Update versioned components (default: all)"
+    print "  list                     List installed versioned components"
+    print "  status                   Check for available updates"
     print "  remove <type>/<name>     Remove an installed component"
-    print "  force-update             Clear CLI cache and re-download agentfiles.sh"
+    print "  force-update             Clear CLI cache and re-download"
     print ""
     print "Types:"
-    print "  skill/<name>    skills/<name>/       →  <skills_dir>/<name>/"
-    print "  hook/<name>     hooks/<name>.sh      →  .claude/hooks/<name>.sh"
-    print "  command/<name>  commands/<name>.md   →  .claude/commands/<name>.md"
+    print "  skill/<name>    Directory  skills/<name>/      →  <skills_dir>/<name>/"
+    print "  hook/<name>     Directory  hooks/<name>/       →  .claude/hooks/<name>/"
+    print "  prompt/<name>   File       prompts/<name>.md   →  .claude/commands/<name>.md"
+    print "  command/<name>  File       commands/<name>.md  →  .claude/commands/<name>.md"
+    print ""
+    print "Directory types (skill, hook) carry VERSION.md and support version tracking."
+    print "File types (prompt, command) are always reinstalled on update."
     print ""
     print "Environment:"
     print "  AGENTFILES_REPO    Source repo  (default: adjmunro/agentfiles)"
     print "  AGENTFILES_BRANCH  Branch       (default: main)"
     print ""
     print "Notes:"
-    print "  Skills have VERSION.md — update checks before fetching, status compares versions."
-    print "  Hooks and commands have no version tracking — update always reinstalls."
     print "  For private repos, ensure git credentials are configured before installing."
     ;;
 esac
