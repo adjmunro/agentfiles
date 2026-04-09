@@ -77,11 +77,12 @@ Always infer `owner/repo` from the current repository: `git remote get-url origi
                                                               │ (all P5-6 done)
                                                               ▼
                                               [Wave 4: Consolidation — Orchestrator]
-                                              Phase 8: merge verified isolated branches → consolidated branch
-                                              Full integration test suite on consolidated branch
+                                              Phase 8: reset PR head branch to base
+                                              Merge verified isolated branches → PR head branch
+                                              Full integration test suite on PR head branch
                                               Bisect on failure to identify regression introducer
-                                              Force-push consolidated branch → PR head branch
-                                              Clean up isolated branches
+                                              Force-push PR head branch
+                                              Delete all isolated branches (remote + local)
                                                               │
                                                               ▼
                                               [Wave 5: Summary — Orchestrator]
@@ -183,12 +184,12 @@ the **orchestrator** (not a sub-agent) executes Phase 8. This is a sequential,
 orchestrator-only step — there is exactly one Phase 8 execution per skill run.
 
 Read `phases/p8-consolidate.md` and execute it. Phase 8:
-1. Creates a fresh consolidation branch from base
-2. Merges each verified isolated branch in manifest order
+1. Resets the PR head branch to base (discarding the original dependabot commits locally)
+2. Merges each verified isolated branch into the PR head branch in manifest order
 3. Runs the full integration test suite
 4. Bisects on failure to identify the regression introducer
-5. Force-pushes the consolidation branch to replace the PR head branch
-6. Cleans up isolated branches
+5. Force-pushes the PR head branch (required — history was rewritten in step 1)
+6. Deletes all isolated branches (remote and local) and the local PR head checkout
 
 The consolidation summary produced by Phase 8 is passed to Phase 7.
 

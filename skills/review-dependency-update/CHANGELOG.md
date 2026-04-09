@@ -2,6 +2,25 @@
 
 ---
 
+## 3.7.0 — Direct Head Branch Consolidation (2026-04-10)
+
+Phase 8 no longer creates a separate `dep-review/<PR-number>/consolidated` working
+branch. Instead it resets the PR head branch to base and merges the isolated
+branches directly onto it — eliminating the extra branch, simplifying cleanup,
+and keeping local/remote names in sync throughout.
+
+- **Step A:** replaced "create dep-review/.../consolidated from base" with
+  "fetch + checkout head-branch, reset --hard to origin/<base-branch>"
+- **Step E:** push is now `git push --force-with-lease origin <head-branch>`
+  directly (was a cross-ref push from consolidated → head-branch); force-push
+  is still required because Step A rewrites history past the original dependabot
+  commits
+- **Step F:** simplified — only isolated branches need deleting (remote + local);
+  no consolidated branch to clean up; checkout base then delete local head-branch
+- **Orchestrator:** updated pipeline diagram and Phase 8 description to match
+
+---
+
 ## 3.6.0 — Branch Cleanup (2026-04-10)
 
 Phase 8 Step F now deletes all `dep-review/<PR-number>/*` working branches on

@@ -2,8 +2,8 @@
 <!-- Part of: review-dependency-update.md orchestrator -->
 <!-- Active when: All Wave 3 agents (Phases 5–6) have completed -->
 <!-- Run by: the orchestrator only — never by a per-bump sub-agent -->
-<!-- This phase merges all verified isolated branches into a single consolidated
-     branch and replaces the PR head branch. -->
+<!-- This phase merges all verified isolated branches directly into the PR head
+     branch and pushes it, then deletes all working branches. -->
 
 This phase is the last operation that touches git. It runs once, after all
 per-bump agents have completed Phases 5 and 6. The orchestrator (not a sub-agent)
@@ -11,26 +11,25 @@ executes every step in sequence.
 
 ---
 
-## Step A — Create the Consolidation Branch
+## Step A — Reset the PR Head Branch to Base
 
-Create a fresh branch forked from the **base branch** (not the current PR head).
-This branch will accumulate each alias group's verified commits in manifest order.
+Work directly on the PR head branch rather than creating a separate consolidation
+branch. Fetch the current remote state, check it out, then rewind it to the base
+branch tip so the isolated branches can be merged onto a clean slate:
 
 ```
-# Delete the consolidated branch if it already exists from a prior run
-git push origin --delete dep-review/<PR-number>/consolidated 2>/dev/null || true
-git branch -D dep-review/<PR-number>/consolidated 2>/dev/null || true
-
-git fetch origin <base-branch>
-git checkout origin/<base-branch>
-git checkout -b dep-review/<PR-number>/consolidated
+git fetch origin <head-branch> <base-branch>
+git checkout <head-branch>
+git reset --hard origin/<base-branch>
 ```
 
-Confirm you are on the correct branch:
+Confirm you are on the correct branch and at the base tip:
 
 ```
 git branch --show-current
-# must print: dep-review/<PR-number>/consolidated
+# must print: <head-branch>
+git log --oneline -1
+# must match HEAD of origin/<base-branch>
 ```
 
 ---
@@ -68,12 +67,11 @@ For each alias in the manifest, in the order they were recorded:
 
 **All-skipped early exit:** If every alias was skipped (i.e., the merge results list
 contains only `skipped` entries), do **not** proceed to Steps C, D, or E. The
-consolidated branch has no changes relative to base — running the test suite would
-be meaningless and pushing would overwrite the PR head with a no-op branch.
+branch has been reset to base but has no new changes — running the test suite
+would be meaningless and pushing would overwrite the PR head with a no-op.
 Instead:
 - Write to Step G: "All aliases were skipped — no isolated branches were merged."
-- Proceed directly to Step F (cleanup) to delete the empty consolidated branch and
-  all remote isolated branches.
+- Proceed directly to Step F (cleanup) to delete all isolated branches.
 - In Step G Notes field: "PR head branch was not modified — all bumps were flagged
   as BLOCK or unverified by Phase 5. Manual review required before merging."
 
@@ -131,7 +129,7 @@ For each alias merge point (from oldest to newest in consolidation order):
    - Return to the HEAD of the consolidated branch:
 
      ```
-     git checkout dep-review/<PR-number>/consolidated
+     git checkout <head-branch>
      ```
 
 If bisection cannot isolate a single alias (e.g., the failure only occurs when
@@ -139,43 +137,42 @@ two alias groups are present together), record that finding explicitly. Then
 return to the HEAD of the consolidated branch before continuing:
 
 ```
-git checkout dep-review/<PR-number>/consolidated
+git checkout <head-branch>
 ```
 
 ---
 
-## Step E — Force-Push to Replace the PR Head Branch
+## Step E — Force-Push the PR Head Branch
 
-Push the consolidation branch to the remote, replacing the PR head branch:
+Push the updated `<head-branch>` to the remote. A force-push is required because
+Step A rewound the local history past the original dependabot commits:
 
 ```
-git push --force-with-lease origin \
-  dep-review/<PR-number>/consolidated:<head-branch>
+git push --force-with-lease origin <head-branch>
 ```
 
-Use `--force-with-lease` to fail safely if the remote has moved. If the push is
-rejected:
+Use `--force-with-lease` to fail safely if the remote has moved since Phase 1b.
+If the push is rejected:
 
 1. Run `git fetch origin <head-branch>` to retrieve the current remote state.
 2. Run `git log --oneline origin/<head-branch>` to inspect what changed.
 3. **If the remote tip matches the PR's original head commit** (i.e., no human has
-   pushed to the branch since Phase 1b): the rejection is a lease mismatch from a
-   stale local ref — update the lease and retry once:
+   pushed to the branch since Phase 1b): the rejection is a stale lease artefact —
+   update the lease and retry once:
    ```
    git push --force-with-lease=<head-branch>:$(git rev-parse origin/<head-branch>) \
-     origin dep-review/<PR-number>/consolidated:<head-branch>
+     origin <head-branch>
    ```
 4. **If the remote has new commits not from this run** (i.e., a human or another
    process pushed after Phase 1b): do **not** retry. Stop and report:
    > "Consolidation push rejected — `<head-branch>` has new commits on the remote
-   > that were not part of this review run. Manual merge of the consolidated branch
-   > into `<head-branch>` is required before the PR can be updated."
+   > that were not part of this review run. Re-run Phase 8 after reconciling the
+   > remote changes, or push manually."
    Record this in Step G under Notes and proceed to Step F (cleanup only).
 
 Do not use `--force` without `--lease` under any circumstance.
 
-After a successful push, confirm the PR head branch now points to the
-consolidation branch's tip:
+After a successful push, confirm the remote head branch matches the local tip:
 
 ```
 gh pr view <PR-number> --repo <owner/repo> --json headRefOid --jq '.headRefOid'
@@ -183,43 +180,25 @@ gh pr view <PR-number> --repo <owner/repo> --json headRefOid --jq '.headRefOid'
 
 ---
 
-## Step F — Clean Up All Working Branches
+## Step F — Clean Up Working Branches
 
-All `dep-review/<PR-number>/*` branches have served their purpose once
-the consolidated branch has been force-pushed to the PR head in Step E.
-Delete all of them — remote and local — and return to the base branch.
-
-**1. Delete each isolated branch (remote + local).** This applies to every alias
-in the manifest, whether merged or skipped:
+All `dep-review/<PR-number>/<alias>` isolated branches have served their purpose.
+Delete each one — remote and local:
 
 ```
 git push origin --delete dep-review/<PR-number>/<alias> 2>/dev/null || true
 git branch -D dep-review/<PR-number>/<alias> 2>/dev/null || true
 ```
 
-Repeat for each alias in the manifest.
+Repeat for each alias in the manifest (merged and skipped alike).
 
-**2. Check out the base branch** so git permits deletion of the current branch:
+After all isolated branches are deleted, check out the base branch and delete the
+local copy of the PR head branch. The remote was updated by Step E; the local copy
+can be re-fetched with `gh pr checkout` if further changes are needed:
 
 ```
 git checkout <base-branch>
-```
-
-**3. Delete the consolidated branch (remote + local).** After Step E the
-PR head branch carries the consolidated tip — the working branch is no longer
-needed:
-
-```
-git push origin --delete dep-review/<PR-number>/consolidated 2>/dev/null || true
-git branch -D dep-review/<PR-number>/consolidated
-```
-
-**4. Delete the local copy of the PR head branch.** Phase 1b Step A checked it
-out; it now lags behind the consolidated force-push and should not be left behind
-as stale state:
-
-```
-git branch -D <head-branch> 2>/dev/null || true
+git branch -D <head-branch>
 ```
 
 Do **not** delete the remote `<head-branch>` — it is the PR head and must remain.
