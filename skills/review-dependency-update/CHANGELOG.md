@@ -2,6 +2,22 @@
 
 ---
 
+## 3.6.0 — Branch Cleanup (2026-04-10)
+
+Phase 8 Step F now deletes all `dep-review/<PR-number>/*` working branches on
+both the remote and locally, and returns to the base branch — previously only
+remote isolated branches were deleted, leaving local isolated branches, the
+consolidated branch, and the checked-out PR head branch behind as stale state.
+
+- **Step F (remote isolated branches):** unchanged — `git push origin --delete` per alias
+- **Step F (local isolated branches):** added `git branch -D` per alias — were never cleaned up
+- **Step F (consolidated branch):** added remote + local deletion after base checkout — was
+  explicitly excluded from cleanup with incorrect reasoning ("it now backs the PR head")
+- **Step F (local PR head branch):** added `git branch -D <head-branch>` — was checked out
+  in Phase 1b Step A and left behind pointing to the pre-consolidation tip
+
+---
+
 ## 3.5.0 — The Precise Searcher (2026-04-01)
 
 Closes two first-time-agent gaps identified in the eighth optimisation pass:

@@ -183,18 +183,46 @@ gh pr view <PR-number> --repo <owner/repo> --json headRefOid --jq '.headRefOid'
 
 ---
 
-## Step F — Clean Up Isolated Branches
+## Step F — Clean Up All Working Branches
 
-Delete each remote isolated branch that was successfully merged in Step B.
-Skipped branches are also deleted — they will not be merged and their purpose
-is complete.
+All `dep-review/<PR-number>/*` branches have served their purpose once
+the consolidated branch has been force-pushed to the PR head in Step E.
+Delete all of them — remote and local — and return to the base branch.
+
+**1. Delete each isolated branch (remote + local).** This applies to every alias
+in the manifest, whether merged or skipped:
 
 ```
-git push origin --delete dep-review/<PR-number>/<alias>
+git push origin --delete dep-review/<PR-number>/<alias> 2>/dev/null || true
+git branch -D dep-review/<PR-number>/<alias> 2>/dev/null || true
 ```
 
-Repeat for each alias in the manifest. Do not delete the consolidation branch
-(`dep-review/<PR-number>/consolidated`) — it now backs the PR head branch.
+Repeat for each alias in the manifest.
+
+**2. Check out the base branch** so git permits deletion of the current branch:
+
+```
+git checkout <base-branch>
+```
+
+**3. Delete the consolidated branch (remote + local).** After Step E the
+PR head branch carries the consolidated tip — the working branch is no longer
+needed:
+
+```
+git push origin --delete dep-review/<PR-number>/consolidated 2>/dev/null || true
+git branch -D dep-review/<PR-number>/consolidated
+```
+
+**4. Delete the local copy of the PR head branch.** Phase 1b Step A checked it
+out; it now lags behind the consolidated force-push and should not be left behind
+as stale state:
+
+```
+git branch -D <head-branch> 2>/dev/null || true
+```
+
+Do **not** delete the remote `<head-branch>` — it is the PR head and must remain.
 
 ---
 
