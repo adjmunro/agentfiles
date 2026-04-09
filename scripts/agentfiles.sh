@@ -128,17 +128,23 @@ fetch_component() {
   fi
 }
 
-# Ensure .claude/<type_dir>/ symlinks to ../.agents/<type_dir>/ if .claude/ exists
-# and the symlink does not already exist.
+# Create .claude/<type_dir>/<name> → ../../.agents/<type_dir>/<name> if .claude/ exists
+# and that symlink is not already present. Uses per-component symlinks so .claude/<type_dir>/
+# can hold a mix of locally managed files and agentfiles-installed component links.
 ensure_claude_symlink() {
-  local type_dir="$1"  # e.g. "skills", "hooks", "prompts"
-  local claude_dir=".claude/${type_dir}"
+  local type_dir="$1"  # e.g. "skills"
+  local name="$2"      # e.g. "implement"
 
-  [[ -d ".claude" ]]    || return 0  # no .claude/ in this project, skip
-  [[ -e "$claude_dir" ]] && return 0  # already exists (real dir or symlink), skip
+  [[ -d ".claude" ]] || return 0  # no .claude/ in this project
 
-  ln -s "../.agents/${type_dir}" "$claude_dir"
-  step "→ ${claude_dir}/ → .agents/${type_dir}/ (symlink)"
+  local claude_type_dir=".claude/${type_dir}"
+  local claude_dest="${claude_type_dir}/${name}"
+
+  [[ -e "$claude_dest" ]] && return 0  # already exists (real dir or symlink)
+
+  mkdir -p "$claude_type_dir"
+  ln -s "../../.agents/${type_dir}/${name}" "$claude_dest"
+  step "→ ${claude_dest} → .agents/${type_dir}/${name} (symlink)"
 }
 
 # List component names available under a repo directory.

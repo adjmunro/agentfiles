@@ -2,14 +2,14 @@
 
 ---
 
-## v1.9.1 — 2026-03-27
+## 1.9.1 — Richness Score Tuning (2026-03-27)
 
 ### Changed
 - M15 Persona Richness Score rubric in `p2-baseline.md`: added Identity line row (`# Name (Role)` format), updated maximum from 14→15, updated PRS formula to divide by 15, updated incomplete-persona thresholds from ≤71 (10/14) to ≤73 (11/15) — aligns with SRCA gap-close in skills/personas run 8 [H25]
 
 ---
 
-## v1.9.0 — 2026-03-27
+## 1.9.0 — Metric Declaration Pass (2026-03-27)
 
 ### Added
 - Seed Metric Weights Reference table added to `p2-baseline.md` immediately above the Composite Calculation section — all M1–M15 weights now explicitly declared in the instruction file that uses them [H1]
@@ -20,7 +20,7 @@
 
 ---
 
-## v1.8.0 - 2026-03-25 - Pattern Promotion, Loop Safety, and Self-Audit Correctness
+## 1.8.0 — Pattern Promotion and Self-Audit (2026-03-25)
 
 ### Added
 - P15 (Measurement Accuracy Retrospective) added to `p3-hypothesize.md` Design Patterns library
@@ -40,7 +40,7 @@
 
 ---
 
-## v1.7.0 - 2026-03-22 - Approval Gate Removal
+## 1.7.0 — Approval Gate Removal (2026-03-22)
 
 ### Added
 - Loop support: `/optimise N <path>` runs the full 5-phase cycle N times; `/optimise auto <path>` loops until the composite score exceeds 95% using `(confirmed + 0.5 × partial) / total × 100`; default (no specifier) remains a single run
@@ -58,7 +58,7 @@
 
 ---
 
-## v1.6.0 - 2026-03-22 - Pattern Library Expansion
+## 1.6.0 — Pattern Library Expansion (2026-03-22)
 
 ### Added
 - P12 (Content Synchronisation Audit), P13 (Corrective-Pattern Applicability Classification), P14 (Pre-Experiment Dependency Scan) added to `p3-hypothesize.md` Design Patterns library
@@ -77,7 +77,7 @@
 
 ---
 
-## v1.5.0 - 2026-03-22 - Dependency Scan Addition
+## 1.5.0 — Dependency Scan Addition (2026-03-22)
 
 ### Added
 - 5 new custom metrics: Help Content Currency (MX15), Pattern Experimental Validation Rate (MX16), Research Log Navigability Score (MX17), Hypothesis Recurrence Rate (MX18), Metric Definition Cross-File Consistency (MX19, moonshot 2×)
@@ -97,7 +97,7 @@
 
 ---
 
-## v1.4.0 - 2026-03-22 - Persona Experiment Framework
+## 1.4.0 — Persona Experiment Framework (2026-03-22)
 
 ### Added
 - M14 — Persona-Phase Fit Score (PPF): new seed metric measuring whether phases have appropriately matched personas; applies when persona system is present; includes persona staleness check (missing files score 0.0, speciated parents score 0.5)
@@ -122,7 +122,7 @@
 
 ---
 
-## v1.3.0 - 2026-03-22 - Help Command Addition
+## 1.3.0 — Help Command Addition (2026-03-22)
 
 ### Added
 - M13 — Instruction Token Efficiency (ITE): new universal seed metric measuring semantic density by detecting padding tokens (throat-clearing preamble, redundant intensifiers, decorative structure, narrative restatement); ITE = 1 − (padding_tokens / total_tokens)
@@ -148,7 +148,7 @@
 
 ---
 
-## v1.2.0 - 2026-03-22 - Phase Split
+## 1.2.0 — Phase Split (2026-03-22)
 
 ### Added
 - Phase file split: `commands/optimise.md` replaced by orchestrator + `commands/phases/p1-p5.md` — per-phase context load drops from ~2,500t to ~700-1,000t (M10 CLE 75 → 95)
@@ -164,7 +164,7 @@
 
 ---
 
-## v1.1.0 - 2026-03-22 - TTL Policy Addition
+## 1.1.0 — TTL Policy Addition (2026-03-22)
 
 ### Added
 - 3-tier TTL policy for `research-log.md` with target-path validation (H3)
@@ -183,7 +183,7 @@
 
 ---
 
-## v1.0.0 - 2026-03-22 - Initial Release
+## 1.0.0 — Initial Release (2026-03-22)
 
 ### Added
 - Initial release

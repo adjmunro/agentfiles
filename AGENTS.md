@@ -61,7 +61,7 @@ Every component directory under `skills/`, `hooks/`, and `prompts/` is self-cont
 
 Do not add canonical content under `.claude/` or `.agents/`. Edits always go in the top-level type directory.
 
-When `agentfiles install` adds a component to a target project, it writes to `.agents/<type>/<name>/` and creates `.claude/<type>/` → `../.agents/<type>/` if `.claude/` exists and the symlink is missing.
+When `agentfiles install` adds a component to a target project, it writes to `.agents/<type>/<name>/` and creates `.claude/<type>/<name>` → `../../.agents/<type>/<name>` if `.claude/` exists and the per-component symlink is missing.
 
 ### Routing — what goes where
 
@@ -71,11 +71,11 @@ When `agentfiles install` adds a component to a target project, it writes to `.a
 | A shell hook that fires automatically on agent events | `hooks/` | `.agents/hooks/<name>/` |
 | A one-shot instruction run once to set something up or change the project | `prompts/` | `.agents/prompts/<name>/` |
 | A shell utility or CLI tool | `scripts/` | `~/.local/bin/` |
-| A legacy standalone command file | `commands/` | — migrate to skill or prompt |
+| A legacy standalone command file | `commands/` | — (no install target) |
 
 **Rule of thumb:** if a human invokes it repeatedly as a slash command → skill. If it fires automatically on an agent event → hook. If it reads local context and applies a one-time change → prompt.
 
-> **Note on "commands":** Claude Code's slash command and hook *platform features* are not deprecated. The agentfiles `commands/` *directory* is a legacy format predating the skill structure — its files are pending migration.
+> **Note on "commands":** Claude Code's slash command and hook *platform features* are not deprecated. The agentfiles `commands/` *directory* is a legacy format predating the skill structure — its files do not need migrating.
 
 ### VERSION.md specification
 

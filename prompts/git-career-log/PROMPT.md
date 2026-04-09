@@ -1,6 +1,6 @@
 ---
 name: git-career-log
-description: Use when generating a portfolio/career log of engineering work from git history for job search, interview prep, or personal records. Use when someone wants to document what they built, why, and what skills it demonstrates.
+description: Generate a portfolio/career log of engineering work from git history for job search, interview prep, or personal records.
 ---
 
 # Git Career Log
