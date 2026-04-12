@@ -2,6 +2,24 @@
 
 ---
 
+## 3.9.0 — Summary as Entry Point (2026-04-13)
+
+Phase 7 summary now serves as a navigation guide: tells the reviewer which
+per-bump comments are worth opening and why, rather than just restating verdicts.
+
+- **Remediations applied section:** lists every commit where code was written on
+  the reviewer's behalf (hash + one-line description) so they know what to
+  scrutinise; `_None required._` when Phase 4 made no commits
+- **Worth a closer look section:** flags non-blocking items that warrant attention
+  — auto-migrated breaking changes (verify correctness), supply-chain concerns,
+  APPROVE WITH CONDITIONS rationale, partial remediations, unresolved deprecations;
+  `_Nothing flagged._` when clean
+- **Needs human action:** unchanged — explicit decisions or manual work required
+  before merge
+- Step A updated to collect remediations and notable findings alongside verdicts
+
+---
+
 ## 3.8.0 — Concise Run Summary (2026-04-13)
 
 Phase 7 summary comment radically simplified. The old template restated all

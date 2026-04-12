@@ -28,8 +28,12 @@ For each alias, extract only:
 - Alias name
 - Old version → new version
 - Verdict (APPROVE / APPROVE WITH CONDITIONS / REQUEST CHANGES / BLOCK)
-- Any items requiring human action (unresolved failures, partial remediations,
-  flagged supply-chain concerns, skipped aliases, push-failed aliases)
+- Remediations applied: commit hash(es) and one-line description of each fix
+- Notable findings: anything worth scrutiny even if not blocking — supply-chain
+  concerns, breaking changes that were auto-migrated (verify correctness),
+  APPROVE WITH CONDITIONS rationale, partial fixes, deprecations left unresolved
+- Items requiring human action: unresolved failures, skipped aliases, push-failed
+  aliases, anything Phase 5 flagged as requiring explicit decision before merge
 
 Also retrieve the Phase 8 consolidation summary (read
 `/tmp/dep-review-<PR-number>-consolidation-summary.md` if it exists, otherwise
@@ -57,25 +61,44 @@ comment is a navigator, not a repeat.
 **Overall:** <APPROVE ALL / APPROVE WITH CONDITIONS / REQUEST CHANGES / BLOCK>
 
 **Integration tests:** <PASS | FAIL> — <suite name> <N>/<N> passing<br>
-<If failed: bisect finding — e.g. "`kotlin` introduced the regression">
+<If failed: regression introduced by `<alias>` — see bisect findings in Phase 8>
+
+**Remediations applied:**
+- `<alias>` `<short-hash>` — <one-line description, e.g. "migrated 3 DataStore usages off deprecated `preferences()` API">
+
+_None required._
+
+**Worth a closer look:**
+- `<alias>` — <one-line flag, e.g. "breaking change in FragmentManager API — auto-migrated, verify correctness">
+- `<alias>` — <one-line flag, e.g. "unsigned release tags — Rook flagged possible concern">
+- `<alias>` — <one-line flag, e.g. "APPROVE WITH CONDITIONS: flaky CI job unrelated to bump, monitor next run">
+
+_Nothing flagged._
 
 **Needs human action:**
-- <alias> — <one-line reason, e.g. "BLOCK: unresolved CI failure in :app:test">
-- <alias> — <one-line reason, e.g. "deprecated API in DataStore not auto-fixed — 3 call sites">
+- `<alias>` — <one-line reason, e.g. "BLOCK: unresolved CI failure in :app:testRelease">
+- `<alias>` — <one-line reason, e.g. "deprecated API in WorkManager not auto-fixed — 5 call sites require manual migration">
 
-_None — all bumps approved and integration tests passed._
-_(use one of the above two lines, not both)_
+_None._
 
 *Individual comments above contain full detail per bump.*
 ```
 
 Rules:
-- The "Needs human action" list replaces the bullet with `_None_` if there is
-  nothing requiring action. Remove the `_None_` line if there are action items.
-- Only include a `Bisect finding` line if integration tests failed.
-- Do not add a plain-English paragraph — the table and action list are sufficient.
-- Do not repeat CI status, supply-chain signals, breaking-change details, or
-  remediation commit hashes — those are all in the per-bump comments.
+- **Remediations applied:** include every commit where code was changed on the
+  reviewer's behalf. Use `_None required._` if Phase 4 made no commits. This
+  section exists so the reviewer knows what to scrutinise — code was written for
+  them and they should verify it.
+- **Worth a closer look:** include any finding that is non-blocking but warrants
+  attention: auto-migrated breaking changes (verify correctness), supply-chain
+  concerns, APPROVE WITH CONDITIONS rationale, partial remediations, deprecations
+  left unresolved. Use `_Nothing flagged._` if there is nothing to flag.
+- **Needs human action:** only items that require an explicit decision or manual
+  work before the PR can be merged. Use `_None._` if there are none.
+- Only include the bisect finding line if integration tests failed.
+- Do not add a plain-English paragraph.
+- Do not repeat full CI status, supply-chain tables, or breaking-change detail —
+  those are in the per-bump comments.
 
 ---
 
