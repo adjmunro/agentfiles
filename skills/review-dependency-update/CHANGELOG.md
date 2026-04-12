@@ -2,6 +2,23 @@
 
 ---
 
+## 3.8.0 — Concise Run Summary (2026-04-13)
+
+Phase 7 summary comment radically simplified. The old template restated all
+per-bump detail already present in the Phase 6 comments; the new one is a
+navigator only.
+
+- **Skip when N=1:** if only one alias was reviewed, Phase 7 is not posted —
+  the Phase 6 comment is already complete
+- **Removed:** CI status table, supply-chain table, breaking-changes table,
+  remediation table, and plain-English paragraph — all duplicated per-bump data
+- **Kept:** verdict-per-alias table (single-glance overview), integration test
+  result (new info not in per-bump comments), "needs human action" bullet list
+  (distilled actionable items), overall recommendation
+- **Step A** simplified to collect only what the new template needs
+
+---
+
 ## 3.7.0 — Direct Head Branch Consolidation (2026-04-10)
 
 Phase 8 no longer creates a separate `dep-review/<PR-number>/consolidated` working
