@@ -2,6 +2,30 @@
 
 ---
 
+## 4.3.0 — Blocked Dep Handling (2026-04-13)
+
+Adds prominent blocked-dep messaging and proactive PR lifecycle management for
+the case where the review pipeline returns BLOCK verdicts.
+
+- **Phase 8 all-skipped exit:** now branches on mode — proactive PRs are closed
+  via `gh pr close` with a comment listing each blocked alias and its reason;
+  dependabot/external PRs are left open unchanged (Phase 7 posts the summary)
+- **Phase 8 Step E.1 (new):** after a successful force-push on a proactive PR with
+  mixed pass/BLOCK results, rewrites the PR description to show only the deps that
+  landed, with a prominent `⚠️ Excluded — blocked by review` table listing removed
+  deps and a retry instruction
+- **Phase 7 Step A:** determines `IS_PROACTIVE` from the PR title before composing
+  the comment
+- **Phase 7 Step B:** adds an exclusion banner (GitHub `[!WARNING]` callout) at the
+  top of the summary comment whenever any alias is BLOCK; wording differs by mode —
+  proactive explains the dep was already removed, dependabot/external calls for action
+- **Phase 7 Step D:** user-facing output now shows "Merged into PR" vs "Blocked"
+  counts and appends a mode-specific follow-up note when any deps were blocked
+- Header comments in p7 and p8 updated from `review-dependency-update.md` to
+  `bump-dependencies.md`
+
+---
+
 ## 4.2.0 — Batch Lookup (2026-04-13)
 
 Replaces serial per-dependency API calls with batched lookups, and removes the
