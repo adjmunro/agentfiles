@@ -109,16 +109,15 @@ one of these forms:
 
 | Form | Example | Treatment |
 |---|---|---|
-| SHA-pinned with tag comment | `owner/action@abc123 # v4.2.1` | Bump — resolve new tag to SHA |
-| SHA-pinned without comment | `owner/action@abc123def456...` | Bump — detect version from API |
-| Tag-pinned (full semver) | `owner/action@v4.2.1` | Bump and convert to SHA pin |
-| Tag-pinned (major only) | `owner/action@v4` | Bump within major; convert to SHA pin |
+| SHA-pinned with tag comment | `owner/action@abc123 # v4.2.1` | Bump — resolve latest safe tag to SHA |
+| SHA-pinned without comment | `owner/action@abc123def456...` | Bump — identify current version, then resolve latest safe tag to SHA |
+| Tag-pinned (any form) | `owner/action@v4.2.1`, `owner/action@v4` | Bump and convert to SHA pin |
 | `docker://` or `./local/path` | — | Skip — not managed here |
 
-**SHA pinning is the target format for all GitHub Actions.** Phase 0 bumps every
-action — whether currently on a tag or a SHA — and writes the result as a SHA pin
-with a `# <tag>` inline comment. The 7-day safety window is sufficient mitigation;
-do not skip actions simply because they are already SHA-pinned.
+**SHA pinning is the target format for all GitHub Actions**, regardless of how they
+are currently pinned. Always find the globally latest safe release (not just the latest
+within the current major). The 7-day safety window is the only constraint; do not
+restrict bumps to within the same major version.
 
 For each action to process, record:
 - `action` — `owner/action` (e.g. `actions/checkout`)
@@ -148,84 +147,120 @@ Record as a single entry with ecosystem `gradle-wrapper`.
 
 ## Step D — Look Up Latest Safe Versions
 
-For each recorded dependency, perform the following checks. **The safety rule is
-absolute: never bump to a version published less than seven days ago.** Calculate
-"seven days ago" relative to `BUMP_DATE`.
+**The safety rule is absolute: never bump to a version published less than seven days
+ago.** Calculate "seven days ago" relative to `BUMP_DATE`.
 
-### Maven / Gradle Plugin Portal
+Use the batched lookup strategies below to minimise API round trips. Do not make
+individual calls per dependency when a batch approach is available.
 
-For Maven libraries, query Maven Central:
+### Maven and Gradle Plugin Portal — parallel batch
 
-```
-https://search.maven.org/solrsearch/select?q=g:<group>+AND+a:<artifact>&core=gav&rows=1&wt=json
-```
+Generate a shell script from the full list of Maven and Gradle plugin dependencies
+collected in Steps C.1, then run it in one pass. The script fetches all versions
+concurrently and emits a tab-separated table:
 
-This returns the latest version and its `timestamp` (Unix milliseconds).
-
-For Gradle plugins, query the Gradle Plugin Portal:
-
-```
-https://plugins.gradle.org/api/plugin/<plugin-id>/version
-```
-
-Extract the latest version and its publication date.
-
-**If the API returns a version published within the last seven days**, skip it and
-record: "Latest version `<ver>` published `<date>` — too recent (< 7 days), skipped."
-Use the most recent version older than seven days instead. If no such version exists
-(i.e. the library has never had a release older than one week), skip the dependency
-entirely and record it as **skipped (no safe version available)**.
-
-### GitHub Actions
-
-Query the GitHub Releases API for the latest release:
-
-```
-gh api repos/<owner>/<action>/releases/latest
-```
-
-Extract `tag_name` and `published_at`.
-
-**If `published_at` is within the last seven days**, apply the same fallback logic:
-scan for the most recent release older than seven days using:
-
-```
-gh api repos/<owner>/<action>/releases?per_page=20
+```bash
+#!/usr/bin/env zsh
+fetch_maven() {
+  local group=$1 artifact=$2
+  local url="https://search.maven.org/solrsearch/select?q=g:${group}+AND+a:${artifact}&core=gav&rows=5&wt=json"
+  curl -sf "$url" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+docs = data['response']['docs']
+for d in docs:
+    print(d['g'] + ':' + d['a'], d['v'], d.get('timestamp', 0), sep='\t')
+"
+}
+fetch_plugin() {
+  local plugin_id=$1
+  local url="https://plugins.gradle.org/api/plugin/${plugin_id}/version"
+  curl -sf "$url" | python3 -c "
+import sys, json
+d = json.load(sys.stdin)
+print('${plugin_id}', d['version'], d.get('date',''), sep='\t')
+"
+}
+# --- generated entries ---
+fetch_maven  com.squareup.okhttp3  okhttp &
+fetch_plugin com.android.tools.build.gradle &
+# ... one line per dependency
+wait
 ```
 
-If the current ref uses major-version pinning (e.g. `v4`), find the latest patch
-release within that major series that is also older than seven days. Only upgrade
-across major versions if the current major series has no newer safe releases.
+Output columns: `coordinates | version | timestamp_ms_or_date`.
 
-**Once the safe target tag is identified**, resolve it to a commit SHA:
+Parse the output to find the newest entry per coordinate older than seven days.
+**If the newest available is within seven days**, use the next older entry from the
+`rows=5` result set. If all five entries are too recent, record
+**skipped (no safe version available)**.
+
+For Gradle plugins the Plugin Portal API returns only the latest version; if it is
+too recent, fall back to fetching:
+```
+https://plugins.gradle.org/m2/<plugin/id/as/path>/<plugin.id>.gradle.plugin/maven-metadata.xml
+```
+and parse `<versioning><versions>` to find the next oldest.
+
+### GitHub Actions — single GraphQL batch
+
+Collect the distinct `owner/repo` pairs for every action found in Steps C.2. Build
+one GraphQL query that fetches the five most recent releases for all of them at once:
+
+```graphql
+query {
+  checkout: repository(owner: "actions", name: "checkout") {
+    releases(first: 5, orderBy: {field: CREATED_AT, direction: DESC}) {
+      nodes { tagName publishedAt tagCommit { oid } }
+    }
+  }
+  uploadArtifact: repository(owner: "actions", name: "upload-artifact") {
+    releases(first: 5, orderBy: {field: CREATED_AT, direction: DESC}) {
+      nodes { tagName publishedAt tagCommit { oid } }
+    }
+  }
+  # ... one alias per distinct action repo
+}
+```
+
+Run with:
+
+```
+gh api graphql -f query='<query>'
+```
+
+The `tagCommit.oid` field gives the commit SHA directly from the release object —
+no second round-trip needed to resolve tags to SHAs.
+
+> **Note:** GraphQL aliases must be valid identifiers (letters, digits, underscores).
+> Derive an alias from `owner_repo` with slashes replaced by underscores, e.g.
+> `actions/checkout` → `actions_checkout`.
+
+Parse the response: for each action, find the most recent release whose `publishedAt`
+is older than seven days. Record `tagName` as `target_tag` and `tagCommit.oid` as
+`target_sha`.
+
+If `tagCommit` is null (annotated tag not yet linked), fall back for that action only:
 
 ```
 gh api repos/<owner>/<action>/git/ref/tags/<tag_name>
 ```
 
-If the ref object type is `tag` (annotated tag), dereference it:
+Dereference if the object type is `tag` (annotated): fetch
+`gh api repos/<owner>/<action>/git/tags/<object_sha>` and use the inner `object.sha`.
+
+**For bare-SHA entries with no tag comment**, identify the current version by checking
+whether the SHA appears in the GraphQL `tagCommit.oid` fields already fetched —
+no extra API call needed if it matches.
+
+### Gradle Wrapper — single call
 
 ```
-gh api repos/<owner>/<action>/git/tags/<sha>
-```
-
-and use the `object.sha` from the response. If the ref type is `commit`, use the SHA
-directly. Record the resolved commit SHA as `target_sha` alongside `target_tag`.
-
-**For bare-SHA entries with no tag comment**, use the API to identify which release
-tag (if any) the current SHA corresponds to, so the "from" column in the summary
-table is human-readable.
-
-### Gradle Wrapper
-
-Query the Gradle services API:
-
-```
-https://services.gradle.org/versions/all
+curl -sf https://services.gradle.org/versions/all
 ```
 
 Filter to stable releases only (exclude `-rc`, `-milestone`, `-nightly` suffixes).
-Sort by version descending. Select the newest release whose `buildTime` is older than
+Sort by `buildTime` descending. Select the newest whose `buildTime` is older than
 seven days.
 
 ---

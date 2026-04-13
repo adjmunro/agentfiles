@@ -2,6 +2,26 @@
 
 ---
 
+## 4.2.0 — Batch Lookup (2026-04-13)
+
+Replaces serial per-dependency API calls with batched lookups, and removes the
+major-version-restriction logic so actions always bump to the global latest safe release.
+
+- **Step C.2:** removed "bump within major only" row — all tag-pinned actions (any
+  form) bump to the globally latest safe release and are SHA-pinned
+- **Step D (Maven/Gradle Plugin Portal):** serial WebFetch calls replaced with a
+  generated parallel shell script (one `curl &` per dependency, single `wait`); emits
+  a tab-separated table parsed in one pass; `rows=5` gives fallback versions for the
+  7-day check without extra calls; Gradle Plugin Portal version-only API covered with
+  `maven-metadata.xml` fallback when the latest is too recent
+- **Step D (GitHub Actions):** serial REST calls replaced with a single GraphQL query
+  covering all distinct action repos; `tagCommit.oid` resolves SHA inline — no second
+  round-trip; bare-SHA version identification uses already-fetched GraphQL data; single
+  per-action fallback only when `tagCommit` is null (annotated tag edge case)
+- **Step D (Gradle Wrapper):** unchanged — already a single call
+
+---
+
 ## 4.1.0 — SHA Everything (2026-04-13)
 
 Expands Phase 0 action scanning to include local composite actions, and replaces the
