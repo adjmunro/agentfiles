@@ -2,6 +2,29 @@
 
 ---
 
+## 4.1.0 — SHA Everything (2026-04-13)
+
+Expands Phase 0 action scanning to include local composite actions, and replaces the
+SHA-skip rule with SHA-pin-and-bump: every GitHub Action is now updated to the latest
+safe release and written in `owner/action@<sha> # <tag>  <changelog_url>` format.
+
+- **Step C:** added `.github/actions/**/action.yml` / `action.yaml` to the scan list —
+  local composite action files may reference external actions and were previously missed
+- **Step C.2:** removed the "skip SHA-pinned refs" rule; SHA-pinned actions are now
+  bumped like any other entry; bare-SHA entries without a tag comment have their current
+  version identified via the API before bumping
+- **Step D (GitHub Actions):** SHA resolution step added — after identifying the safe
+  target tag, resolves it to a commit SHA via the git refs API (handles both lightweight
+  and annotated tags); bare-SHA entries without a tag comment are also resolved back to
+  a human-readable tag for the summary table
+- **Step F (GitHub Actions editing rules):** target format is now
+  `owner/action@<sha> # <tag>  <changelog_url>` — single rewrite converts both
+  tag-pinned and SHA-pinned entries into the canonical form
+- **Step I summary:** removed "Skipped (SHA pin)" row — no longer applicable
+- **Orchestrator DO NOT:** tightened wording — no mention of SHA-pin skipping
+
+---
+
 ## 4.0.0 — Proactive Bumper (2026-04-13)
 
 Breaking rename: skill renamed from `review-dependency-update` to `bump-dependencies`.

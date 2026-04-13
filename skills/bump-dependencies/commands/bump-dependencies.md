@@ -55,7 +55,7 @@ Always infer `owner/repo` from the current repository: `git remote get-url origi
 - Skip Phase 3 impact mapping even if Phase 2 reports no breaking changes — silent regressions often hide in minor version bumps
 - Modify source code during Phase 2 or Phase 3 — Echo and Rook are read-only passes
 - Abandon the pipeline on a single failing dependency — flag it and continue to the next
-- Bump any dependency to a version published less than seven days ago — see Phase 0 for supply-chain safety rules
+- Bump any dependency to a version published less than seven days ago — see Phase 0 for the supply-chain safety rule
 
 ---
 

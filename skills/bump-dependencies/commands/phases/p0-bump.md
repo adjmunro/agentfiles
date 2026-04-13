@@ -67,6 +67,7 @@ found as a **source file**:
 |---|---|
 | Gradle version catalogue | `gradle/libs.versions.toml`, `app/gradle/libs.versions.toml` |
 | GitHub Actions workflows | `.github/workflows/*.yml`, `.github/workflows/*.yaml` |
+| Local composite actions | `.github/actions/**/action.yml`, `.github/actions/**/action.yaml` |
 | Gradle wrapper | `gradle/wrapper/gradle-wrapper.properties` |
 | Root Gradle build scripts | `build.gradle.kts`, `build.gradle` (root only — do not scan module files) |
 
@@ -98,27 +99,33 @@ Read the file in full.
 
 ---
 
-## Step C.2 — GitHub Actions Workflows
+## Step C.2 — GitHub Actions (Workflows and Local Composite Actions)
 
-Read each workflow file found.
+Read each workflow file (`.github/workflows/*.yml` / `*.yaml`) and each local
+composite action file (`.github/actions/**/action.yml` / `action.yaml`).
 
-**Parse every `uses:` line** to extract action references. Each `uses:` value has the form:
+**Parse every `uses:` line** to extract action references. Each `uses:` value has
+one of these forms:
 
-```
-owner/action@ref
-```
+| Form | Example | Treatment |
+|---|---|---|
+| SHA-pinned with tag comment | `owner/action@abc123 # v4.2.1` | Bump — resolve new tag to SHA |
+| SHA-pinned without comment | `owner/action@abc123def456...` | Bump — detect version from API |
+| Tag-pinned (full semver) | `owner/action@v4.2.1` | Bump and convert to SHA pin |
+| Tag-pinned (major only) | `owner/action@v4` | Bump within major; convert to SHA pin |
+| `docker://` or `./local/path` | — | Skip — not managed here |
 
-where `ref` is a version tag (e.g. `v4`, `v4.2.1`) or a commit SHA.
+**SHA pinning is the target format for all GitHub Actions.** Phase 0 bumps every
+action — whether currently on a tag or a SHA — and writes the result as a SHA pin
+with a `# <tag>` inline comment. The 7-day safety window is sufficient mitigation;
+do not skip actions simply because they are already SHA-pinned.
 
-**Skip SHA-pinned refs** (40-character hex strings) — these are intentional security
-pins and must not be auto-bumped. Record them as **skipped (SHA pin)**.
-
-**Skip `docker://` and `./local/path` references** — not version-bumped here.
-
-For each tag-pinned action, record:
+For each action to process, record:
 - `action` — `owner/action` (e.g. `actions/checkout`)
-- `current_ref` — the tag as written (e.g. `v4`, `v4.2.1`)
-- `file` — the workflow file path
+- `current_ref` — the SHA or tag as written
+- `current_version` — the tag comment if present, or the tag itself; for bare SHAs
+  with no comment, leave blank (will be populated from the API in Step D)
+- `file` — the file path
 - `line` — line number of the `uses:` entry
 
 ---
@@ -190,6 +197,25 @@ If the current ref uses major-version pinning (e.g. `v4`), find the latest patch
 release within that major series that is also older than seven days. Only upgrade
 across major versions if the current major series has no newer safe releases.
 
+**Once the safe target tag is identified**, resolve it to a commit SHA:
+
+```
+gh api repos/<owner>/<action>/git/ref/tags/<tag_name>
+```
+
+If the ref object type is `tag` (annotated tag), dereference it:
+
+```
+gh api repos/<owner>/<action>/git/tags/<sha>
+```
+
+and use the `object.sha` from the response. If the ref type is `commit`, use the SHA
+directly. Record the resolved commit SHA as `target_sha` alongside `target_tag`.
+
+**For bare-SHA entries with no tag comment**, use the API to identify which release
+tag (if any) the current SHA corresponds to, so the "from" column in the summary
+table is human-readable.
+
 ### Gradle Wrapper
 
 Query the Gradle services API:
@@ -227,8 +253,8 @@ Record the resolved changelog URL as `changelog_url` for each dependency.
 
 ## Step F — Apply Bumps
 
-For each dependency that has a safe update available (`current_version` ≠ `safe_latest`),
-apply the following edits and commits **one dependency at a time**.
+For each dependency that has a safe update available, apply the following edits and
+commits **one dependency at a time**.
 
 > **Do not batch multiple dependency bumps into a single commit.** Each alias or action
 > gets exactly one commit.
@@ -257,19 +283,31 @@ kotlin = "2.0.21" # https://kotlinlang.org/docs/releases.html
 
 Do not reformat any other part of the file.
 
-### GitHub Actions workflows — editing rules
+### GitHub Actions — editing rules
 
-Locate each `uses:` line for this action. Replace only the `@ref` portion:
+All GitHub Actions must be written in **SHA-pinned format** with a trailing `# <tag>`
+comment. This is both the target format for new entries and the update format for
+existing ones.
+
+Locate each `uses:` line for this action and rewrite it as:
 
 ```yaml
-- uses: actions/checkout@v4.2.1 # https://github.com/actions/checkout/releases
+uses: actions/checkout@<target_sha> # <target_tag>  <changelog_url>
 ```
 
-If the line has no trailing comment, add one. If a comment exists, update it.
+The changelog URL is appended after the tag comment, separated by two spaces, so the
+line carries both the human-readable tag and the changelog pointer:
 
-For major-version-pinned refs (e.g. `uses: actions/checkout@v4`): preserve the
-major-pin style — update to the new major version tag if a major upgrade is available,
-or leave the major pin unchanged if the bump is within the same major.
+```yaml
+- uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2  https://github.com/actions/checkout/releases
+```
+
+Rules:
+- If the line already has a trailing comment, replace it entirely with the new
+  `# <target_tag>  <changelog_url>` form.
+- Do not change indentation or any other part of the line.
+- Apply this rewrite to every occurrence of the same action across all scanned files
+  in a single commit (workflows + local composite actions together).
 
 ### gradle-wrapper.properties — editing rules
 
@@ -300,6 +338,12 @@ create a commit:
 ```
 git add <modified-files>
 git commit -m "chore(deps): bump <alias-or-action> from <old> to <new>"
+```
+
+For GitHub Actions, use the tag names in the commit message (not SHAs):
+
+```
+chore(deps): bump actions/checkout from v4.1.7 to v4.2.2
 ```
 
 The commit body (optional) may include the changelog URL and a one-sentence summary
@@ -341,13 +385,16 @@ Generated by `/bump-dependencies` on <BUMP_DATE>.
 
 | Dependency | From | To | Changelog |
 |---|---|---|---|
-<table rows — one per bumped dependency>
+<table rows — one per bumped dependency; use tag names for GitHub Actions>
 
 ### Safety note
 
 No dependency in this PR was bumped to a version published fewer than seven days
 before this PR was created. This policy guards against supply-chain attacks that
 exploit the window between a package being compromised and detection.
+
+GitHub Actions are pinned to commit SHAs with an inline tag comment, following
+supply-chain security best practice.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 BODY
@@ -372,13 +419,13 @@ Before handing off, print a concise summary table:
 
 | Dependency | Old | New | Changelog |
 |---|---|---|---|
-| <alias/action> | <old> | <new> | <url> |
+| <alias/action> | <old-version> | <new-version> | <url> |
 ...
 
-Skipped (too recent):  <list or "none">
-Skipped (up to date):  <list or "none">
-Skipped (unresolved):  <list or "none">
-Skipped (SHA pin):     <list or "none">
+Skipped (too recent):          <list or "none">
+Skipped (up to date):          <list or "none">
+Skipped (unresolved):          <list or "none">
+Skipped (docker/local ref):    <list or "none">
 
 Branch: <BUMP_BRANCH>
 PR:     #<number>
