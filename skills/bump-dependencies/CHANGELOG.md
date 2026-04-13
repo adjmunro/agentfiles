@@ -2,6 +2,28 @@
 
 ---
 
+## 4.0.0 — Proactive Bumper (2026-04-13)
+
+Breaking rename: skill renamed from `review-dependency-update` to `bump-dependencies`.
+Adds a no-argument proactive mode (Phase 0) that discovers outdated dependencies,
+annotates version definitions with changelog hyperlinks, bumps each to the latest safe
+release, and opens a PR before handing off to the existing review pipeline.
+
+- **Rename:** directory, SKILL.md, AGENTS.md, orchestrator file, and all internal paths
+  updated from `review-dependency-update` to `bump-dependencies`
+- **Phase 0 (`p0-bump.md`):** scans `libs.versions.toml`, `.github/workflows/*.yml`,
+  and `gradle/wrapper/gradle-wrapper.properties` for outdated dependencies; resolves
+  each alias to Maven / Gradle Plugin Portal / GitHub Releases coordinates; checks
+  publication date and skips versions newer than seven days (supply-chain safety); adds
+  or updates an inline `# <changelog-url>` comment on each version line; commits each
+  bump atomically; pushes a `deps/auto-bump-YYYY-MM-DD` branch and opens a PR
+- **Orchestrator:** mode-selection section added — no argument → Phase 0 then Phase 1;
+  argument provided → Phase 1 directly; `argument-hint` updated to `[PR-number]`
+- **Ink persona** added to Phase 0 active-phases list
+- **AGENTS.md:** scope updated to `bump-deps`; bump commit pattern documented
+
+---
+
 ## 3.9.0 — Summary as Entry Point (2026-04-13)
 
 Phase 7 summary now serves as a navigation guide: tells the reviewer which

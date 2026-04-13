@@ -1,4 +1,4 @@
-# Review Dependency Update Skill
+# Bump Dependencies Skill
 
 ## Git Commits
 
@@ -15,12 +15,18 @@ chore(scope): short description
 The commit body should be generated — describe what changed, why, and any non-obvious
 side effects. Keep the subject line under 72 characters.
 
-Common scopes: `dep-review`, `commands`, `skills`
+Common scopes: `bump-deps`, `commands`, `skills`
 
 Examples:
-- `feat(dep-review): add licence-change detection to Phase 2`
-- `fix(dep-review): correct version-range parsing for pre-release tags`
-- `chore(dep-review): add p6-comment phase for PR posting`
+- `feat(bump-deps): add licence-change detection to Phase 2`
+- `fix(bump-deps): correct version-range parsing for pre-release tags`
+- `chore(bump-deps): add p0-bump phase for proactive discovery`
+
+Bump commits made by this skill against the target repo follow the pattern:
+
+```
+chore(deps): bump <alias> from <old> to <new>
+```
 
 Remediation commits made by this skill against the target repo follow the pattern:
 
@@ -34,7 +40,7 @@ fix(deps): replace deprecated <api> with <replacement> after <package> bump
 
 ## Versioning
 
-**Only bump the version when changes are scoped to `skills/review-dependency-update/`.**
+**Only bump the version when changes are scoped to `skills/bump-dependencies/`.**
 If a commit touches other parts of the repo but not this skill, do not bump the version.
 
 Before committing any changes to this skill, bump the version in `VERSION.md`:

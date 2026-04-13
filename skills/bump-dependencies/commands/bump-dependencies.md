@@ -1,17 +1,17 @@
 ---
 model: claude-sonnet-4-6
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch, WebSearch, Agent
-argument-hint: "<PR-number>"
+argument-hint: "[PR-number]"
 ---
 
 <!-- Phase dispatcher. Contains only boot logic and phase dispatch.
      All phase instructions live in phases/ subdirectory files.
      Read only the current phase file on entry — do not preload future phases. -->
 
-# Review Dependency Update — Orchestrator
+# Bump Dependencies — Orchestrator
 
 Primarily designed for Kotlin/Android projects using Gradle with a
-`libs.versions.toml` version catalog.
+`libs.versions.toml` version catalogue.
 
 ## Personas
 
@@ -19,12 +19,24 @@ Read each file before the phase in which it is active:
 
 - `../../personas/examiner/persona.md` — **Echo (Examiner)** — active in Phase 2 (investigation) and Phase 3 (impact mapping)
 - `../../personas/adversarial/persona.md` — **Rook (Adversary)** — active in Phase 2 security pass
-- `../../personas/ink/persona.md` — **Ink (Commit Curator)** — active in Phase 1b (commit splitting) and Phase 4 (remediation commits)
+- `../../personas/ink/persona.md` — **Ink (Commit Curator)** — active in Phase 0 (proactive bumps), Phase 1b (commit splitting), and Phase 4 (remediation commits)
 - `../../personas/critic/persona.md` — **Arden (Critic)** — active in Phase 5 (verdict)
 
 Identify by the active persona when communicating with the user. Switch personas at phase boundaries as declared.
 
-## Input Normalisation
+## Mode Selection
+
+**Check the argument before doing anything else.**
+
+- **Argument provided** (e.g. `1509`, `#1509`, a full GitHub URL): this is **PR-review mode**.
+  Strip any prefix, extract the bare PR number, and proceed directly to Phase 1 (see Execution below).
+
+- **No argument**: this is **proactive mode**.
+  Read `phases/p0-bump.md` and execute it completely. Phase 0 discovers outdated
+  dependencies, bumps each one atomically, opens a PR, and outputs a PR number.
+  After Phase 0 completes, use the PR number it produced and proceed to Phase 1.
+
+## Input Normalisation (PR-review mode)
 
 The argument is a bare PR number (e.g., `1509`). Hash-prefixed (`#1509`) and full
 GitHub URLs are also accepted as fallbacks — strip the prefix and extract the number.
@@ -35,7 +47,7 @@ Always infer `owner/repo` from the current repository: `git remote get-url origi
 
 - Complete each phase fully before reading the next phase file
 - Make only necessary code changes; do not refactor surrounding code or expand scope
-- Commit each remediation fix atomically (one fix, one commit) before moving to the next
+- Commit each bump or remediation fix atomically (one fix, one commit) before moving to the next
 - Each bump commit gets exactly one PR comment — do not aggregate
 
 ## DO NOT
@@ -43,10 +55,14 @@ Always infer `owner/repo` from the current repository: `git remote get-url origi
 - Skip Phase 3 impact mapping even if Phase 2 reports no breaking changes — silent regressions often hide in minor version bumps
 - Modify source code during Phase 2 or Phase 3 — Echo and Rook are read-only passes
 - Abandon the pipeline on a single failing dependency — flag it and continue to the next
+- Bump any dependency to a version published less than seven days ago — see Phase 0 for supply-chain safety rules
 
 ---
 
 ```
+[Phase 0: Discover & Bump] ← proactive mode only; produces a PR number
+        │
+        ▼ (PR number in scope — either from Phase 0 or from the argument)
 [Phase 1: Parse & Fetch]
         │
         ├── Step G: Fetch CI check status
@@ -98,7 +114,8 @@ Phases 5–6 (verdict and comment) resume in parallel after all Phase 4 work is 
 
 | Phase | File | Concurrency | Active when |
 |---|---|---|---|
-| 1 | `phases/p1-parse.md` | Sequential | command is first invoked |
+| 0 | `phases/p0-bump.md` | Sequential | proactive mode only (no argument) |
+| 1 | `phases/p1-parse.md` | Sequential | command is first invoked (or after Phase 0) |
 | 1b | `phases/p1b-split-commits.md` | Sequential | Phase 1 complete; always runs as a check; creates isolated branches |
 | — | **Wave 1: Parallel Investigation** | — | Phase 1b isolated branches created |
 | 2 | `phases/p2-investigate.md` | **Parallel** | per-agent: investigate this bump on isolated branch |
@@ -139,7 +156,7 @@ message. Each agent receives this prompt:
 > Your isolated branch: `dep-review/<PR-number>/<alias>` — all investigation and
 > testing for this bump operates on this branch. Do not check out or modify any
 > other branch.
-> Phase files are in `skills/review-dependency-update/commands/phases/` from repo root.
+> Phase files are in `skills/bump-dependencies/commands/phases/` from repo root.
 > **Execute Phases 2 and 3 only.** Do NOT run Phase 4, 5, or 6 yet.
 > Return your Phase 3 impact table (actionable usages count, advisory count, files affected).
 
@@ -228,6 +245,10 @@ completes, using the data already in scope.
 
 ## Execution
 
-Read Phase 1 file now: `phases/p1-parse.md`
-Execute it completely. Then read the next phase file as instructed at the end of each file.
+**Proactive mode (no argument):** read `phases/p0-bump.md` now and execute it.
+After Phase 0 completes, use the PR number it outputs and proceed to Phase 1.
+
+**PR-review mode (argument provided):** read `phases/p1-parse.md` now and execute it.
+
+Then read the next phase file as instructed at the end of each file.
 Each phase file ends with a `→ Next` line pointing to the next phase.
