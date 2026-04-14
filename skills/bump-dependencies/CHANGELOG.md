@@ -2,6 +2,15 @@
 
 ---
 
+## 4.8.0 — Step Zero Completeness (2026-04-15)
+
+Closes two representation gaps in Phase 0 left open after the H45–H49 root build script additions: the Step I summary table now names the identifier format for variable-name entries, and Step D now states the 7-day safety threshold as explicit arithmetic.
+
+- **Step I — root build script identifier format:** placeholder updated to `<alias/action/var>`; note added specifying `<varName> (<script-file>)` format (e.g., `kotlinVersion (build.gradle.kts)`) with reference to Step F.
+- **Step D — safety window formula:** qualitative "older than seven days" anchor replaced with `release_date ≤ (BUMP_DATE − 7 days)`; explicit note that the anchor is BUMP_DATE, not script execution time.
+
+---
+
 ## 4.7.0 — Orchestration Clarity and Workflow Completeness (2026-04-14)
 
 Closes three instruction gaps that could cause agents to stall or behave ambiguously,
