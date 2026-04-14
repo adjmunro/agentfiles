@@ -151,6 +151,20 @@ Record as a single entry with ecosystem `gradle-wrapper`.
 
 ---
 
+## Step C.4 — Root Gradle Build Scripts
+
+Read each root build script (`build.gradle.kts`, `build.gradle`).
+
+Scan for top-level version variable declarations:
+- **Kotlin DSL**: lines matching `val <name> = "<X.Y.Z>"` or `val <name>: String = "<X.Y.Z>"`
+- **Groovy DSL**: lines matching `ext.<name> = "<X.Y.Z>"` or entries inside an `ext { }` block
+
+For each candidate version variable, search the same file for where it is used to determine the dependency it controls (e.g., `implementation("com.example:lib:$kotlinVersion")`). If the dependency's Maven coordinates or Gradle plugin ID are identifiable, record the entry with `ecosystem: maven` or `gradle-plugin`. If not, record it as **unresolved** and skip.
+
+If the root build script contains no top-level version declarations (all versions are managed via `libs.versions.toml`), skip with no entries recorded.
+
+---
+
 ## Step D — Look Up Latest Safe Versions
 
 **The safety rule is absolute: never bump to a version published less than seven days
