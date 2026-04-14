@@ -1,5 +1,5 @@
 # Phase 1 — Parse & Fetch
-<!-- Part of: review-dependency-update.md orchestrator -->
+<!-- Part of: bump-dependencies.md orchestrator -->
 <!-- Active when: command is first invoked -->
 
 ## Step A — Resolve the Repository

@@ -1,5 +1,5 @@
 # Phase 4 — Remediation
-<!-- Part of: review-dependency-update.md orchestrator -->
+<!-- Part of: bump-dependencies.md orchestrator -->
 <!-- Active when: Phase 3 found actionable usages (must-fix items) -->
 <!-- Skip this phase entirely if no actionable usages were found -->
 <!-- CONCURRENCY: This phase MUST run sequentially. If multiple bumps need remediation,
