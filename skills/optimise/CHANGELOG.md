@@ -2,6 +2,16 @@
 
 ---
 
+## 1.11.0 — Phase 4 Precision (2026-04-14)
+
+Tightens Phase 4 ambiguity and context loading; restores help sync after P16/P17 additions.
+
+- **p4-experiments.md Step e:** partial-result decision is now binary — commit if improvement ≥2pp and change is additive-only, otherwise revert. Removes the last unscoped judgement call in Phase 4 [H7]
+- **p4-experiments.md Intent Anchor:** Phase 4 now loads only the most recent Hypotheses section of research-log.md rather than the full log. Phase 4 only needs approved hypothesis names for execution [H8]
+- **help.md:** added P16 (Generated Batch Script) and P17 (Lookup Subagent Isolation) detail sections; all 37 named instruction-file entries now documented [H6]
+
+---
+
 ## 1.10.0 — Batch and Isolation Patterns (2026-04-14)
 
 Adds two new seed patterns to `p3-hypothesize.md` for workflows that collect data
