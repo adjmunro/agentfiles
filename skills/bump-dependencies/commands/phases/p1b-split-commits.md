@@ -148,7 +148,7 @@ Split into:
 Print the full plan to the user. Wait for explicit confirmation or correction.
 - If the user confirms (or does not respond within 60 seconds), proceed to Step E.
 - If the user requests a change, revise the plan and re-print before continuing.
-- If operating in a fully automated mode with no user present, print the plan and proceed immediately.
+- If there is no interactive channel to the user — for example, this agent is running as a subagent dispatched by an orchestrator, or in a non-interactive CI context — print the plan and proceed immediately without waiting for confirmation.
 
 ---
 
