@@ -171,7 +171,8 @@ If the root build script contains no top-level version declarations (all version
 ## Step D — Look Up Latest Safe Versions
 
 **The safety rule is absolute: never bump to a version published less than seven days
-ago.** Calculate "seven days ago" relative to `BUMP_DATE`.
+ago.** A version is safe when `release_date ≤ (BUMP_DATE − 7 days)`. The anchor is
+always `BUMP_DATE` (set in Step A) — not the time the batch script runs.
 
 Use the batched lookup strategies below to minimise API round trips. Do not make
 individual calls per dependency when a batch approach is available.
