@@ -2,6 +2,25 @@
 
 ---
 
+## 4.6.0 — Phase 0 Completeness and Resilience (2026-04-14)
+
+Completes Phase 0's source coverage, surfaces silent failures, and adds
+ecosystem-specific guidance throughout Step D and Step G.
+
+- **Step C.4 — root build script extraction:** Kotlin DSL and Groovy version
+  variable declarations are now parsed and recorded; projects with legacy
+  root-level version declarations are no longer silently excluded
+- **Step D — batch lookup failure recovery:** dependencies missing from batch
+  output (network error, API timeout) are now recorded as Skipped (lookup failed)
+  in the Step I summary and PR body rather than silently treated as up-to-date
+- **Step C.1 — BOM alias guidance:** BOM/indirect aliases now include a PR body
+  note recommending manual transitive-dependency review
+- **Step G — ecosystem commit body note:** explicit guidance on which ecosystems
+  (GitHub Actions) provide API release descriptions vs. which do not (Maven, Gradle
+  Portal, Gradle wrapper)
+
+---
+
 ## 4.5.0 — Discovery Coverage and PR Transparency (2026-04-14)
 
 Expands Phase 0 coverage to Gradle composite builds, improves PR body transparency,
