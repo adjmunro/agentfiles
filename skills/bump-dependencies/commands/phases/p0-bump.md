@@ -400,6 +400,12 @@ For GitHub Actions, use the tag names in the commit message (not SHAs):
 chore(deps): bump actions/checkout from v4.1.7 to v4.2.2
 ```
 
+For the Gradle wrapper, use the version number directly:
+
+```
+chore(deps): bump Gradle wrapper from 8.6 to 8.13
+```
+
 The commit body (optional) may include the changelog URL and a one-sentence summary
 of the release if it is immediately available from the API response. Keep it concise.
 
