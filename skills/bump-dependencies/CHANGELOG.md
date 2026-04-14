@@ -2,6 +2,18 @@
 
 ---
 
+## 4.7.0 — Orchestration Clarity and Workflow Completeness (2026-04-14)
+
+Closes three instruction gaps that could cause agents to stall or behave ambiguously,
+and completes the Step F editing coverage opened by the H45 root build script discovery.
+
+- **Step F — root build script editing rules:** Kotlin DSL and Groovy DSL in-place variable update patterns; no trailing comments to avoid `buildSrc` parsing issues; changelog URL carried via Step I summary and PR body.
+- **Phase 8 Step D — integration failure push rationale:** explicit continuation note confirming Phase 8 proceeds to force-push after bisect regardless of test result; Phase 7 surfaces the finding for human decision.
+- **Phase 1b Step D — automated mode detection:** "fully automated mode with no user present" replaced with runtime-observable context properties (subagent dispatch, non-interactive CI context).
+- **optimise pattern library — P18 promoted:** Cross-File Structural Anchor added to `p3-hypothesize.md` after three consecutive run cycles as a logged seed candidate.
+
+---
+
 ## 4.6.0 — Phase 0 Completeness and Resilience (2026-04-14)
 
 Completes Phase 0's source coverage, surfaces silent failures, and adds
