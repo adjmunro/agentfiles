@@ -535,8 +535,13 @@ Before handing off, print a concise summary table:
 
 | Dependency | Old | New | Changelog |
 |---|---|---|---|
-| <alias/action> | <old-version> | <new-version> | <url> |
+| <alias/action/var> | <old-version> | <new-version> | <url> |
 ...
+
+Root build script variable bumps (Step C.4) appear in the Dependency column as
+`<varName> (<script-file>)` — for example, `kotlinVersion (build.gradle.kts)`. Their
+changelog URL appears in the Changelog column; no inline comment is written to the
+source file (see Step F — Root Gradle build scripts).
 
 Skipped (too recent):          <list or "none">
 Skipped (up to date):          <list or "none">
