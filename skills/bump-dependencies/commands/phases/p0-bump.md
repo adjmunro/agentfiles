@@ -191,16 +191,21 @@ wait
 Output columns: `coordinates | version | timestamp_ms_or_date`.
 
 Parse the output to find the newest entry per coordinate older than seven days.
-**If the newest available is within seven days**, use the next older entry from the
-`rows=5` result set. If all five entries are too recent, record
-**skipped (no safe version available)**.
+**Exclude pre-release versions** before applying the 7-day check: discard any version
+string containing `-alpha`, `-beta`, `-rc`, `-SNAPSHOT`, `-M[0-9]`, or `-milestone`
+(case-insensitive). Only stable releases are eligible as `safe_latest`.
+**If the newest stable available is within seven days**, use the next older stable entry
+from the `rows=5` result set. If all five entries are too recent or are pre-releases,
+record **skipped (no safe version available)**.
 
 For Gradle plugins the Plugin Portal API returns only the latest version; if it is
 too recent, fall back to fetching:
 ```
 https://plugins.gradle.org/m2/<plugin/id/as/path>/<plugin.id>.gradle.plugin/maven-metadata.xml
 ```
-and parse `<versioning><versions>` to find the next oldest.
+and parse `<versioning><versions>` to find the next oldest stable release. Apply
+the same pre-release exclusion (`-alpha`, `-beta`, `-rc`, `-SNAPSHOT`, `-M[0-9]`,
+`-milestone`) before selecting.
 
 ### GitHub Actions — single GraphQL batch
 
@@ -211,12 +216,12 @@ one GraphQL query that fetches the five most recent releases for all of them at 
 query {
   checkout: repository(owner: "actions", name: "checkout") {
     releases(first: 5, orderBy: {field: CREATED_AT, direction: DESC}) {
-      nodes { tagName publishedAt tagCommit { oid } }
+      nodes { tagName publishedAt isPrerelease tagCommit { oid } }
     }
   }
   uploadArtifact: repository(owner: "actions", name: "upload-artifact") {
     releases(first: 5, orderBy: {field: CREATED_AT, direction: DESC}) {
-      nodes { tagName publishedAt tagCommit { oid } }
+      nodes { tagName publishedAt isPrerelease tagCommit { oid } }
     }
   }
   # ... one alias per distinct action repo
@@ -236,9 +241,9 @@ no second round-trip needed to resolve tags to SHAs.
 > Derive an alias from `owner_repo` with slashes replaced by underscores, e.g.
 > `actions/checkout` → `actions_checkout`.
 
-Parse the response: for each action, find the most recent release whose `publishedAt`
-is older than seven days. Record `tagName` as `target_tag` and `tagCommit.oid` as
-`target_sha`.
+Parse the response: for each action, skip any release where `isPrerelease` is `true`.
+From the remaining releases, find the most recent whose `publishedAt` is older than
+seven days. Record `tagName` as `target_tag` and `tagCommit.oid` as `target_sha`.
 
 If `tagCommit` is null (annotated tag not yet linked), fall back for that action only:
 
@@ -274,7 +279,8 @@ URL to annotate into the version file. Use the known-sources table from Phase 2
 **Known-source lookup order:**
 
 1. Check the library family against the Kotlin/Android primary sources table in
-   `phases/p2-investigate.md` (read only the table section — do not execute Phase 2).
+   `phases/p2-investigate.md`: navigate to the `### Kotlin/Android primary sources`
+   section heading in that file and read only that section — do not execute Phase 2.
 2. **GitHub Releases page** for the action or library repository:
    `https://github.com/<owner>/<repo>/releases`
 3. **Maven Central artifact page** (fallback for Maven):
@@ -293,6 +299,13 @@ commits **one dependency at a time**.
 
 > **Do not batch multiple dependency bumps into a single commit.** Each alias or action
 > gets exactly one commit.
+
+**Before editing any file**, verify that `safe_latest` is strictly newer than
+`current_version` using semantic version ordering. A version is strictly newer if it is
+greater than the current version (e.g. `2.1.0 > 2.0.21`). If `safe_latest ≤
+current_version` (i.e. the repo is already at or ahead of the safe latest), skip this
+dependency and record it as **Skipped (already at safe latest)** in the Step I summary.
+Do not apply an edit or create a commit for it.
 
 ### libs.versions.toml — editing rules
 
@@ -406,6 +419,17 @@ Push the branch:
 git push -u origin <BUMP_BRANCH>
 ```
 
+**Before creating the PR**, check whether an open proactive bump PR already exists
+for this repository:
+
+```
+gh pr list --repo <owner/repo> --head <BUMP_BRANCH> --state open --json number,title
+```
+
+If a PR is returned, a PR for this exact branch already exists (e.g. from a previous
+interrupted run). Record the existing PR number, skip `gh pr create`, and proceed
+directly to Step I using that number.
+
 Create the PR:
 
 ```
@@ -459,6 +483,7 @@ Before handing off, print a concise summary table:
 
 Skipped (too recent):          <list or "none">
 Skipped (up to date):          <list or "none">
+Skipped (already at safe latest): <list or "none">
 Skipped (unresolved):          <list or "none">
 Skipped (docker/local ref):    <list or "none">
 
