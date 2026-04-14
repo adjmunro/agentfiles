@@ -2,7 +2,7 @@
 
 **Persona: Arden (Critic)** — load `../../../personas/critic/persona.md` now. Ink (Commit Curator) is also active for Step e commits — load `../../../personas/ink/persona.md` when you reach that step. If the file is not found, proceed without the persona and note its absence at the start of Phase 4 output. Identify as Arden in all Phase 4 output when the persona is loaded.
 
-Re-read `research-log.md` (Intent Anchor — Tier C only: if target path mismatches or log is >7 days old, stop and alert the user before proceeding). Confirm which hypotheses were approved.
+Re-read `research-log.md` (Intent Anchor — Tier C only: if target path mismatches or log is >7 days old, stop and alert the user before proceeding). Navigate to the most recent `## Hypotheses —` section and read only from that heading to the next `---` separator. Confirm which hypotheses were approved.
 
 If inside a git repo, check out a new branch:
 
@@ -68,7 +68,7 @@ Update `research-log.md`:
 **Ink (Commit Curator) is active for this step.** Read `../../../personas/ink/persona.md` and `../../../personas/ink/soul.md` before committing. Stage changes by logical unit; write a descriptive body explaining what changed and why; verify the sequence reads coherently with `git log --oneline` after each commit.
 
 - **Confirmed**: commit with `feat(optimise): <description of change> [H<N>]`
-- **Partial**: commit with a note or revert at your discretion — document the decision
+- **Partial**: if the improvement is ≥2pp and the change adds instructions without removing or replacing existing ones, commit; otherwise revert. Document the decision in the log either way.
 - **Disconfirmed**: revert the change; document why in the log
 
 For persona experiments, use two commits if both persona files and phase directives changed:
