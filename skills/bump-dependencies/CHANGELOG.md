@@ -2,6 +2,27 @@
 
 ---
 
+## 4.4.0 — Safe Discovery Hardening (2026-04-14)
+
+Hardens Phase 0's version discovery against pre-release versions, incorrect direction
+bumps, duplicate PR creation, and ambiguous cross-file references.
+
+- **Step D pre-release exclusion:** Maven batch and Gradle Plugin Portal fallback now
+  explicitly discard versions with `-alpha`, `-beta`, `-rc`, `-SNAPSHOT`, `-M[0-9]`,
+  or `-milestone` suffixes; GitHub Actions GraphQL requests the `isPrerelease` field
+  and skips pre-release releases during parse
+- **Step F monotonicity guard:** explicit `safe_latest > current_version` comparison
+  added before any file edit; dependencies already ahead of the safe latest are skipped
+  and reported as "Skipped (already at safe latest)" in the Step I summary
+- **Step H PR deduplication:** `gh pr list --head <BUMP_BRANCH>` check added before
+  `gh pr create`; if an open PR already exists it is reused, preventing duplicate PRs
+  on back-to-back runs
+- **Step E structural anchor:** cross-file reference to Phase 2's changelog source table
+  now names the exact section heading (`### Kotlin/Android primary sources`) rather than
+  "the table section", making the reference stable to future refactoring
+
+---
+
 ## 4.3.0 — Blocked Dep Handling (2026-04-13)
 
 Adds prominent blocked-dep messaging and proactive PR lifecycle management for
