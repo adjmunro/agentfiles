@@ -54,6 +54,8 @@ Display this table, then the patterns table, then the stats summary. Nothing els
 | P13 | Corrective-Pattern Applicability Classification | PEV ↑ | Any workflow with a pattern library that distinguishes proactive from corrective patterns |
 | P14 | Pre-Experiment Dependency Scan | EIS ↑ | Any multi-hypothesis session where ≥2 changes are queued |
 | P15 | Measurement Accuracy Retrospective | RI ↑ (any estimated metric) | Any workflow where a metric has been estimated (not counted) for ≥2 consecutive runs at the same value |
+| P16 | Generated Batch Script | CLE ↑, ITE ↑ | Any phase that iterates over N items to collect data via sequential tool calls |
+| P17 | Lookup Subagent Isolation | CLE ↑, ITE ↑ | Any phase whose data-collection output would dominate the orchestrator context window |
 
 ### Stats at a Glance
 
@@ -650,6 +652,48 @@ Both are executed via `/personas evolve` — the command handles scoring, recomm
 **How to improve:** Apply Persona Rotation (P8) — for each phase with a partial or mismatch score, try an alternative persona drawn from existing files or invent a new one. When inventing, write a proper persona file; do not assign a name without defining the cognitive style.
 
 **Stats:** New metric — no historical data yet.
+
+---
+
+### Generated Batch Script (P16)
+*Also matches: P16, batch script, parallel fetch, N items, round trips, shell script, manifest*
+
+**Purpose:** When a phase needs to collect data for N items, generate a single script from the item list that processes all N in one execution — parallelising where safe — and emits structured output. The agent reads the table once rather than issuing N individual tool calls.
+
+**Problem it solves:** N sequential tool calls for per-item data collection (version lookups, file reads, checksums, API calls) consume context proportionally to N and make the full item list hard to audit. A generated script reduces this to one tool call regardless of N, keeps intermediate results out of the main context window, and surfaces the full item list as auditable generated code.
+
+**How to apply:**
+1. Identify the per-item operation (e.g. "fetch version for each Maven coordinate").
+2. Write a script template that accepts the item list as input and emits tab-separated or JSON output per item.
+3. Generate the script by substituting the item list, run it once, parse the structured output.
+4. Apply the same approach for file-based operations (checksums, local parsing) by substituting file paths.
+
+**When to apply:** Any phase iterating over a manifest of items where N > 5 or where intermediate per-item results are not needed for reasoning — only the final structured output matters. Particularly effective for network-bound lookups where parallel execution provides a speed benefit.
+
+**Targets:** Context Loading Efficiency (CLE ↑), Instruction Token Efficiency (ITE ↑)
+
+**Composes with P17:** a subagent (P17) can execute a generated batch script internally, combining round-trip reduction with context isolation.
+
+---
+
+### Lookup Subagent Isolation (P17)
+*Also matches: P17, subagent, isolation, context pollution, voluminous, web fetch, research, noise*
+
+**Purpose:** When a phase needs rich external or local data but the orchestrator only needs a compact structured summary, route the collection into a disposable subagent. The subagent fetches, reads, and processes; returns only a result table or brief. The orchestrator context receives one tool result instead of N voluminous ones.
+
+**Problem it solves:** Web fetches, large file reads, and multi-source research return raw outputs that can dominate the orchestrator context window even when the orchestrator only needs a derived summary (e.g. "latest stable version", "changelog URL"). Routing through a subagent caps the orchestrator's context cost at the size of the summary, not the size of the raw data.
+
+**How to apply:**
+1. Identify the collection work whose raw output is noisy, large, or irrelevant to the orchestrator's reasoning.
+2. Define the compact result structure the orchestrator needs (a table, a list of key/value pairs, a brief paragraph).
+3. Spawn a disposable subagent with the collection task and the result schema. The subagent does all fetching and processing.
+4. Receive the structured result; discard the subagent's intermediate context.
+
+**When to apply:** Any phase whose data-collection output would dominate the context window, or where the orchestrator only needs a derived result and not the raw source material. The raw lookup outputs must be irrelevant to the orchestrator's reasoning — if the orchestrator needs to inspect them, subagent isolation is the wrong pattern.
+
+**Distinct from P16:** P16 eliminates round trips; P17 eliminates context pollution. The two compose — a subagent can execute a generated batch script internally.
+
+**Targets:** Context Loading Efficiency (CLE ↑), Instruction Token Efficiency (ITE ↑)
 
 ---
 
