@@ -6,7 +6,7 @@ Re-read `research-log.md` (Intent Anchor). Focus on the baseline section.
 
 Based on the weakest metrics (seed and custom), form 3–5 hypotheses.
 
-**The seed patterns (P1–P14) are starting points, not constraints.** If the workflow
+**The seed patterns (P1–P18) are starting points, not constraints.** If the workflow
 has a problem that no seed pattern addresses, invent the fix. Novel hypotheses are
 expected and valuable — they may become patterns for future runs.
 
@@ -154,6 +154,17 @@ irrelevant to the orchestrator's reasoning (only the derived result matters).
 Applicable to: web research phases, version-lookup phases, multi-source document
 synthesis, any phase whose data-collection output would dominate the context window.
 Targets: CLE (↑), ITE (↑)
+
+#### P18 — Cross-File Structural Anchor
+For workflows where one instruction file references a named section in another file
+(e.g. "navigate to the `### Kotlin/Android primary sources` section heading in Phase 2"):
+use the exact section heading name as the reference anchor rather than a content
+description. Section headings are stable, searchable, and survive minor prose edits.
+Content descriptions ("see the sources table in Phase 2") drift as files are updated
+and become ambiguous when a file has multiple similar sections.
+Applicable to: any multi-file workflow where phases cross-reference named sections
+in other phase files, reference tables, or help documents.
+Targets: HCU (↑), IAR (↓)
 
 #### P15 — Measurement Accuracy Retrospective
 When a metric has been estimated (rather than precisely counted) for two or more
