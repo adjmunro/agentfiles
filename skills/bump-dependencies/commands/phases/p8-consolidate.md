@@ -157,6 +157,12 @@ For each alias merge point (from oldest to newest in consolidation order):
      git checkout <head-branch>
      ```
 
+   Phase 8 proceeds to Step E (force-push) regardless of the integration test
+   result. The consolidated branch is pushed so the PR is available for human
+   review — Phase 7's summary comment will surface the regression finding and the
+   bisect result. Do not abort Phase 8 or attempt to fix the integration failure
+   here; the human decides whether to exclude the regression-introducing alias.
+
 If bisection cannot isolate a single alias (e.g., the failure only occurs when
 two alias groups are present together), record that finding explicitly. Then
 return to the HEAD of the consolidated branch before continuing:
