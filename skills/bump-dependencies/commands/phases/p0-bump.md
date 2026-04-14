@@ -427,6 +427,9 @@ chore(deps): bump Gradle wrapper from 8.6 to 8.13
 
 The commit body (optional) may include the changelog URL and a one-sentence summary
 of the release if it is immediately available from the API response. Keep it concise.
+Note: GitHub Actions GraphQL responses include release description text — use it for
+the summary sentence. Maven search (solrsearch) and the Gradle Plugin Portal API do
+not include release descriptions — for these ecosystems, include only the changelog URL.
 
 Repeat Steps F and G for every dependency with a safe update, in this order:
 1. `libs.versions.toml` entries — alphabetical by alias
