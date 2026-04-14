@@ -2,6 +2,20 @@
 
 ---
 
+## 1.10.0 — Batch and Isolation Patterns (2026-04-14)
+
+Adds two new seed patterns to `p3-hypothesize.md` for workflows that collect data
+across many items.
+
+- **P16 — Generated Batch Script:** generate a script from an item list, run it once,
+  parse the structured output — eliminates N sequential agent tool calls for per-item
+  data collection (version lookups, file reads, checksums, API calls, etc.)
+- **P17 — Lookup Subagent Isolation:** route voluminous data collection into a
+  disposable subagent that returns only a compact result table, protecting the
+  orchestrator context from noise it does not need to reason about directly
+
+---
+
 ## 1.9.1 — Richness Score Tuning (2026-03-27)
 
 ### Changed

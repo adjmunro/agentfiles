@@ -128,6 +128,33 @@ Applicable to: any multi-hypothesis experiment session; any workflow optimisatio
 context where ≥2 changes are queued for concurrent application.
 Targets: EIS (↑)
 
+#### P16 — Generated Batch Script
+For workflows that need to collect data for N items (version lookups, file reads,
+checksums, local parsing, API calls, or any repeatable per-item operation): instead
+of N sequential agent tool calls, generate a single script from the item list that
+processes all N in one execution — parallelising where safe — and emits structured
+output (e.g. a tab-separated table). The agent reads the table once rather than
+issuing N individual actions. Reduces round trips, keeps intermediate results out of
+the main context window, and makes the full item list auditable as generated code.
+Applicable to: any phase that iterates over a manifest of items to collect external
+or local data. Particularly effective when N > 5 or when intermediate results are
+large and not needed for reasoning — only the final structured output is.
+Targets: CLE (↑), ITE (↑)
+
+#### P17 — Lookup Subagent Isolation
+For workflows where a phase needs rich external or local data — web fetches, large
+file reads, multi-source research — but the orchestrator only needs a compact
+structured summary: route the lookup work into a disposable subagent. The subagent
+fetches, reads, and processes; returns only a structured result table or brief. The
+orchestrator context receives one tool result instead of N voluminous ones.
+Distinct from P16 (Generated Batch Script): P16 eliminates round trips; P17
+eliminates context pollution. The two compose — a subagent can execute a generated
+batch script internally. Apply P17 when the raw lookup outputs are noisy, large, or
+irrelevant to the orchestrator's reasoning (only the derived result matters).
+Applicable to: web research phases, version-lookup phases, multi-source document
+synthesis, any phase whose data-collection output would dominate the context window.
+Targets: CLE (↑), ITE (↑)
+
 #### P15 — Measurement Accuracy Retrospective
 When a metric has been estimated (rather than precisely counted) for two or more
 consecutive runs at the same value, conduct a targeted re-audit to either confirm
