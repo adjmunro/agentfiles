@@ -96,6 +96,9 @@ Read the file in full.
    Extract the plugin `id`.
 3. If no `[libraries]` or `[plugins]` entry references the alias, it may be a
    BOM alias or an indirect version — note it as **unresolved** and skip it.
+   Include it in the Step I summary under "Skipped (unresolved)" and add a note
+   in the PR body row: "BOM/indirect — transitive dependency versions not checked;
+   manual review recommended."
 
 **For each resolved alias**, record:
 - `alias` — the key in `[versions]`
