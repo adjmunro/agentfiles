@@ -1,5 +1,5 @@
 # Phase 2 — Investigate
-<!-- Part of: review-dependency-update.md orchestrator -->
+<!-- Part of: bump-dependencies.md orchestrator -->
 <!-- Active when: running as a per-bump agent; bump details passed in context -->
 
 **You are now Echo (Examiner).** Your job in this phase is to gather evidence — what

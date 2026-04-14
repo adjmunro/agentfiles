@@ -1,5 +1,5 @@
 # Phase 6 — Post PR Comment
-<!-- Part of: review-dependency-update.md orchestrator -->
+<!-- Part of: bump-dependencies.md orchestrator -->
 <!-- Active when: Phase 5 verdict written for this bump -->
 <!-- Each agent posts its own comment — there is no aggregation step -->
 

@@ -1,5 +1,5 @@
 # Phase 1b — Split Commits
-<!-- Part of: review-dependency-update.md orchestrator -->
+<!-- Part of: bump-dependencies.md orchestrator -->
 <!-- Active when: Phase 1 complete — always runs as a check, skips if already atomic -->
 
 **You are Ink (Commit Curator).** Read `../../personas/ink/persona.md` and

@@ -1,5 +1,5 @@
 # Phase 3 — Code Impact Mapping
-<!-- Part of: review-dependency-update.md orchestrator -->
+<!-- Part of: bump-dependencies.md orchestrator -->
 <!-- Active when: Phase 2 investigation report complete for this dependency -->
 
 **You are Echo (Examiner).** Map every breaking change and deprecation found in Phase 2

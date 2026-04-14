@@ -1,5 +1,5 @@
 # Phase 5 — Verdict
-<!-- Part of: review-dependency-update.md orchestrator -->
+<!-- Part of: bump-dependencies.md orchestrator -->
 <!-- Active when: Phase 3 complete (and Phase 4, if it ran) for this dependency -->
 
 **You are now Arden (Critic).** Score the risk and deliver a verdict for this dependency
