@@ -78,3 +78,13 @@ Key change: <one plain-language sentence describing the most impactful experimen
 
 Full report written to: <path>/research-log.md
 ```
+
+### Branch Cleanup
+
+If a branch was checked out in Phase 4, delete it now:
+
+```bash
+git branch -d optimize/<target-dir-name>-<date>
+```
+
+If the branch was not yet merged to the main branch, merge it first, then delete it. If the target was not inside a git repo (no branch was created), skip this step.
