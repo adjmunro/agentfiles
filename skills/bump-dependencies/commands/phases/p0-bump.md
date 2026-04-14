@@ -401,6 +401,17 @@ distributionUrl=https\://services.gradle.org/distributions/gradle-<safe_latest>-
 If a `# Release notes:` comment line already exists immediately above `distributionUrl`,
 update its URL. Do not add a second comment line.
 
+### Root Gradle build scripts — editing rules
+
+Locate each version variable declaration identified in Step C.4 that has a safe update available. Update the version string in place:
+
+- **Kotlin DSL**: change `val <name> = "<old>"` or `val <name>: String = "<old>"` to `val <name> = "<new>"`
+- **Groovy DSL**: change `ext.<name> = "<old>"` (standalone) or the value inside an `ext { }` block to `"<new>"`
+
+Do not add a trailing comment to build script version variables — the file format varies and inline comments may interfere with `buildSrc` or `build-logic` parsing. The changelog URL is captured in the Step I summary and the PR body instead.
+
+Stage only the changed line(s) for this variable. Include the edit in the same atomic commit as any corresponding `libs.versions.toml` alias if the variable controls the same dependency.
+
 ---
 
 ## Step G — Commit Each Bump
