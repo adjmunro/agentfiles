@@ -71,6 +71,12 @@ found as a **source file**:
 | Gradle wrapper | `gradle/wrapper/gradle-wrapper.properties` |
 | Root Gradle build scripts | `build.gradle.kts`, `build.gradle` (root only — do not scan module files) |
 
+Also search the repository for any `libs.versions.toml` files at non-standard paths
+using a broad glob (`**/libs.versions.toml`). Add any found at paths not already
+listed in the table above to the source file list, noting their path. This covers
+composite-build layouts where version catalogues live under `build-logic/`,
+`buildSrc/`, or other included-build roots.
+
 For each source file found, proceed to the relevant section below. Process all source
 files before moving to Step D.
 
