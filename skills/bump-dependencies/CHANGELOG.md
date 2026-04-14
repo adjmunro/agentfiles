@@ -2,6 +2,23 @@
 
 ---
 
+## 4.5.0 — Discovery Coverage and PR Transparency (2026-04-14)
+
+Expands Phase 0 coverage to Gradle composite builds, improves PR body transparency,
+completes commit message format parity, and fixes stale orchestrator references.
+
+- **Step C composite-build glob:** catch-all `**/libs.versions.toml` scan added after
+  the two hardcoded paths — projects with version catalogues under `build-logic/` or
+  `buildSrc/` are now included in the proactive bump scope
+- **Step H PR body skip summary:** "Dependency scan summary" table added to the PR body
+  template — reviewers can now see all five skip categories alongside bumped dependencies
+- **Step G wrapper example:** Gradle wrapper commit message example added for format
+  parity with `libs.versions.toml` and GitHub Actions examples
+- **Phase comment headers:** seven phase files (p1–p6) updated from the pre-v4.0.0
+  `review-dependency-update.md` reference to `bump-dependencies.md`
+
+---
+
 ## 4.4.0 — Safe Discovery Hardening (2026-04-14)
 
 Hardens Phase 0's version discovery against pre-release versions, incorrect direction
