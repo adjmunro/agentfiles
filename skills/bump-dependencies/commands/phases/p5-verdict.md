@@ -39,18 +39,19 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 | Rook: possible supply-chain concern | +2 |
 | Significant behaviour change in exercised code path | +2 |
 | No changelog found — manual review incomplete | +2 |
-| Multi-version span (≥3 intermediate versions skipped) | +1 |
+| Multi-version span (≥2 intermediate versions traversed — see Phase 2 definition) | +1 |
 | All actionable usages fully remediated (zero skipped must-fix items) | −1 (floor 0) |
 | CI was failing at Phase 1; all failures now resolved by Phase 4 | 0 (no extra penalty) |
 | CI was failing at Phase 1; failures remain unresolved (non-environment) | +4 |
 | CI was failing at Phase 1; failures remain unresolved (test environment issue only) | +1 |
 | CI was passing at Phase 1 (or no CI configured) | 0 |
 
-> **Note on "Multi-version span":** Apply this signal when the upgrade traverses three
-> or more intermediate versions (i.e., old → new spans at least two releases not
-> previously reviewed). The signal reflects the increased probability that advisory
-> signals were missed in intermediate releases. Do not apply it when the span is a
-> single minor or patch hop.
+> **Note on "Multi-version span":** Apply this signal when the upgrade traverses two
+> or more intermediate versions (threshold aligns with Phase 2 Multi-Version Span
+> Detection: two or more released versions strictly between old and new). The signal
+> reflects the increased probability that advisory signals were missed in intermediate
+> releases. Do not apply it when the span is a single minor or patch hop (one or zero
+> intermediate versions).
 
 > **Note on "Major version bump with no changelog found":** Use this signal (instead
 > of the plain "Major version bump" signal) only when the changelog lookup in Phase 2

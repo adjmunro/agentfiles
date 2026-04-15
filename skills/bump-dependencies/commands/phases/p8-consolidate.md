@@ -276,15 +276,27 @@ git branch -D dep-review/<PR-number>/<alias> 2>/dev/null || true
 Repeat for each alias in the manifest (merged and skipped alike).
 
 After all isolated branches are deleted, check out the base branch and delete the
-local copy of the PR head branch. The remote was updated by Step E; the local copy
-can be re-fetched with `gh pr checkout` if further changes are needed:
+local copy of the PR head branch:
 
 ```
 git checkout <base-branch>
 git branch -D <head-branch>
 ```
 
-Do **not** delete the remote `<head-branch>` — it is the PR head and must remain.
+**If Step E ran (normal path):** the remote head branch was updated by Step E and
+must remain — it is the PR head. Do not delete it. The local copy can be re-fetched
+with `gh pr checkout` if further changes are needed.
+
+**If the all-skipped early exit was taken (Step E was not run):** the remote
+`<head-branch>` was never modified and the PR has been closed. Delete the dangling
+remote branch now:
+
+```
+git push origin --delete <head-branch> 2>/dev/null || true
+```
+
+This removes the `deps/auto-bump-<date>` branch that Phase 0 pushed but that is now
+superseded by the closed PR.
 
 ---
 

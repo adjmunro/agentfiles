@@ -4,13 +4,19 @@
 <!-- Run by: the orchestrator only — never by a per-bump sub-agent -->
 <!-- This phase posts exactly ONE comment for the entire PR run. -->
 
-This is the last action the skill takes. If exactly **one** alias was reviewed,
-skip this phase entirely — the Phase 6 comment already contains the full detail
-and a summary would only duplicate it. Proceed to Step D (report to user) only.
+This is the last action the skill takes. If exactly **one** alias was reviewed:
 
-For **two or more** aliases, post a concise run summary covering only information
-that is new or synthesised — do not restate what the per-bump Phase 6 comments
-already contain.
+- **If Phase 8 integration tests passed (or no integration tests were run):** skip
+  Steps B and C entirely — the Phase 6 comment already contains the full detail and
+  a summary would only duplicate it. Proceed to Step D (report to user) only.
+- **If Phase 8 integration tests failed:** proceed to Steps B–C to surface the bisect
+  finding and integration test result as a PR comment before reporting to the user in
+  Step D. The Phase 6 comment was posted before Phase 8 ran and does not contain this
+  data.
+
+For **two or more** aliases, always proceed to Steps B–C — post a concise run summary
+covering only information that is new or synthesised. Do not restate what the per-bump
+Phase 6 comments already contain.
 
 ---
 
