@@ -113,6 +113,14 @@ Apply override conditions from the mapping if relevant. State the score, tier, a
 Format as markdown suitable for a GitHub PR comment. This block will be included
 verbatim in the Phase 6 comment.
 
+> **Data source for intermediate version list:** The `<v1>, <v2>, ...` values in
+> the version span line come from Phase 2 Pass A (Multi-Version Span Detection).
+> If the Phase 2 investigation report is in context, read the multi-version span
+> section for the enumerated intermediate release list. If the report is not in
+> context, check the session brief at
+> `/tmp/dep-review-<PR-number>-session-brief.md` — it records the version span
+> detection from Phase 1 Step E.
+
 ```markdown
 ### <package-name>: <old-version> → <new-version> · Risk: <TIER>
 

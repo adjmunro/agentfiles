@@ -168,6 +168,26 @@ If the root build script contains no top-level version declarations (all version
 
 ---
 
+## Step C.5 — Cross-Source Deduplication
+
+Before proceeding to Step D, compare the Step C.4 variable list against the
+Step C.1 alias list by resolved Maven coordinates (`group:artifact`). If a
+Step C.4 variable resolves to the same coordinates as an existing Step C.1
+alias, mark the C.4 variable as a duplicate:
+
+- Fold it into the Step C.1 alias entry's edit scope (per Step F bundling logic)
+  so both files are updated in the same atomic commit.
+- Remove it from the standalone Step C.4 list so it does not receive a separate
+  lookup, bump, or commit.
+- Note the merged entry in the Step I summary under the TOML alias row
+  (e.g., "also updates `kotlinVersion` in `build.gradle.kts`").
+
+This prevents the same `group:artifact` from receiving two separate lookup,
+bump, and commit sequences when both a TOML alias and a build script variable
+resolve to identical coordinates.
+
+---
+
 ## Step D — Look Up Latest Safe Versions
 
 **The safety rule is absolute: never bump to a version published less than seven days
@@ -287,7 +307,7 @@ no extra API call needed if it matches. If the SHA does not appear in any
 five most recent releases), fall back to a targeted API call:
 
 ```
-gh api repos/<owner>/<action>/git/refs/tags \
+gh api repos/<owner>/<action>/git/refs/tags --paginate \
   --jq '.[] | select(.object.sha == "<sha>") | .ref'
 ```
 
@@ -479,16 +499,36 @@ Push the branch:
 git push -u origin <BUMP_BRANCH>
 ```
 
-**Before creating the PR**, check whether an open proactive bump PR already exists
-for this repository:
+**Before creating the PR**, first check for any open proactive bump PR from a
+previous run (which may use a different branch name):
+
+```
+gh pr list --repo <owner/repo> --state open \
+  --search 'chore(deps): bump outdated dependencies in:title' \
+  --json number,title,headRefName
+```
+
+If any PRs are returned, report to the user:
+
+> "An open proactive bump PR already exists: #<N> (branch `<headRefName>`).
+> Proceed to create a new PR for today, or resume the existing one?"
+
+- **If the user chooses the existing PR:** record its number as the PR number for
+  this run and proceed directly to Step I without further bumps. The existing
+  commits and review state are preserved.
+- **If the user chooses to create a new PR:** continue with the branch-specific
+  check below and proceed normally.
+
+Next, check whether an open PR already exists for this exact branch (e.g. from
+a previous interrupted run on the same day):
 
 ```
 gh pr list --repo <owner/repo> --head <BUMP_BRANCH> --state open --json number,title
 ```
 
-If a PR is returned, a PR for this exact branch already exists (e.g. from a previous
-interrupted run). Record the existing PR number, skip `gh pr create`, and proceed
-directly to Step I using that number.
+If a PR is returned, a PR for this exact branch already exists. Record the
+existing PR number, skip `gh pr create`, and proceed directly to Step I using
+that number.
 
 Create the PR:
 

@@ -60,6 +60,27 @@ use the summary already in context):
 Keep the comment short. The per-bump detail is in the comments above — this
 comment is a navigator, not a repeat.
 
+**For a single-alias PR where Steps B–C are running solely because Phase 8
+integration tests failed:** post a reduced comment — Phase 6 already contains
+the full verdict and per-bump analysis. Omit the alias table, overall verdict
+line, and "Worth a closer look" section. Include only the integration test
+result, the bisect finding (if any), and a "Needs human action" entry:
+
+```markdown
+## Dependency Review — Run Summary (Integration Test Failure)
+
+> `/bump-dependencies` · <date>
+
+**Integration tests:** FAIL — <suite name> <N>/<N> passing
+Regression introduced by `<alias>` — see bisect findings in Phase 8.
+
+**Needs human action:**
+- `<alias>` — integration test failure; resolve the regression before merging.
+```
+
+For **two or more** aliases, or a single alias where integration tests passed,
+use the full template below.
+
 ```markdown
 ## Dependency Review — Run Summary
 

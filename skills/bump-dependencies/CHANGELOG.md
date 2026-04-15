@@ -2,6 +2,18 @@
 
 ---
 
+## 4.11.0 — Pagination, Deduplication, and Comment Scope Clarity (2026-04-15)
+
+Closes five instruction gaps discovered in Run 16: bare-SHA fallback now paginates the tag list API, cross-source TOML/build-script deduplication prevents double-bumping identical coordinates, the Phase 5 verdict block has an explicit data source for the intermediate version list, single-alias Phase 7 comments are scoped down when only integration test results need surfacing, and a title-based check prevents duplicate proactive bump PRs across runs.
+
+- **Phase 0 Step D — paginated bare-SHA fallback:** `--paginate` added to the GitHub API call that searches for a tag matching a bare SHA; repos with many tags silently missed without it.
+- **Phase 0 Step C.5 — cross-source deduplication:** new step between C.4 and D compares Step C.4 variables against Step C.1 aliases by resolved Maven coordinates; duplicates are folded into the alias entry's edit scope and removed from the standalone C.4 list, preventing double lookup, bump, and commit sequences for the same `group:artifact`.
+- **Phase 5 Step C — intermediate version list data source:** explicit note added before the verdict block template stating that `<v1>, <v2>, ...` values come from Phase 2 Pass A (Multi-Version Span Detection), with a fallback path to the session brief file.
+- **Phase 7 Step B — single-alias integration test failure scope:** scope-narrowing note added so that when Steps B–C run solely because Phase 8 integration tests failed on a single-alias PR, the posted comment is reduced to integration result + bisect finding only, avoiding duplication of the Phase 6 per-bump detail.
+- **Phase 0 Step H — cross-run proactive PR deduplication:** title-based open-PR check added before the branch-specific check; if a previous proactive bump PR is open under a different branch name, the user is prompted to choose between resuming it or creating a new one.
+
+---
+
 ## 4.10.0 — Edge Case Completeness (2026-04-15)
 
 Closes five instruction gaps discovered in Run 15: single-alias PR integration results now reach the PR, the multi-version span threshold is consistent across all three locations that define it, bare-SHA fallback resolves the unhandled non-match case, proactive all-blocked PRs clean up their remote branch, and the Step H PR body gains the C.4 variable format note.
