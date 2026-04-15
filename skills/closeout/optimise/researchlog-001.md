@@ -35,8 +35,6 @@
 
 ## Phase 1 — Audit
 
-## Audit — 2026-03-27 (run 1, target: skills/closeout)
-
 **Target:** `skills/closeout`
 **Files:** 5 total (1 instruction command file, 4 support files)
 **Command files:** `commands/closeout.md` (~310 lines, est. ~2,500 tokens)
@@ -61,8 +59,6 @@
 ---
 
 ## Phase 2 — Baseline
-
-## Baseline — 2026-03-27
 
 ### Metric Scores
 
@@ -102,8 +98,6 @@
 ---
 
 ## Phase 3 — Hypotheses
-
-## Hypotheses — 2026-03-27
 
 ### H1 — Add explicit carry-forward anchors between phases [M1, M9, MX4]
 - **Problem:** No written inter-phase artifact. Agents lose context if they drift between phases 1→2→3. M1=10, M9=0, MX4=15.
@@ -145,8 +139,6 @@
 ---
 
 ## Phase 4 — Experiments
-
-## Experiment Results — 2026-03-27
 
 | Hypothesis | Outcome | M pre | M post | Delta |
 |-----------|---------|-------|--------|-------|

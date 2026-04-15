@@ -29,8 +29,6 @@
 
 ## Phase 1 — Audit
 
-## Audit — 2026-04-14 (Run 2, target: skills/optimise)
-
 **Persona: Pulse (Analytics) active.**
 
 **Target:** `skills/optimise`
@@ -64,8 +62,6 @@ All 4 referenced personas confirmed with `# Name (Role)` Identity line and soul.
 ---
 
 ## Phase 2 — Baseline
-
-## Baseline — 2026-04-14 (Pulse active, Run 2)
 
 **Instruction file corpus:** optimise.md, p1-audit.md, p2-baseline.md, p3-hypothesize.md, p4-experiments.md, p5-report.md
 **Excluded (documentation):** help.md, AGENTS.md, SKILL.md, VERSION.md, CHANGELOG.md, TESTING.md
@@ -124,8 +120,6 @@ Note on drop from 98.1%: scope expansion accounts for -4.4pp (PEV+EIS online at 
 
 ## Phase 3 — Hypotheses
 
-## Hypotheses — 2026-04-14 (Keeper active, Run 2)
-
 *Keeper (Strategist) active.*
 
 ### Step 0 — Pre-Experiment Dependency Scan
@@ -179,8 +173,6 @@ Execution order: H7 → H8 → H6.
 ---
 
 ## Phase 4 — Experiments
-
-## Experiments — 2026-04-14 (Arden active, Run 2)
 
 **Persona: Arden (Critic) active.**
 
@@ -256,8 +248,6 @@ This session logged Step 0 explicitly (dependency scan with overlap noted, execu
 ---
 
 ## Phase 5 — Report
-
-## Phase 5 — Report (2026-04-14, Run 2)
 
 ### Post-Experiment Re-Measurement
 

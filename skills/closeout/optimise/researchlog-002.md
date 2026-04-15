@@ -31,8 +31,6 @@
 
 ## Phase 1 — Audit
 
-## Audit — 2026-03-27 (run 2, target: skills/closeout)
-
 **TTL check:** Tier C — same target, same day. Loaded as-is.
 
 **New observations since run 1:**
@@ -52,8 +50,6 @@
 
 ## Phase 2 — Baseline
 
-## Re-Baseline — 2026-03-27 (run 2)
-
 Inheriting run 1 post-scores. Deltas where file has changed:
 
 | ID | Run 1 Post | Run 2 | Notes |
@@ -68,8 +64,6 @@ Inheriting run 1 post-scores. Deltas where file has changed:
 ---
 
 ## Phase 3 — Hypotheses
-
-## Hypotheses — 2026-03-27 (run 2)
 
 ### H6 — Anchor Phase 2→3 + Phase 5 gather instruction [M9, M1]
 - **Problem:** 3/4 transitions unanchored; Phase 5 has no explicit gather step — agent could produce a report from template alone without referencing actual work done.
@@ -112,8 +106,6 @@ Inheriting run 1 post-scores. Deltas where file has changed:
 ---
 
 ## Phase 4 — Experiments
-
-## Experiment Results — 2026-03-27 (run 2)
 
 | Hypothesis | Outcome | M pre | M post | Delta |
 |-----------|---------|-------|--------|-------|

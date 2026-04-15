@@ -35,8 +35,6 @@
 
 ## Phase 1 — Audit
 
-## Audit — 2026-03-25 (run 7)
-
 **Target:** `skills/optimise`
 **Files:** 13 total (6 instruction command, 1 documentation command, 5 support, 1 archive)
 **Token estimate:** ~10,600 instruction-file tokens (+344t from v1.7.0 additions); help.md ~10,122t; support/log tokens not scored
@@ -92,8 +90,6 @@
 
 ## Phase 2 — Baseline
 
-## Custom Metrics — 2026-03-25 (run 7)
-
 ### MX25 — Loop Mode Discoverability Rate (LMDR) [custom]
 **Measures:** What fraction of the invocation modes defined in optimise.md's Entry Point / Loop Control section are documented in help.md with their own entry.
 **Why seeds miss it:** HCU (Help Content Currency) counts whether all metrics and patterns have help entries; it does not check whether invocation modes (N, auto, default) are discoverable via `/optimise help`. A feature added to the orchestrator but absent from help.md is invisible to users who do not read source files.
@@ -135,8 +131,6 @@
 **Normalisation:** rate × 100
 
 ---
-
-## Baseline — 2026-03-25 (run 7)
 
 **Persona: Pulse (Analytics)**
 
@@ -371,8 +365,6 @@ Step 0 — Pre-experiment dependency scan:
 ---
 
 ## Phase 5 — Report
-
-## Final Results — 2026-03-25 (run 7)
 
 | Metric | Baseline | Post | Delta | Status |
 |--------|----------|------|-------|--------|

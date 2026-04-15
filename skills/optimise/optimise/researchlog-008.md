@@ -31,8 +31,6 @@
 
 ## Phase 1 — Audit
 
-## Audit — 2026-03-27 (run 1, target: skills/optimise)
-
 **Target:** `skills/optimise`
 **Files:** 15 total (7 command, 5 support, 3 logs/archives)
 **Token estimate:** ~23,000 tokens (command files ~21,300; support files ~1,700)
@@ -73,8 +71,6 @@
 ---
 
 ## Phase 2 — Baseline
-
-## Baseline — 2026-03-27 (Pulse active)
 
 *Pulse (Analytics) is active for this phase.*
 
@@ -263,9 +259,7 @@ PRS = 4/4 × 100 = **100**. **Score: 100**
 
 ---
 
-### Custom Metrics — 2026-03-27
-
-*Pulse's custom metric discovery: What could go wrong in this specific workflow that no seed metric would catch?*
+#*Pulse's custom metric discovery: What could go wrong in this specific workflow that no seed metric would catch?*
 
 ---
 
@@ -400,8 +394,6 @@ Coherence = 5.5/6 (property 3 is partial) = 91.7%. **Score: 92**
 
 ## Phase 3 — Hypotheses
 
-## Hypotheses — 2026-03-27 (Keeper active)
-
 *Keeper (Strategist) is active for this phase.*
 
 Re-read research-log.md ✓ (Intent Anchor — same target, same session)
@@ -501,8 +493,6 @@ Based on baseline measurement, the following experiments are queued.
 
 ## Phase 4 — Experiments
 
-## Experiment Results — 2026-03-27 (run 1)
-
 | Hypothesis | Outcome | Pre | Post | Delta |
 |-----------|---------|-----|------|-------|
 | H1 — embed metric weights in p2-baseline.md | Confirmed | MX3=0 | MX3=100 | +100pp |
@@ -519,8 +509,6 @@ Baseline: 87.1% → Post: 98.1% (+11.0 pp)
 ---
 
 ## Phase 5 — Report
-
-## Final Results — 2026-03-27
 
 | Metric | Baseline | Post | Delta | Status |
 |--------|----------|------|-------|--------|
