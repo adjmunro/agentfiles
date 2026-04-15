@@ -24,7 +24,7 @@ Before fetching any changelog, check whether the version span is **single** or *
    - **Maven/Gradle**: Maven Central search or the package's GitHub Releases API
    - **PyPI**: `https://pypi.org/pypi/<package>/json` → `.releases` keys
    - **Cargo**: `https://crates.io/api/v1/crates/<name>/versions`
-   - **GitHub Releases API**: `gh api repos/<owner>/<repo>/releases?per_page=100`
+   - **GitHub Releases API**: `gh api repos/<owner>/<repo>/releases?per_page=100 --paginate`
 2. Sort them in ascending version order and record the full list as the
    **intermediate version list** for this dependency.
 3. If only one version is in the range (the new version itself), this is a
@@ -84,7 +84,7 @@ For any library not in this table, try in order:
 
 1. **GitHub Releases API** (if the package is hosted on GitHub):
    ```
-   gh api repos/<owner>/<repo>/releases?per_page=50
+   gh api repos/<owner>/<repo>/releases?per_page=100 --paginate
    ```
    Filter releases whose tag falls within the version range (old, new].
 

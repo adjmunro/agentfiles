@@ -115,9 +115,10 @@ verbatim in the Phase 6 comment.
 
 > **Data source for intermediate version list:** The `<v1>, <v2>, ...` values in
 > the version span line come from Phase 2 Pass A (Multi-Version Span Detection).
-> If the Phase 2 investigation report is in context, read the multi-version span
-> section for the enumerated intermediate release list. If the report is not in
-> context, check the session brief at
+> If the Phase 2 investigation report is in context, look for the
+> `Multi-version span detected:` record, which lists the intermediate versions
+> in the format `<old> → <new> via <v1>, <v2>, ...` — read the version list from
+> that record. If the report is not in context, check the session brief at
 > `/tmp/dep-review-<PR-number>-session-brief.md` — it records the version span
 > detection from Phase 1 Step E.
 

@@ -2,6 +2,18 @@
 
 ---
 
+## 4.12.0 — API Pagination and Branch Hygiene (2026-04-15)
+
+Closes five instruction gaps discovered in Run 17: Phase 2 now paginates its GitHub Releases API calls for complete intermediate-version enumeration, the Phase 5 data-source note uses the exact Phase 2 record format, orphaned branches are cleaned up when a prior proactive PR is reused, merged C.4 entries are annotated in the PR body, and the C.5 deduplication step handles version-drift between TOML and build script.
+
+- **Phase 2 Pass A — paginated GitHub Releases calls:** `--paginate` added to both the Multi-Version Span Detection call and the changelog fallback call; packages with more than 50–100 releases previously had intermediate versions silently truncated.
+- **Phase 5 Step C — exact Phase 2 record anchor:** data-source note updated from the vague "multi-version span section" to the exact `Multi-version span detected:` record format, making the cross-reference deterministic for sub-agents.
+- **Phase 0 Step H — orphaned branch cleanup on PR resume:** when the user elects to resume an existing proactive PR, the newly-pushed BUMP_BRANCH is now explicitly deleted from the remote before proceeding to Step I.
+- **Phase 0 Step H — merged C.4 annotation in PR body:** PR body bump table note updated to annotate the TOML alias row with a parenthetical when a C.4 build script variable was merged into it via Step C.5 (e.g. `kotlin (also updates \`kotlinVersion\` in \`build.gradle.kts\`)`).
+- **Phase 0 Step C.5 — version drift handling:** explicit tiebreak added for when the C.4 variable and C.1 alias resolve to the same coordinates but list different current versions; TOML is authoritative and the discrepancy is surfaced in the Step I summary.
+
+---
+
 ## 4.11.0 — Pagination, Deduplication, and Comment Scope Clarity (2026-04-15)
 
 Closes five instruction gaps discovered in Run 16: bare-SHA fallback now paginates the tag list API, cross-source TOML/build-script deduplication prevents double-bumping identical coordinates, the Phase 5 verdict block has an explicit data source for the intermediate version list, single-alias Phase 7 comments are scoped down when only integration test results need surfacing, and a title-based check prevents duplicate proactive bump PRs across runs.
