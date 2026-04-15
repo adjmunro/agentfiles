@@ -2,6 +2,18 @@
 
 ---
 
+## 4.10.0 — Edge Case Completeness (2026-04-15)
+
+Closes five instruction gaps discovered in Run 15: single-alias PR integration results now reach the PR, the multi-version span threshold is consistent across all three locations that define it, bare-SHA fallback resolves the unhandled non-match case, proactive all-blocked PRs clean up their remote branch, and the Step H PR body gains the C.4 variable format note.
+
+- **Phase 7 — single-alias Phase 8 surfacing:** the skip condition for single-alias PRs now checks whether Phase 8 integration tests passed; if tests failed, Steps B–C are executed to post the bisect finding as a PR comment rather than silently dropping it.
+- **Phase 5 — multi-version span threshold:** scoring matrix row updated from ≥3 to ≥2 intermediate versions, aligning with Phase 2's definition and Phase 5's own explanatory note. Explanatory note cross-references Phase 2 explicitly.
+- **Phase 0 Step D — bare-SHA fallback:** GitHub Actions with bare-SHA pins that do not match any tagCommit.oid in the GraphQL response now have an explicit API fallback path, with a dereference step for annotated tags and a conservative "treat as upgradeable" path if still unresolved.
+- **Phase 8 Step F — proactive all-blocked cleanup:** the all-skipped early exit path now explicitly deletes the remote PR head branch after closing the proactive PR, preventing dangling `deps/auto-bump-<date>` branches on the remote.
+- **Phase 0 Step H — PR body C.4 format:** PR body bump table template now includes the `<varName> (<script-file>)` format note for root build script variable entries, matching the Step I format added in v4.8.0.
+
+---
+
 ## 4.9.0 — Orchestration Robustness (2026-04-15)
 
 Closes four instruction gaps in the parallel wave orchestration: proactive-mode detection now uses an unambiguous operator, the non-agent fallback no longer re-runs completed phases, Wave 1 agent failures have an explicit recovery path, and standalone root build script bumps have a defined commit position.
