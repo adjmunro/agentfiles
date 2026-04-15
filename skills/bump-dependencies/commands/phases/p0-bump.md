@@ -445,8 +445,9 @@ not include release descriptions — for these ecosystems, include only the chan
 
 Repeat Steps F and G for every dependency with a safe update, in this order:
 1. `libs.versions.toml` entries — alphabetical by alias
-2. GitHub Actions — alphabetical by `owner/action`
-3. Gradle wrapper — last
+2. Root build script variables (Step C.4) with no corresponding `libs.versions.toml` alias — alphabetical by variable name (those that share a TOML alias are already bundled in step 1)
+3. GitHub Actions — alphabetical by `owner/action`
+4. Gradle wrapper — last
 
 If no dependencies have safe updates, print a summary and stop:
 

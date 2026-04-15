@@ -2,6 +2,17 @@
 
 ---
 
+## 4.9.0 — Orchestration Robustness (2026-04-15)
+
+Closes four instruction gaps in the parallel wave orchestration: proactive-mode detection now uses an unambiguous operator, the non-agent fallback no longer re-runs completed phases, Wave 1 agent failures have an explicit recovery path, and standalone root build script bumps have a defined commit position.
+
+- **Phase 7 & Phase 8 — proactive-mode detection:** "matches" replaced with "starts with" in all three proactive-PR detection conditions; eliminates the risk that agents interpreting exact equality fail to detect date-suffixed PR titles.
+- **Orchestrator Wave 3 non-agent fallback:** guard added to start from Phase 4 when Wave 1 already ran Phases 2–3 sequentially, preventing double-execution of investigation phases.
+- **Orchestrator Wave 1 agent dispatch:** explicit recovery instruction added for silent agent failure — aliases that do not return a Phase 3 impact table are flagged and queued for manual Phase 4 rather than silently dropped.
+- **Phase 0 Step G — commit ordering:** standalone root build script variable bumps (Step C.4 entries with no TOML alias counterpart) added as item 2 in the ordering list, closing the gap left when Step F gained C.4 editing rules in v4.7.0.
+
+---
+
 ## 4.8.0 — Step Zero Completeness (2026-04-15)
 
 Closes two representation gaps in Phase 0 left open after the H45–H49 root build script additions: the Step I summary table now names the identifier format for variable-name entries, and Step D now states the 7-day safety threshold as explicit arithmetic.

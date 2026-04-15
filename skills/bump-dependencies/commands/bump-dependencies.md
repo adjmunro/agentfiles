@@ -163,6 +163,11 @@ message. Each agent receives this prompt:
 **If the Agent tool is not available** — run Phases 2–3 sequentially for each
 entry in the manifest, collecting impact tables before proceeding to Wave 2.
 
+After all agents complete (or sequential runs finish): verify that a Phase 3 impact
+table was received for every dispatched alias. If any agent did not return one (silent
+failure or crash), treat that alias as having unknown must-fix status — flag it
+explicitly in the manifest and run Phase 4 manually for it before proceeding to Wave 3.
+
 ### Wave 2 — Sequential Remediation (Phase 4)
 
 **Phase 4 must run sequentially across bumps — never concurrently.**
@@ -189,10 +194,11 @@ run Phases 5–6 for each bump. Each agent receives the same prompt as Wave 1 pl
 > Execute Phases 5 and 6 only. Post your own PR comment at the end.
 > **Return your Phase 5 verdict block as the final line of your output message.**
 
-**If the Agent tool is not available** — run Phases 2–6 fully sequentially for each
-entry in the manifest, in order. (Phase 4's one-bump-at-a-time sequencing requirement
-is automatically satisfied by this serialisation — no additional sequencing step is
-needed.)
+**If the Agent tool is not available** — run Phases 4–6 sequentially for each entry
+in the manifest, in order. If Wave 1 was also non-agent (Phases 2–3 not yet run),
+start from Phase 2 instead — but do not re-run Phases 2–3 if Wave 1 already ran them.
+(Phase 4's one-bump-at-a-time sequencing requirement is automatically satisfied by
+this serialisation — no additional sequencing step is needed.)
 
 ### Wave 4 — Consolidation (Phase 8)
 
