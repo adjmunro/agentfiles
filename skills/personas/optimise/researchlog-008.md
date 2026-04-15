@@ -1,12 +1,85 @@
-# Skill Optimisation Research Log
+<!-- SUMMARY-START -->
+# Run 8 — 2026-03-27 | Target: skills/personas | Composite: 95.1% → 95.9% (+0.8 pp)
 
-## Archive: see research-log-archive-2026-03-22.md for runs prior to run 4
-## Archive: see research-log-archive-2026-03-27.md for runs 4–5
-## Archive: see research-log-archive-2026-03-27b.md for runs 6–7
+## Hypotheses
+
+| ID  | Description                                              | Outcome   |
+|-----|----------------------------------------------------------|-----------|
+| H25 | Add Identity line to Richness Rubric                     | Confirmed |
+| H26 | Wire pipeline personas into skill phase files            | Confirmed |
+| H27 | Sharpen Voice fingerprints for generic Voice sections    | Confirmed |
+| H28 | FMCS re-measurement at 27 personas                       | Confirmed |
+
+## Metric Snapshot
+
+| Metric | Baseline | Post  |
+|--------|----------|-------|
+| SRCA   | 92       | 100   |
+| PIS    | 89       | 100   |
+| PES    | 80       | 87    |
+| FMCS   | 86       | 96    |
+| CPVS   | 93       | 100   |
+| CABA   | 73       | 73    |
+| WTCQ   | 88       | 88    |
+| SMRC   | 100      | 100   |
+<!-- SUMMARY-END -->
 
 ---
 
-## Baseline — 2026-03-27 (Run 8)
+## Phase 1 — Audit
+
+**Target:** skills/personas/
+**Files:** 59 total (2 command, 57 support — 27 persona pairs + SKILL.md, AGENTS.md, TESTING.md, VERSION.md, CHANGELOG.md, research-log.md)
+**Token estimate:** ~28,000 tokens
+
+### Feature Inventory
+- Multi-phase pipeline: no
+- Persona system: yes (27 persona pairs)
+- Subagent invocations: no
+- Multi-session orchestration: no
+- Parallel execution: no
+- Cached artifacts: no
+
+### Files
+
+**Command files (2):**
+- `commands/summon.md` — persona summon orchestrator (~400 tokens)
+- `commands/evolve.md` — persona evolution pipeline (~1,800 tokens)
+
+**Support files (57):**
+- 27 × `persona.md` + 27 × `soul.md` = 54 persona files
+- `SKILL.md`, `AGENTS.md`, `TESTING.md`, `VERSION.md`, `CHANGELOG.md`, `research-log.md`
+
+### Persona Roster Coverage
+
+All 27 personas confirmed present and wired correctly:
+- `summon.md` roster: 27/27 entries with correct subdirectory paths ✓
+- `evolve.md` cognitive taxonomy: 27/27 modes covered ✓
+- `evolve.md` mode personas: audit→Pulse, speciate→Keeper, distil→Pulse, new→Loom ✓
+
+### Wiring Gap Findings
+
+**PIS gap (run 7: 89%):**
+- `evolve.md` new mode sets DO≥4 / DO NOT≥3 / Contradictions≥2 as creation minimum
+- Richness Rubric (audit mode) tests DO≥3 / DO NOT≥2 / Contradictions≥1
+- Creation bar exceeds audit bar — a newly created persona meeting minimum creation spec would over-score on Richness Rubric by receiving a perfect row even if it just barely clears creation threshold; conversely, an older persona with DO=3 would pass the Richness Rubric but fail creation spec if submitted as new
+
+**SRCA gap (run 7: 92%):**
+- AGENTS.md lists `Identity line` (`# Name (Role)`) and `Soul reference` (pointer to soul.md) as required `persona.md` fields
+- Neither field appears in the Richness Rubric in `evolve.md`
+- AGENTS.md `Contradictions` note requires observable tension; Richness Rubric only checks presence (≥1), not quality
+
+### TSCR Status
+- TESTING.md: 6 core command scenarios all "Untested" → TSCR=25 (7 persona-field rows + 0 tested scenarios / 32 rows)
+- No change since run 7
+
+### Persona Staleness Check
+- No broken persona load directives found
+- Pulse (analytics) confirmed present and loaded by Phase 1
+
+---
+
+## Phase 2 — Baseline
 
 **[Pulse (Analytics) active]**
 
@@ -155,7 +228,7 @@ Strongest (likely at ceiling): PRS=100, SQS=100, PCC=100, WCS=100, WTTS=100, LCM
 
 ---
 
-## Hypotheses — 2026-03-27 (Run 8)
+## Phase 3 — Hypotheses
 
 **[Keeper (Strategist) active]**
 
@@ -241,7 +314,7 @@ Based on baseline measurement, the following experiments are queued:
 
 ---
 
-## Experiments — 2026-03-27 (Run 8)
+## Phase 4 — Experiments
 
 **[Arden (Critic) active; Ink (Commit Curator) active for commits]**
 
@@ -308,68 +381,7 @@ FMCS = (25×1.0 + 2×0.5) / 27 = 26/27 = 96.3% → **96**
 
 ---
 
-## Experiment Summary — 2026-03-27 (Run 8)
-
-- Confirmed: H25, H26, H27, H28
-- Partial: none
-- Disconfirmed: none
-
----
-
-## Audit — 2026-03-27 (Run 8)
-
-**Target:** skills/personas/
-**Files:** 59 total (2 command, 57 support — 27 persona pairs + SKILL.md, AGENTS.md, TESTING.md, VERSION.md, CHANGELOG.md, research-log.md)
-**Token estimate:** ~28,000 tokens
-
-### Feature Inventory
-- Multi-phase pipeline: no
-- Persona system: yes (27 persona pairs)
-- Subagent invocations: no
-- Multi-session orchestration: no
-- Parallel execution: no
-- Cached artifacts: no
-
-### Files
-
-**Command files (2):**
-- `commands/summon.md` — persona summon orchestrator (~400 tokens)
-- `commands/evolve.md` — persona evolution pipeline (~1,800 tokens)
-
-**Support files (57):**
-- 27 × `persona.md` + 27 × `soul.md` = 54 persona files
-- `SKILL.md`, `AGENTS.md`, `TESTING.md`, `VERSION.md`, `CHANGELOG.md`, `research-log.md`
-
-### Persona Roster Coverage
-
-All 27 personas confirmed present and wired correctly:
-- `summon.md` roster: 27/27 entries with correct subdirectory paths ✓
-- `evolve.md` cognitive taxonomy: 27/27 modes covered ✓
-- `evolve.md` mode personas: audit→Pulse, speciate→Keeper, distil→Pulse, new→Loom ✓
-
-### Wiring Gap Findings
-
-**PIS gap (run 7: 89%):**
-- `evolve.md` new mode sets DO≥4 / DO NOT≥3 / Contradictions≥2 as creation minimum
-- Richness Rubric (audit mode) tests DO≥3 / DO NOT≥2 / Contradictions≥1
-- Creation bar exceeds audit bar — a newly created persona meeting minimum creation spec would over-score on Richness Rubric by receiving a perfect row even if it just barely clears creation threshold; conversely, an older persona with DO=3 would pass the Richness Rubric but fail creation spec if submitted as new
-
-**SRCA gap (run 7: 92%):**
-- AGENTS.md lists `Identity line` (`# Name (Role)`) and `Soul reference` (pointer to soul.md) as required `persona.md` fields
-- Neither field appears in the Richness Rubric in `evolve.md`
-- AGENTS.md `Contradictions` note requires observable tension; Richness Rubric only checks presence (≥1), not quality
-
-### TSCR Status
-- TESTING.md: 6 core command scenarios all "Untested" → TSCR=25 (7 persona-field rows + 0 tested scenarios / 32 rows)
-- No change since run 7
-
-### Persona Staleness Check
-- No broken persona load directives found
-- Pulse (analytics) confirmed present and loaded by Phase 1
-
----
-
-## Final Results — 2026-03-27 (Run 8)
+## Phase 5 — Report
 
 | Metric | Baseline | Post | Delta | Status |
 |--------|----------|------|-------|--------|
@@ -475,5 +487,3 @@ All 27 personas confirmed present and wired correctly:
 Post-report estimated token count: ~1,150 lines × 65 chars/line / 4 ≈ 18,700 tokens — exceeds 15,000 token threshold. Archiving runs 6–7 content (lines 1–689) to `research-log-archive-2026-03-27b.md`. Current run 8 sections retained in live log.
 
 **Auto loop threshold: composite 95.9% > 95% → loop complete.**
-
-
