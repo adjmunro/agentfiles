@@ -8,8 +8,7 @@
 **Files:** 15 total (7 command, 5 support, 3 logs/archives)
 **Token estimate:** ~23,000 tokens (command files ~21,300; support files ~1,700)
 
-> Tier A applied — prior research-log.md targeted `skills/closeout`, not `skills/optimise`. Archived to `research-log-archive-2026-03-27b.md`. Starting fresh.
-> Note: `research-log-archive-2026-03-27.md` already existed (prior self-optimisation run archived earlier today), so `b` suffix used for today's closeout archive.
+> Tier A applied — prior research-log.md targeted `skills/closeout`, not `skills/optimise`. Those runs were archived to `skills/closeout/optimise/research-log-archive-2026-03-27.md`. Starting fresh.
 
 ### Feature Inventory
 - Multi-phase pipeline: yes (5 phases: Audit, Baseline, Hypothesize, Experiments, Report)
@@ -560,7 +559,7 @@ Baseline: 87.1% → Post: 98.1% (+11.0 pp)
 ### Files
 **Command files (7):** optimise.md, help.md [documentation], p1-audit.md, p2-baseline.md, p3-hypothesize.md, p4-experiments.md, p5-report.md
 **Support files (5):** AGENTS.md, SKILL.md, VERSION.md, CHANGELOG.md, TESTING.md
-**Logs/archives (4):** research-log.md, research-log-archive-2026-03-22.md, research-log-archive-2026-03-27.md, research-log-archive-2026-03-27b.md
+**Logs/archives (3):** research-log.md, research-log-archive-2026-03-22.md, research-log-archive-2026-03-27.md
 
 ### Changes Since Run 1
 1. **P16 + P17 added to p3-hypothesize.md** (today) — not yet documented in help.md → MX1 drops
@@ -831,7 +830,7 @@ None. P16 and P17 were added as seeds in the preceding session (same day); no ne
 
 ### Archive Check
 
-Log size after this run: ~19,000 tokens (estimated). Under the 15,000-token archive threshold — no archival needed this run. (Prior archives: research-log-archive-2026-03-22.md, research-log-archive-2026-03-27.md, research-log-archive-2026-03-27b.md.)
+Log size after this run: ~19,000 tokens (estimated). Under the 15,000-token archive threshold — no archival needed this run. (Prior archives: research-log-archive-2026-03-22.md, research-log-archive-2026-03-27.md.)
 
 > **Note:** The 15,000-token threshold applies to the live log only; prior-run content is already archived. Current live log covers Run 1 (2026-03-27) and Run 2 (2026-04-14). If Run 3 pushes the live log above 15,000 tokens, archive Run 1 content before proceeding.
 
