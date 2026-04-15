@@ -2,7 +2,7 @@
 
 **Persona: Arden (Critic)** — load `../../../personas/critic/persona.md` now. Ink (Commit Curator) is also active for Step e commits — load `../../../personas/ink/persona.md` when you reach that step. If the file is not found, proceed without the persona and note its absence at the start of Phase 4 output. Identify as Arden in all Phase 4 output when the persona is loaded.
 
-Re-read `research-log.md` (Intent Anchor — Tier C only: if target path mismatches or log is >7 days old, stop and alert the user before proceeding). Navigate to the most recent `## Hypotheses —` section and read only from that heading to the next `---` separator. Confirm which hypotheses were approved.
+Re-read the run log (Intent Anchor). Navigate to `## Phase 3 — Hypotheses` and read only from that heading to the next `---` separator. Confirm which hypotheses were approved.
 
 If inside a git repo, check out a new branch:
 
@@ -10,24 +10,22 @@ If inside a git repo, check out a new branch:
 git checkout -b optimize/<target-dir-name>-<date>
 ```
 
-If the target is not inside a git repo, proceed without branching. Note this in
-`research-log.md` at the start of the experiments section: "No git repo at target —
+If the target is not inside a git repo, proceed without branching. Note this in the run log at the start of `## Phase 4 — Experiments`: "No git repo at target —
 changes are not version-controlled. Revert instructions in Step e refer to manual
 undo rather than `git revert`."
 
 For each approved hypothesis, in order:
 
 ### Step 0 — Pre-experiment dependency scan
-Before applying any hypothesis, read the full list of pending (approved but not yet run) hypotheses from `research-log.md`. Check whether any two pending hypotheses modify the same file.
+Before applying any hypothesis, read the full list of pending (approved but not yet run) hypotheses from the run log. Check whether any two pending hypotheses modify the same file.
 
-- If two or more pending hypotheses touch the same file: record the overlap in `research-log.md` (e.g. "H20 and H22 both modify help.md — running sequentially with metric re-check between them"). Run them in sequence; re-measure the shared-file metrics between each.
+- If two or more pending hypotheses touch the same file: record the overlap in the run log (e.g. "H2 and H4 both modify help.md — running sequentially with metric re-check between them"). Run them in sequence; re-measure the shared-file metrics between each.
 - If no overlap exists: proceed directly.
 
 This step applies once per Phase 4 session, not once per hypothesis.
 
 ### Step a — Record pre-change score
-Measure the targeted metric(s) at their current state. Record as "pre-change" in
-`research-log.md`.
+Measure the targeted metric(s) at their current state. Record as "pre-change" in the run log.
 
 ### Step b — Make the change
 Apply the specific change described in the hypothesis. Modify only the files
@@ -52,7 +50,7 @@ Determine outcome:
   net-positive composite delta that falls below the confirmed threshold
 - **Disconfirmed**: <1 point delta on all target metrics AND composite delta ≤0
 
-Update `research-log.md`:
+Append to the run log under `## Phase 4 — Experiments`:
 
 ```markdown
 ### H<N> — <name>
@@ -84,7 +82,7 @@ For persona experiments, use two commits if both persona files and phase directi
 **Step b (persona) — Execute the evolution:**
 - **Rotation**: create the new persona file if it does not exist (full `persona.md` + `soul.md` per AGENTS.md spec, including Unique Talent and Failure Mode); update the phase's persona load directive to the new file
 - **Speciation**: run `/personas evolve speciate <name>`; on approval, update the phase directive to the chosen variant
-- **Distillation**: run `/personas evolve distil <name> from research-log.md`; verify the file changes are applied; no phase directive change needed
+- **Distillation**: run `/personas evolve distil <name> from <run-log>`; verify the file changes are applied; no phase directive change needed
 - **Gap-fill**: run `/personas evolve new <description>`; on approval, add the persona load directive to the targeted phase
 
 **Step c (persona) — Re-measure + spot-check:**
@@ -97,9 +95,9 @@ Score the output against the 3 quality markers defined in the hypothesis:
 - Each marker: pass (clearly met) / partial (partially met) / fail (not met)
 - Spot-check score = passes / 3 (or N markers if more were defined)
 
-If possible, also score the same task under the *old* persona (or with no persona) to establish a baseline. If a prior run's output for the same task exists in `research-log.md`, use that as the baseline instead of re-running.
+If possible, also score the same task under the *old* persona (or with no persona) to establish a baseline. If a prior run's output for the same task exists in the run logs in `<target>/optimise/`, use that as the baseline instead of re-running.
 
-Record in `research-log.md`:
+Record in the run log:
 ```markdown
 **Spot-check task:** <what was run — 1 sentence>
 **Spot-check output (new persona):** <key observations — 2–4 sentences>
@@ -115,7 +113,7 @@ Use the spot-check score alongside the structural metric delta to determine conf
 - **Ambiguous spot-check markers** (quality marker cannot be scored pass/partial/fail objectively): score that marker as partial (0.5) and record the ambiguity in the `**Marker scores:**` field. A marker that is genuinely untestable in a single response does not fail — it scores partial by default.
 - **Persona evolution command unavailable** (`evolve.md` not found or the `/personas evolve` skill fails): proceed without the evolve command. Create the persona manually per the AGENTS.md spec (full `persona.md` + `soul.md`, including Unique Talent and Failure Mode). Note in the result: "evolve.md unavailable — persona created manually."
 
-After all hypotheses are processed, write a summary to `research-log.md`:
+After all hypotheses are processed, append a summary to the run log under `## Phase 4 — Experiments`:
 
 ```markdown
 ## Experiment Summary

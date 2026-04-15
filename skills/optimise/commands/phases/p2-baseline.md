@@ -2,7 +2,7 @@
 
 **Persona: Pulse (Analytics)** — load `../../../personas/analytics/persona.md` now. If the file is not found, proceed without the persona and note its absence at the start of Phase 2 output. Identify as Pulse in all Phase 2 output when the persona is loaded.
 
-Re-read `research-log.md` (Intent Anchor).
+Re-read the run log (Intent Anchor). Navigate to `## Phase 1 — Audit` to confirm the target and feature inventory before measuring.
 
 For each metric below, state the methodology, run the measurement, and record the
 result. For metrics that do not apply based on the Phase 1 feature inventory, write
@@ -330,9 +330,9 @@ cycles per ticket maps to 0%.
      These definitions close that attribution gap. -->
 
 The following metrics are pre-defined and must be evaluated when the corresponding
-pattern has been applied to the workflow in any prior run. They read from the
-research-log.md for prior run data. If the corresponding pattern has never been applied:
-write "SKIP — pattern <P-number> has not been applied to this target."
+pattern has been applied to the workflow in any prior run. They read from the run
+logs in `<target>/optimise/` for historical data. If the corresponding pattern has
+never been applied: write "SKIP — pattern <P-number> has not been applied to this target."
 
 #### HCU — Help Content Currency [custom, target of P12]
 
@@ -344,9 +344,9 @@ alongside its instruction command files.
 **Skip condition:** If no help/reference file exists, write "SKIP — no parallel help
 file found."
 **Methodology:** Enumerate all named entries in instruction files: metrics (M1–M15 plus
-any custom metrics defined in `research-log.md`), design patterns (P1–P-max), and any
-other named rules or phases. Count how many have a corresponding detail entry in the
-help/reference file. Rate = documented / total named entries.
+any custom metrics defined in the run logs in `<target>/optimise/`), design patterns
+(P1–P-max), and any other named rules or phases. Count how many have a corresponding
+detail entry in the help/reference file. Rate = documented / total named entries.
 **Direction:** ↑ higher is better
 **Normalisation:** rate × 100
 **Weight:** 1×
@@ -377,14 +377,14 @@ branches with explicit recovery / total branches. Rate = covered / total.
      the workflow's own improvement loop but indirect compared to direct outcome data. -->
 
 **Applies when:** The workflow has a design pattern library (P1–P-max) and at least one
-confirmed experiment in `research-log.md`.
-**Skip condition:** If no experiment results exist in `research-log.md`, write "SKIP —
-no confirmed experiment data found."
-**Methodology:** From `research-log.md`, count patterns that were used in at least one
-confirmed hypothesis (i.e., listed in a confirmed "Pattern applied:" field). Count
-applicable patterns: all patterns whose trigger condition has been true at least once
-in the workflow's run history (corrective patterns whose condition has never fired are
-excluded per P13). Rate = validated / applicable.
+confirmed experiment in any prior run log.
+**Skip condition:** If no confirmed experiment data exists in `<target>/optimise/`, write
+"SKIP — no confirmed experiment data found."
+**Methodology:** From the run logs in `<target>/optimise/`, count patterns that were used
+in at least one confirmed hypothesis (i.e., listed in a confirmed "Pattern applied:"
+field). Count applicable patterns: all patterns whose trigger condition has been true at
+least once in the workflow's run history (corrective patterns whose condition has never
+fired are excluded per P13). Rate = validated / applicable.
 **Direction:** ↑ higher is better
 **Normalisation:** rate × 100
 **Weight:** 1×
@@ -399,9 +399,9 @@ excluded per P13). Rate = validated / applicable.
 **Applies when:** The workflow has ≥2 hypotheses in any Phase 4 session.
 **Skip condition:** If no Phase 4 session has had ≥2 hypotheses, write "SKIP — no
 multi-hypothesis sessions found."
-**Methodology:** From `research-log.md`, count Phase 4 sessions with ≥2 approved
-hypotheses. For each session, check: (a) was a pre-experiment dependency scan recorded
-(Step 0 present in the log)? (b) were overlapping hypotheses noted and run sequentially
+**Methodology:** From the run logs in `<target>/optimise/`, count Phase 4 sections with
+≥2 approved hypotheses. For each, check: (a) was a pre-experiment dependency scan
+recorded (Step 0 present)? (b) were overlapping hypotheses noted and run sequentially
 with a re-check? Rate = sessions with full isolation protocol / sessions with ≥2
 hypotheses.
 **Direction:** ↑ higher is better
@@ -449,7 +449,10 @@ Custom metrics: <list using full names>
 Composite: <sum> / (<N> × 100) × 100 = <X>%
 ```
 
-Write the full baseline table to `research-log.md` under `## Baseline — <date>`.
+Append the full baseline table to the run log under `## Phase 2 — Baseline`.
 Note the 3 weakest metrics (candidates for Phase 3 hypotheses) and the 3 strongest.
+
+Then update the SUMMARY block at the top of the run log: replace the `### Metric Snapshot`
+table rows with the actual baseline scores and set "Composite: X% → (pending)".
 
 When Phase 2 is complete, read `commands/phases/p3-hypothesize.md` to continue.

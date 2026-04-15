@@ -2,6 +2,21 @@
 
 ---
 
+## 1.12.0 — Per-Run Log Files (2026-04-15)
+
+Replaces the single accumulating `research-log.md` with a per-run file structure: each invocation writes to `<target>/optimise/researchlog-NNN.md`, eliminating the costly archive-migration step and keeping each run's data self-contained.
+
+- **p1-audit.md:** removes 3-tier TTL policy; adds run log setup — counts existing `researchlog-*.md` files, derives NNN, reads previous run's SUMMARY block for cross-run context
+- **p1-audit.md:** new run log format — SUMMARY block (`<!-- SUMMARY-START/END -->`) at top with hypothesis table and metric snapshot; stable `## Phase N — Name` section headings throughout for Grep-navigable navigation
+- **p2-baseline.md, p3-hypothesize.md, p4-experiments.md, p5-report.md:** all `research-log.md` references updated to "the run log"; Intent Anchor navigation hints updated to use stable phase headings
+- **p2-baseline.md:** adds SUMMARY block update after baseline is written
+- **p3-hypothesize.md:** adds SUMMARY hypothesis table population after self-audit; section heading changed to `## Phase 3 — Hypotheses`
+- **p5-report.md:** removes Research Log Archival section entirely; adds SUMMARY block final update with outcomes and post-experiment scores
+- **optimise.md:** loop control updated — each iteration creates a new run log file; H numbers reset to H1 per file (not per invocation); cross-iteration context via SUMMARY block
+- **help.md:** updated count-mode description and Intent Anchor Blocks example to match new structure
+
+---
+
 ## 1.11.0 — Phase 4 Precision (2026-04-14)
 
 Tightens Phase 4 ambiguity and context loading; restores help sync after P16/P17 additions.

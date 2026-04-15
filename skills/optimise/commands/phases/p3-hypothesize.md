@@ -2,7 +2,7 @@
 
 **Persona: Keeper (Strategist)** — load `../../../personas/strategist/persona.md` now. If the file is not found, proceed without the persona and note its absence at the start of Phase 3 output. Identify as Keeper in all Phase 3 output when the persona is loaded.
 
-Re-read `research-log.md` (Intent Anchor). Focus on the baseline section.
+Re-read the run log (Intent Anchor). Navigate to `## Phase 2 — Baseline` and focus on the metric scores and weakest candidates.
 
 Based on the weakest metrics (seed and custom), form 3–5 hypotheses.
 
@@ -198,7 +198,7 @@ For each hypothesis, use the appropriate template:
 **Problem observed:** <what Persona-Phase Fit or Persona Richness score reveals>
 **Phase targeted:** <which phase, and its current persona or lack thereof>
 **Change type:** rotation / speciation / distillation / gap-fill
-**Change proposed:** <specific: swap to [existing persona], or run `/personas evolve speciate <name>`, or run `/personas evolve distil <name> from research-log.md`, or run `/personas evolve new <description>`>
+**Change proposed:** <specific: swap to [existing persona], or run `/personas evolve speciate <name>`, or run `/personas evolve distil <name> from <run-log>`, or run `/personas evolve new <description>`>
 **Quality markers:** <define exactly 3 observable outputs to check in the spot-check:
   1. <e.g. "does the new persona catch gaps that the old one would accept?">
   2. <e.g. "does output include concrete file:line citations rather than vague references?">
@@ -222,7 +222,7 @@ When forming novel hypotheses, ask:
 - Is there a pattern in *what fails* vs. *what succeeds* in this workflow?
 
 If a confirmed novel hypothesis generalises (would help other workflows of the same
-type), note it in `research-log.md` under `## Novel Patterns Discovered`. These
+type), note it in the run log under `## Novel Patterns Discovered`. These
 candidates can be proposed for inclusion in the seed library.
 
 Format these as a **Recommendation Brief** — do not ask open-ended questions. State
@@ -244,11 +244,12 @@ Do not use metric abbreviations or hypothesis IDs in the brief. Refer to metrics
 
 Before proceeding to experiments, audit the hypothesis list for intent and accuracy:
 
-1. **Intent check** — does each hypothesis target a metric that scored below 100 in the current baseline? Remove any hypothesis targeting a metric already at 100 (no measurable gap to address). Note removals in `research-log.md`.
-2. **Coverage check** — compute the projected composite score: `(baseline_weighted_sum + sum_of_predicted_improvements) / (total_weight_units × 100) × 100`. If this projection clears **> 95**, the list is sufficient. If below 95 and the audit reveals uncovered gaps, add further hypotheses to close them. The `baseline_weighted_sum` and `total_weight_units` are in the `## Baseline` section of `research-log.md`.
+1. **Intent check** — does each hypothesis target a metric that scored below 100 in the current baseline? Remove any hypothesis targeting a metric already at 100 (no measurable gap to address). Note removals in the run log.
+2. **Coverage check** — compute the projected composite score: `(baseline_weighted_sum + sum_of_predicted_improvements) / (total_weight_units × 100) × 100`. If this projection clears **> 95**, the list is sufficient. If below 95 and the audit reveals uncovered gaps, add further hypotheses to close them. The `baseline_weighted_sum` and `total_weight_units` are in the `## Phase 2 — Baseline` section of the run log.
 3. **Gap fill** — for any measured metric still below 80 with no hypothesis targeting it, add one now. Prefer patterns from the seed library; invent novel ones where none fit.
 
-Write the final hypothesis list (post-audit) to `research-log.md` under `## Experiments — <date>`.
+Write the final hypothesis list (post-audit) to the run log under `## Phase 3 — Hypotheses`.
+Then update the `### Hypotheses` table in the SUMMARY block with the IDs and descriptions (outcomes left as "pending").
 
 If zero hypotheses remain after the audit, write: "No hypotheses survived audit — no experiments to run. Proceeding to report." Read `commands/phases/p5-report.md` to continue.
 

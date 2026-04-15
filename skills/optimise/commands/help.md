@@ -59,7 +59,7 @@ Display this table, then the patterns table, then the stats summary. Nothing els
 
 ### Stats at a Glance
 
-Read `research-log.md` in the optimise skill directory and append a compact stats table:
+Read the run logs in `<target>/optimise/researchlog-*.md` and append a compact stats table:
 
 | ID | Metric | Avg baseline | Best gain seen | Times weakest |
 |----|--------|-------------|---------------|---------------|
@@ -91,7 +91,7 @@ Find the section below that best matches the argument. Display only that section
 
 **Risk at low scores:** Phase 4 operates on a stale or reconstructed picture of the intent. Experiments address the wrong problem. Results are not comparable across runs.
 
-**How to improve:** Apply Intent Anchor Blocks — add an explicit re-read of `research-log.md` (or the equivalent intent artefact) at the start of each phase block.
+**How to improve:** Apply Intent Anchor Blocks — add an explicit re-read of the run log (or the equivalent intent artefact) at the start of each phase block.
 
 **Stats:** Scored 100 in both runs. Never needed targeting.
 
@@ -335,7 +335,7 @@ Find the section below that best matches the argument. Display only that section
 
 **Problem it solves:** Without an explicit re-read at each phase transition, later phases operate on memory rather than the actual recorded output — causing compounding drift.
 
-**How it works:** At every phase transition, the orchestrator re-reads the original intent artefact (e.g., `research-log.md`) before proceeding. The re-read is the first instruction in the phase, before any other work.
+**How it works:** At every phase transition, the orchestrator re-reads the original intent artefact (e.g., the run log) before proceeding. The re-read is the first instruction in the phase, before any other work.
 
 **Targets:** Context Decay Resilience (↑), Intent-to-Output Traceability (↑)
 
@@ -833,9 +833,9 @@ Both are executed via `/personas evolve` — the command handles scoring, recomm
 
 **How it works:**
 - Each iteration runs all 5 phases in sequence (Audit → Baseline → Hypothesise → Experiment → Report).
-- Hypothesis numbering is continuous across iterations — do not reset to H1. If run 1 ends at H5, run 2 starts at H6.
-- Confirmed changes from previous iterations must not be re-applied.
-- At the start of each iteration, `research-log.md` is re-read as the Intent Anchor before Phase 1.
+- Each iteration creates a new run log file (`researchlog-NNN.md`). H numbers reset to H1 in each new file.
+- Confirmed changes from previous iterations must not be re-applied — Phase 1 reads the previous run log's SUMMARY block to establish what is excluded.
+- At the start of each iteration, Phase 1 reads the previous run log as the Intent Anchor.
 
 **When to use count mode:** When you want a fixed number of improvement passes (e.g., `/optimise 3 skills/ideation/` to run three optimisation loops on the ideation skill).
 

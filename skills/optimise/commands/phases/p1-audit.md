@@ -2,12 +2,13 @@
 
 **Persona: Pulse (Analytics)** — load `../../../personas/analytics/persona.md` now. If the file is not found, proceed without the persona and note its absence at the start of Phase 1 output. Identify as Pulse in all Phase 1 output when the persona is loaded.
 
-If `research-log.md` exists in the target directory, apply the 3-tier TTL policy before reading it (Intent Anchor):
-- **Tier A — Regenerate**: the log's `**Target:**` header does not match `$ARGUMENTS` path → archive the existing log to `research-log-archive-<date>.md`. If `research-log-archive-<date>.md` already exists, use `research-log-archive-<date>b.md` (then `c`, etc.). Start a fresh log.
-- **Tier B — Load-with-caveat**: target matches AND log date is >7 days old → load but flag to the user: "Warning: research-log.md is from <date> — scores may be stale."
-- **Tier C — Use as-is**: target matches AND log is ≤7 days old → read and proceed.
-- **Contamination check** (apply after Tier A/B/C): after loading, scan for `**Subjects:**` or `**Branch:**` metadata headers that reference a different workflow (e.g., subject names not matching the target directory). If found, warn the user: "Warning: this research-log appears to contain data from a different target (subjects: <X>). Prior score data in the contaminated section must not be used as a baseline." Continue with the run — do not archive unless the user requests it.
-If `research-log.md` does not exist, proceed without reading.
+### Run Log Setup
+
+1. Use `Glob` to count files matching `<target>/optimise/researchlog-*.md`. Let **NNN** = count + 1, zero-padded to three digits (e.g. `001`, `012`). The **run log** for this invocation is `<target>/optimise/researchlog-NNN.md`. Record this path — all subsequent phases write to and re-read this file.
+2. **Cross-run context** — if NNN > 001, read the `<!-- SUMMARY-START -->…<!-- SUMMARY-END -->` block from `<target>/optimise/researchlog-<NNN-1>.md`:
+   - Note the previous composite score as a reference baseline.
+   - List any hypotheses marked Confirmed or Disconfirmed. Record them as excluded under `## Phase 1 — Audit` in the run log — these need not be re-applied in the current run.
+   - If the previous log is missing or has no SUMMARY block, proceed without cross-run context and note the absence in the run log.
 
 Derive the target directory path from `$ARGUMENTS`. If `$ARGUMENTS` is empty or the
 path does not exist, stop and print:
@@ -35,14 +36,34 @@ Inventory the target directory:
    - For each persona file that does exist, check its `soul.md` for an `## Origin` section. If the Origin indicates this is a parent that has been speciated (i.e., child personas exist in sibling directories with this one named as their Origin), note it: "Note: `<persona>` has been speciated into `<children>`. If child personas exist in sibling directories, check whether one would improve fit for this phase over the parent."
    - Record any broken references and speciation notes in `research-log.md` under the audit entry. Do not block the run — these are warnings, not errors.
 
-Write a brief audit summary to `research-log.md`:
+Create `<target>/optimise/` if it does not exist. Write the run log at `<target>/optimise/researchlog-NNN.md` with this structure:
 
 ```markdown
-## Audit — <date>
+<!-- SUMMARY-START -->
+## Run NNN — <date> | Target: <path>
+Composite: (pending) → (pending)
+
+### Hypotheses
+| ID  | Description | Outcome |
+|-----|-------------|---------|
+| (populated after Phase 3) | | |
+
+### Metric Snapshot
+| Metric | Baseline | Post |
+|--------|---------|------|
+| (populated after Phase 2) | | |
+<!-- SUMMARY-END -->
+
+---
+
+## Phase 1 — Audit
 
 **Target:** <path>
 **Files:** <count> total (<command count> command, <support count> support)
 **Token estimate:** ~<total> tokens
+
+### Excluded from this run (confirmed/disconfirmed in prior runs)
+<list from cross-run context, or "none" if NNN = 001>
 
 ### Feature Inventory
 - Multi-phase pipeline: yes/no
@@ -57,3 +78,5 @@ Write a brief audit summary to `research-log.md`:
 ```
 
 When Phase 1 is complete, read `commands/phases/p2-baseline.md` to continue.
+
+> **Note for all subsequent phases:** The run log path (`<target>/optimise/researchlog-NNN.md`) was established above. Every phase that says "re-read the run log" or "write to the run log" refers to this file.
