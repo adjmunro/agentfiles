@@ -77,7 +77,7 @@ Instead:
    ```
    gh pr view <PR-number> --repo <owner/repo> --json title --jq '.title'
    ```
-   A proactive PR title matches: `chore(deps): bump outdated dependencies`
+   A proactive PR title starts with: `chore(deps): bump outdated dependencies`
 
    **If proactive:** the PR has no useful content — close it with a comment explaining
    what was blocked:
@@ -214,7 +214,7 @@ gh pr view <PR-number> --repo <owner/repo> --json headRefOid --jq '.headRefOid'
 ## Step E.1 — Update PR Description (Proactive Mode with Exclusions)
 
 Skip this step if:
-- This is not a proactive PR (title does not match `chore(deps): bump outdated dependencies`), OR
+- This is not a proactive PR (title does not start with `chore(deps): bump outdated dependencies`), OR
 - No aliases were skipped in Step B (every bump passed review)
 
 If this **is** a proactive PR and **at least one** alias was skipped (BLOCK):

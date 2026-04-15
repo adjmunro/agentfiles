@@ -20,7 +20,7 @@ already contain.
 ```
 gh pr view <PR-number> --repo <owner/repo> --json title --jq '.title'
 ```
-Record `IS_PROACTIVE=true` if the title matches `chore(deps): bump outdated dependencies`.
+Record `IS_PROACTIVE=true` if the title starts with `chore(deps): bump outdated dependencies`.
 
 **Data source:** Phase 5 verdict data should already be in orchestrator context
 from Wave 5. If not, retrieve from posted Phase 6 comments:
