@@ -1,8 +1,39 @@
-# Skill Optimisation Research Log
+<!-- SUMMARY-START -->
+## Run 001 — 2026-03-27 | Target: skills/tighten/
+Composite: 77.0% → 97.6% (+20.6 pp)
+
+### Hypotheses
+| ID  | Description                                          | Outcome   |
+|-----|------------------------------------------------------|-----------|
+| H1  | Persist removed content log to disk                  | Confirmed |
+| H2  | Explicit prior-phase artifact references             | Confirmed |
+| H3  | Clean support file scope creep                       | Confirmed |
+| H4  | Expand rule tables to cover missing anti-patterns    | Confirmed |
+| H5  | Operationalise Phase 4 audit criteria                | Confirmed |
+
+### Metric Snapshot
+| Metric | Baseline | Post |
+|--------|----------|------|
+| IOT    | 50       | 100  |
+| DD     | 100      | 100  |
+| IAR    | 98       | 98   |
+| RI     | 95       | 95   |
+| ACC    | 85       | 95   |
+| HTC    | 100      | 100  |
+| CLE    | 100      | 100  |
+| IFS    | 50       | 100  |
+| ITE    | 91       | 91   |
+| RCC    | 80       | 95   |
+| RCLP   | 0        | 100  |
+| SFM    | 75       | 100  |
+| SRC    | 96       | 96   |
+| DRMP   | 90       | 90   |
+| RPC    | 100      | 100  |
+<!-- SUMMARY-END -->
 
 ---
 
-## Audit — 2026-03-27
+## Phase 1 — Audit
 
 **Target:** skills/tighten/
 **Files:** 4 total (1 command, 3 support)
@@ -36,7 +67,7 @@
 
 ---
 
-## Baseline — 2026-03-27
+## Phase 2 — Baseline
 
 **[Pulse (Analytics) active]**
 
@@ -95,7 +126,7 @@ DD=100, HTC=100, CLE=100, RPC=100, SRC=96 (moonshot), DRMP=90, IAR=98
 
 ---
 
-## Hypotheses — 2026-03-27
+## Phase 3 — Hypotheses
 
 **[Keeper (Strategist) active]**
 
@@ -220,7 +251,7 @@ Based on baseline measurement, the following experiments are queued:
 
 ---
 
-## Experiment Summary — 2026-03-27
+## Phase 4 — Experiments
 
 **[Ink (Commit Curator) and Arden (Critic) active]**
 
@@ -254,7 +285,7 @@ All 5 hypotheses executed in sequence (H1 → H2 → H3 → H4 → H5). No hypot
 
 ---
 
-## Final Results — 2026-03-27 (Run 1)
+## Phase 5 — Report
 
 **Opening composite: 77.0%** (1,771 / 2,300)
 **Closing composite: 97.6%** (2,246 / 2,300)

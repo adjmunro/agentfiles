@@ -1,12 +1,32 @@
-## Archive: runs prior to 2026-04-01 (Run 3)
+<!-- SUMMARY-START -->
+## Run 001 — 2026-03-31 | Target: skills/review-dependency-update/
+Composite: 84.4% → 97.6% (+13.2 pp)
 
-This file contains the complete research log for optimise runs 1 and 2 on
-`skills/review-dependency-update/`. Archived from `research-log.md` at the
-start of Run 3 per the 15,000-token archival policy.
+### Hypotheses
+| ID  | Description                                           | Outcome   |
+|-----|-------------------------------------------------------|-----------|
+| H1  | Sub-Agent Intent Re-anchor                            | Confirmed |
+| H2  | Changelog Table Expansion                             | Confirmed |
+| H3  | Scoring Matrix Symmetry Fix                           | Confirmed |
+| H4  | AC Concreteness: Subjective Qualifiers                | Confirmed |
+| H5  | Session Brief Persistence                             | Confirmed |
+| H6  | Sub-Agent Prompt Enrichment                           | Confirmed |
+
+### Metric Snapshot
+| Metric                          | Baseline | Post |
+|---------------------------------|----------|------|
+| Context Decay Resilience        | 0        | 100  |
+| Changelog Source Coverage       | 48       | 86   |
+| Verdict Scoring Calibration     | 60       | 90   |
+| AC Concreteness                 | 82       | 95   |
+| Agent Prompt Completeness       | 79       | 100  |
+| Cross-Bump Context Isolation    | 86       | 100  |
+| Composite                       | 84.4%    | 97.6% |
+<!-- SUMMARY-END -->
 
 ---
 
-## Audit — 2026-03-31
+## Phase 1 — Audit
 
 **Target:** skills/review-dependency-update/
 **Files:** 12 total (8 command, 4 support)
@@ -57,7 +77,19 @@ No speciated children detected for any of the four personas (adversarial, examin
 
 ---
 
-## Custom Metrics — 2026-03-31
+## Phase 2 — Baseline
+
+**Persona note:** Pulse (Analytics) persona not found at expected path (`../../../personas/analytics/persona.md` from optimise phase dir). Proceeding without persona.
+
+Seed metrics applied: Intent-to-Output Traceability, Directive Density, Instruction Ambiguity Rate, Wiring Completeness Score, Redundancy Index, AC Concreteness, Subagent Alignment Score, Human Touchpoint Count, Context Decay Resilience, Context Loading Efficiency, Parallelisation Safety Score, Instruction Token Efficiency, Persona-Phase Fit Score, Persona Richness Score
+
+Seed metrics skipped: Information Freshness Score (M12) — no inter-session artifacts with temporal gap; all artifact hand-offs are intra-session
+
+MX-OQ series: SKIP — no `.kanban/.archive/` in target directory
+
+Pattern series: RPC (P10 not previously applied, but conditional branches exist — evaluated anyway); HCU — SKIP no help file; PEV — SKIP no prior experiments; EIS — SKIP no prior multi-hypothesis sessions
+
+Custom metrics: Changelog Source Coverage (MX1), Agent Prompt Completeness (MX2), Phase File Navigation Completeness (MX3), Verdict Scoring Calibration (MX4), Cross-Bump Context Isolation (MX5)
 
 ### MX1 — Changelog Source Coverage (CSC) [custom]
 **Measures:** Whether the Kotlin/Android library changelog source table in p2-investigate.md covers the packages most commonly encountered in real projects
@@ -99,22 +131,6 @@ No speciated children detected for any of the four personas (adversarial, examin
 **Weight:** 1×
 **Normalisation:** rate × 100
 
----
-
-## Baseline — 2026-03-31
-
-**Persona note:** Pulse (Analytics) persona not found at expected path (`../../../personas/analytics/persona.md` from optimise phase dir). Proceeding without persona.
-
-Seed metrics applied: Intent-to-Output Traceability, Directive Density, Instruction Ambiguity Rate, Wiring Completeness Score, Redundancy Index, AC Concreteness, Subagent Alignment Score, Human Touchpoint Count, Context Decay Resilience, Context Loading Efficiency, Parallelisation Safety Score, Instruction Token Efficiency, Persona-Phase Fit Score, Persona Richness Score
-
-Seed metrics skipped: Information Freshness Score (M12) — no inter-session artifacts with temporal gap; all artifact hand-offs are intra-session
-
-MX-OQ series: SKIP — no `.kanban/.archive/` in target directory
-
-Pattern series: RPC (P10 not previously applied, but conditional branches exist — evaluated anyway); HCU — SKIP no help file; PEV — SKIP no prior experiments; EIS — SKIP no prior multi-hypothesis sessions
-
-Custom metrics: Changelog Source Coverage (MX1), Agent Prompt Completeness (MX2), Phase File Navigation Completeness (MX3), Verdict Scoring Calibration (MX4), Cross-Bump Context Isolation (MX5)
-
 | Metric | Source | Raw | Normalised | Weight | Weighted |
 |---|---|---|---|---|---|
 | Intent-to-Output Traceability | seed | 1.0 | 100 | 2× | 200 |
@@ -155,11 +171,13 @@ Custom metrics: Changelog Source Coverage (MX1), Agent Prompt Completeness (MX2)
 
 ---
 
-## Experiments — 2026-03-31
+## Phase 3 — Hypotheses
 
-### H1–H6 (see Experiment Results below)
+### H1–H6 (see Phase 4 Experiments below)
 
-## Experiment Results — 2026-03-31
+---
+
+## Phase 4 — Experiments
 
 ### H5 + H6 — Session Brief Persistence + Sub-Agent Prompt Enrichment
 **Pre-change:** CDR = 0, APC = 79, CCI = 86
@@ -191,7 +209,9 @@ Custom metrics: Changelog Source Coverage (MX1), Agent Prompt Completeness (MX2)
 ## Experiment Summary (Run 1)
 - Confirmed: H1, H2, H3, H4, H5, H6
 
-## Final Results — 2026-03-31
+---
+
+## Phase 5 — Report
 
 | Metric | Baseline | Post | Delta | Status |
 |---|---|---|---|---|
@@ -214,81 +234,3 @@ Custom metrics: Changelog Source Coverage (MX1), Agent Prompt Completeness (MX2)
 ---
 
 Log within size threshold; no archival required (estimated ~7,500 tokens).
-
----
-
-## Audit — 2026-04-01
-
-**Target:** skills/review-dependency-update/
-**Files:** 12 total (8 command, 4 support)
-**Token estimate:** ~8,400 tokens (unchanged from prior run)
-
-### TTL Check
-Prior log date 2026-03-31, today 2026-04-01 (1 day) → Tier C — used as-is.
-
-### Notes
-All 4 persona files verified to exist. No broken references. SKILL.md pipeline diagram omits Phase 1b — minor doc inaccuracy noted for metrics.
-
----
-
-## Custom Metrics — 2026-04-01
-
-### MX6 — Comment Template Completeness (CTC) [custom]
-CTC = covered categories / 6. Weight 1×.
-
-### MX7 — Fallback Path Fidelity (FPF) [custom]
-FPF = (conditions met) / (total checks × 3). Weight 1×.
-
-### MX8 — Pipeline Diagram Accuracy (PDA) [custom]
-PDA = accurate diagrams / total diagrams. Weight 1×.
-
-### MX9 — Pre-Release Version Handling (PVH) [custom]
-PVH = checks present / 3. Weight 1×.
-
-### MX10 — Adversarial Prompt Resistance (APR) [custom, moonshot]
-APR = phases with injection-resistance / phases that read untrusted content. Weight 2×.
-
----
-
-## Baseline — 2026-04-01
-
-**Composite (30 metrics): 97.7%** (2,932 / 3,000)
-
-Weakest: PVH = 17, APR = 17, PDA = 50.
-
----
-
-## Experiment Results — 2026-04-01
-
-### H7 — Pre-Release Version Handling: confirmed (+83pp PVH)
-### H8 — SKILL.md Pipeline Diagram Fix: confirmed (+50pp PDA)
-### H9 — Adversarial Prompt Resistance: confirmed (+83pp APR, weight 2×)
-### H10 — Fallback Path Phase 4 Sequencing Note: confirmed (+8pp FPF)
-### H11 — AC Concreteness: Observable Behaviour Condition: confirmed (+5pp ACC, weight 2×)
-
-## Experiment Summary (Run 2)
-- Confirmed: H7, H8, H9, H10, H11
-
-## Final Results — 2026-04-01
-
-| Metric | Baseline | Post | Delta | Status |
-|---|---|---|---|---|
-| Pre-Release Version Handling | 17 | 100 | +83 | ↑ |
-| Adversarial Prompt Resistance | 17 | 100 | +83 | ↑ |
-| Pipeline Diagram Accuracy | 50 | 100 | +50 | ↑ |
-| Fallback Path Fidelity | 92 | 100 | +8 | ↑ |
-| AC Concreteness | 95 | 100 | +5 | ↑ |
-| Instruction Token Efficiency | 99 | 98 | −1 | ↓ (within tolerance) |
-| **Composite** | **97.7%** | **98.3%** | **+0.6 pp** | |
-
-### Novel Pattern Candidates
-
-### NP2 — Data Boundary Marking
-**Metrics it improved:** Adversarial Prompt Resistance (+83pp). Proposed as P16 — Data Boundary Marking.
-
-### NP3 — Edge Case Coverage
-**Metrics it improved:** Pre-Release Version Handling (+83pp). Proposed as P17 — Algorithm Edge Case Coverage.
-
----
-
-Log within size threshold; no archival required (estimated ~13,500 tokens).

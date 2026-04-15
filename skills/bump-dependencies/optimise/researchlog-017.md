@@ -1,4 +1,30 @@
-## Audit — 2026-04-15 (Run 15)
+<!-- SUMMARY-START -->
+## Run 017 — 2026-04-15 | Target: skills/bump-dependencies/
+Composite: 85.9% → 90.7% (+4.8 pp)
+
+### Hypotheses
+| ID  | Description                                                               | Outcome   |
+|-----|---------------------------------------------------------------------------|-----------|
+| H59 | Guard Phase 7 skip condition with Phase 8 integration test result         | Confirmed |
+| H60 | Standardise multi-version span threshold to ≥2 intermediate versions      | Confirmed |
+| H61 | Add bare-SHA non-match fallback in Phase 0 Step D                         | Confirmed |
+| H62 | Delete remote PR head branch in Phase 8 all-skipped early exit            | Confirmed |
+| H63 | Add C.4 variable format to Phase 0 Step H PR body table                   | Confirmed |
+
+### Metric Snapshot
+| Metric                                            | Baseline | Post  |
+|---------------------------------------------------|----------|-------|
+| Single-Alias Phase 8 Result Surfacing (MX59)      | 0        | 100   |
+| Multi-Version Span Threshold Consistency (MX60)   | 0        | 100   |
+| Bare-SHA Non-Match Fallback (MX61)                | 0        | 100   |
+| Proactive All-Blocked Remote Branch Cleanup (MX62)| 0        | 100   |
+| Step H PR Body Format for C.4 Variables (MX63)    | 0        | 100   |
+| Composite                                         | 85.9%    | 90.7% |
+<!-- SUMMARY-END -->
+
+---
+
+## Phase 1 — Audit
 
 **Pulse (Analytics) active.**
 
@@ -30,7 +56,7 @@ All 4 personas confirmed present and current (Ink, Echo, Rook, Arden — unchang
 
 ---
 
-## Custom Metrics — 2026-04-15 (Run 15)
+## Phase 2 — Baseline
 
 **Pulse (Analytics) active.**
 
@@ -81,12 +107,6 @@ EIS: 100 (carries forward). PEV: ~56 (carries forward).
 **Weight:** 1×
 **Normalisation:** format_present × 100
 
----
-
-## Baseline — 2026-04-15 (Run 15)
-
-**Pulse (Analytics) active.**
-
 ### Inherited Metrics
 All 75 metrics carry forward at Run 14 post-experiment values (~8,929/9,900 = ~90.2%). No instruction file changes between Run 14 final and this run's audit affect any inherited metric.
 
@@ -119,7 +139,7 @@ Total: **~8,929 / 10,400 (104×)**
 
 ---
 
-## Hypotheses — 2026-04-15 (Run 15)
+## Phase 3 — Hypotheses
 
 *Keeper (Strategist) active.*
 
@@ -192,7 +212,7 @@ Execution order: H59 → H60 → H62 → H61 → (re-check) → H63.
 
 ---
 
-## Experiments — 2026-04-15 (Run 15)
+## Phase 4 — Experiments
 
 **Arden (Critic) active.**
 
@@ -200,8 +220,6 @@ Execution order: H59 → H60 → H62 → H61 → (re-check) → H63.
 H59 modifies p7-summary.md. H60 modifies p5-verdict.md. H61 modifies p0-bump.md (Step D). H62 modifies p8-consolidate.md (Step F). H63 modifies p0-bump.md (Step H).
 File overlap: H61 and H63 share p0-bump.md → sequential with re-check between them.
 Execution order: H59 → H60 → H62 → H61 → (re-check) → H63.
-
----
 
 ### H59 — Guard Phase 7 skip condition with Phase 8 integration test result
 
@@ -215,8 +233,6 @@ Execution order: H59 → H60 → H62 → H61 → (re-check) → H63.
 **Result:** confirmed
 **Notes:** P7 (Binary Applicability Gates) applied. P7 already validated; no new PEV credit.
 
----
-
 ### H60 — Standardise multi-version span threshold to ≥2 intermediate versions
 
 **Pre-change:** MX60 (Multi-Version Span Threshold Consistency): 0
@@ -228,8 +244,6 @@ Execution order: H59 → H60 → H62 → H61 → (re-check) → H63.
 **Secondary deltas:** M3 IAR re-checked — no change. M6 ACC re-checked — scoring matrix row is now a single, unambiguous threshold; minor positive below 2pp. No degradation.
 **Result:** confirmed
 **Notes:** P6 (Symmetric Outcome Thresholds) applied. P6 already validated; no new PEV credit.
-
----
 
 ### H61 — Add bare-SHA non-match fallback in Phase 0 Step D
 
@@ -243,8 +257,6 @@ Execution order: H59 → H60 → H62 → H61 → (re-check) → H63.
 **Result:** confirmed
 **Notes:** P10 (Failure Mode Registry) applied. P10 already validated in this workflow (H57, Run 14); no new PEV credit.
 
----
-
 ### H62 — Delete remote PR head branch in Phase 8 all-skipped early exit
 
 **Pre-change:** MX62 (Proactive All-Blocked Remote Branch Cleanup): 0
@@ -256,8 +268,6 @@ Execution order: H59 → H60 → H62 → H61 → (re-check) → H63.
 **Secondary deltas:** RPC re-checked — the all-skipped path gained explicit cleanup coverage. No degradation.
 **Result:** confirmed
 **Notes:** P10 (Failure Mode Registry) applied. No new PEV credit.
-
----
 
 ### H63 — Add C.4 variable format to Phase 0 Step H PR body table
 
@@ -271,8 +281,6 @@ Execution order: H59 → H60 → H62 → H61 → (re-check) → H63.
 **Result:** confirmed
 **Notes:** P12 (Content Synchronisation Audit) applied. P12 already validated; no new PEV credit.
 
----
-
 ## Experiment Summary (Run 15)
 - Confirmed: H59, H60, H61, H62, H63
 - Partial: none
@@ -280,9 +288,7 @@ Execution order: H59 → H60 → H62 → H61 → (re-check) → H63.
 
 ---
 
-## Final Results — 2026-04-15 (Run 15)
-
-### Post-Experiment Re-Measurement
+## Phase 5 — Report
 
 | Metric | Baseline | Post | Delta | Weight | Weighted Δ |
 |---|---|---|---|---|---|

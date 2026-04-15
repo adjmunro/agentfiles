@@ -1,20 +1,24 @@
-## Archive — 2026-04-14
+<!-- SUMMARY-START -->
+## Run 010 — 2026-04-01 | Target: skills/review-dependency-update/
+Composite: 89.8% → 93.6% (+3.8 pp)
 
-Archived due to target path mismatch: prior log tracked `skills/review-dependency-update/`
-(Runs 1–8). Current target is `skills/bump-dependencies/` — same skill, renamed at v4.0.0.
+### Hypotheses
+| ID  | Description                                  | Outcome   |
+|-----|----------------------------------------------|-----------|
+| H35 | Phase 3 Ecosystem Search Extensions Table    | Confirmed |
+| H36 | Temp File PR-Number Disambiguation           | Confirmed |
 
-Prior run final composite: **93.6%** (6,179 / 6,600) — 44 metrics, 66× weight.
-All metrics at 100 except: RI=98 (deliberate), HTC=95 (deliberate), CLE=94 (structural).
-
-See `research-log-archive-2026-04-01.md`, `...b.md`, `...c.md` for Runs 1–7 data.
+### Metric Snapshot
+| Metric                                  | Baseline | Post |
+|-----------------------------------------|----------|------|
+| Codebase Search Ecosystem Completeness  | 0        | 100  |
+| Temp File Path Safety Score             | 50       | 100  |
+| Composite                               | 89.8%    | 93.6% |
+<!-- SUMMARY-END -->
 
 ---
 
-## Archive: see research-log-archive-2026-04-01c.md for runs prior to 2026-04-01 (Run 8)
-
----
-
-## Audit — 2026-04-01 (Run 8)
+## Phase 1 — Audit
 
 **Target:** skills/review-dependency-update/
 **Files:** 14 total (10 command, 4 support)
@@ -49,7 +53,11 @@ Persona (Pulse) not found — proceeding without. Log freshly archived; no archi
 
 ---
 
-## Custom Metrics — 2026-04-01 (Run 8)
+## Phase 2 — Baseline
+
+**Persona note:** Pulse (Analytics) persona not found. Proceeding without persona.
+
+### Custom Metrics Introduced
 
 ### MX28 — Temp File Path Safety Score (TFPSS) [custom]
 **Measures:** Whether all temp files written by the skill include sufficient path disambiguation (PR number at minimum) to prevent concurrent-run collision. Two skill invocations running simultaneously for different PRs must not write to the same temp file path — otherwise Phase 6 and Phase 7 outputs would clobber each other.
@@ -71,12 +79,6 @@ Raw: 2/4. **Normalised: 50.**
 **Direction:** ↑ higher is better
 **Weight:** 2× (affects correctness of impact assessment — missing `.kt` or `.kts` files produces false negatives in Phase 3, which propagate to incorrect Phase 5 verdicts)
 **Normalisation:** rate × 100
-
----
-
-## Baseline — 2026-04-01 (Run 8)
-
-**Persona note:** Pulse (Analytics) persona not found. Proceeding without persona.
 
 ### Inherited Scores
 All 42 metrics from Run 7 Final values are inherited unchanged. New metrics MX28 and MX29 scored fresh.
@@ -158,7 +160,7 @@ All 100-scoring metrics from Run 7 remain stable.
 
 ---
 
-## Experiments — 2026-04-01 (Run 8)
+## Phase 3 — Hypotheses
 
 ### Step 0 — Pre-Experiment Dependency Scan
 H35 modifies p3-impact.md.
@@ -189,16 +191,9 @@ No overlaps between H35 and H36. Proceed in order: H35 → H36.
 - Coverage check: projected composite ≈ 6,179 / 6,600 = 93.6% — below 95%, but remaining gap (HTC=95, CLE=94, RI=98) is all deliberate design choices with no actionable hypothesis
 - Gap fill: all metrics below 80 have a hypothesis (CSEC=0 → H35) ✓
 
-## Recommendation Brief
-
-Based on baseline measurement, the following experiments are queued.
-
-1. **Phase 3 ecosystem search extensions** — Phase 3 instructs agents to search with "appropriate extensions for this ecosystem" but never defines what those are; a first-time agent reviewing a Kotlin project may miss `.kt` and `.kts` files entirely; adding a lookup table makes the search scope explicit for all supported ecosystems.
-2. **Temp file PR-number disambiguation** — Phase 6 and Phase 7 write temp files without the PR number in the path, creating a collision risk for concurrent runs; renaming both to include the PR number makes them consistent with Phase 1 and Phase 8.
-
 ---
 
-## Experiment Results — 2026-04-01 (Run 8)
+## Phase 4 — Experiments
 
 ### H35 — Phase 3 Ecosystem Search Extensions Table
 **Pre-change:** MX29 = 0 (no file extension guidance in Phase 3 Step B)
@@ -221,54 +216,12 @@ Based on baseline measurement, the following experiments are queued.
 
 ---
 
-## Final Results — 2026-04-01 (Run 8)
+## Phase 5 — Report
 
 | Metric | Baseline (Run 8) | Post | Delta | Status |
 |---|---|---|---|---|
-| Intent-to-Output Traceability | 100 | 100 | — | — |
-| Directive Density | 100 | 100 | — | — |
-| Instruction Ambiguity Rate | 100 | 100 | — | — |
-| Wiring Completeness Score | 100 | 100 | — | — |
-| Redundancy Index | 98 | 98 | — | — |
-| AC Concreteness | 100 | 100 | — | — |
-| Subagent Alignment Score | 100 | 100 | — | — |
-| Human Touchpoint Count | 95 | 95 | — | — |
-| Context Decay Resilience | 100 | 100 | — | — |
-| Context Loading Efficiency | 94 | 94 | — | — |
-| Parallelisation Safety Score | 100 | 100 | — | — |
-| Instruction Token Efficiency | 99 | 99 | — | — |
-| Persona-Phase Fit Score | 100 | 100 | — | — |
-| Persona Richness Score | 100 | 100 | — | — |
-| Recovery Path Completeness | 100 | 100 | — | — |
-| Changelog Source Coverage | 100 | 100 | — | — |
-| Agent Prompt Completeness | 100 | 100 | — | — |
-| Phase File Navigation Completeness | 100 | 100 | — | — |
-| Verdict Scoring Calibration | 100 | 100 | — | — |
-| Cross-Bump Context Isolation | 100 | 100 | — | — |
-| Comment Template Completeness | 100 | 100 | — | — |
-| Fallback Path Fidelity | 100 | 100 | — | — |
-| Pipeline Diagram Accuracy | 100 | 100 | — | — |
-| Pre-Release Version Handling | 100 | 100 | — | — |
-| Adversarial Prompt Resistance | 100 | 100 | — | — |
-| Source Commit Inspection Coverage | 100 | 100 | — | — |
-| Deep Lockfile Diffing Coverage | 100 | 100 | — | — |
-| Git Tag Signing Verification | 100 | 100 | — | — |
-| Registry Artifact Signing Coverage | 100 | 100 | — | — |
-| Security Pass Completeness Score | 100 | 100 | — | — |
-| Isolated Branch Lifecycle Completeness | 100 | 100 | — | — |
-| Branch Naming Collision Guard | 100 | 100 | — | — |
-| Consolidation Partial-Failure Recovery | 100 | 100 | — | — |
-| Sub-Agent Branch Context Fidelity | 100 | 100 | — | — |
-| Consolidation-to-Summary Data Handoff | 100 | 100 | — | — |
-| Null-Manifest Edge Case Coverage | 100 | 100 | — | — |
-| Skipped-Alias Reporting Completeness | 100 | 100 | — | — |
-| Bisect State Recovery | 100 | 100 | — | — |
-| Verdict Plain-English Specificity | 100 | 100 | — | — |
-| Consolidation Summary Persistence | 100 | 100 | — | — |
-| Sub-Agent Return Contract Completeness | 100 | 100 | — | — |
-| Ecosystem Prerequisite Gate | 100 | 100 | — | — |
-| Temp File Path Safety Score | 50 | 100 | +50 | ↑ |
 | Codebase Search Ecosystem Completeness | 0 | 100 | +100 | ↑ |
+| Temp File Path Safety Score | 50 | 100 | +50 | ↑ |
 | **Composite** | **89.8%** | **93.6%** | **+3.8 pp** | |
 
 *Post-composite: (5,929 + 200 + 50) / (66 × 100) × 100 = 6,179 / 6,600 × 100 = 93.6%*

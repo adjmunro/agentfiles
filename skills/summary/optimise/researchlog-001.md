@@ -1,14 +1,59 @@
-# Research Log — skills/summary/
+<!-- SUMMARY-START -->
+## Run 001 — 2026-03-27 | Target: skills/summary/
+Composite: 74.6% → 89.4% (+14.8 pp)
+
+### Hypotheses
+| ID  | Description                               | Outcome   |
+|-----|-------------------------------------------|-----------|
+| H1  | Intent anchor between phases              | Confirmed |
+| H2  | Why-section quality gate                  | Confirmed |
+| H3  | Phase 5 persona assignment                | Confirmed |
+| H4  | Source domain coverage guard              | Confirmed |
+| H5  | Persona transition clarity                | Confirmed |
+| H6  | Progressive persona loading               | Confirmed |
+| H7  | Output section completeness for edge cases | Confirmed |
+| H8  | Acceptance criteria done-state            | Confirmed |
+| H9  | Detached HEAD handling                    | Confirmed |
+| H10 | Phase 4 and 5 intent anchors              | Confirmed |
+| H11 | Soul.md load directives                   | Confirmed |
+| H12 | SKILL.md persona assignments sync         | Confirmed |
+| H13 | Loom Phase 2 synthesis intent             | Partial   |
+| H14 | Phase 3 prose tightening                  | Partial   |
+| H15 | Why-section depth indicator               | Confirmed |
+| H16 | Ambiguity elimination                     | Confirmed |
+| H17 | Phase 4 Ward reframing                    | Confirmed |
+| H18 | Coverage tally specificity                | Confirmed |
+| H19 | Area entry completeness check             | Confirmed |
+| H20 | Intent anchor compression                 | Partial   |
+
+### Metric Snapshot
+| Metric | Baseline | Post |
+|--------|----------|------|
+| Intent-to-Output Traceability (M1) | 55 | 90 |
+| Directive Density (M2) | 72 | 77 |
+| Instruction Ambiguity Rate (M3) | 88 | 93 |
+| Wiring Completeness Score (M4) | 80 | 93 |
+| Redundancy Index (M5) | 90 | 95 |
+| Acceptance Criteria Concreteness (M6) | 62 | 89 |
+| Human Touchpoint Count (M8) | 95 | 95 |
+| Context Loading Efficiency (M10) | 70 | 85 |
+| Instruction Token Efficiency (M13) | 93 | 93 |
+| Persona-Phase Fit Score (M14) | 71 | 90 |
+| Persona Richness Score (M15) | 87 | 87 |
+| Ref Resolution Failure Rate (MX-1) | 75 | 88 |
+| Source Domain Coverage Score (MX-2) | 60 | 86 |
+| Output Section Completeness Rate (MX-3) | 75 | 93 |
+| Why-Section Depth Score (MX-4) | 55 | 88 |
+| Persona Transition Clarity Score (MX-5) | 65 | 88 |
+<!-- SUMMARY-END -->
+
+---
+
+## Phase 1 — Audit
 
 Target: `/Users/adjmunro/Developer/agentfiles/skills/summary/`
 Run started: 2026-03-27
 Mode: auto (stop when composite > 95%)
-
----
-
-## Iteration 1
-
-### Phase 1 — Audit
 
 **File inventory:**
 
@@ -46,7 +91,7 @@ Mode: auto (stop when composite > 95%)
 
 ---
 
-### Phase 2 — Baseline Measurement
+## Phase 2 — Baseline
 
 #### Applied Metrics
 
@@ -105,7 +150,9 @@ Composite = 1,193 / (16 × 100) × 100 = 74.6%
 
 ---
 
-### Phase 3 — Hypotheses
+## Phase 3 — Hypotheses
+
+### Iteration 1
 
 #### H1 — Intent Anchor Between Phases
 
@@ -179,7 +226,7 @@ Composite = 1,193 / (16 × 100) × 100 = 74.6%
 
 ---
 
-#### Self-Audit
+#### Self-Audit (Iteration 1)
 
 **Intent check:** No hypothesis targets a metric already at 100. ✓
 
@@ -201,7 +248,7 @@ Still below 95% — further iterations will be needed in auto mode.
 
 ---
 
-#### Recommendation Brief
+#### Recommendation Brief (Iteration 1)
 
 Six experiments are proposed:
 
@@ -214,7 +261,225 @@ Six experiments are proposed:
 
 ---
 
-### Phase 4 — Experiments
+### Iteration 2
+
+#### H7 — Output Section Completeness for Edge Cases
+
+**Problem observed:** MX-3 (Output Section Completeness Rate) scored 75. The "no files changed" error path only outputs the Context block — sections 2–5 are silently absent with no per-section fallback text.
+**Change proposed:** Add explicit per-section fallback text to the error handling path in the Error handling table and reference in Phase 5: when no files changed, each section should still appear with a minimal fallback line — "No file changes detected in this range." for Changes by area, and "No skill, command, or persona files changed in this range." for New & changed features.
+**Targets:** Output Section Completeness Rate ↑
+**Predicted improvement:** +18 pp (75 → 93)
+**Pattern applied:** P6 — Symmetric Outcome Thresholds
+**Risk level:** low
+**Risk note:** Adds two explicit fallback sentences; no structural change.
+
+---
+
+#### H8 — Acceptance Criteria Done-State
+
+**Problem observed:** M6 (Acceptance Criteria Concreteness) scored 71. There is no explicit definition of what a complete, successful run looks like — no "the run is done when X" statement.
+**Change proposed:** Add a completion check to Phase 5 before finalising output: "A complete run has all 5 sections present, each containing either substantive content or explicit fallback text. Verify section order and presence before finishing."
+**Targets:** Acceptance Criteria Concreteness ↑
+**Predicted improvement:** +12 pp (71 → 83)
+**Pattern applied:** P6 — Symmetric Outcome Thresholds
+**Risk level:** low
+**Risk note:** One additional check line in Phase 5; minimal overhead.
+
+---
+
+#### H9 — Detached HEAD Handling
+
+**Problem observed:** MX-1 (Ref Resolution Failure Rate) scored 75. Phase 1 Step 1's upstream tracking fallback does not account for detached HEAD state — `git rev-parse --abbrev-ref HEAD` returns `HEAD` in that state, and the upstream lookup will fail without a clear error message.
+**Change proposed:** Add a detached HEAD guard to Phase 1 Step 1: "If `git rev-parse --abbrev-ref HEAD` returns `HEAD`, the repository is in detached HEAD state. Fall back to: `git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null`. If neither succeeds, abort with: 'Cannot determine branch parent in detached HEAD state. Provide an explicit ref with `/summary <ref>.`'"
+**Targets:** Ref Resolution Failure Rate ↑
+**Predicted improvement:** +12 pp (75 → 87)
+**Pattern applied:** P10 — Failure Mode Registry
+**Risk level:** low
+**Risk note:** The detached HEAD check adds one conditional branch to Phase 1 Step 1; no risk to normal flow.
+
+---
+
+**Self-audit (Iteration 2):** All three metrics below 80 have a hypothesis. Projected composite post-iteration 2: 85.5%.
+
+---
+
+### Iteration 3
+
+#### H10 — Phase 4 and 5 Intent Anchors
+
+**Problem observed:** M1 (Intent-to-Output Traceability) is at 78. Phases 2 and 3 have intent anchors but Phases 4 and 5 do not. Phase 4 (kanban scan) and Phase 5 (output assembly) could drift from the established SCOPE_REF in a very long session.
+**Change proposed:** Add brief intent anchors at Phase 4 and Phase 5 entries.
+**Targets:** Intent-to-Output Traceability ↑
+**Predicted improvement:** +10 pp (78 → 88)
+**Pattern applied:** P1 — Intent Anchor Blocks
+**Risk level:** low
+**Risk note:** Two one-line additions; no structural change.
+
+---
+
+#### H11 — Soul.md Load Directives
+
+**Problem observed:** M4 (Wiring Completeness Score) is at 80. Each persona's `persona.md` file says "Also read `soul.md` for character depth." The progressive loading directives added in H6 load persona.md but not soul.md, meaning the character depth layer is referenced but never included in the load directive.
+**Change proposed:** Add `soul.md` alongside `persona.md` at each phase-level load directive: Arc at Phase 1, Loom at Phase 2, Ward at Phase 2 Step 5.
+**Targets:** Wiring Completeness Score ↑
+**Predicted improvement:** +12 pp (80 → 92)
+**Pattern applied:** P12 — Content Synchronisation Audit
+**Risk level:** low
+**Risk note:** Soul.md files verified to exist for all three personas. Adding them increases upfront context load at each phase boundary; acceptable trade-off.
+
+---
+
+**Self-audit (Iteration 3):** H10 targets M1 (78, below 80). H11 targets M4 (80, at threshold — additional coverage justifies the hypothesis). Projected post-iteration 3 composite: 87.0%.
+
+---
+
+### Iteration 4
+
+#### H12 — SKILL.md Persona Assignments Sync
+
+**Problem observed:** M5 (Redundancy Index) at 90, but there is a content inconsistency: SKILL.md's "Persona Assignments" section still describes Ward as active only for "doc drift detection" — it does not reflect Phase 4 (open work) or Phase 5 (output assembly) assignments added in H3 and H10. This inconsistency between SKILL.md and the command file constitutes documentation drift.
+**Change proposed:** Update SKILL.md's Persona Assignments section to reflect Ward's current phase coverage: Phase 2 Step 5 (doc drift), Phase 4 (open work scan), Phase 5 (output assembly).
+**Targets:** Redundancy Index (M5) ↑ — removes inconsistency between support file and command file
+**Predicted improvement:** +5 pp (90 → 95)
+**Pattern applied:** P12 — Content Synchronisation Audit
+**Risk level:** low
+**Risk note:** SKILL.md is a human-facing support file. Updating it makes it accurate without changing skill behaviour.
+
+---
+
+#### H13 — Loom Phase 2 Synthesis Intent
+
+**Problem observed:** M14 (Persona-Phase Fit Score) at 85. Phase 2 (Loom) scores 0.75 because Phase 2 is primarily a gathering phase, and Loom's purpose is synthesis. The fit can be improved by explicitly framing Phase 2 as "gathering with synthesis intent" — directing Loom to note cross-domain connections as it reads, which is exactly what a synthesist does during the gathering phase.
+**Change proposed:** Update Phase 2's intent line to include: "As you gather, note emergent connections between source domains — these will become the synthesis threads in Phase 3."
+**Targets:** Persona-Phase Fit Score ↑
+**Predicted improvement:** Phase 2 Loom fit 0.75 → 0.88; PPF 85 → 88 (+3 pp)
+**Pattern applied:** P8 — Persona Rotation (phase reframing variant)
+**Risk level:** low
+**Risk note:** One additional sentence in the Phase 2 intent anchor; no structural change.
+
+---
+
+**Self-audit (Iteration 4):** Composite currently 87.2%. Projecting post-iteration 4 composite: 87.8%. Gap to 95% is large — further iterations will run out of hypotheses. This will likely be the last productive iteration.
+
+---
+
+### Iteration 5
+
+#### H14 — Phase 3 Prose Tightening
+
+**Problem observed:** M2 (Directive Density) at 72 — the weakest remaining metric. The Phase 3 preamble and Phase 2 intro paragraph contain explanatory annotations that dilute directive density without adding actionable instruction.
+**Change proposed:** (a) Tighten Phase 3 preamble: remove "Before writing output" (implicit) and condense the emergent-property explanation. (b) Remove domain-type labels "(intent layer)", "(structured description layer)", "(implementation layer)" from Phase 2 intro — these annotate the domain names but add no directive content.
+**Targets:** Directive Density ↑
+**Predicted improvement:** +4 pp (72 → 76)
+**Pattern applied:** P11 — File Role Stratification (tightening instruction content vs. explanatory content)
+**Risk level:** low
+**Risk note:** Removing labels removes inline context; risk is low because domain names are self-explanatory in context.
+
+---
+
+#### H15 — Why-Section Depth Indicator
+
+**Problem observed:** MX-4 (Why-Section Depth Score) at 82. The quality gate from H2 catches complete absence of rationale, but doesn't address shallow Why sections — 1-2 sentences of rationale is still "not a placeholder" but may be insufficiently explanatory.
+**Change proposed:** Add to Phase 3 Step 4: "If the Why section contains fewer than 3 sentences of substantive rationale, add a depth note: 'Why section is brief — [N] commits in this range had bodies. Consider enriching commit history for a more complete rationale.'"
+**Targets:** Why-Section Depth Score ↑
+**Predicted improvement:** +6 pp (82 → 88)
+**Pattern applied:** P6 — Symmetric Outcome Thresholds
+**Risk level:** low
+**Risk note:** The depth note fires only when the Why section is thin (< 3 sentences) — it's diagnostic, not prescriptive.
+
+---
+
+**Self-audit (Iteration 5):** H14 targets M2 (72, last sub-80 metric). H15 targets MX-4 (82, addressable). Projected post-iteration 5 composite: 88.2%.
+
+---
+
+### Iteration 6
+
+#### H16 — Ambiguity Elimination (M3 IAR)
+
+**Problem observed:** M3 (Instruction Ambiguity Rate) at 88 with ~3 remaining weak constructs: "Aim for one paragraph per area" (soft directive), "each item should be a specific thing" (soft modal), and "if the file was not changed enough to alter usage" (vague threshold).
+**Change proposed:** (a) Replace "Aim for one paragraph per area" with "Write one paragraph per area." (b) Replace "Each item should be a specific thing a reviewer should verify" with "Each item must be a specific verification step derived from the actual changes." (c) Replace "if the file was not changed enough to alter usage" with "if the file's invocation syntax or trigger condition did not change."
+**Targets:** Instruction Ambiguity Rate ↑
+**Predicted improvement:** +4 pp (88 → 92)
+**Pattern applied:** P7 — Binary Applicability Gates
+**Risk level:** low
+**Risk note:** "Aim for" → "Write" makes the instruction more prescriptive; risk is negligible as one paragraph per area is the correct output structure.
+
+---
+
+**Self-audit (Iteration 6):** H16 targets M3 (88, single remaining ambiguity cluster). Only 1 hypothesis — all metrics below 80 already addressed; few confirmed opportunities remain. Projected post-iteration 6 composite: 88.5%.
+
+---
+
+### Iteration 7
+
+#### H17 — Phase 4 Ward Reframing
+
+**Problem observed:** M14 (Persona-Phase Fit Score) at 87. Phase 4 (Open Work scan) has Ward at 0.5 fit because ticket scanning is adjacent to but not central to Ward's documentation mandate. Reframing Phase 4 as a "living status document" task would align it more closely with Ward's purpose.
+**Change proposed:** Add to Phase 4 Ward activation: "Treat the Open work section as a living status document — surface every in-progress, in-review, and queued ticket with the same accuracy you would apply to updating a project runbook."
+**Targets:** Persona-Phase Fit Score ↑
+**Predicted improvement:** Phase 4 Ward fit 0.5 → 0.65; M14 87 → 90 (+3 pp, at confirmed threshold)
+**Pattern applied:** P8 — Persona Rotation (reframing variant)
+**Risk level:** low
+**Risk note:** One additional framing sentence in Phase 4; changes cognitive expectation, not structure.
+
+---
+
+**Self-audit (Iteration 7):** H17 targets M14 (87). Only 1 hypothesis remaining — the skill is approaching its optimisation ceiling with in-scope changes. Post-iteration 7 composite: ~88.9%.
+
+---
+
+### Iteration 8
+
+#### H18 — Coverage Tally Specificity
+
+**Problem observed:** MX-2 (Source Domain Coverage Score) at 82. Phase 2 Step 6 fires a coverage note only when a single domain contributed. For 2/3 domain scenarios, no note appears — the reader lacks coverage context. Making the tally always report domain coverage (regardless of level) increases diagnostic transparency.
+**Change proposed:** Update Phase 2 Step 6 to always include a brief coverage summary in the Context block: "Source coverage: X/3 domains — [list of contributing domains]." Drop the "only 1 domain" threshold; report coverage in all cases.
+**Targets:** Source Domain Coverage Score ↑
+**Predicted improvement:** +4 pp (82 → 86); may land as partial
+**Pattern applied:** P6 — Symmetric Outcome Thresholds
+**Risk level:** low
+**Risk note:** The coverage note now appears in every Context block (not just single-domain runs); risk of noise when all 3 domains are present. Mitigate by keeping the note brief.
+
+---
+
+**Self-audit (Iteration 8):** Only 1 hypothesis. Gap to 95% requires 99 more points; practical ceiling for in-scope changes is ~90%. This will likely be the final confirmed iteration before stall condition triggers.
+
+---
+
+### Iteration 9
+
+#### H19 — Area Entry Completeness Check (M6)
+
+**Problem observed:** M6 (Acceptance Criteria Concreteness) at 86. The "Changes by area" synthesis has no explicit completeness check per entry — each group is guided by "write one paragraph" but there's no structural verification of what an area entry must contain.
+**Change proposed:** Add to Phase 3 Step 2, after the group structure: "Verify each area entry contains: (1) area name, (2) list of commit subjects in the group, (3) 1–2 sentence synthesis, and (4) Doc note block if Ward flagged drift for this area."
+**Targets:** Acceptance Criteria Concreteness ↑
+**Predicted improvement:** +3 pp (86 → 89)
+**Pattern applied:** P6 — Symmetric Outcome Thresholds
+**Risk level:** low
+**Risk note:** Verification check adds one sentence; no structural change.
+
+---
+
+#### H20 — Intent Anchor Compression (M2)
+
+**Problem observed:** M2 (Directive Density) at 76. Five intent anchor directives now exist across the phases. Some are verbose — Phase 2's anchor ("must be resolved from Phase 1 before reading any files. If either is undefined, return to Phase 1") can be condensed without loss.
+**Change proposed:** Compress the Phase 2 intent anchor to: "Confirm `SCOPE_REF` and `MODE` are set (Phase 1). If not, return to Phase 1." Compress Phase 3's to: "Confirm `SCOPE_REF`, `MODE`, and Phase 2 source material are set before synthesising."
+**Targets:** Directive Density ↑ (fewer tokens, same directives)
+**Predicted improvement:** +2 pp (76 → 78); likely partial
+**Pattern applied:** P11 — File Role Stratification
+**Risk level:** low
+**Risk note:** Removes conditional clarity ("If either is undefined") — keeping a brief conditional in Phase 2.
+
+---
+
+**Self-audit (Iteration 9):** H19 targets M6 (86, concrete completeness gap). H20 targets M2 (76, last sub-80 metric). Projected post-iteration 9 composite: 89.5%. Iteration 10 will have zero legitimate hypotheses → auto stop.
+
+---
+
+## Phase 4 — Experiments
+
+### Iteration 1 Experiments
 
 **Pre-experiment dependency scan:** All six hypotheses modify `commands/summary.md`. Running sequentially with re-measurement between each.
 
@@ -266,123 +531,14 @@ Six experiments are proposed:
 **Result:** confirmed
 **Notes:** Global preload replaced with phase-level load directives. Arc loads at Phase 1 entry, Loom at Phase 2 entry, Ward at Phase 2 Step 5.
 
-## Experiment Summary — Iteration 1
-
+**Experiment Summary — Iteration 1:**
 - Confirmed: H1, H2, H3, H4, H5, H6
 - Partial: none
 - Disconfirmed: none
 
 ---
 
-### Phase 5 — Final Results (Iteration 1)
-
-| Metric | Baseline | Post | Delta | Status |
-|--------|----------|------|-------|--------|
-| Intent-to-Output Traceability (M1) | 55 | 78 | +23 | ↑ |
-| Directive Density (M2) | 72 | 72 | 0 | — |
-| Instruction Ambiguity Rate (M3) | 88 | 88 | 0 | — |
-| Wiring Completeness Score (M4) | 80 | 80 | 0 | — |
-| Redundancy Index (M5) | 90 | 90 | 0 | — |
-| Acceptance Criteria Concreteness (M6) | 62 | 71 | +9 | ↑ |
-| Human Touchpoint Count (M8) | 95 | 95 | 0 | — |
-| Context Loading Efficiency (M10) | 70 | 85 | +15 | ↑ |
-| Instruction Token Efficiency (M13) | 93 | 93 | 0 | — |
-| Persona-Phase Fit Score (M14) | 71 | 85 | +14 | ↑ |
-| Persona Richness Score (M15) | 87 | 87 | 0 | — |
-| Ref Resolution Failure Rate (MX-1) | 75 | 75 | 0 | — |
-| Source Domain Coverage Score (MX-2) | 60 | 82 | +22 | ↑ |
-| Output Section Completeness Rate (MX-3) | 75 | 75 | 0 | — |
-| Why-Section Depth Score (MX-4) | 55 | 82 | +27 | ↑ |
-| Persona Transition Clarity Score (MX-5) | 65 | 88 | +23 | ↑ |
-| **Composite** | **74.6%** | **82.9%** | **+8.3 pp** | ↑ |
-
-**Novel pattern candidates:** none — all hypotheses applied established patterns (P1, P3, P6, P7, P8).
-
-Auto mode: composite 82.9% < 95%. Proceeding to Iteration 2.
-
----
-
-## Iteration 2
-
-### Phase 1 — Audit (Intent Anchor)
-
-Re-reading research-log.md as Intent Anchor. Composite post-iteration 1 = 82.9%. Confirmed changes from H1–H6 are in place.
-
-File inventory unchanged. Feature flags unchanged.
-
----
-
-### Phase 2 — Baseline (Iteration 2)
-
-Current scores (post iteration 1):
-
-| Metric | Score |
-|--------|-------|
-| M1 | 78 |
-| M2 | 72 |
-| M3 | 88 |
-| M4 | 80 |
-| M5 | 90 |
-| M6 | 71 |
-| M8 | 95 |
-| M10 | 85 |
-| M13 | 93 |
-| M14 | 85 |
-| M15 | 87 |
-| MX-1 | 75 |
-| MX-2 | 82 |
-| MX-3 | 75 |
-| MX-4 | 82 |
-| MX-5 | 88 |
-| **Composite** | **82.9%** |
-
-Weakest: M6 (71), M2 (72), MX-1 (75), MX-3 (75).
-
----
-
-### Phase 3 — Hypotheses (Iteration 2)
-
-#### H7 — Output Section Completeness for Edge Cases
-
-**Problem observed:** MX-3 (Output Section Completeness Rate) scored 75. The "no files changed" error path only outputs the Context block — sections 2–5 are silently absent with no per-section fallback text.
-**Change proposed:** Add explicit per-section fallback text to the error handling path in the Error handling table and reference in Phase 5: when no files changed, each section should still appear with a minimal fallback line — "No file changes detected in this range." for Changes by area, and "No skill, command, or persona files changed in this range." for New & changed features.
-**Targets:** Output Section Completeness Rate ↑
-**Predicted improvement:** +18 pp (75 → 93)
-**Pattern applied:** P6 — Symmetric Outcome Thresholds
-**Risk level:** low
-**Risk note:** Adds two explicit fallback sentences; no structural change.
-
----
-
-#### H8 — Acceptance Criteria Done-State
-
-**Problem observed:** M6 (Acceptance Criteria Concreteness) scored 71. There is no explicit definition of what a complete, successful run looks like — no "the run is done when X" statement.
-**Change proposed:** Add a completion check to Phase 5 before finalising output: "A complete run has all 5 sections present, each containing either substantive content or explicit fallback text. Verify section order and presence before finishing."
-**Targets:** Acceptance Criteria Concreteness ↑
-**Predicted improvement:** +12 pp (71 → 83)
-**Pattern applied:** P6 — Symmetric Outcome Thresholds
-**Risk level:** low
-**Risk note:** One additional check line in Phase 5; minimal overhead.
-
----
-
-#### H9 — Detached HEAD Handling
-
-**Problem observed:** MX-1 (Ref Resolution Failure Rate) scored 75. Phase 1 Step 1's upstream tracking fallback does not account for detached HEAD state — `git rev-parse --abbrev-ref HEAD` returns `HEAD` in that state, and the upstream lookup will fail without a clear error message.
-**Change proposed:** Add a detached HEAD guard to Phase 1 Step 1: "If `git rev-parse --abbrev-ref HEAD` returns `HEAD`, the repository is in detached HEAD state. Fall back to: `git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null`. If neither succeeds, abort with: 'Cannot determine branch parent in detached HEAD state. Provide an explicit ref with `/summary <ref>.`'"
-**Targets:** Ref Resolution Failure Rate ↑
-**Predicted improvement:** +12 pp (75 → 87)
-**Pattern applied:** P10 — Failure Mode Registry
-**Risk level:** low
-**Risk note:** The detached HEAD check adds one conditional branch to Phase 1 Step 1; no risk to normal flow.
-
----
-
-**Self-audit:** All three metrics below 80 have a hypothesis. Projected composite post-iteration 2: 85.5%.
-
----
-
-### Phase 4 — Experiments (Iteration 2)
+### Iteration 2 Experiments
 
 All three hypotheses modify `commands/summary.md`. Running sequentially.
 
@@ -410,78 +566,14 @@ All three hypotheses modify `commands/summary.md`. Running sequentially.
 **Result:** confirmed
 **Notes:** Phase 1 Step 1 now detects detached HEAD via `git rev-parse --abbrev-ref HEAD`, falls back to main/master merge-base, aborts with clear message + explicit re-run suggestion if neither reachable.
 
-## Experiment Summary — Iteration 2
-
+**Experiment Summary — Iteration 2:**
 - Confirmed: H7, H8, H9
 - Partial: none
 - Disconfirmed: none
 
-### Phase 5 — Final Results (Iteration 2)
-
-| Metric | Post-It1 | Post-It2 | Delta | Status |
-|--------|----------|----------|-------|--------|
-| M1 | 78 | 78 | 0 | — |
-| M2 | 72 | 72 | 0 | — |
-| M4 | 80 | 80 | 0 | — |
-| M6 | 71 | 84 | +13 | ↑ |
-| M10 | 85 | 85 | 0 | — |
-| M14 | 85 | 85 | 0 | — |
-| MX-1 | 75 | 88 | +13 | ↑ |
-| MX-3 | 75 | 93 | +18 | ↑ |
-| **Composite** | **82.9%** | **85.6%** | **+2.7 pp** | ↑ |
-
-Auto mode: composite 85.6% < 95%. Proceeding to Iteration 3.
-
 ---
 
-## Iteration 3
-
-### Phase 1 — Audit (Intent Anchor)
-
-Re-reading research-log.md: composite 85.6%. Confirmed changes H1–H9 in place. File inventory and feature flags unchanged.
-
-Remaining sub-80 metrics: M2 (72) only.
-Next-tier targets (80–87): M1 (78→86 reachable), M4 (80→92 via soul.md), M14 (85→92 with Loom fit).
-
----
-
-### Phase 2 — Baseline (Iteration 3)
-
-Current scores carry forward from iteration 2 results. Composite: 85.6%.
-
----
-
-### Phase 3 — Hypotheses (Iteration 3)
-
-#### H10 — Phase 4 and 5 Intent Anchors
-
-**Problem observed:** M1 (Intent-to-Output Traceability) is at 78. Phases 2 and 3 have intent anchors but Phases 4 and 5 do not. Phase 4 (kanban scan) and Phase 5 (output assembly) could drift from the established SCOPE_REF in a very long session.
-**Change proposed:** Add brief intent anchors at Phase 4 and Phase 5 entries.
-**Targets:** Intent-to-Output Traceability ↑
-**Predicted improvement:** +10 pp (78 → 88)
-**Pattern applied:** P1 — Intent Anchor Blocks
-**Risk level:** low
-**Risk note:** Two one-line additions; no structural change.
-
----
-
-#### H11 — Soul.md Load Directives
-
-**Problem observed:** M4 (Wiring Completeness Score) is at 80. Each persona's `persona.md` file says "Also read `soul.md` for character depth." The progressive loading directives added in H6 load persona.md but not soul.md, meaning the character depth layer is referenced but never included in the load directive.
-**Change proposed:** Add `soul.md` alongside `persona.md` at each phase-level load directive: Arc at Phase 1, Loom at Phase 2, Ward at Phase 2 Step 5.
-**Targets:** Wiring Completeness Score ↑
-**Predicted improvement:** +12 pp (80 → 92)
-**Pattern applied:** P12 — Content Synchronisation Audit
-**Risk level:** low
-**Risk note:** Soul.md files verified to exist for all three personas. Adding them increases upfront context load at each phase boundary; acceptable trade-off.
-
----
-
-**Self-audit:** H10 targets M1 (78, below 80). H11 targets M4 (80, at threshold — additional coverage justifies the hypothesis). Projected post-iteration 3 composite: 87.0%.
-
----
-
-### Phase 4 — Experiments (Iteration 3)
+### Iteration 3 Experiments
 
 #### H10 — Phase 4 and 5 Intent Anchors
 
@@ -499,64 +591,14 @@ Current scores carry forward from iteration 2 results. Composite: 85.6%.
 **Result:** confirmed
 **Notes:** Soul.md added to all three phase-level load directives. Character depth layer now fully wired. M10 reassessed as 85 (soul.md content is directly used by active persona — no loading overhead).
 
-## Experiment Summary — Iteration 3
-
+**Experiment Summary — Iteration 3:**
 - Confirmed: H10, H11
 - Partial: none
 - Disconfirmed: none
 
-### Phase 5 — Final Results (Iteration 3)
-
-| Metric | Post-It2 | Post-It3 | Delta | Status |
-|--------|----------|----------|-------|--------|
-| M1 | 78 | 90 | +12 | ↑ |
-| M4 | 80 | 93 | +13 | ↑ |
-| M10 | 85 | 85 | 0 | — |
-| **Composite** | **85.6%** | **87.2%** | **+1.6 pp** | ↑ |
-
-Auto mode: composite 87.2% < 95%. Proceeding to Iteration 4.
-
 ---
 
-## Iteration 4
-
-### Phase 1 — Audit (Intent Anchor)
-
-Re-reading research-log.md: composite 87.2%. H1–H11 confirmed. Remaining sub-90 metrics: M2 (72), M5 (90 — at boundary with SKILL.md drift), M14 (85).
-
----
-
-### Phase 3 — Hypotheses (Iteration 4)
-
-#### H12 — SKILL.md Persona Assignments Sync
-
-**Problem observed:** M5 (Redundancy Index) at 90, but there is a content inconsistency: SKILL.md's "Persona Assignments" section still describes Ward as active only for "doc drift detection" — it does not reflect Phase 4 (open work) or Phase 5 (output assembly) assignments added in H3 and H10. This inconsistency between SKILL.md and the command file constitutes documentation drift.
-**Change proposed:** Update SKILL.md's Persona Assignments section to reflect Ward's current phase coverage: Phase 2 Step 5 (doc drift), Phase 4 (open work scan), Phase 5 (output assembly).
-**Targets:** Redundancy Index (M5) ↑ — removes inconsistency between support file and command file
-**Predicted improvement:** +5 pp (90 → 95)
-**Pattern applied:** P12 — Content Synchronisation Audit
-**Risk level:** low
-**Risk note:** SKILL.md is a human-facing support file. Updating it makes it accurate without changing skill behaviour.
-
----
-
-#### H13 — Loom Phase 2 Synthesis Intent
-
-**Problem observed:** M14 (Persona-Phase Fit Score) at 85. Phase 2 (Loom) scores 0.75 because Phase 2 is primarily a gathering phase, and Loom's purpose is synthesis. The fit can be improved by explicitly framing Phase 2 as "gathering with synthesis intent" — directing Loom to note cross-domain connections as it reads, which is exactly what a synthesist does during the gathering phase.
-**Change proposed:** Update Phase 2's intent line to include: "As you gather, note emergent connections between source domains — these will become the synthesis threads in Phase 3."
-**Targets:** Persona-Phase Fit Score ↑
-**Predicted improvement:** Phase 2 Loom fit 0.75 → 0.88; PPF 85 → 88 (+3 pp)
-**Pattern applied:** P8 — Persona Rotation (phase reframing variant)
-**Risk level:** low
-**Risk note:** One additional sentence in the Phase 2 intent anchor; no structural change.
-
----
-
-**Self-audit:** Composite currently 87.2%. Projecting post-iteration 4 composite: 87.8%. Gap to 95% is large — further iterations will run out of hypotheses. This will likely be the last productive iteration.
-
----
-
-### Phase 4 — Experiments (Iteration 4)
+### Iteration 4 Experiments
 
 #### H12 — SKILL.md Persona Assignments Sync
 
@@ -574,63 +616,14 @@ Re-reading research-log.md: composite 87.2%. H1–H11 confirmed. Remaining sub-9
 **Result:** partial (≥1 pp but <3 pp; net-positive composite)
 **Notes:** Phase 2 Loom fit improved from 0.75 to 0.85 by adding "note emergent connections" directive. Below confirmed threshold. Committed as net-positive.
 
-## Experiment Summary — Iteration 4
-
+**Experiment Summary — Iteration 4:**
 - Confirmed: H12
 - Partial: H13
 - Disconfirmed: none
 
-### Phase 5 — Final Results (Iteration 4)
-
-| Metric | Post-It3 | Post-It4 | Delta | Status |
-|--------|----------|----------|-------|--------|
-| M5 | 90 | 95 | +5 | ↑ |
-| M14 | 85 | 87 | +2 | ↑ |
-| **Composite** | **87.2%** | **87.6%** | **+0.4 pp** | ↑ |
-
-Auto mode: composite 87.6% < 95%. Proceeding to Iteration 5.
-
 ---
 
-## Iteration 5
-
-### Phase 1 — Audit (Intent Anchor)
-
-Re-reading research-log.md: composite 87.6%. H1–H13 confirmed/partial. Remaining sub-80: M2 (72) only. Remaining improvement surface: M2 prose tightening, MX-4 depth indicator.
-
----
-
-### Phase 3 — Hypotheses (Iteration 5)
-
-#### H14 — Phase 3 Prose Tightening
-
-**Problem observed:** M2 (Directive Density) at 72 — the weakest remaining metric. The Phase 3 preamble and Phase 2 intro paragraph contain explanatory annotations that dilute directive density without adding actionable instruction.
-**Change proposed:** (a) Tighten Phase 3 preamble: remove "Before writing output" (implicit) and condense the emergent-property explanation. (b) Remove domain-type labels "(intent layer)", "(structured description layer)", "(implementation layer)" from Phase 2 intro — these annotate the domain names but add no directive content.
-**Targets:** Directive Density ↑
-**Predicted improvement:** +4 pp (72 → 76)
-**Pattern applied:** P11 — File Role Stratification (tightening instruction content vs. explanatory content)
-**Risk level:** low
-**Risk note:** Removing labels removes inline context; risk is low because domain names are self-explanatory in context.
-
----
-
-#### H15 — Why-Section Depth Indicator
-
-**Problem observed:** MX-4 (Why-Section Depth Score) at 82. The quality gate from H2 catches complete absence of rationale, but doesn't address shallow Why sections — 1-2 sentences of rationale is still "not a placeholder" but may be insufficiently explanatory.
-**Change proposed:** Add to Phase 3 Step 4: "If the Why section contains fewer than 3 sentences of substantive rationale, add a depth note: 'Why section is brief — [N] commits in this range had bodies. Consider enriching commit history for a more complete rationale.'"
-**Targets:** Why-Section Depth Score ↑
-**Predicted improvement:** +6 pp (82 → 88)
-**Pattern applied:** P6 — Symmetric Outcome Thresholds
-**Risk level:** low
-**Risk note:** The depth note fires only when the Why section is thin (< 3 sentences) — it's diagnostic, not prescriptive.
-
----
-
-**Self-audit:** H14 targets M2 (72, last sub-80 metric). H15 targets MX-4 (82, addressable). Projected post-iteration 5 composite: 88.2%.
-
----
-
-### Phase 4 — Experiments (Iteration 5)
+### Iteration 5 Experiments
 
 #### H14 — Phase 3 Prose Tightening
 
@@ -648,52 +641,14 @@ Re-reading research-log.md: composite 87.6%. H1–H13 confirmed/partial. Remaini
 **Result:** confirmed
 **Notes:** Depth check fires for Why sections with fewer than 3 substantive sentences, surfacing how many commits had bodies and prompting richer history.
 
-## Experiment Summary — Iteration 5
-
+**Experiment Summary — Iteration 5:**
 - Confirmed: H15
 - Partial: H14
 - Disconfirmed: none
 
-### Phase 5 — Final Results (Iteration 5)
-
-| Metric | Post-It4 | Post-It5 | Delta | Status |
-|--------|----------|----------|-------|--------|
-| M2 | 72 | 74 | +2 | ↑ |
-| M6 | 84 | 86 | +2 | ↑ |
-| MX-4 | 82 | 88 | +6 | ↑ |
-| **Composite** | **87.6%** | **88.25%** | **+0.65 pp** | ↑ |
-
-Auto mode: composite 88.25% < 95%. Proceeding to Iteration 6.
-
 ---
 
-## Iteration 6
-
-### Phase 1 — Audit (Intent Anchor)
-
-Re-reading research-log.md: composite 88.25%. H1–H15 in place. Remaining addressable: M2 (74), M3 (88 — weak modals), M14 (87 — Phase 4 fit).
-
----
-
-### Phase 3 — Hypotheses (Iteration 6)
-
-#### H16 — Ambiguity Elimination (M3 IAR)
-
-**Problem observed:** M3 (Instruction Ambiguity Rate) at 88 with ~3 remaining weak constructs: "Aim for one paragraph per area" (soft directive), "each item should be a specific thing" (soft modal), and "if the file was not changed enough to alter usage" (vague threshold).
-**Change proposed:** (a) Replace "Aim for one paragraph per area" with "Write one paragraph per area." (b) Replace "Each item should be a specific thing a reviewer should verify" with "Each item must be a specific verification step derived from the actual changes." (c) Replace "if the file was not changed enough to alter usage" with "if the file's invocation syntax or trigger condition did not change."
-**Targets:** Instruction Ambiguity Rate ↑
-**Predicted improvement:** +4 pp (88 → 92)
-**Pattern applied:** P7 — Binary Applicability Gates
-**Risk level:** low
-**Risk note:** "Aim for" → "Write" makes the instruction more prescriptive; risk is negligible as one paragraph per area is the correct output structure.
-
----
-
-**Self-audit:** H16 targets M3 (88, single remaining ambiguity cluster). Only 1 hypothesis — all metrics below 80 already addressed; few confirmed opportunities remain. Projected post-iteration 6 composite: 88.5%.
-
----
-
-### Phase 4 — Experiments (Iteration 6)
+### Iteration 6 Experiments
 
 #### H16 — Ambiguity Elimination
 
@@ -703,51 +658,14 @@ Re-reading research-log.md: composite 88.25%. H1–H15 in place. Remaining addre
 **Result:** confirmed
 **Notes:** "Aim for" → "Write", "should be" → "must be", "not changed enough" → concrete invocation-criterion test. IAR drops from ~12% to ~7%.
 
-## Experiment Summary — Iteration 6
-
+**Experiment Summary — Iteration 6:**
 - Confirmed: H16
 - Partial: none
 - Disconfirmed: none
 
-### Phase 5 — Final Results (Iteration 6)
-
-| Metric | Post-It5 | Post-It6 | Delta | Status |
-|--------|----------|----------|-------|--------|
-| M2 | 74 | 75 | +1 | ↑ |
-| M3 | 88 | 93 | +5 | ↑ |
-| **Composite** | **88.25%** | **88.6%** | **+0.35 pp** | ↑ |
-
-Auto mode: composite 88.6% < 95%. Proceeding to Iteration 7.
-
 ---
 
-## Iteration 7
-
-### Phase 1 — Audit (Intent Anchor)
-
-Re-reading research-log.md: composite 88.6%. H1–H16 in place. Remaining opportunities: M2 (75, ceiling ~78), M14 (87, Phase 4 fit improvable), MX-2 (82, minor refinement possible).
-
----
-
-### Phase 3 — Hypotheses (Iteration 7)
-
-#### H17 — Phase 4 Ward Reframing
-
-**Problem observed:** M14 (Persona-Phase Fit Score) at 87. Phase 4 (Open Work scan) has Ward at 0.5 fit because ticket scanning is adjacent to but not central to Ward's documentation mandate. Reframing Phase 4 as a "living status document" task would align it more closely with Ward's purpose.
-**Change proposed:** Add to Phase 4 Ward activation: "Treat the Open work section as a living status document — surface every in-progress, in-review, and queued ticket with the same accuracy you would apply to updating a project runbook."
-**Targets:** Persona-Phase Fit Score ↑
-**Predicted improvement:** Phase 4 Ward fit 0.5 → 0.65; M14 87 → 90 (+3 pp, at confirmed threshold)
-**Pattern applied:** P8 — Persona Rotation (reframing variant)
-**Risk level:** low
-**Risk note:** One additional framing sentence in Phase 4; changes cognitive expectation, not structure.
-
----
-
-**Self-audit:** H17 targets M14 (87). Only 1 hypothesis remaining — the skill is approaching its optimisation ceiling with in-scope changes. Post-iteration 7 composite: ~88.9%.
-
----
-
-### Phase 4 — Experiments (Iteration 7)
+### Iteration 7 Experiments
 
 #### H17 — Phase 4 Ward Reframing
 
@@ -757,50 +675,14 @@ Re-reading research-log.md: composite 88.6%. H1–H16 in place. Remaining opport
 **Result:** confirmed
 **Notes:** "Living status document" framing aligns Phase 4 with Ward's documentation accuracy mandate.
 
-## Experiment Summary — Iteration 7
-
+**Experiment Summary — Iteration 7:**
 - Confirmed: H17
 - Partial: none
 - Disconfirmed: none
 
-### Phase 5 — Final Results (Iteration 7)
-
-| Metric | Post-It6 | Post-It7 | Delta | Status |
-|--------|----------|----------|-------|--------|
-| M14 | 87 | 90 | +3 | ↑ |
-| **Composite** | **88.6%** | **88.8%** | **+0.2 pp** | ↑ |
-
-Auto mode: composite 88.8% < 95%. Proceeding to Iteration 8.
-
 ---
 
-## Iteration 8
-
-### Phase 1 — Audit (Intent Anchor)
-
-Re-reading research-log.md: composite 88.8%. H1–H17 in place. Approaching practical ceiling: M2 (75, ceiling ~78), MX-2 (82, minor refinement possible), M15/M6/M10 all above 85.
-
----
-
-### Phase 3 — Hypotheses (Iteration 8)
-
-#### H18 — Coverage Tally Specificity
-
-**Problem observed:** MX-2 (Source Domain Coverage Score) at 82. Phase 2 Step 6 fires a coverage note only when a single domain contributed. For 2/3 domain scenarios, no note appears — the reader lacks coverage context. Making the tally always report domain coverage (regardless of level) increases diagnostic transparency.
-**Change proposed:** Update Phase 2 Step 6 to always include a brief coverage summary in the Context block: "Source coverage: X/3 domains — [list of contributing domains]." Drop the "only 1 domain" threshold; report coverage in all cases.
-**Targets:** Source Domain Coverage Score ↑
-**Predicted improvement:** +4 pp (82 → 86); may land as partial
-**Pattern applied:** P6 — Symmetric Outcome Thresholds
-**Risk level:** low
-**Risk note:** The coverage note now appears in every Context block (not just single-domain runs); risk of noise when all 3 domains are present. Mitigate by keeping the note brief.
-
----
-
-**Self-audit:** Only 1 hypothesis. Gap to 95% requires 99 more points; practical ceiling for in-scope changes is ~90%. This will likely be the final confirmed iteration before stall condition triggers.
-
----
-
-### Phase 4 — Experiments (Iteration 8)
+### Iteration 8 Experiments
 
 #### H18 — Coverage Tally Specificity
 
@@ -810,63 +692,14 @@ Re-reading research-log.md: composite 88.8%. H1–H17 in place. Approaching prac
 **Result:** confirmed
 **Notes:** Coverage line now always appears in Context block as "X/3 — [list]". Notes absent domains when < 3. Replaced conditional-only firing with always-on coverage report.
 
-## Experiment Summary — Iteration 8
-
+**Experiment Summary — Iteration 8:**
 - Confirmed: H18
 - Partial: none
 - Disconfirmed: none
 
-### Phase 5 — Final Results (Iteration 8)
-
-| Metric | Post-It7 | Post-It8 | Delta | Status |
-|--------|----------|----------|-------|--------|
-| M2 | 75 | 76 | +1 | ↑ |
-| MX-2 | 82 | 86 | +4 | ↑ |
-| **Composite** | **88.8%** | **89.1%** | **+0.3 pp** | ↑ |
-
-Auto mode: composite 89.1% < 95%. Proceeding to Iteration 9.
-
 ---
 
-## Iteration 9
-
-### Phase 1 — Audit (Intent Anchor)
-
-Re-reading research-log.md: composite 89.1%. H1–H18 in place. Practical ceiling approaching; 2 more hypotheses identified. After iteration 9, expect zero hypotheses in iteration 10 → auto mode stops.
-
----
-
-### Phase 3 — Hypotheses (Iteration 9)
-
-#### H19 — Area Entry Completeness Check (M6)
-
-**Problem observed:** M6 (Acceptance Criteria Concreteness) at 86. The "Changes by area" synthesis has no explicit completeness check per entry — each group is guided by "write one paragraph" but there's no structural verification of what an area entry must contain.
-**Change proposed:** Add to Phase 3 Step 2, after the group structure: "Verify each area entry contains: (1) area name, (2) list of commit subjects in the group, (3) 1–2 sentence synthesis, and (4) Doc note block if Ward flagged drift for this area."
-**Targets:** Acceptance Criteria Concreteness ↑
-**Predicted improvement:** +3 pp (86 → 89)
-**Pattern applied:** P6 — Symmetric Outcome Thresholds
-**Risk level:** low
-**Risk note:** Verification check adds one sentence; no structural change.
-
----
-
-#### H20 — Intent Anchor Compression (M2)
-
-**Problem observed:** M2 (Directive Density) at 76. Five intent anchor directives now exist across the phases. Some are verbose — Phase 2's anchor ("must be resolved from Phase 1 before reading any files. If either is undefined, return to Phase 1") can be condensed without loss.
-**Change proposed:** Compress the Phase 2 intent anchor to: "Confirm `SCOPE_REF` and `MODE` are set (Phase 1). If not, return to Phase 1." Compress Phase 3's to: "Confirm `SCOPE_REF`, `MODE`, and Phase 2 source material are set before synthesising."
-**Targets:** Directive Density ↑ (fewer tokens, same directives)
-**Predicted improvement:** +2 pp (76 → 78); likely partial
-**Pattern applied:** P11 — File Role Stratification
-**Risk level:** low
-**Risk note:** Removes conditional clarity ("If either is undefined") — keeping a brief conditional in Phase 2.
-
----
-
-**Self-audit:** H19 targets M6 (86, concrete completeness gap). H20 targets M2 (76, last sub-80 metric). Projected post-iteration 9 composite: 89.5%. Iteration 10 will have zero legitimate hypotheses → auto stop.
-
----
-
-### Phase 4 — Experiments (Iteration 9)
+### Iteration 9 Experiments
 
 #### H19 — Area Entry Completeness Check
 
@@ -884,25 +717,14 @@ Re-reading research-log.md: composite 89.1%. H1–H18 in place. Practical ceilin
 **Result:** partial (net-positive)
 **Notes:** Phase 2 anchor compressed; Phase 3 anchor retained specificity (items list kept to preserve M1 IOT traceability). Only ~16 tokens saved.
 
-## Experiment Summary — Iteration 9
-
+**Experiment Summary — Iteration 9:**
 - Confirmed: H19
 - Partial: H20
 - Disconfirmed: none
 
-### Phase 5 — Final Results (Iteration 9)
-
-| Metric | Post-It8 | Post-It9 | Delta | Status |
-|--------|----------|----------|-------|--------|
-| M2 | 76 | 77 | +1 | ↑ |
-| M6 | 86 | 89 | +3 | ↑ |
-| **Composite** | **89.1%** | **89.4%** | **+0.3 pp** | ↑ |
-
 ---
 
-## Iteration 10 — Auto Stop
-
-### Phase 3 — Zero Hypotheses
+### Iteration 10 — Auto Stop
 
 Re-reading research log: composite 89.4%. All metrics now 77–95. Remaining sub-90 metrics: M2 (77), M15 (87), MX-2 (86), MX-4 (88), MX-5 (88).
 
@@ -915,7 +737,133 @@ No further legitimate hypotheses can be formed with in-scope changes that would 
 
 ---
 
-## Final Results — 2026-03-27
+## Phase 5 — Report
+
+### Per-Iteration Results
+
+**Iteration 1:** 74.6% → 82.9% (+8.3 pp)
+
+| Metric | Baseline | Post-It1 | Delta | Status |
+|--------|----------|----------|-------|--------|
+| Intent-to-Output Traceability (M1) | 55 | 78 | +23 | ↑ |
+| Directive Density (M2) | 72 | 72 | 0 | — |
+| Instruction Ambiguity Rate (M3) | 88 | 88 | 0 | — |
+| Wiring Completeness Score (M4) | 80 | 80 | 0 | — |
+| Redundancy Index (M5) | 90 | 90 | 0 | — |
+| Acceptance Criteria Concreteness (M6) | 62 | 71 | +9 | ↑ |
+| Human Touchpoint Count (M8) | 95 | 95 | 0 | — |
+| Context Loading Efficiency (M10) | 70 | 85 | +15 | ↑ |
+| Instruction Token Efficiency (M13) | 93 | 93 | 0 | — |
+| Persona-Phase Fit Score (M14) | 71 | 85 | +14 | ↑ |
+| Persona Richness Score (M15) | 87 | 87 | 0 | — |
+| Ref Resolution Failure Rate (MX-1) | 75 | 75 | 0 | — |
+| Source Domain Coverage Score (MX-2) | 60 | 82 | +22 | ↑ |
+| Output Section Completeness Rate (MX-3) | 75 | 75 | 0 | — |
+| Why-Section Depth Score (MX-4) | 55 | 82 | +27 | ↑ |
+| Persona Transition Clarity Score (MX-5) | 65 | 88 | +23 | ↑ |
+| **Composite** | **74.6%** | **82.9%** | **+8.3 pp** | ↑ |
+
+Auto mode: composite 82.9% < 95%. Proceeding to Iteration 2.
+
+---
+
+**Iteration 2:** 82.9% → 85.6% (+2.7 pp)
+
+| Metric | Post-It1 | Post-It2 | Delta | Status |
+|--------|----------|----------|-------|--------|
+| M6 | 71 | 84 | +13 | ↑ |
+| MX-1 | 75 | 88 | +13 | ↑ |
+| MX-3 | 75 | 93 | +18 | ↑ |
+| **Composite** | **82.9%** | **85.6%** | **+2.7 pp** | ↑ |
+
+Auto mode: composite 85.6% < 95%. Proceeding to Iteration 3.
+
+---
+
+**Iteration 3:** 85.6% → 87.2% (+1.6 pp)
+
+| Metric | Post-It2 | Post-It3 | Delta | Status |
+|--------|----------|----------|-------|--------|
+| M1 | 78 | 90 | +12 | ↑ |
+| M4 | 80 | 93 | +13 | ↑ |
+| M10 | 85 | 85 | 0 | — |
+| **Composite** | **85.6%** | **87.2%** | **+1.6 pp** | ↑ |
+
+Auto mode: composite 87.2% < 95%. Proceeding to Iteration 4.
+
+---
+
+**Iteration 4:** 87.2% → 87.6% (+0.4 pp)
+
+| Metric | Post-It3 | Post-It4 | Delta | Status |
+|--------|----------|----------|-------|--------|
+| M5 | 90 | 95 | +5 | ↑ |
+| M14 | 85 | 87 | +2 | ↑ |
+| **Composite** | **87.2%** | **87.6%** | **+0.4 pp** | ↑ |
+
+Auto mode: composite 87.6% < 95%. Proceeding to Iteration 5.
+
+---
+
+**Iteration 5:** 87.6% → 88.25% (+0.65 pp)
+
+| Metric | Post-It4 | Post-It5 | Delta | Status |
+|--------|----------|----------|-------|--------|
+| M2 | 72 | 74 | +2 | ↑ |
+| M6 | 84 | 86 | +2 | ↑ |
+| MX-4 | 82 | 88 | +6 | ↑ |
+| **Composite** | **87.6%** | **88.25%** | **+0.65 pp** | ↑ |
+
+Auto mode: composite 88.25% < 95%. Proceeding to Iteration 6.
+
+---
+
+**Iteration 6:** 88.25% → 88.6% (+0.35 pp)
+
+| Metric | Post-It5 | Post-It6 | Delta | Status |
+|--------|----------|----------|-------|--------|
+| M2 | 74 | 75 | +1 | ↑ |
+| M3 | 88 | 93 | +5 | ↑ |
+| **Composite** | **88.25%** | **88.6%** | **+0.35 pp** | ↑ |
+
+Auto mode: composite 88.6% < 95%. Proceeding to Iteration 7.
+
+---
+
+**Iteration 7:** 88.6% → 88.8% (+0.2 pp)
+
+| Metric | Post-It6 | Post-It7 | Delta | Status |
+|--------|----------|----------|-------|--------|
+| M14 | 87 | 90 | +3 | ↑ |
+| **Composite** | **88.6%** | **88.8%** | **+0.2 pp** | ↑ |
+
+Auto mode: composite 88.8% < 95%. Proceeding to Iteration 8.
+
+---
+
+**Iteration 8:** 88.8% → 89.1% (+0.3 pp)
+
+| Metric | Post-It7 | Post-It8 | Delta | Status |
+|--------|----------|----------|-------|--------|
+| M2 | 75 | 76 | +1 | ↑ |
+| MX-2 | 82 | 86 | +4 | ↑ |
+| **Composite** | **88.8%** | **89.1%** | **+0.3 pp** | ↑ |
+
+Auto mode: composite 89.1% < 95%. Proceeding to Iteration 9.
+
+---
+
+**Iteration 9:** 89.1% → 89.4% (+0.3 pp)
+
+| Metric | Post-It8 | Post-It9 | Delta | Status |
+|--------|----------|----------|-------|--------|
+| M2 | 76 | 77 | +1 | ↑ |
+| M6 | 86 | 89 | +3 | ↑ |
+| **Composite** | **89.1%** | **89.4%** | **+0.3 pp** | ↑ |
+
+---
+
+### Final Results — 2026-03-27
 
 | Metric | Baseline | Post | Delta | Status |
 |--------|----------|------|-------|--------|
@@ -958,4 +906,3 @@ No further legitimate hypotheses can be formed with in-scope changes that would 
 **Novel Patterns Discovered:** none — all 20 hypotheses applied established patterns (P1, P3, P6, P7, P8, P10, P11, P12).
 
 Log within size threshold; no archival required.
-
