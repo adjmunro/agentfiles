@@ -2,6 +2,18 @@
 
 ---
 
+## 1.13.0 — Persistence and Precision (2026-04-16)
+
+Closes four gaps revealed by run 010: missing P18 documentation, understated PEV and EIS scores, broken custom metric persistence under per-run log format, and AGENTS.md changelog format drift.
+
+- **help.md:** added P18 (Cross-File Structural Anchor) summary row to Design Patterns table and full detail section — closes Help/Reference Synchronisation Rate gap (37/38 → 38/38 = 100%)
+- **p2-baseline.md:** added EIS criterion (a) interpretation note — "Step 0 present" means the instruction is in `p4-experiments.md`; sessions predating Step 0's introduction are excluded from the denominator. Corrects EIS from 75 → 90% via P15 retrospective
+- **p2-baseline.md:** added prior-log lookup step before custom metric discovery — agents must check `researchlog-*.md` files for existing `MX<N>` definitions before proposing new metrics. Restores the persistence guarantee broken by the v1.12.0 per-run log migration; fixes Custom Metric Persistence score 0 → 100%
+- **AGENTS.md:** aligned changelog format spec with CLAUDE.md — named releases (`## X.Y.Z — Name (YYYY-MM-DD)`), no `### Added/Changed/Fixed` subsections, matches actual CHANGELOG entries
+- Pattern Experimental Validation Rate corrected from 42% → 67% via P15 retrospective (full cross-log recount found P1, P2, P6 validated in runs 004, 006, 007 — previously missed due to archived log exclusion)
+
+---
+
 ## 1.12.0 — Per-Run Log Files (2026-04-15)
 
 Replaces the single accumulating `research-log.md` with a per-run file structure: each invocation writes to `<target>/optimise/researchlog-NNN.md`, eliminating the costly archive-migration step and keeping each run's data self-contained.
