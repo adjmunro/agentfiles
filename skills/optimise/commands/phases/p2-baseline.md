@@ -204,8 +204,16 @@ insight if it does. Push past the obvious. Examples of moonshot thinking:
 
 Label the moonshot metric `[custom, moonshot]` so it is easy to identify.
 
-Write custom metric definitions to `research-log.md` under `## Custom Metrics — <date>`.
-Custom metrics persist and are re-applied on future runs of `/optimise` on the same target.
+**Before proposing new custom metrics**, check prior run logs in `<target>/optimise/researchlog-*.md`
+for custom metrics defined in previous runs (look for `### MX<N>` sections). Re-apply any that
+remain relevant to the current target by re-scoring them; do not redefine metrics that already
+exist in prior logs. Skim section headers rather than reading each file in full — only open a file
+if its SUMMARY block or section heading suggests it contains custom metric definitions. Propose
+genuinely new metrics only after this check.
+
+Write custom metric definitions to the run log under `## Phase 2 — Baseline`.
+Custom metrics persist across runs — they live in prior `researchlog-*.md` files and are
+re-loaded at the start of each custom metric discovery step.
 
 ### Pre-Defined MX Outcome Metrics (MX-OQ series)
 
