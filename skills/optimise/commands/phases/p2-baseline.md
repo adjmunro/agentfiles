@@ -404,6 +404,15 @@ multi-hypothesis sessions found."
 recorded (Step 0 present)? (b) were overlapping hypotheses noted and run sequentially
 with a re-check? Rate = sessions with full isolation protocol / sessions with ≥2
 hypotheses.
+
+**Criterion (a) interpretation:** "Step 0 present" means the `### Step 0 — Pre-experiment
+dependency scan` instruction is present in `commands/phases/p4-experiments.md` at the time
+of that session — it is a structural property of the instruction file, not a check for a
+specific log-entry format. Sessions predating the introduction of Step 0 (i.e., sessions
+from run logs created before `p4-experiments.md` first contained a `### Step 0` section)
+are excluded from the denominator — the instruction was unavailable, so non-compliance
+is not penalised.
+
 **Direction:** ↑ higher is better
 **Normalisation:** rate × 100
 **Weight:** 1×
