@@ -5,6 +5,26 @@
 **You are now Arden (Critic).** Score the risk and deliver a verdict for this dependency
 update. Your output is the evidence report that will be posted to the PR.
 
+## Missing Data Handling
+
+If any required data source is unavailable when you reach Step A, apply the
+following defaults before scoring:
+
+| Missing input | Default action |
+|---|---|
+| Investigation report (Phase 2) | Score all investigation-based signals as 0; add note "Investigation data unavailable — signals defaulted to 0." |
+| Rook security report (Phase 2 Pass C) | Score all Rook signals as 0; add note "Rook pass unavailable — supply-chain signals defaulted to 0." |
+| Impact table (Phase 3) | Score all impact-based signals as 0; add note "Impact data unavailable — impact signals defaulted to 0." |
+| Remediation summary (Phase 4) | Assume no remediations applied; do not apply the −1 "all usages remediated" credit. Add note "Remediation summary unavailable — treated as no remediations applied." |
+
+The CI status fallback is handled separately in Step A below.
+
+Do not skip or block a dependency due to missing inputs — apply the defaults above
+and proceed. All missing-data notes must appear in the verdict block (Step C)
+under "Warnings / Follow-up Required".
+
+---
+
 ## Step A — Classify the Risk
 
 > **CI data source:** if Phase 4 ran, the CI status is in its Remediation Summary
@@ -37,6 +57,8 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 | Licence incompatibility | +5 |
 | Rook: confirmed supply-chain concern | +5 |
 | Rook: possible supply-chain concern | +2 |
+| Rook: inconclusive findings (noted but not classified as confirmed or possible) | +1 |
+| Rook pass skipped or unavailable | +0 (no supply-chain signal — treat as neutral) |
 | Significant behaviour change in exercised code path | +2 |
 | No changelog found — manual review incomplete | +2 |
 | Multi-version span (≥2 intermediate versions traversed — see Phase 2 definition) | +1 |

@@ -2,6 +2,18 @@
 
 ---
 
+## 4.14.0 — Verified Annotations and Resilient Scoring (2026-04-17)
+
+Closes five instruction gaps discovered in Run 021: Phase 0 now verifies changelog URLs before committing annotations, Phase 5 covers all Rook output states and has explicit missing-data fallbacks for all upstream inputs, the Phase 1b manifest schema documents the `push_failed` field, and Phase 8 surfaces skipped aliases to users with prescribed next steps.
+
+- **Phase 0 Step E — changelog URL verification:** before annotating each version entry, the agent attempts to fetch the URL; dead or unavailable URLs are flagged with `# unverified` and recorded in the session brief rather than committed silently.
+- **Phase 5 scoring matrix — Rook inconclusive and skipped states:** two new rows cover "Rook: inconclusive findings (+1)" and "Rook pass skipped or unavailable (+0)"; previously agents improvised when Rook produced no definitive output.
+- **Phase 5 — missing-data handling section:** explicit defaults for all four upstream inputs (investigation report, Rook report, impact table, remediation summary); Phase 5 no longer stalls on missing upstream data — it applies 0-contribution defaults, adds notes to the verdict block, and proceeds.
+- **Phase 1b Step H — push_failed field in manifest schema:** `"push_failed": false` is now a documented optional field in the canonical manifest schema, consistent with Step I's dynamic amendment on push failure.
+- **Phase 8 Step G — skipped-alias user notification:** the consolidation summary now includes a conditional `> [!WARNING]` admonition listing each skipped alias, the reason it was skipped, and a specific next-step instruction for each failure mode (merge conflict, BLOCK verdict, push failure).
+
+---
+
 ## 4.13.0 — Attribution Clarity and Verification Depth (2026-04-17)
 
 Closes four instruction gaps discovered in Run 020: Phase 6 comments now attribute reviews to the current `/bump-dependencies` skill name rather than the legacy pre-rename identifier, Phase 7's conditional banner guidance is separated from the template body, Phase 0's Plugin Portal version fallback selects the correct "next oldest" release by sorting before choosing, and Phase 1b's isolated branch verification now confirms the cherry-picked commit matches the expected alias.

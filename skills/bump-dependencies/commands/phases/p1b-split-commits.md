@@ -245,7 +245,8 @@ parallel dispatch. For each atomic commit, record:
   "old_version": "<old>",
   "new_version": "<new>",
   "cross_bump_constraints": ["<note, or empty array>"],
-  "isolated_branch": "dep-review/<PR-number>/<alias>"
+  "isolated_branch": "dep-review/<PR-number>/<alias>",
+  "push_failed": false
 }
 ```
 
@@ -260,6 +261,10 @@ Also record the following PR-level context once (shared across all entries):
   "head_branch": "<head-branch>"
 }
 ```
+
+The `push_failed` field is optional and defaults to `false`. Step I sets it to `true`
+when the isolated branch push fails — entries with `push_failed: true` are skipped
+during Wave 1 dispatch.
 
 This manifest, including PR context, is passed to each parallel agent.
 

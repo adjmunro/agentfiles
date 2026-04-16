@@ -358,6 +358,15 @@ URL to annotate into the version file. Use the known-sources table from Phase 2
 
 Record the resolved changelog URL as `changelog_url` for each dependency.
 
+**Before annotating each URL, verify it resolves:**
+
+Attempt to fetch the first 200 bytes of each `changelog_url` (use `WebFetch` or
+`curl --head`). If the URL returns a 4xx or 5xx status, or times out:
+- Still annotate the version entry, but append ` # unverified` after the URL.
+- Record the unverified URL in the session brief under `## Annotation Warnings`.
+- Do not block the bump commit — a stale changelog URL is a documentation gap,
+  not a safety issue.
+
 ---
 
 ## Step F — Apply Bumps

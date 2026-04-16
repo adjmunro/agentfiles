@@ -324,6 +324,27 @@ per-bump Phase 5 verdict data.
 ### Skipped Alias Groups
 <list of aliases skipped due to Phase 5 BLOCK or unverified status, or "None">
 
+**If any aliases were skipped**, include the following admonition in the consolidation
+summary and ensure Phase 7 surfaces it in the PR comment:
+
+```markdown
+> [!WARNING]
+> The following aliases were not consolidated into this PR:
+>
+> | Dependency | Reason |
+> |---|---|
+> | `<alias>` | <merge conflict / push failure / Phase 5 BLOCK / unverified> |
+>
+> **Next steps for each skipped alias:**
+> - **Merge conflict:** resolve the conflict in the source branch, then re-run
+>   `/bump-dependencies <PR-number>` or open a separate targeted PR for this alias.
+> - **Phase 5 BLOCK or unverified:** address the issue described in the individual
+>   review comment, then re-run `/bump-dependencies`.
+> - **Push failure:** retry the push manually, or open a separate PR for this alias.
+```
+
+Omit this admonition entirely if all aliases were consolidated (no skips).
+
 ### Notes
 <any conflict resolutions, edge cases, or manual actions required>
 ```
