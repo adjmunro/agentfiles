@@ -56,6 +56,7 @@ Display this table, then the patterns table, then the stats summary. Nothing els
 | P15 | Measurement Accuracy Retrospective | RI ↑ (any estimated metric) | Any workflow where a metric has been estimated (not counted) for ≥2 consecutive runs at the same value |
 | P16 | Generated Batch Script | CLE ↑, ITE ↑ | Any phase that iterates over N items to collect data via sequential tool calls |
 | P17 | Lookup Subagent Isolation | CLE ↑, ITE ↑ | Any phase whose data-collection output would dominate the orchestrator context window |
+| P18 | Cross-File Structural Anchor | HCU ↑, IAR ↓ | Any multi-file workflow where phases cross-reference named sections in other phase files, reference tables, or help documents |
 
 ### Stats at a Glance
 
@@ -694,6 +695,28 @@ Both are executed via `/personas evolve` — the command handles scoring, recomm
 **Distinct from P16:** P16 eliminates round trips; P17 eliminates context pollution. The two compose — a subagent can execute a generated batch script internally.
 
 **Targets:** Context Loading Efficiency (CLE ↑), Instruction Token Efficiency (ITE ↑)
+
+---
+
+### Cross-File Structural Anchor (P18)
+*Also matches: P18, structural anchor, section heading, cross-file reference, navigation, stable reference*
+
+**Purpose:** When one instruction file needs to reference a specific section in another file, use the exact section heading name as the anchor rather than a content description.
+
+**Problem it solves:** Content descriptions ("see the sources table in Phase 2") drift as files are updated and become ambiguous when a file has multiple similar sections. Section headings are stable, searchable, and survive minor prose edits. A reference to "the Kotlin/Android primary sources section" breaks as soon as the section is renamed; a reference to `` `### Kotlin/Android primary sources` `` is self-verifying — it either matches or it doesn't.
+
+**How to apply:**
+1. Identify all cross-file section references in instruction files (e.g. "navigate to the metrics section in Phase 2").
+2. Replace each content description with the exact `## Heading` or `### Heading` that appears in the target file.
+3. After any rename of a section heading, search all instruction files for references to the old heading and update them.
+
+**When to apply:** Any multi-file workflow where phases cross-reference named sections in other phase files, reference tables, or help documents. Particularly important when section headings are used as Intent Anchor (P1) navigation targets — unstable references break the anchor.
+
+**Healthy outcome:** All cross-file section references use the exact heading text, and a Grep for the heading in the target file returns a single, unambiguous match.
+
+**Targets:** Help Content Currency (HCU ↑), Instruction Ambiguity Rate (IAR ↓)
+
+**Stats:** Promoted in run 7 (self-optimisation). Applied to stabilise Intent Anchor navigation targets across phase files.
 
 ---
 

@@ -53,13 +53,18 @@ When in doubt, bump the patch version.
 Add a new entry at the top of the file (below the header):
 
 ```markdown
-## X.Y.Z — YYYY-MM-DD
+## X.Y.Z — Name (YYYY-MM-DD)
 
-### Added / Changed / Fixed
-- bullet points
+One or two sentences describing what changed and why it matters.
+
+- Specific bullet point
+- Another bullet point
 ```
 
 Rules:
 - **Newest on top.** File reads newest-to-oldest.
-- **Date every entry.** Format: `YYYY-MM-DD`.
+- **Named releases.** Every version gets a short, memorable name (2–4 words).
+- **Dated.** `(YYYY-MM-DD)` at the end of the header, not standalone.
+- **No subsections.** Do not use `### Added`, `### Changed`, `### Fixed` headers; bullets are sufficient.
+- **Brief.** One paragraph plus a few bullets maximum per entry.
 - **Every version gets an entry.** No skipping.
