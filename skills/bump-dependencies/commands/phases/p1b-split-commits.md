@@ -310,6 +310,9 @@ After creating all isolated branches, confirm that:
 - Each isolated branch exists on the remote
 - Each branch contains exactly the commits from the base branch plus the one
   alias commit (verify with `git log --oneline <base-branch>..dep-review/<PR-number>/<alias>`)
+- The extra commit's message contains `<alias>` — if it does not, flag a cherry-pick
+  error for this entry, mark it `push_failed: true` in the manifest, and do not
+  dispatch a Wave 1 agent for it
 
 The `isolated_branch` field in the manifest is already populated from Step H.
 No further update is needed.

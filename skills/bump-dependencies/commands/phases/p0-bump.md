@@ -257,9 +257,10 @@ too recent, fall back to fetching:
 ```
 https://plugins.gradle.org/m2/<plugin/id/as/path>/<plugin.id>.gradle.plugin/maven-metadata.xml
 ```
-and parse `<versioning><versions>` to find the next oldest stable release. Apply
-the same pre-release exclusion (`-alpha`, `-beta`, `-rc`, `-SNAPSHOT`, `-M[0-9]`,
-`-milestone`) before selecting.
+and parse `<versioning><versions>` to find the next oldest stable release. Sort
+the version list in descending semantic version order, apply the same pre-release
+exclusion (`-alpha`, `-beta`, `-rc`, `-SNAPSHOT`, `-M[0-9]`, `-milestone`), then
+select the first entry in the sorted list whose release date is older than 7 days.
 
 ### GitHub Actions — single GraphQL batch
 

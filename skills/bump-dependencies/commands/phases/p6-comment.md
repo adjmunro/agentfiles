@@ -10,7 +10,7 @@ Compose a self-contained comment for this bump:
 ```markdown
 ## Dependency Review: `<alias>` · `<old-version>` → `<new-version>`
 
-> Commit: `<short-hash>` · Reviewed by `/review-dependency-update`
+> Commit: `<short-hash>` · Reviewed by `/bump-dependencies`
 
 ---
 

@@ -2,6 +2,17 @@
 
 ---
 
+## 4.13.0 — Attribution Clarity and Verification Depth (2026-04-17)
+
+Closes four instruction gaps discovered in Run 020: Phase 6 comments now attribute reviews to the current `/bump-dependencies` skill name rather than the legacy pre-rename identifier, Phase 7's conditional banner guidance is separated from the template body, Phase 0's Plugin Portal version fallback selects the correct "next oldest" release by sorting before choosing, and Phase 1b's isolated branch verification now confirms the cherry-picked commit matches the expected alias.
+
+- **Phase 6 Step A — correct skill attribution:** comment template updated from `/review-dependency-update` (the legacy name) to `/bump-dependencies`; every PR comment generated since v4.0.0 carried a stale reference to a non-existent slash command.
+- **Phase 7 Step B — template-guidance separation:** conditional inclusion logic for the exclusion banner moved outside the fenced template block as explicit prose; HTML comment delimiters that conflated agent directives with literal PR comment content have been removed from inside the template.
+- **Phase 0 Step D — Plugin Portal fallback sort instruction:** the `maven-metadata.xml` version list is now explicitly sorted in descending semantic version order before pre-release exclusion and the 7-day safety check are applied; previously the selection was order-dependent on the XML source.
+- **Phase 1b Step I — alias content verification:** post-creation check now verifies that the extra commit on each isolated branch references the expected alias in its message; a cherry-pick error previously produced a structurally valid branch with wrong content that passed the existing structural check.
+
+---
+
 ## 4.12.0 — API Pagination and Branch Hygiene (2026-04-15)
 
 Closes five instruction gaps discovered in Run 17: Phase 2 now paginates its GitHub Releases API calls for complete intermediate-version enumeration, the Phase 5 data-source note uses the exact Phase 2 record format, orphaned branches are cleaned up when a prior proactive PR is reused, merged C.4 entries are annotated in the PR body, and the C.5 deduplication step handles version-drift between TOML and build script.

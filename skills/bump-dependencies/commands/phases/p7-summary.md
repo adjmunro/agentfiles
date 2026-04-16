@@ -81,12 +81,15 @@ Regression introduced by `<alias>` — see bisect findings in Phase 8.
 For **two or more** aliases, or a single alias where integration tests passed,
 use the full template below.
 
+Include the EXCLUSION BANNER block (from `> [!WARNING]` through the closing
+blockquote) only when one or more aliases have a BLOCK verdict. Omit it entirely
+if all aliases passed.
+
 ```markdown
 ## Dependency Review — Run Summary
 
 > `/bump-dependencies` · <date> · <N> bumps
 
-<!-- EXCLUSION BANNER — include only when one or more aliases have a BLOCK verdict -->
 > [!WARNING]
 > **<N> dep(s) blocked**
 >
@@ -100,7 +103,6 @@ use the full template below.
 >
 > See the individual review comments for full details.
 > <If IS_PROACTIVE: "Run `/bump-dependencies` again after addressing the issues to create a new PR.">
-<!-- END EXCLUSION BANNER -->
 
 | Alias | Old → New | Verdict |
 |---|---|---|
