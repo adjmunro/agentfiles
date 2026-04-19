@@ -160,12 +160,21 @@ If Phase 1 Step G recorded any CI failures, wait for CI to re-run on the new com
 gh pr checks <PR-number> --repo <owner/repo>
 ```
 
+> **Re-check scope:** `gh pr checks <PR-number>` returns CI status for the PR head
+> branch commit — not for the isolated branch `dep-review/<PR-number>/<alias>`.
+> Since Phase 4 operates on the isolated branch, this result reflects the original
+> PR commits (pre-remediation). Post-remediation CI is only observable on the
+> isolated branch if the project runs CI on `dep-review/*` branches, or after Phase 8
+> merges isolated branches onto the PR head branch. **Record the data source**
+> ("PR head branch CI" or "isolated branch CI") in Step E's CI Status After
+> Remediation table so Phase 5 knows what scope the data covers.
+
 Record the updated result for each previously failing job:
 - **Now passing** — record as resolved in the Remediation Summary
 - **Still failing** — record as unresolved; this blocks the Phase 5 verdict from
   approving unless the failure is categorised as "Test environment issue"
-- **Not yet complete (pending)** — note as pending; Phase 5 must wait or proceed
-  with a conditional verdict
+- **Not yet complete (pending)** — note as pending; Phase 5 will apply the +2
+  "re-check pending" scoring signal (see Phase 5 scoring matrix)
 
 ## Step F — Force-Push the Isolated Branch
 

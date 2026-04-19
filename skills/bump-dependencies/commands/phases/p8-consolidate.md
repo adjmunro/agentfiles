@@ -38,7 +38,17 @@ git log --oneline -1
 
 For each alias in the manifest, in the order they were recorded:
 
-1. **Check the alias's verdict from Phase 5.** If the isolated branch for this
+1. **Check for a failed branch push.** If this manifest entry has `push_failed: true`
+   (set by Phase 1b Step I when the isolated branch could not be pushed to the remote),
+   skip it immediately — the branch does not exist on the remote and cannot be merged:
+
+   ```
+   Skipped: dep-review/<PR-number>/<alias> — push_failed: true (no isolated branch exists)
+   ```
+
+   Do not attempt a merge. Continue to the next alias.
+
+2. **Check the alias's verdict from Phase 5.** If the isolated branch for this
    alias was flagged as unverified or failed (i.e., Phase 5 returned BLOCK or
    the agent reported it could not remediate), skip it and record it as skipped:
 
@@ -48,7 +58,7 @@ For each alias in the manifest, in the order they were recorded:
 
    Do not block consolidation for other aliases — continue to the next entry.
 
-2. **Merge the verified isolated branch** using a non-fast-forward merge so each
+3. **Merge the verified isolated branch** using a non-fast-forward merge so each
    alias group's contribution is traceable in the consolidated history:
 
    ```
@@ -56,11 +66,11 @@ For each alias in the manifest, in the order they were recorded:
      -m "merge(deps): consolidate <alias> bump (<old> → <new>)"
    ```
 
-3. **If the merge produces a conflict** (e.g., two alias groups edited adjacent
+4. **If the merge produces a conflict** (e.g., two alias groups edited adjacent
    lines in `libs.versions.toml`), resolve it by accepting both sets of changes —
    each alias's version line is independent. Commit the resolution, then continue.
 
-4. Record the merge result for Step G:
+5. Record the merge result for Step G:
    - Alias name
    - Merge outcome: `clean` | `conflict resolved` | `skipped`
    - The merge commit hash (if merged)
@@ -322,7 +332,7 @@ per-bump Phase 5 verdict data.
 | <alias> | pass \| fail | <e.g., "regression introduced here" or "—"> |
 
 ### Skipped Alias Groups
-<list of aliases skipped due to Phase 5 BLOCK or unverified status, or "None">
+<list of aliases skipped due to push_failed: true, Phase 5 BLOCK, or unverified status, or "None">
 
 **If any aliases were skipped**, include the following admonition in the consolidation
 summary and ensure Phase 7 surfaces it in the PR comment:
@@ -333,14 +343,13 @@ summary and ensure Phase 7 surfaces it in the PR comment:
 >
 > | Dependency | Reason |
 > |---|---|
-> | `<alias>` | <merge conflict / push failure / Phase 5 BLOCK / unverified> |
+> | `<alias>` | <push_failed: true / Phase 5 BLOCK / unverified> |
 >
 > **Next steps for each skipped alias:**
-> - **Merge conflict:** resolve the conflict in the source branch, then re-run
->   `/bump-dependencies <PR-number>` or open a separate targeted PR for this alias.
 > - **Phase 5 BLOCK or unverified:** address the issue described in the individual
 >   review comment, then re-run `/bump-dependencies`.
-> - **Push failure:** retry the push manually, or open a separate PR for this alias.
+> - **push_failed: true (isolated branch push failed):** retry the push manually
+>   (see Phase 1b Step I), then re-run Phase 8, or open a separate PR for this alias.
 ```
 
 Omit this admonition entirely if all aliases were consolidated (no skips).

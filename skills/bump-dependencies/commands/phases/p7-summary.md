@@ -104,6 +104,10 @@ if all aliases passed.
 > See the individual review comments for full details.
 > <If IS_PROACTIVE: "Run `/bump-dependencies` again after addressing the issues to create a new PR.">
 
+Build the alias table from the manifest:
+- **For each alias where Phase 5 produced a verdict:** add a standard row with `<old>` → `<new>` and the verdict.
+- **For each alias with `push_failed: true`** (isolated branch never pushed; Phase 5 never ran): add a row with `—` in Old → New and `**Not reviewed — isolated branch push failed**` as the verdict.
+
 | Alias | Old → New | Verdict |
 |---|---|---|
 | `<alias>` | `<old>` → `<new>` | **<VERDICT>** |

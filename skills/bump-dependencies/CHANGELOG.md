@@ -2,6 +2,18 @@
 
 ---
 
+## 4.15.0 — Consolidation Hardening and CI Scope Clarity (2026-04-20)
+
+Closes five instruction gaps discovered in Run 022: Phase 8 now explicitly skips `push_failed: true` manifest entries before attempting a merge, Phase 5 covers the CI "pending" state in its scoring matrix, Phase 4's CI re-check step clarifies that `gh pr checks` targets the PR head branch (not the isolated branch), Phase 7 has explicit instructions for populating `push_failed` rows in the alias table, and the Phase 8 Step G admonition now lists only valid skip reasons.
+
+- **Phase 8 Step B — push_failed guard:** a new first check skips any manifest entry with `push_failed: true` before attempting `git merge`; previously an agent would try to merge a non-existent isolated branch and error out.
+- **Phase 5 scoring matrix — CI pending row:** new row "+2 re-check result pending or unavailable" covers the case where Phase 4 Step D.1 returns "pending"; agents previously had no prescribed score for this state and improvised.
+- **Phase 4 Step D.1 — CI re-check scope note:** added a callout explaining that `gh pr checks` targets the PR head branch commit (pre-remediation) not the isolated branch; agents must record the data source in the Remediation Summary so Phase 5 knows the scope.
+- **Phase 7 Step B — push_failed row instruction:** explicit prose added before the alias table template; agents now have a stated rule for when to include `push_failed: true` rows rather than inferring from the template alone.
+- **Phase 8 Step G admonition — accurate skip reasons:** removed "merge conflict" (conflicts are resolved in Step B.4, not skipped); updated reason column to `push_failed: true / Phase 5 BLOCK / unverified` and updated next-steps to match.
+
+---
+
 ## 4.14.0 — Verified Annotations and Resilient Scoring (2026-04-17)
 
 Closes five instruction gaps discovered in Run 021: Phase 0 now verifies changelog URLs before committing annotations, Phase 5 covers all Rook output states and has explicit missing-data fallbacks for all upstream inputs, the Phase 1b manifest schema documents the `push_failed` field, and Phase 8 surfaces skipped aliases to users with prescribed next steps.

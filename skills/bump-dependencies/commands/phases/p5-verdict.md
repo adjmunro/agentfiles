@@ -66,7 +66,15 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 | CI was failing at Phase 1; all failures now resolved by Phase 4 | 0 (no extra penalty) |
 | CI was failing at Phase 1; failures remain unresolved (non-environment) | +4 |
 | CI was failing at Phase 1; failures remain unresolved (test environment issue only) | +1 |
+| CI was failing at Phase 1; re-check result pending or unavailable at Phase 5 time | +2 |
 | CI was passing at Phase 1 (or no CI configured) | 0 |
+
+> **Note on CI pending:** apply the "+2 pending" signal when Phase 4 Step D.1 recorded
+> the CI re-check as "not yet complete (pending)" or when the re-check could not be
+> performed (e.g., isolated branch CI is not configured and Phase 8 has not yet run).
+> Score +2 as a precautionary mid-point — the failure may resolve, but it is not yet
+> confirmed. Do not apply the +4 or +1 unresolved-failure signals at the same time;
+> once the final CI result is known, re-score using the appropriate row instead.
 
 > **Note on "Multi-version span":** Apply this signal when the upgrade traverses two
 > or more intermediate versions (threshold aligns with Phase 2 Multi-Version Span
