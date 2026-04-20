@@ -54,7 +54,7 @@ Also check:
 ## Step C — Assess Licence Impact
 
 If Phase 2 reported a licence change:
-- Identify the project's own licence (check `LICENSE`, `LICENSE.md`, or `package.json` `license` field)
+- Identify the project's own licence (check `LICENSE`, `LICENSE.md`, `LICENSE.txt`, `COPYING`, `LICENCE`, or `package.json` `license` field)
 - State whether the new dependency licence is compatible (e.g., MIT → Apache 2.0 is generally fine; MIT → GPL may not be)
 - Note if legal review is recommended
 

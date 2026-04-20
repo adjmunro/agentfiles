@@ -201,6 +201,15 @@ and a URL to the run details.
   ```
 - Print: "CI: all checks passed." and continue.
 
+**All checks are pending (none failing or passing):**
+- Append to the session brief:
+  ```
+  ### CI Status
+  CI status: pending — no results yet. All <N> checks are in progress.
+  Re-check before Phase 4 to confirm final CI status.
+  ```
+- Print: "CI: all <N> checks pending — no results yet." and continue.
+
 **One or more checks are failing or pending:**
 - For each failing check, fetch the log output. Use the run URL from `gh pr checks`
   output to retrieve failure details. If a direct log URL is available, fetch it;

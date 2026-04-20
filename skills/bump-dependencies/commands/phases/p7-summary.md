@@ -116,7 +116,8 @@ Build the alias table from the manifest:
 **Overall:** <APPROVE ALL / APPROVE WITH CONDITIONS / REQUEST CHANGES / BLOCK>
 
 **Integration tests:** <PASS | FAIL> — <suite name> <N>/<N> passing<br>
-<If failed: regression introduced by `<alias>` — see bisect findings in Phase 8>
+<If failed and Phase 8 bisection identified a single introducer: "Regression introduced by `<alias>` — see bisect findings in Phase 8.">
+<If failed and Phase 8 bisection was inconclusive: "Regression source inconclusive — multiple aliases may interact; see bisect findings in Phase 8.">
 
 **Remediations applied:**
 - `<alias>` `<short-hash>` — <one-line description, e.g. "migrated 3 DataStore usages off deprecated `preferences()` API">
@@ -176,6 +177,10 @@ gh pr comment <PR-number> --repo <owner/repo> \
 ---
 
 ## Step D — Report to the User
+
+> **Proactive all-blocked skip:** If `IS_PROACTIVE=true` and every alias in the manifest
+> was skipped in Phase 8 Step B (all blocked, PR already closed by Phase 8), skip this
+> step entirely — Phase 8 already reported the result to the user when it closed the PR.
 
 ```
 ✓ Run complete — PR #<number>

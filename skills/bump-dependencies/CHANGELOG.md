@@ -2,6 +2,18 @@
 
 ---
 
+## 4.16.0 — Edge-State Completeness and Step Clarity (2026-04-20)
+
+Closes five instruction gaps discovered in Run 023: Phase 7's integration-test line now covers bisection-inconclusive outcomes, Phase 1 Step G handles a purely-pending CI state without misreporting it as failing, Phase 7 Step D skips redundant output for proactive all-blocked runs, Phase 4 Step F has an ordering note explaining why it precedes Step E, and Phase 3 Step C checks additional licence file paths.
+
+- **Phase 7 full template — bisection inconclusive variant:** the integration tests line now has two conditional forms — "Regression introduced by `<alias>`" when Phase 8 bisection identified a single introducer, and "Regression source inconclusive — multiple aliases may interact" when Phase 8 reported no single introducer; previously agents had no template for the inconclusive state.
+- **Phase 1 Step G — pending-only CI handling:** a new case between "all pass" and "one or more failing or pending" handles the state where every check is still in progress; agents now record "CI status: pending — no results yet" rather than incorrectly writing "CI is FAILING."
+- **Phase 7 Step D — proactive all-blocked skip:** an explicit callout at the top of Step D instructs agents to skip the user report when all aliases were blocked and Phase 8 already closed the PR and reported the outcome; prevents redundant output after the all-skipped early exit.
+- **Phase 4 Step F — step ordering note:** a note explains that Step F (Force-Push) intentionally precedes Step E (Remediation Summary) in the file so the summary can reference the final pushed state; clarifies the non-sequential F→E lettering.
+- **Phase 3 Step C — licence file paths:** expanded the project-licence lookup list from three paths (`LICENSE`, `LICENSE.md`, `package.json`) to six, adding `LICENSE.txt`, `COPYING`, and `LICENCE`; covers GPL projects and British-spelling conventions.
+
+---
+
 ## 4.15.0 — Consolidation Hardening and CI Scope Clarity (2026-04-20)
 
 Closes five instruction gaps discovered in Run 022: Phase 8 now explicitly skips `push_failed: true` manifest entries before attempting a merge, Phase 5 covers the CI "pending" state in its scoring matrix, Phase 4's CI re-check step clarifies that `gh pr checks` targets the PR head branch (not the isolated branch), Phase 7 has explicit instructions for populating `push_failed` rows in the alias table, and the Phase 8 Step G admonition now lists only valid skip reasons.

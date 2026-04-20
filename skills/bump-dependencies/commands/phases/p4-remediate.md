@@ -178,6 +178,11 @@ Record the updated result for each previously failing job:
 
 ## Step F — Force-Push the Isolated Branch
 
+> **Step ordering note:** Step F (Force-Push) appears in this file after Step D.1 and
+> before Step E (Remediation Summary). This ordering is intentional — the isolated branch
+> is pushed first so that the summary written in Step E can reference the final pushed
+> state. Continue to Step E after completing this step.
+
 After all commits are made and tests pass, push the isolated branch to the remote:
 
 ```
