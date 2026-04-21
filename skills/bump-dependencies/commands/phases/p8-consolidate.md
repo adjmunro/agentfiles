@@ -32,6 +32,15 @@ git log --oneline -1
 # must match HEAD of origin/<base-branch>
 ```
 
+If `git reset --hard` exits with a non-zero code, or if the subsequent log check
+shows the tip does not match `origin/<base-branch>`, stop immediately and report:
+
+> "Phase 8 Step A reset failed — PR head branch is in an unexpected state. Inspect
+> the local branch manually, resolve any conflicts or uncommitted changes, and
+> re-run Phase 8."
+
+Do not proceed to Step B if the reset check fails.
+
 ---
 
 ## Step B — Merge Each Isolated Branch in Manifest Order

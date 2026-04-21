@@ -43,6 +43,7 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 | Major version bump with no changelog found | +3 |
 | Minor version bump | +1 |
 | Patch version bump | 0 |
+| Version downgrade | +2 |
 | Breaking change confirmed in codebase | +4 |
 | Breaking change exists but does not affect codebase | +1 |
 | Deprecation in active use (now remediated by Phase 4) | +1 |
@@ -86,6 +87,12 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 > **Note on "Major version bump with no changelog found":** Use this signal (instead
 > of the plain "Major version bump" signal) only when the changelog lookup in Phase 2
 > exhausted all sources and returned nothing. Do not apply both signals for the same bump.
+
+> **Note on "Version downgrade":** Apply this signal when `change_type = downgrade`
+> (Phase 1 Step D). A downgrade signals a regression or incompatibility in the newer
+> version and warrants closer scrutiny even if no breaking changes are explicitly
+> documented. Apply the +2 signal in addition to any CVE or breaking-change signals
+> that motivated the downgrade.
 
 ### Tier Thresholds
 

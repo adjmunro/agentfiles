@@ -207,6 +207,9 @@ individual calls per dependency when a batch approach is available.
 
 ### Maven and Gradle Plugin Portal — parallel batch
 
+For each dependency in the list: if `ecosystem = gradle-plugin`, use `fetch_plugin`
+with the plugin ID. If `ecosystem = maven`, use `fetch_maven` with `group` and `artifact`.
+
 Generate a shell script from the full list of Maven and Gradle plugin dependencies
 collected in Steps C.1, then run it in one pass. The script fetches all versions
 concurrently and emits a tab-separated table:
@@ -542,6 +545,10 @@ If any PRs are returned, report to the user:
   and review state are preserved.
 - **If the user chooses to create a new PR:** continue with the branch-specific
   check below and proceed normally.
+- **If there is no interactive channel to the user** — for example, this is running
+  as a sub-agent, in a CI context, or in a non-interactive session — proceed with
+  creating a new PR without waiting for confirmation. Continue with the
+  branch-specific check below.
 
 Next, check whether an open PR already exists for this exact branch (e.g. from
 a previous interrupted run on the same day):

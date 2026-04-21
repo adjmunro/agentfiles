@@ -2,6 +2,18 @@
 
 ---
 
+## 4.17.0 — Routing Rules and Resilience Paths (2026-04-21)
+
+Closes five instruction gaps discovered in Run 024: Phase 0 Step D now has an explicit ecosystem-to-function routing rule for the batch lookup script, Phase 0 Step H handles non-interactive contexts when an existing proactive PR is detected, Phase 5 scores version downgrades explicitly, Phase 8 Step A stops and reports rather than silently proceeding after a failed reset, and Phase 2 Pass A has a terminal fallback for the case where version enumeration fails across all strategies.
+
+- **Phase 0 Step D — ecosystem routing rule:** two sentences before the batch script example now map `ecosystem = gradle-plugin` to `fetch_plugin` and `ecosystem = maven` to `fetch_maven`; agents no longer need to infer the mapping from the example alone, preventing incorrect registry queries for plugins published to both Maven Central and the Gradle Plugin Portal.
+- **Phase 0 Step H — non-interactive default:** a third conditional branch covers the case where no interactive channel is available (sub-agent, CI context); agents now proceed with creating a new PR rather than stalling indefinitely, mirroring the equivalent clause in Phase 1b Step D.
+- **Phase 5 scoring matrix — version downgrade row:** `| Version downgrade | +2 |` added after the patch bump row, with a clarifying note explaining when to apply the signal; agents previously had no prescribed score for a `change_type = downgrade` input from Phase 1.
+- **Phase 8 Step A — reset failure handling:** an explicit stop-and-report clause fires if `git reset --hard` exits non-zero or the subsequent log check shows the tip does not match the base; prevents a corrupted tree from propagating through the merge loop and force-push.
+- **Phase 2 Pass A — enumeration terminal fallback:** step 5 added to the version enumeration list covers the case where all five strategies (npm, Maven, PyPI, Cargo, GitHub Releases) fail to return a version list; agents now assume single-version span, record a warning, and proceed rather than halting or silently skipping aggregation.
+
+---
+
 ## 4.16.0 — Edge-State Completeness and Step Clarity (2026-04-20)
 
 Closes five instruction gaps discovered in Run 023: Phase 7's integration-test line now covers bisection-inconclusive outcomes, Phase 1 Step G handles a purely-pending CI state without misreporting it as failing, Phase 7 Step D skips redundant output for proactive all-blocked runs, Phase 4 Step F has an ordering note explaining why it precedes Step E, and Phase 3 Step C checks additional licence file paths.

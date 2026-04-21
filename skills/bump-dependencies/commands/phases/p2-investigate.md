@@ -36,6 +36,14 @@ Before fetching any changelog, check whether the version span is **single** or *
    ```
    All subsequent steps in this phase must aggregate data across **every version
    in the span**, not just the final release.
+5. **If the intermediate version list cannot be determined** after exhausting all five
+   strategies above (npm, Maven Central, PyPI, Cargo, GitHub Releases), assume a
+   **single-version span** and record:
+   ```
+   Intermediate version enumeration failed — assuming single-version span.
+   Manual review of intermediate releases recommended if a multi-version bump is suspected.
+   ```
+   Proceed to Pass B using only the final release's changelog.
 
 Work through this strategy in order, stopping at the first successful source.
 
