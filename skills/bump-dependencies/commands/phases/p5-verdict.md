@@ -69,6 +69,13 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 | CI was failing at Phase 1; failures remain unresolved (test environment issue only) | +1 |
 | CI was failing at Phase 1; re-check result pending or unavailable at Phase 5 time | +2 |
 | CI was passing at Phase 1 (or no CI configured) | 0 |
+| CI was all-pending at Phase 1 (no checks had completed when Phase 1 ran) | 0 |
+
+> **Note on all-pending Phase 1 CI:** apply the "CI was all-pending at Phase 1 | 0" row
+> when Phase 1 Step G recorded "CI status: pending — no results yet" (all checks still
+> in progress, none completed or failed). Treat as neutral — equivalent to no CI data.
+> Do not apply the "+2 re-check pending" row for this state; that row applies to Phase 4's
+> re-check being pending, not to Phase 1's initial all-pending state.
 
 > **Note on CI pending:** apply the "+2 pending" signal when Phase 4 Step D.1 recorded
 > the CI re-check as "not yet complete (pending)" or when the re-check could not be

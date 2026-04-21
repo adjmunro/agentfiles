@@ -2,6 +2,39 @@
 
 ---
 
+## 4.18.0 — Impact Clarity and Comment Integrity (2026-04-22)
+
+Closes five instruction gaps discovered in Run 025: Phase 3 Step A now has explicit
+actionable/advisory classification rules for all four symbol categories, Phase 5 scoring
+matrix covers the all-pending Phase 1 CI state, Phase 3 Step D propagates the Phase 2
+enumeration failure warning into the published impact table, Phase 6 Step B sanitises
+aliases containing slashes before constructing the temp file path, and Phase 6 Step A
+defines the correct source for the commit short-hash used in PR comment headers.
+
+- **Phase 3 Step A — actionable/advisory classification:** a classification paragraph
+  after the four-category list now explicitly labels each category — removed APIs and
+  CVE patterns in active use are always actionable; deprecated APIs are advisory;
+  changed-signature usages are actionable only if a code change is required, advisory
+  otherwise; agents now have a consistent basis for the must-fix count that drives Phase 4
+  and Phase 5.
+- **Phase 5 scoring matrix — all-pending Phase 1 CI row:** `| CI was all-pending at
+  Phase 1 (no checks had completed when Phase 1 ran) | 0 |` added immediately after the
+  "CI was passing" row, with a clarifying note distinguishing it from the Phase 4
+  re-check pending signal (+2); agents no longer improvise or misapply the re-check row.
+- **Phase 3 Step D — enumeration failure warning in impact table:** a conditional
+  `### Enumeration Warning` section added to the impact table template; when Phase 2
+  recorded the enumeration fallback, the warning now propagates to the published PR
+  comment via the Phase 6 impact table.
+- **Phase 6 Step B — alias filename sanitisation:** a `tr '/' '-'` instruction and
+  `ALIAS_SAFE` variable added before the heredoc; GitHub Actions aliases (`owner/action`)
+  no longer produce an invalid temp file path that would fail every GitHub Actions bump.
+- **Phase 6 Step A — commit short-hash source defined:** a blockquote before the comment
+  template now specifies that `<short-hash>` is the original cherry-picked bump commit
+  from Phase 1b Step I, not the current isolated branch HEAD (which may be a Phase 4
+  remediation commit).
+
+---
+
 ## 4.17.0 — Routing Rules and Resilience Paths (2026-04-21)
 
 Closes five instruction gaps discovered in Run 024: Phase 0 Step D now has an explicit ecosystem-to-function routing rule for the batch lookup script, Phase 0 Step H handles non-interactive contexts when an existing proactive PR is detected, Phase 5 scores version downgrades explicitly, Phase 8 Step A stops and reports rather than silently proceeding after a failed reset, and Phase 2 Pass A has a terminal fallback for the case where version enumeration fails across all strategies.

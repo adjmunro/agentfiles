@@ -14,6 +14,17 @@ From the Phase 2 investigation report, extract all symbols that require attentio
 - APIs with changed signatures or altered default behaviour — must verify usage
 - Any CVE that implies a specific vulnerable call pattern (e.g., unsafe deserialization)
 
+For the impact table in Step D, classify each found usage as **actionable (must fix)**
+or **advisory (should migrate)**:
+- Removed APIs and CVE patterns found in active use are always **actionable**.
+- Deprecated APIs are **advisory**.
+- Changed-signature usages are **actionable** if a code change is required to maintain
+  correct behaviour after the bump; **advisory** if the existing usage is unaffected
+  (e.g., the signature changed but the call site uses only unchanged parameters).
+
+This classification drives Phase 4 (actionable usages trigger remediation) and Phase 5
+(credit awarded only when all actionable usages are fully remediated).
+
 If Phase 2 found no breaking changes, deprecations, or security-relevant patterns,
 record that explicitly and skip to Step C.
 
@@ -86,6 +97,14 @@ Produce a structured impact table for this dependency:
 - Actionable usages (must fix): N
 - Advisory usages (should migrate): N
 - Total files affected: N
+
+### Enumeration Warning
+<Include this section only if Phase 2 Pass A recorded "Intermediate version enumeration
+failed — assuming single-version span". If present, write:
+"Warning: intermediate version enumeration failed in Phase 2 — this impact assessment
+covers the final release only. Intermediate releases may contain additional breaking
+changes, deprecations, or CVEs not captured here."
+Omit this section entirely if enumeration succeeded.>
 ```
 
 Print the impact table to the user.
