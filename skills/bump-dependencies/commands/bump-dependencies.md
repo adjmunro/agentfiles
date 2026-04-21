@@ -181,6 +181,21 @@ order. Only start the next bump's Phase 4 after the previous one's commits are p
 Reason: concurrent `git commit` and `git push` operations on the same branch produce
 race conditions — commits can be lost or the push rejected.
 
+**After each Phase 4 run completes**, extract the remediation commit hashes from its
+Remediation Summary (Step E — the commit hash column). Record them in an accumulator
+keyed by alias:
+
+```
+remediation_hashes = {
+  "<alias>": ["<short-hash-1>", "<short-hash-2>"],   # commits from Phase 4
+  "<alias-no-fix>": [],                               # Phase 4 skipped or no commits
+}
+```
+
+Use this accumulator when building the Wave 3 agent prompts — it supplies the
+`Phase 4 remediation commits for your bump` field. If Phase 4 was skipped for an alias
+(no actionable usages), record an empty list and pass `none` in the Wave 3 prompt.
+
 ### Wave 3 — Parallel Verdict and Comment (Phases 5–6)
 
 After all Phase 4 work is complete, re-launch agents (or resume sequentially) to

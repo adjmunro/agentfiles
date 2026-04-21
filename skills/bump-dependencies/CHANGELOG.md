@@ -2,6 +2,38 @@
 
 ---
 
+## 4.20.0 — Gate Propagation and Guard Parity (2026-04-22)
+
+Closes five instruction gaps discovered in Run 027: Phase 7 preamble now handles the
+zero-aliases case (all blocked) without posting a redundant summary comment to an
+already-closed PR; IS_PROACTIVE detection in Phase 7 and Phase 8 now requires both
+title and branch name, preventing Phase 8 from closing a human-authored PR; Phase 8
+Step E gains a `git branch --show-current` check before force-pushing, guarding against
+detached HEAD after bisect; Wave 2 now explicitly collects remediation commit hashes per
+alias for Wave 3 dispatch; and Phase 1b Step G persists cross-bump compatibility check
+results to the manifest and session brief, with a new Phase 5 scoring signal (+3) for
+detected violations.
+
+- **Phase 7 preamble — zero-alias guard:** explicit case added for "zero aliases reviewed
+  (all blocked or push-failed)" that skips Steps B and C entirely, eliminating the
+  redundant summary comment posted to a proactive PR Phase 8 already closed.
+- **IS_PROACTIVE secondary confirmation:** all three detection sites (Phase 7 Step A,
+  Phase 8 Steps B and E.1) now check both title and `headRefName` — IS_PROACTIVE=true
+  only if the title starts with `chore(deps): bump outdated dependencies` AND the head
+  branch starts with `deps/auto-bump-`.
+- **Phase 8 Step E branch verification:** `git branch --show-current` check added before
+  the force-push with an explicit stop-and-report if the current branch is not `<head-branch>`,
+  mirroring the Step A guard pattern.
+- **Wave 2 remediation hash accumulator:** after each Phase 4 run, explicit instruction
+  to collect commit hashes into a named accumulator keyed by alias, used in Wave 3
+  agent dispatch.
+- **Phase 1b cross-bump check result persistence:** Step G now writes `cross_bump_check_result`
+  and `violated_constraints` to each alias's manifest entry and appends a summary to the
+  session brief; Step H manifest schema extended with the two fields; Phase 5 scoring
+  matrix gains a +3 signal for `violation_detected`.
+
+---
+
 ## 4.19.0 — Safety Parity and Resilience (2026-04-22)
 
 Closes five instruction gaps discovered in Run 026: Phase 1 Step G now handles the

@@ -71,6 +71,7 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 | CI was passing at Phase 1 (or no CI configured) | 0 |
 | CI was all-pending at Phase 1 (no checks had completed when Phase 1 ran) | 0 |
 | New version published < 7 days before PR creation date | +1 |
+| Cross-bump constraint violation detected at Phase 1b (e.g., incompatible Kotlin/KSP versions) | +3 |
 
 > **Note on all-pending Phase 1 CI:** apply the "CI was all-pending at Phase 1 | 0" row
 > when Phase 1 Step G recorded "CI status: pending — no results yet" (all checks still
@@ -101,6 +102,16 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 > version and warrants closer scrutiny even if no breaking changes are explicitly
 > documented. Apply the +2 signal in addition to any CVE or breaking-change signals
 > that motivated the downgrade.
+
+> **Note on "Cross-bump constraint violation":** Apply this signal when the manifest
+> entry for this alias has `cross_bump_check_result: "violation_detected"` (set by Phase
+> 1b Step G). The +3 reflects that incompatible version pairs (e.g., Kotlin 2.0.x with
+> KSP 1.9.x) will produce build or runtime failures even if the individual bump appears
+> clean. Surface the violated constraints from the `violated_constraints` field in the
+> verdict's Warnings section. Do not apply this signal if `cross_bump_check_result` is
+> `"pass"`, `"unverified"`, or `"n/a"`, or if the field is absent from the manifest
+> (treat absence as `"n/a"`). For `"unverified"` entries, note the unconfirmed
+> constraint in the Warnings section as advisory only.
 
 > **Note on "New version published < 7 days before PR creation":** Apply this signal
 > when Phase 2 Pass A recorded a publication date for the new version and that date

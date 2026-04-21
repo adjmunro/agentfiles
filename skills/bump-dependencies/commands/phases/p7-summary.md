@@ -4,7 +4,14 @@
 <!-- Run by: the orchestrator only — never by a per-bump sub-agent -->
 <!-- This phase posts exactly ONE comment for the entire PR run. -->
 
-This is the last action the skill takes. If exactly **one** alias was reviewed:
+This is the last action the skill takes.
+
+If **zero** aliases were reviewed (every alias in the manifest had a BLOCK verdict or
+`push_failed: true`): skip Steps B and C entirely. For a proactive PR, Phase 8 already
+posted a closing comment — a summary here would duplicate it. For an external PR, proceed
+to Step D only to report the outcome to the user.
+
+If exactly **one** alias was reviewed:
 
 - **If Phase 8 integration tests passed (or no integration tests were run):** skip
   Steps B and C entirely — the Phase 6 comment already contains the full detail and
@@ -22,11 +29,17 @@ Phase 6 comments already contain.
 
 ## Step A — Collect the Minimum Required Data
 
-**Determine mode:** check the PR title to establish whether this is a proactive PR:
+**Determine mode:** check the PR title and head branch name to establish whether this is a proactive PR:
 ```
-gh pr view <PR-number> --repo <owner/repo> --json title --jq '.title'
+gh pr view <PR-number> --repo <owner/repo> --json title,headRefName \
+  --jq '[.title, .headRefName] | @tsv'
 ```
-Record `IS_PROACTIVE=true` if the title starts with `chore(deps): bump outdated dependencies`.
+Record `IS_PROACTIVE=true` if **both** conditions hold:
+1. The title starts with `chore(deps): bump outdated dependencies`
+2. The head branch name starts with `deps/auto-bump-`
+
+A PR that matches only the title (e.g., manually created against a non-`deps/auto-bump-`
+branch) is treated as external (`IS_PROACTIVE=false`).
 
 **Data source:** Phase 5 verdict data should already be in orchestrator context
 from Wave 5. If not, retrieve from posted Phase 6 comments:

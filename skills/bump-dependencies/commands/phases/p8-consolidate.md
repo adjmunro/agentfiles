@@ -92,11 +92,18 @@ Instead:
 
 1. Write to Step G: "All aliases were skipped — no isolated branches were merged."
 2. Proceed to Step F (cleanup) to delete all isolated branches.
-3. After cleanup, check whether this is a **proactive PR** by reading the PR title:
+3. After cleanup, check whether this is a **proactive PR** by reading the PR title and
+   head branch name:
    ```
-   gh pr view <PR-number> --repo <owner/repo> --json title --jq '.title'
+   gh pr view <PR-number> --repo <owner/repo> --json title,headRefName \
+     --jq '[.title, .headRefName] | @tsv'
    ```
-   A proactive PR title starts with: `chore(deps): bump outdated dependencies`
+   Record `IS_PROACTIVE=true` if **both** conditions hold:
+   1. The title starts with `chore(deps): bump outdated dependencies`
+   2. The head branch name starts with `deps/auto-bump-`
+
+   A PR matching only the title (manually created against a non-`deps/auto-bump-` branch)
+   is treated as external (`IS_PROACTIVE=false`).
 
    **If proactive:** the PR has no useful content — close it with a comment explaining
    what was blocked:
@@ -194,6 +201,23 @@ git checkout <head-branch>
 
 ## Step E — Force-Push the PR Head Branch
 
+Before pushing, verify the local repository is on the correct branch (Step D bisect may
+have left the repo in detached HEAD state):
+
+```
+git branch --show-current
+# must print: <head-branch>
+```
+
+If the output is not `<head-branch>` (including if it is empty, indicating detached HEAD):
+stop and report:
+
+> "Phase 8 Step E aborted — current branch is not `<head-branch>` (output: `<actual>`).
+> The bisect in Step D may have left the repository in detached HEAD state. Run
+> `git checkout <head-branch>` to return to the correct branch, then retry Step E."
+
+Do not proceed to the push until the branch check passes.
+
 Push the updated `<head-branch>` to the remote. A force-push is required because
 Step A rewound the local history past the original dependabot commits:
 
@@ -233,7 +257,9 @@ gh pr view <PR-number> --repo <owner/repo> --json headRefOid --jq '.headRefOid'
 ## Step E.1 — Update PR Description (Proactive Mode with Exclusions)
 
 Skip this step if:
-- This is not a proactive PR (title does not start with `chore(deps): bump outdated dependencies`), OR
+- This is not a proactive PR (`IS_PROACTIVE=false` — title does not start with
+  `chore(deps): bump outdated dependencies`, or head branch does not start with
+  `deps/auto-bump-`), OR
 - No aliases were excluded in Step B (every bump passed review and all isolated branches were pushed successfully)
 
 If this **is** a proactive PR and **at least one** alias was excluded (Phase 5 BLOCK

@@ -229,6 +229,25 @@ For each constraint pair where both aliases appear in this PR:
 
 If no constrained pairs are found among the bumped aliases, note: "No cross-bump constraints detected."
 
+**Record the check result** for downstream use:
+
+- In the manifest, set `cross_bump_check_result` on each affected alias entry to one of:
+  - `"pass"` — all constraints for this alias are satisfied
+  - `"violation_detected"` — at least one constraint involving this alias was violated
+  - `"unverified"` — a constraint exists but could not be confirmed
+  - `"n/a"` — no constraints apply to this alias
+  Set `"violated_constraints"` to a list of human-readable descriptions for any violations (e.g.,
+  `["kotlin 2.0.x requires KSP 2.0.x; ksp alias is at 1.9.x"]`), or an empty array if none.
+
+- Append to the session brief (`/tmp/dep-review-<PR-number>-session-brief.md`):
+  ```
+  ### Cross-Bump Compatibility Check
+  - Overall result: pass | violation detected | unverified | N/A (no constraints)
+  - Violated pairs: <list of human-readable constraint violations, or "none">
+  ```
+  If the session brief write fails, proceed without writing and note: "Cross-bump check
+  result not persisted to session brief — result is in the manifest only."
+
 ---
 
 ## Step H — Produce the Atomic Commit Manifest
@@ -245,6 +264,8 @@ parallel dispatch. For each atomic commit, record:
   "old_version": "<old>",
   "new_version": "<new>",
   "cross_bump_constraints": ["<note, or empty array>"],
+  "cross_bump_check_result": "pass | violation_detected | unverified | n/a",
+  "violated_constraints": ["<human-readable description, or empty array>"],
   "isolated_branch": "dep-review/<PR-number>/<alias>",
   "push_failed": false
 }
