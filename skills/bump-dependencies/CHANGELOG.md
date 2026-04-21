@@ -2,6 +2,39 @@
 
 ---
 
+## 4.19.0 — Safety Parity and Resilience (2026-04-22)
+
+Closes five instruction gaps discovered in Run 026: Phase 1 Step G now handles the
+"some passing, some pending, none failing" CI state with a correct output template
+instead of misfiring "CI is FAILING"; Phase 8 Step E.1 surfaces push_failed entries
+in the excluded section of the updated PR description; Phase 1b Step H persists the
+atomic commit manifest to a temp file for orchestrator session recovery; Phase 2 Pass C's
+data boundary note now explicitly names commit messages alongside package diff and
+changelog entries; and Phase 2 Pass A records the new version's publication date so
+Phase 5 can apply the 7-day supply-chain safety signal in PR-review mode.
+
+- **Phase 1 Step G — partial-pending CI state:** a fourth case added between all-pending
+  and failing; the third category heading narrowed from "failing or pending" to "failing"
+  — agents now output "CI status: partially pending — M passing, N pending" instead of
+  "CI is FAILING. 0 check(s) failed." when no checks have actually failed.
+- **Phase 8 Step E.1 — push_failed visibility:** the PR description update trigger
+  extended to include `push_failed: true` entries alongside Phase 5 BLOCK verdicts; the
+  "Excluded" table now has a distinct row type for push-failed aliases, making every
+  manifest entry visible in the updated PR description.
+- **Phase 1b Step H — manifest persistence:** a temp file write (`/tmp/dep-review-<PR>-
+  manifest.json`) added after the manifest JSON, with a write-failure fallback; the
+  orchestrator dispatch note updated to read the manifest from the file if context was lost.
+- **Phase 2 Pass C — commit message data boundary:** the "Data boundary (reinforced)"
+  note now names three source categories: package diff, changelog entries, and commit
+  messages; free-form commit text from potentially adversarial maintainers is now an
+  explicitly bounded source.
+- **Phase 2 Pass A + Phase 5 — 7-day safety signal:** Pass A now records the new
+  version's publication date from the same API response used for version enumeration;
+  Phase 5 adds `| New version published < 7 days before PR creation date | +1 |` to the
+  scoring matrix with a note distinguishing PR-review mode from Phase 0 proactive mode.
+
+---
+
 ## 4.18.0 — Impact Clarity and Comment Integrity (2026-04-22)
 
 Closes five instruction gaps discovered in Run 025: Phase 3 Step A now has explicit

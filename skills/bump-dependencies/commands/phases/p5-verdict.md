@@ -70,6 +70,7 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 | CI was failing at Phase 1; re-check result pending or unavailable at Phase 5 time | +2 |
 | CI was passing at Phase 1 (or no CI configured) | 0 |
 | CI was all-pending at Phase 1 (no checks had completed when Phase 1 ran) | 0 |
+| New version published < 7 days before PR creation date | +1 |
 
 > **Note on all-pending Phase 1 CI:** apply the "CI was all-pending at Phase 1 | 0" row
 > when Phase 1 Step G recorded "CI status: pending — no results yet" (all checks still
@@ -100,6 +101,16 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 > version and warrants closer scrutiny even if no breaking changes are explicitly
 > documented. Apply the +2 signal in addition to any CVE or breaking-change signals
 > that motivated the downgrade.
+
+> **Note on "New version published < 7 days before PR creation":** Apply this signal
+> when Phase 2 Pass A recorded a publication date for the new version and that date
+> is within 7 days of the PR creation date (from Phase 1 Step B). This reflects the
+> supply-chain safety window enforced by Phase 0 in proactive mode — a recently
+> published version has not yet fully cleared the window during which a compromised
+> package is most likely to go undetected. Do **not** apply this signal if Phase 0
+> created this PR (the 7-day window was already enforced at bump time and the new
+> version is guaranteed to be at least 7 days old). If Phase 2 recorded "publication
+> date unavailable," do not apply this signal.
 
 ### Tier Thresholds
 

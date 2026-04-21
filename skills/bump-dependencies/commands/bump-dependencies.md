@@ -132,7 +132,10 @@ Phases 5–6 (verdict and comment) resume in parallel after all Phase 4 work is 
 
 ## Parallel Dispatch
 
-After Phase 1b produces the atomic commit manifest, follow the two-wave protocol:
+After Phase 1b produces the atomic commit manifest, follow the two-wave protocol.
+If the manifest is not in context (e.g., session resumed after interruption), read it
+from `/tmp/dep-review-<PR-number>-manifest.json` before dispatching.
+
 
 ### Wave 1 — Parallel Investigation (Phases 2–3)
 

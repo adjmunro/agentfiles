@@ -268,6 +268,19 @@ during Wave 1 dispatch.
 
 This manifest, including PR context, is passed to each parallel agent.
 
+**Persist the manifest to a temp file** so the orchestrator can recover it if the
+session is interrupted before Wave 1 dispatch completes:
+
+```
+cat > /tmp/dep-review-<PR-number>-manifest.json << 'EOF'
+<manifest JSON — all entries including PR context>
+EOF
+```
+
+If the write fails (e.g. `/tmp` is not writable), proceed without writing and note:
+"Manifest not persisted — orchestrator must use in-context data. Re-run Phase 1b to
+regenerate if context is lost."
+
 ---
 
 ## Step I — Create Isolated Branches
