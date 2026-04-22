@@ -540,6 +540,7 @@ If any PRs are returned, report to the user:
   ```
   git push origin --delete <BUMP_BRANCH> 2>/dev/null || true
   git checkout <base-branch>
+  git branch -D <BUMP_BRANCH> 2>/dev/null || true
   ```
   **Important:** the bump commits made in this run to `<BUMP_BRANCH>` are **not**
   included in PR #<existing-number>. They were committed locally and then discarded

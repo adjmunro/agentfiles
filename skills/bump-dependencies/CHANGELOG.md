@@ -2,6 +2,30 @@
 
 ---
 
+## 4.23.0 — Step Numbering and Branch Lifecycle Fixes (2026-04-22)
+
+Closes four gaps discovered in Run 030: Phase 8 Step B had a duplicate item number
+"3." introduced by H114's absent-verdict check insertion without renumbering; Phase 0
+Step H's existing-PR path deleted the remote BUMP_BRANCH but left a dangling local
+branch; Phase 5's verdict block CI Status template had no guidance for surfacing the
+data-source provenance note written by Phase 4 Step D.1; and Phase 5's "+2 CI pending"
+note lacked a scope clause to prevent misapplication when Phase 4 was not triggered.
+
+- **Phase 8 Step B — item renumbering:** items following the absent-verdict check
+  renumbered from duplicate 3/4/5 to sequential 4/5/6 — eliminates ambiguity when
+  agents parse the numbered list.
+- **Phase 0 Step H — local branch cleanup:** `git branch -D <BUMP_BRANCH>` added
+  after `git checkout <base-branch>` in the existing-PR path, completing the branch
+  lifecycle (remote delete was already present).
+- **Phase 5 Step C — CI data-source provenance:** `#### CI Status` template gains
+  an instruction to append a provenance note when Phase 4 Step D.1 recorded that
+  CI data came from the PR head branch rather than the isolated branch.
+- **Phase 5 — "+2 CI pending" scope clause:** note now explicitly states it applies
+  only when Phase 4 ran and Step D.1 was reached; directs agents to use the "+1
+  precautionary" partially-pending row instead when Phase 4 was not triggered.
+
+---
+
 ## 4.22.0 — Pending Signal Coverage and Span Clarity (2026-04-22)
 
 Closes four gaps discovered in Run 029: Phase 4 Step D.1 now re-checks CI when Phase 1

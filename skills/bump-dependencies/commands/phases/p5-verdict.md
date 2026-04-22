@@ -98,6 +98,9 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 > Score +2 as a precautionary mid-point — the failure may resolve, but it is not yet
 > confirmed. Do not apply the +4 or +1 unresolved-failure signals at the same time;
 > once the final CI result is known, re-score using the appropriate row instead.
+> **Scope:** this note applies only when Phase 4 ran for this alias and Step D.1 was
+> reached. If Phase 4 was not triggered (no actionable usages and no CI failures at
+> Phase 1), use the "+1 precautionary" partially-pending row instead — not +2.
 
 > **Note on "Multi-version span":** Apply this signal when the upgrade traverses two
 > or more intermediate versions (threshold aligns with Phase 2 Multi-Version Span
@@ -252,6 +255,9 @@ and whether any signals originated from intermediate releases rather than the fi
 <"All checks passed" | "CI was failing; all failures resolved by Phase 4 remediation" |
 "CI is still failing: <list of unresolved jobs with category and root cause>" |
 "No CI configured">
+_(If Phase 4 Step D.1 noted that CI data came from the PR head branch rather than
+the isolated branch, append: "Note: CI status reflects the PR head branch at the
+time of Phase 4's re-check — isolated branch CI was not separately observable.")_
 
 #### Warnings / Follow-up Required
 <advisory items, skipped migrations, or "None">

@@ -86,7 +86,7 @@ For each alias in the manifest, in the order they were recorded:
 
    Do not attempt to merge. Continue to the next alias.
 
-3. **Merge the verified isolated branch** using a non-fast-forward merge so each
+4. **Merge the verified isolated branch** using a non-fast-forward merge so each
    alias group's contribution is traceable in the consolidated history:
 
    ```
@@ -94,11 +94,11 @@ For each alias in the manifest, in the order they were recorded:
      -m "merge(deps): consolidate <alias> bump (<old> → <new>)"
    ```
 
-4. **If the merge produces a conflict** (e.g., two alias groups edited adjacent
+5. **If the merge produces a conflict** (e.g., two alias groups edited adjacent
    lines in `libs.versions.toml`), resolve it by accepting both sets of changes —
    each alias's version line is independent. Commit the resolution, then continue.
 
-5. Record the merge result for Step G:
+6. Record the merge result for Step G:
    - Alias name
    - Merge outcome: `clean` | `conflict resolved` | `skipped`
    - The merge commit hash (if merged)
