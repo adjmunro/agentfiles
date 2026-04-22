@@ -122,6 +122,17 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 > created this PR (the 7-day window was already enforced at bump time and the new
 > version is guaranteed to be at least 7 days old). If Phase 2 recorded "publication
 > date unavailable," do not apply this signal.
+>
+> **Detecting whether Phase 0 created this PR (per-bump agent check):** Read the PR
+> title and head branch name from the session brief
+> (`/tmp/dep-review-<PR-number>-session-brief.md`, field "PR:" and the head branch
+> line) or from the agent prompt context. Phase 0 always sets **both**:
+> - PR title prefix: `chore(deps): bump outdated dependencies`
+> - Head branch prefix: `deps/auto-bump-`
+>
+> If **both** conditions hold, treat as a Phase 0 proactive PR and skip this signal.
+> If only the title matches (head branch is not `deps/auto-bump-*`), treat as an
+> externally created PR and apply the signal if the date condition is met.
 
 ### Tier Thresholds
 

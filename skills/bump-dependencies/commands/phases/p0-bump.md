@@ -541,6 +541,11 @@ If any PRs are returned, report to the user:
   git push origin --delete <BUMP_BRANCH> 2>/dev/null || true
   git checkout <base-branch>
   ```
+  **Important:** the bump commits made in this run to `<BUMP_BRANCH>` are **not**
+  included in PR #<existing-number>. They were committed locally and then discarded
+  when the branch was deleted. The existing PR's content and review state are
+  unchanged. Step I will show these bumps in a summary table — note that they refer
+  to the discarded commits, not to changes in the existing PR.
   Then proceed directly to Step I without further bumps. The existing commits
   and review state are preserved.
 - **If the user chooses to create a new PR:** continue with the branch-specific
@@ -621,7 +626,14 @@ Print to the user:
 
 ## Step I — Bump Summary
 
-Before handing off, print a concise summary table:
+Before handing off, print a concise summary table.
+
+> **If the user chose an existing PR in Step H:** begin the summary with:
+> ```
+> ⚠️  Note: the bumps below were committed to `<BUMP_BRANCH>` in this run but are
+> NOT included in PR #<existing-number>. The branch was deleted — these commits are
+> discarded. The existing PR is unchanged. Proceeding to review PR #<existing-number>.
+> ```
 
 ```
 ### Proactive Bump Summary

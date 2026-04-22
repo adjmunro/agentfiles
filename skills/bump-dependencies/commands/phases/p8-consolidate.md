@@ -67,6 +67,25 @@ For each alias in the manifest, in the order they were recorded:
 
    Do not block consolidation for other aliases — continue to the next entry.
 
+3. **Check for absent verdict (silent Wave 3 agent failure).** If no Phase 5 verdict
+   is present for this alias in the orchestrator's context (not returned by the Wave 3
+   agent) AND no Phase 6 comment for this alias appears in the PR (checked via):
+
+   ```
+   gh pr view <PR-number> --repo <owner/repo> --json comments \
+     --jq '.comments[] | select(.body | startswith("## Dependency Review: `<alias>`")) | .body'
+   ```
+
+   If this query returns no results, the Wave 3 agent failed silently. Skip and record:
+
+   ```
+   Skipped: dep-review/<PR-number>/<alias> — no Phase 5 verdict received (Wave 3 agent
+   may have failed silently). Merge skipped to prevent an unreviewed alias landing in the PR.
+   Re-run the skill or manually dispatch Phase 5–6 for this alias.
+   ```
+
+   Do not attempt to merge. Continue to the next alias.
+
 3. **Merge the verified isolated branch** using a non-fast-forward merge so each
    alias group's contribution is traceable in the consolidated history:
 

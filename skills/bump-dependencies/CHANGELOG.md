@@ -2,6 +2,34 @@
 
 ---
 
+## 4.21.0 — Pipeline Completeness and Fault Guards (2026-04-22)
+
+Closes five gaps discovered in Run 028: Phase 3's routing now triggers Phase 4 when
+CI failures require remediation even without source-code actionable usages; Phase 8's
+consolidation step guards against merging aliases whose Wave 3 agent failed silently;
+Phase 5 gains an explicit detection method for proactive PRs; Phase 0 discloses that
+bump commits are orphaned when a user selects an existing PR; and Phase 3's impact
+table surfaces unaddressed CI failures when Phase 4 is skipped, while Phase 4's
+header is updated to reflect CI failures as a first-class activation trigger.
+
+- **Phase 3 routing — CI-failure branch:** `→ Next` now routes to Phase 4 when Phase 1
+  Step G recorded API break, Migration required, or Deprecation became removal failures,
+  even with zero Phase 3 source-code actionable usages. Phase 4 Step A.1 is now
+  reliably reachable for CI-failure-only scenarios.
+- **Phase 8 Step B — absent-verdict guard:** third skip condition added for aliases
+  where Phase 5 produced no verdict (silent Wave 3 agent failure), detected by querying
+  PR comments. Prevents unreviewed aliases from being merged.
+- **Phase 5 — proactive-PR detection method:** the 7-day supply-chain signal note now
+  specifies exactly how a per-bump sub-agent determines whether Phase 0 created the
+  PR (title prefix + branch prefix, both required).
+- **Phase 0 Step H/I — orphaned-commit disclosure:** "Important:" note added to Step H
+  and a ⚠️ banner added to Step I's output when the user chooses an existing PR,
+  clarifying that BUMP_BRANCH commits were discarded.
+- **Phase 3 impact table + Phase 4 header — CI-failure completeness:** Phase 3's impact
+  table template gains a "CI Failures Not Addressed" section (conditional on Phase 4
+  not being triggered); Phase 4's header activation comment now lists CI failures as
+  an explicit trigger alongside Phase 3 actionable usages.
+
 ## 4.20.0 — Gate Propagation and Guard Parity (2026-04-22)
 
 Closes five instruction gaps discovered in Run 027: Phase 7 preamble now handles the

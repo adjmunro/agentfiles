@@ -98,6 +98,26 @@ Produce a structured impact table for this dependency:
 - Advisory usages (should migrate): N
 - Total files affected: N
 
+### CI Failures Not Addressed
+<Include this section ONLY when BOTH conditions hold:
+  (a) Phase 1 Step G recorded at least one CI failure classified as API break,
+      Migration required, or Deprecation became removal for this bump; AND
+  (b) Phase 4 is NOT being triggered (i.e. the routing below selects the
+      "no actionable usages AND no CI failures requiring remediation" branch).
+If Phase 4 IS being triggered (because this section or the actionable-usages branch
+applied), omit this section — Phase 4 Step A.1 will handle CI failures directly.
+When included, write:>
+"Phase 4 was not triggered for this bump (no source-code actionable usages found).
+The following CI failures recorded in Phase 1 will be scored by Phase 5 but were
+not remediated here:
+
+| Job | Category | Root Cause Summary |
+|---|---|---|
+| <job-name> | <API break / Migration required / Deprecation became removal> | <summary> |
+
+These failures will apply the +4 (unresolved non-environment failure) scoring signal
+in Phase 5. Manual remediation or a follow-up PR is recommended."
+
 ### Enumeration Warning
 <Include this section only if Phase 2 Pass A recorded "Intermediate version enumeration
 failed — assuming single-version span". If present, write:
@@ -109,6 +129,15 @@ Omit this section entirely if enumeration succeeded.>
 
 Print the impact table to the user.
 
-→ Next: If actionable usages were found (must-fix items), read `phases/p4-remediate.md`
-and execute it.
-If no actionable usages, skip to `phases/p5-verdict.md`.
+→ Next: If actionable usages were found (must-fix items) **OR** Phase 1 Step G recorded
+any CI failures classified as **API break**, **Migration required**, or **Deprecation
+became removal**: read `phases/p4-remediate.md` and execute it.
+
+If no actionable usages **AND** no CI failures requiring remediation (Phase 1 Step G
+recorded "All checks passed", "Test environment issue" only, or "Other" only): skip
+directly to `phases/p5-verdict.md`.
+
+> **Why:** Phase 4 Step A.1 handles CI-failure remediation. That step is only reachable
+> if Phase 4 is triggered here. CI failures classified as API break, Migration required,
+> or Deprecation became removal represent correctable issues — Phase 4 should be given
+> the opportunity to address them even when Phase 3 found no source-code usages to fix.

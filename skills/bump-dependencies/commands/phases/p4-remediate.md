@@ -1,7 +1,12 @@
 # Phase 4 — Remediation
 <!-- Part of: bump-dependencies.md orchestrator -->
-<!-- Active when: Phase 3 found actionable usages (must-fix items) -->
-<!-- Skip this phase entirely if no actionable usages were found -->
+<!-- Active when: Phase 3 found actionable usages (must-fix items) OR Phase 1 Step G
+     recorded CI failures classified as API break, Migration required, or Deprecation
+     became removal — even if Phase 3 found zero source-code actionable usages.
+     Step A.1 handles CI-failure remediation for the latter case. -->
+<!-- Skip this phase entirely if no actionable usages were found AND Phase 1 Step G
+     recorded no CI failures requiring remediation (all passing, or test environment
+     issues / "Other" only). -->
 <!-- CONCURRENCY: This phase MUST run sequentially. If multiple bumps need remediation,
      the orchestrator queues them one at a time. Do not begin this phase if another
      bump's Phase 4 is still in progress — git operations are not concurrency-safe. -->
