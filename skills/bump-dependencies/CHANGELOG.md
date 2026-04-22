@@ -2,6 +2,30 @@
 
 ---
 
+## 4.22.0 — Pending Signal Coverage and Span Clarity (2026-04-22)
+
+Closes four gaps discovered in Run 029: Phase 4 Step D.1 now re-checks CI when Phase 1
+recorded a partially-pending state (not only when failures were recorded), fulfilling an
+orphaned re-check intent; Phase 5 gains two new scoring signals for the partially-pending
+case (re-checked and not re-checked); Phase 8 Step E.1's exclusion table now surfaces
+absent-verdict aliases alongside BLOCK and push-failed ones; and Phase 5's multi-version
+span signal now applies when Phase 2 failed to enumerate intermediate versions.
+
+- **Phase 4 Step D.1 — partially-pending re-check:** activation condition extended from
+  "any CI failures" to also cover "partially pending (some passing, some pending, none
+  failing)" — fulfils Phase 1 Step G's instruction to re-check before Phase 4.
+- **Phase 5 scoring matrix — partially-pending signals:** two new rows handle the case
+  where Phase 1 CI was partially pending; if Phase 4 re-checked, the updated result is
+  used; if Phase 4 was not triggered, +1 precautionary signal applied.
+- **Phase 8 Step E.1 — absent-verdict exclusion row:** PR body exclusion table template
+  gains a third row for aliases skipped due to absent Phase 5 verdict (silent Wave 3
+  agent failure), introduced by H114 but missing from the template.
+- **Phase 5 — enumeration-failure span signal:** "Multi-version span" note extended to
+  instruct agents to apply the +1 signal when Phase 2 recorded enumeration failure,
+  closing the gap between Phase 2's Enumeration Warning and Phase 5's risk score.
+
+---
+
 ## 4.21.0 — Pipeline Completeness and Fault Guards (2026-04-22)
 
 Closes five gaps discovered in Run 028: Phase 3's routing now triggers Phase 4 when

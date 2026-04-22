@@ -156,10 +156,12 @@ Run the full test suite once more after all commits:
 
 Record the result: total tests, passing, failing, skipped.
 
-## Step D.1 — CI Re-check (if CI was failing at Phase 1)
+## Step D.1 — CI Re-check (if CI was failing or partially pending at Phase 1)
 
-If Phase 1 Step G recorded any CI failures, wait for CI to re-run on the new commits
-(or trigger it manually if required by the project). Then fetch the updated check status:
+If Phase 1 Step G recorded any CI failures **or** recorded the partially-pending state
+(some checks passing, some checks pending, none failing), wait for CI to re-run on the
+new commits (or trigger it manually if required by the project). Then fetch the updated
+check status:
 
 ```
 gh pr checks <PR-number> --repo <owner/repo>

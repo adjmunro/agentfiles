@@ -309,6 +309,7 @@ above contain full details for blocked aliases.
 |---|---|---|---|
 <one row per Phase 5 BLOCK alias — one-line Phase 5 verdict reason>
 <one row per push_failed alias — "isolated branch push failed — not reviewed">
+<one row per absent-verdict alias — "no Phase 5 verdict received — Wave 3 agent may have failed silently; re-run \`/bump-dependencies\` to retry">
 
 To retry an excluded dependency: address the issue (or resolve the push failure),
 then run `/bump-dependencies` again (or open a separate PR with just that dependency).

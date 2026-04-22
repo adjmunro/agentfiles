@@ -70,6 +70,8 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 | CI was failing at Phase 1; re-check result pending or unavailable at Phase 5 time | +2 |
 | CI was passing at Phase 1 (or no CI configured) | 0 |
 | CI was all-pending at Phase 1 (no checks had completed when Phase 1 ran) | 0 |
+| CI was partially pending at Phase 1 (some passing, some pending, none failing); Phase 4 re-check completed | Apply updated CI result from Phase 4 Step D.1 remediation summary |
+| CI was partially pending at Phase 1 (some passing, some pending, none failing); Phase 4 not triggered or Step D.1 not reached | +1 |
 | New version published < 7 days before PR creation date | +1 |
 | Cross-bump constraint violation detected at Phase 1b (e.g., incompatible Kotlin/KSP versions) | +3 |
 
@@ -78,6 +80,17 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 > in progress, none completed or failed). Treat as neutral — equivalent to no CI data.
 > Do not apply the "+2 re-check pending" row for this state; that row applies to Phase 4's
 > re-check being pending, not to Phase 1's initial all-pending state.
+
+> **Note on partially-pending Phase 1 CI:** apply one of the two "CI was partially pending
+> at Phase 1" rows when Phase 1 Step G recorded "CI status: partially pending — <M>
+> check(s) passing, <N> check(s) pending." If Phase 4 ran and Step D.1 completed a
+> re-check, use the updated CI result from Phase 4's Remediation Summary to determine
+> which of the standard CI-status rows applies (passing, unresolved, pending, etc.).
+> If Phase 4 was not triggered (no actionable usages and no CI failures), or if Phase 4
+> ran but Step D.1's activation condition was not met (pre-H118 skill versions), apply
+> the +1 precautionary signal — the outcome of the pending checks is unknown and may
+> have resolved to failures. Do not apply the "+0 all-pending" row for this state; that
+> row is for the distinct case where all checks were pending (none passing).
 
 > **Note on CI pending:** apply the "+2 pending" signal when Phase 4 Step D.1 recorded
 > the CI re-check as "not yet complete (pending)" or when the re-check could not be
@@ -92,6 +105,12 @@ Score each signal from the findings across Phases 2–4, then sum to determine t
 > reflects the increased probability that advisory signals were missed in intermediate
 > releases. Do not apply it when the span is a single minor or patch hop (one or zero
 > intermediate versions).
+> If Phase 2 Pass A recorded "Intermediate version enumeration failed — assuming
+> single-version span," also apply this +1 signal as a precautionary measure — the
+> actual span may contain unreported intermediate versions with additional breaking
+> changes, deprecations, or CVEs. Do not apply both the enumeration-failure variant and
+> the standard multi-version signal for the same bump; if enumeration failed, only the
+> enumeration-failure variant applies (the confirmed span count is unknown).
 
 > **Note on "Major version bump with no changelog found":** Use this signal (instead
 > of the plain "Major version bump" signal) only when the changelog lookup in Phase 2
