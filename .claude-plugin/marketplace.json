@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "adjmunro",
+  "description": "Marketplace for adjmunro's Claude plugins.",
+  "owner": {
+    "name": "adjmunro",
+    "url": "https://github.com/adjmunro"
+  },
+  "plugins": [
+    {
+      "name": "agentfiles",
+      "source": "./",
+      "description": "Claude plugin for adjmunro's agentfiles."
+    }
+  ]
+}
