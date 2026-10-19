@@ -8,9 +8,19 @@
   },
   "plugins": [
     {
-      "name": "agentfiles",
-      "source": "./",
-      "description": "Claude plugin for adjmunro's agentfiles."
+      "name": "general",
+      "source": "./plugins/general",
+      "description": "General-purpose skills for everyday work."
+    },
+    {
+      "name": "software-factory",
+      "source": "./plugins/software-factory",
+      "description": "Skills for running an agentic software factory."
+    },
+    {
+      "name": "git",
+      "source": "./plugins/git",
+      "description": "Skills for working with git."
     }
   ]
 }

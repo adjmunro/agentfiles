@@ -1,0 +1,13 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "git",
+  "displayName": "Git",
+  "description": "Skills for working with git.",
+  "author": {
+    "name": "adjmunro",
+    "url": "https://github.com/adjmunro"
+  },
+  "homepage": "https://github.com/adjmunro/agentfiles",
+  "repository": "https://github.com/adjmunro/agentfiles",
+  "license": "MIT"
+}
